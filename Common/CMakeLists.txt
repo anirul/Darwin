@@ -1,0 +1,54 @@
+# grpc-server Common part (mainly proto).
+add_library(GrpcCommon
+    STATIC
+        service.proto
+)
+
+target_include_directories(GrpcCommon
+    PUBLIC
+        ${CMAKE_SOURCE_DIR}
+        ${Protobuf_INCLUDE_DIRS}
+        ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+get_target_property(grpc_cpp_plugin_location gRPC::grpc_cpp_plugin LOCATION)
+
+protobuf_generate(TARGET GrpcCommon LANGUAGE cpp)
+protobuf_generate(
+    TARGET
+        GrpcCommon
+    LANGUAGE
+        grpc
+    GENERATE_EXTENSIONS
+        .grpc.pb.h
+        .grpc.pb.cc
+    PLUGIN
+        "protoc-gen-grpc=${grpc_cpp_plugin_location}"
+)
+
+target_link_libraries(GrpcCommon
+    PRIVATE
+        protobuf::libprotoc
+        protobuf::libprotobuf
+        gRPC::gpr
+        gRPC::grpc
+        gRPC::grpc++
+)
+
+set(HEADERS_TO_BE_COPIED
+    service.pb.h
+    service.grpc.pb.h
+)
+
+foreach(HEADERN ${HEADERS_TO_BE_COPIED})
+    add_custom_command(
+        TARGET GrpcCommon
+        POST_BUILD
+        COMMAND
+            ${CMAKE_COMMAND} -E copy_if_different
+            ${CMAKE_BINARY_DIR}/Common/proto/${HEADERN}
+            ${CMAKE_SOURCE_DIR}/Common/proto
+    )
+endforeach(HEADERN)
+
+set_property(TARGET GrpcCommon PROPERTY FOLDER "GrpcCommon")

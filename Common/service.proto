@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package proto;
+
+message Vector3 {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+message PlayerPosition {
+    string user_name = 1;
+    Vector3 position = 2;
+    Vector3 direction = 3;
+    Vector3 speed = 4;
+}
+
+message UpdateRequest {
+    PlayerPosition player_position = 1;
+}
+
+message UpdateResponse {
+    repeated PlayerPostion player_positions = 1;
+}
+
+service DarwinIslandService {
+    rpc Update(UpdateRequest) returns (stream UpdateResponse);
+}

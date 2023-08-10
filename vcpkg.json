@@ -1,0 +1,15 @@
+{
+    "name": "grpc-server",
+    "version-string": "0.0.1-alpha",
+    "homepage": "https://github.com/anirul/grpc-server/",
+    "description": "Veil game server",
+    "builtin-baseline": "1e90576cf5e931fa1b59ea289b9615fef6441306",
+    "dependencies": [
+        "abseil",
+        "glm",
+        "grpc",
+        "gtest",
+        "protobuf",
+        "jwt-cpp"
+    ]
+}
