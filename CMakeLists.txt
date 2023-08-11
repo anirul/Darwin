@@ -14,6 +14,7 @@ find_package(absl CONFIG REQUIRED)
 find_package(protobuf CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(GTest CONFIG REQUIRED)
+find_package(gRPC)
 
 # Add submodules build.
 add_subdirectory(External/Frame)

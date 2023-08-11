@@ -20,7 +20,7 @@ message UpdateRequest {
 }
 
 message UpdateResponse {
-    repeated PlayerPostion player_positions = 1;
+    repeated PlayerPosition player_positions = 1;
 }
 
 service DarwinIslandService {

@@ -1,10 +1,10 @@
 # grpc-server Common part (mainly proto).
-add_library(GrpcCommon
+add_library(DarwinCommon
     STATIC
         service.proto
 )
 
-target_include_directories(GrpcCommon
+target_include_directories(DarwinCommon
     PUBLIC
         ${CMAKE_SOURCE_DIR}
         ${Protobuf_INCLUDE_DIRS}
@@ -13,10 +13,10 @@ target_include_directories(GrpcCommon
 
 get_target_property(grpc_cpp_plugin_location gRPC::grpc_cpp_plugin LOCATION)
 
-protobuf_generate(TARGET GrpcCommon LANGUAGE cpp)
+protobuf_generate(TARGET DarwinCommon LANGUAGE cpp)
 protobuf_generate(
     TARGET
-        GrpcCommon
+        DarwinCommon
     LANGUAGE
         grpc
     GENERATE_EXTENSIONS
@@ -26,7 +26,7 @@ protobuf_generate(
         "protoc-gen-grpc=${grpc_cpp_plugin_location}"
 )
 
-target_link_libraries(GrpcCommon
+target_link_libraries(DarwinCommon
     PRIVATE
         protobuf::libprotoc
         protobuf::libprotobuf
@@ -42,7 +42,7 @@ set(HEADERS_TO_BE_COPIED
 
 foreach(HEADERN ${HEADERS_TO_BE_COPIED})
     add_custom_command(
-        TARGET GrpcCommon
+        TARGET DarwinCommon
         POST_BUILD
         COMMAND
             ${CMAKE_COMMAND} -E copy_if_different
@@ -51,4 +51,4 @@ foreach(HEADERN ${HEADERS_TO_BE_COPIED})
     )
 endforeach(HEADERN)
 
-set_property(TARGET GrpcCommon PROPERTY FOLDER "GrpcCommon")
+set_property(TARGET DarwinCommon PROPERTY FOLDER "DarwinCommon")
