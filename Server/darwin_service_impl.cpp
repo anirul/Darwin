@@ -15,6 +15,9 @@ grpc::Status DarwinServiceImpl::Update(
 
       proto::UpdateResponse response;
       // TODO update a response.
+      // Compute new physic.
+      // Compute the move of players.
+      // return the present state of the game.
 
       writer->Write(response);
 

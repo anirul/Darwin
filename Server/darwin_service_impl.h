@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Common/darwin_service.grpc.pb.h"
 
 #include <grpc++/grpc++.h>
