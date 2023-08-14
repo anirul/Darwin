@@ -11,9 +11,12 @@ message Vector3 {
 }
 
 // Physical property of the element.
+// Next: 6
 message Physic {
     // Sphere radius.
     float radius = 1;
+    // weight total.
+    float total_weight = 2;
     // Sphere position.
     Vector3 position = 3;
     // Sphere look direction.
@@ -32,10 +35,13 @@ message Element {
     Physic physic = 3;
     // What type of element is it?
     enum TypeEnum {
-        UKOWN = 0;
-        GROUND = 1;
-        EXPLOSION = 2;
-        UPGRADE = 3;
+        UKNOWN = 0;     // Unknown ???
+        GROUND = 1;     // From where the gravity is generated.
+        EXPLOSION = 2;  // Explosion that push stuff around.
+        UPGRADE = 3;    // Upgrade to upgrade players.
+        GREEN = 4;      // Greenery (no effect on anything).
+        BROWN = 5;      // Tree bark and non destructible elements.
+        WATER = 6;      // Water.
     }
     TypeEnum type_enum = 4;
 }
@@ -47,6 +53,8 @@ message Player {
     string user_name = 1;
     // Material string.
     string material = 2;
+    // Physic paramters.
+    Physic physic = 3;
 }
 
 // UpdateRequest
@@ -57,11 +65,12 @@ message UpdateRequest {
 }
 
 // UpdateResponse
-// Next: 4
+// Next: 5
 message UpdateResponse {
     repeated Player players = 1;
     repeated Element elements = 2;
     double time = 3;
+    Vector3 local_g = 4;
 }
 
 // The darwin service.
