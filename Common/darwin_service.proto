@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package proto;
+
+// Vector 3 this store position or other 3 float values.
+// Next: 4
+message Vector3 {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+// Physical property of the element.
+message Physic {
+    // Sphere radius.
+    float radius = 1;
+    // Sphere position.
+    Vector3 position = 3;
+    // Sphere look direction.
+    Vector3 direction = 4;
+    // Velocity the speed it has.
+    Vector3 speed = 5;
+}
+
+// Sphere element in the world.
+// Next: 5
+message Element {
+    string element_name = 1;
+    // Material string.
+    string material = 2;
+    // Physic, position, speed etc...
+    Physic physic = 3;
+    // What type of element is it?
+    enum TypeEnum {
+        UKOWN = 0;
+        GROUND = 1;
+        EXPLOSION = 2;
+        UPGRADE = 3;
+    }
+    TypeEnum type_enum = 4;
+}
+
+// Player will be (for now) be represented by spheres.
+// Next: 4
+message Player {
+    // Player name.
+    string user_name = 1;
+    // Material string.
+    string material = 2;
+}
+
+// UpdateRequest
+// Next: 3
+message UpdateRequest {
+    Player player = 1;
+    Element element = 2;
+}
+
+// UpdateResponse
+// Next: 4
+message UpdateResponse {
+    repeated Player players = 1;
+    repeated Element elements = 2;
+    double time = 3;
+}
+
+// The darwin service.
+service DarwinService {
+    rpc Update(UpdateRequest) returns (stream UpdateResponse);
+}

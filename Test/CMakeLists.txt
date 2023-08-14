@@ -16,3 +16,5 @@ target_link_libraries(DarwinTest
         GTest::gmock
         GTest::gtest
 )
+
+set_property(TARGET DarwinTest PROPERTY FOLDER "DarwinTest")

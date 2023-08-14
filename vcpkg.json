@@ -1,8 +1,8 @@
 {
-    "name": "grpc-server",
+    "name": "darwin",
     "version-string": "0.0.1-alpha",
-    "homepage": "https://github.com/anirul/grpc-server/",
-    "description": "grpc game",
+    "homepage": "https://github.com/anirul/Darwin/",
+    "description": "grpc simple game",
     "dependencies": [
         "abseil",
         "glm",

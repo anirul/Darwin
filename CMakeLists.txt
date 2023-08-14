@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(grpc-server DESCRIPTION "Test of a grpc based server (and client)." LANGUAGES CXX)
+project(darwin DESCRIPTION "Test of a grpc based server (and client)." LANGUAGES CXX)
 
 # Standards is set to C++ 20.
 set(CMAKE_CXX_STANDARD 20)

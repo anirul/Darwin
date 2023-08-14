@@ -1,8 +1,9 @@
 # Darwin client.
 
 add_executable(DarwinServer
-    WIN32
-        main.cpp
+    main.cpp
+    darwin_service_impl.cpp
+    darwin_service_impl.h
 )
 
 target_include_directories(DarwinServer

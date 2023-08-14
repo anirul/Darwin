@@ -1,7 +1,7 @@
 # grpc-server Common part (mainly proto).
 add_library(DarwinCommon
     STATIC
-        service.proto
+        darwin_service.proto
 )
 
 target_include_directories(DarwinCommon
@@ -36,8 +36,8 @@ target_link_libraries(DarwinCommon
 )
 
 set(HEADERS_TO_BE_COPIED
-    service.pb.h
-    service.grpc.pb.h
+    darwin_service.pb.h
+    darwin_service.grpc.pb.h
 )
 
 foreach(HEADERN ${HEADERS_TO_BE_COPIED})
@@ -46,8 +46,8 @@ foreach(HEADERN ${HEADERS_TO_BE_COPIED})
         POST_BUILD
         COMMAND
             ${CMAKE_COMMAND} -E copy_if_different
-            ${CMAKE_BINARY_DIR}/Common/proto/${HEADERN}
-            ${CMAKE_SOURCE_DIR}/Common/proto
+            ${CMAKE_BINARY_DIR}/Common/${HEADERN}
+            ${CMAKE_SOURCE_DIR}/Common/
     )
 endforeach(HEADERN)
 
