@@ -64,6 +64,9 @@ extern UpdateResponseDefaultTypeInternal _UpdateResponse_default_instance_;
 class Vector3;
 struct Vector3DefaultTypeInternal;
 extern Vector3DefaultTypeInternal _Vector3_default_instance_;
+class Vector4;
+struct Vector4DefaultTypeInternal;
+extern Vector4DefaultTypeInternal _Vector4_default_instance_;
 }  // namespace proto
 PROTOBUF_NAMESPACE_OPEN
 template<> ::proto::Element* Arena::CreateMaybeMessage<::proto::Element>(Arena*);
@@ -72,20 +75,24 @@ template<> ::proto::Player* Arena::CreateMaybeMessage<::proto::Player>(Arena*);
 template<> ::proto::UpdateRequest* Arena::CreateMaybeMessage<::proto::UpdateRequest>(Arena*);
 template<> ::proto::UpdateResponse* Arena::CreateMaybeMessage<::proto::UpdateResponse>(Arena*);
 template<> ::proto::Vector3* Arena::CreateMaybeMessage<::proto::Vector3>(Arena*);
+template<> ::proto::Vector4* Arena::CreateMaybeMessage<::proto::Vector4>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace proto {
 
 enum Element_TypeEnum : int {
-  Element_TypeEnum_UKOWN = 0,
+  Element_TypeEnum_UKNOWN = 0,
   Element_TypeEnum_GROUND = 1,
   Element_TypeEnum_EXPLOSION = 2,
   Element_TypeEnum_UPGRADE = 3,
+  Element_TypeEnum_GREEN = 4,
+  Element_TypeEnum_BROWN = 5,
+  Element_TypeEnum_WATER = 6,
   Element_TypeEnum_Element_TypeEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   Element_TypeEnum_Element_TypeEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool Element_TypeEnum_IsValid(int value);
-constexpr Element_TypeEnum Element_TypeEnum_TypeEnum_MIN = Element_TypeEnum_UKOWN;
-constexpr Element_TypeEnum Element_TypeEnum_TypeEnum_MAX = Element_TypeEnum_UPGRADE;
+constexpr Element_TypeEnum Element_TypeEnum_TypeEnum_MIN = Element_TypeEnum_UKNOWN;
+constexpr Element_TypeEnum Element_TypeEnum_TypeEnum_MAX = Element_TypeEnum_WATER;
 constexpr int Element_TypeEnum_TypeEnum_ARRAYSIZE = Element_TypeEnum_TypeEnum_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Element_TypeEnum_descriptor();
@@ -274,6 +281,187 @@ class Vector3 final :
 };
 // -------------------------------------------------------------------
 
+class Vector4 final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.Vector4) */ {
+ public:
+  inline Vector4() : Vector4(nullptr) {}
+  ~Vector4() override;
+  explicit PROTOBUF_CONSTEXPR Vector4(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  Vector4(const Vector4& from);
+  Vector4(Vector4&& from) noexcept
+    : Vector4() {
+    *this = ::std::move(from);
+  }
+
+  inline Vector4& operator=(const Vector4& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Vector4& operator=(Vector4&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Vector4& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Vector4* internal_default_instance() {
+    return reinterpret_cast<const Vector4*>(
+               &_Vector4_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  friend void swap(Vector4& a, Vector4& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Vector4* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Vector4* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Vector4* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<Vector4>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const Vector4& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const Vector4& from) {
+    Vector4::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(Vector4* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "proto.Vector4";
+  }
+  protected:
+  explicit Vector4(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kXFieldNumber = 1,
+    kYFieldNumber = 2,
+    kZFieldNumber = 3,
+    kWFieldNumber = 4,
+  };
+  // float x = 1;
+  void clear_x();
+  float x() const;
+  void set_x(float value);
+  private:
+  float _internal_x() const;
+  void _internal_set_x(float value);
+  public:
+
+  // float y = 2;
+  void clear_y();
+  float y() const;
+  void set_y(float value);
+  private:
+  float _internal_y() const;
+  void _internal_set_y(float value);
+  public:
+
+  // float z = 3;
+  void clear_z();
+  float z() const;
+  void set_z(float value);
+  private:
+  float _internal_z() const;
+  void _internal_set_z(float value);
+  public:
+
+  // float w = 4;
+  void clear_w();
+  float w() const;
+  void set_w(float value);
+  private:
+  float _internal_w() const;
+  void _internal_set_w(float value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:proto.Vector4)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    float x_;
+    float y_;
+    float z_;
+    float w_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_darwin_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
 class Physic final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.Physic) */ {
  public:
@@ -322,7 +510,7 @@ class Physic final :
                &_Physic_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    2;
 
   friend void swap(Physic& a, Physic& b) {
     a.Swap(&b);
@@ -398,7 +586,9 @@ class Physic final :
     kPositionFieldNumber = 3,
     kDirectionFieldNumber = 4,
     kSpeedFieldNumber = 5,
+    kRotationFieldNumber = 6,
     kRadiusFieldNumber = 1,
+    kTotalWeightFieldNumber = 2,
   };
   // .proto.Vector3 position = 3;
   bool has_position() const;
@@ -454,6 +644,24 @@ class Physic final :
       ::proto::Vector3* speed);
   ::proto::Vector3* unsafe_arena_release_speed();
 
+  // .proto.Vector4 rotation = 6;
+  bool has_rotation() const;
+  private:
+  bool _internal_has_rotation() const;
+  public:
+  void clear_rotation();
+  const ::proto::Vector4& rotation() const;
+  PROTOBUF_NODISCARD ::proto::Vector4* release_rotation();
+  ::proto::Vector4* mutable_rotation();
+  void set_allocated_rotation(::proto::Vector4* rotation);
+  private:
+  const ::proto::Vector4& _internal_rotation() const;
+  ::proto::Vector4* _internal_mutable_rotation();
+  public:
+  void unsafe_arena_set_allocated_rotation(
+      ::proto::Vector4* rotation);
+  ::proto::Vector4* unsafe_arena_release_rotation();
+
   // float radius = 1;
   void clear_radius();
   float radius() const;
@@ -461,6 +669,15 @@ class Physic final :
   private:
   float _internal_radius() const;
   void _internal_set_radius(float value);
+  public:
+
+  // float total_weight = 2;
+  void clear_total_weight();
+  float total_weight() const;
+  void set_total_weight(float value);
+  private:
+  float _internal_total_weight() const;
+  void _internal_set_total_weight(float value);
   public:
 
   // @@protoc_insertion_point(class_scope:proto.Physic)
@@ -474,7 +691,9 @@ class Physic final :
     ::proto::Vector3* position_;
     ::proto::Vector3* direction_;
     ::proto::Vector3* speed_;
+    ::proto::Vector4* rotation_;
     float radius_;
+    float total_weight_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -530,7 +749,7 @@ class Element final :
                &_Element_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   friend void swap(Element& a, Element& b) {
     a.Swap(&b);
@@ -601,14 +820,20 @@ class Element final :
   // nested types ----------------------------------------------------
 
   typedef Element_TypeEnum TypeEnum;
-  static constexpr TypeEnum UKOWN =
-    Element_TypeEnum_UKOWN;
+  static constexpr TypeEnum UKNOWN =
+    Element_TypeEnum_UKNOWN;
   static constexpr TypeEnum GROUND =
     Element_TypeEnum_GROUND;
   static constexpr TypeEnum EXPLOSION =
     Element_TypeEnum_EXPLOSION;
   static constexpr TypeEnum UPGRADE =
     Element_TypeEnum_UPGRADE;
+  static constexpr TypeEnum GREEN =
+    Element_TypeEnum_GREEN;
+  static constexpr TypeEnum BROWN =
+    Element_TypeEnum_BROWN;
+  static constexpr TypeEnum WATER =
+    Element_TypeEnum_WATER;
   static inline bool TypeEnum_IsValid(int value) {
     return Element_TypeEnum_IsValid(value);
   }
@@ -764,7 +989,7 @@ class Player final :
                &_Player_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(Player& a, Player& b) {
     a.Swap(&b);
@@ -839,6 +1064,7 @@ class Player final :
   enum : int {
     kUserNameFieldNumber = 1,
     kMaterialFieldNumber = 2,
+    kPhysicFieldNumber = 3,
   };
   // string user_name = 1;
   void clear_user_name();
@@ -868,6 +1094,24 @@ class Player final :
   std::string* _internal_mutable_material();
   public:
 
+  // .proto.Physic physic = 3;
+  bool has_physic() const;
+  private:
+  bool _internal_has_physic() const;
+  public:
+  void clear_physic();
+  const ::proto::Physic& physic() const;
+  PROTOBUF_NODISCARD ::proto::Physic* release_physic();
+  ::proto::Physic* mutable_physic();
+  void set_allocated_physic(::proto::Physic* physic);
+  private:
+  const ::proto::Physic& _internal_physic() const;
+  ::proto::Physic* _internal_mutable_physic();
+  public:
+  void unsafe_arena_set_allocated_physic(
+      ::proto::Physic* physic);
+  ::proto::Physic* unsafe_arena_release_physic();
+
   // @@protoc_insertion_point(class_scope:proto.Player)
  private:
   class _Internal;
@@ -878,6 +1122,7 @@ class Player final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr user_name_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr material_;
+    ::proto::Physic* physic_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -933,7 +1178,7 @@ class UpdateRequest final :
                &_UpdateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(UpdateRequest& a, UpdateRequest& b) {
     a.Swap(&b);
@@ -1110,7 +1355,7 @@ class UpdateResponse final :
                &_UpdateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(UpdateResponse& a, UpdateResponse& b) {
     a.Swap(&b);
@@ -1185,6 +1430,7 @@ class UpdateResponse final :
   enum : int {
     kPlayersFieldNumber = 1,
     kElementsFieldNumber = 2,
+    kLocalGFieldNumber = 4,
     kTimeFieldNumber = 3,
   };
   // repeated .proto.Player players = 1;
@@ -1223,6 +1469,24 @@ class UpdateResponse final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::Element >&
       elements() const;
 
+  // .proto.Vector3 local_g = 4;
+  bool has_local_g() const;
+  private:
+  bool _internal_has_local_g() const;
+  public:
+  void clear_local_g();
+  const ::proto::Vector3& local_g() const;
+  PROTOBUF_NODISCARD ::proto::Vector3* release_local_g();
+  ::proto::Vector3* mutable_local_g();
+  void set_allocated_local_g(::proto::Vector3* local_g);
+  private:
+  const ::proto::Vector3& _internal_local_g() const;
+  ::proto::Vector3* _internal_mutable_local_g();
+  public:
+  void unsafe_arena_set_allocated_local_g(
+      ::proto::Vector3* local_g);
+  ::proto::Vector3* unsafe_arena_release_local_g();
+
   // double time = 3;
   void clear_time();
   double time() const;
@@ -1242,6 +1506,7 @@ class UpdateResponse final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::Player > players_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::Element > elements_;
+    ::proto::Vector3* local_g_;
     double time_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -1321,6 +1586,90 @@ inline void Vector3::set_z(float value) {
 
 // -------------------------------------------------------------------
 
+// Vector4
+
+// float x = 1;
+inline void Vector4::clear_x() {
+  _impl_.x_ = 0;
+}
+inline float Vector4::_internal_x() const {
+  return _impl_.x_;
+}
+inline float Vector4::x() const {
+  // @@protoc_insertion_point(field_get:proto.Vector4.x)
+  return _internal_x();
+}
+inline void Vector4::_internal_set_x(float value) {
+  
+  _impl_.x_ = value;
+}
+inline void Vector4::set_x(float value) {
+  _internal_set_x(value);
+  // @@protoc_insertion_point(field_set:proto.Vector4.x)
+}
+
+// float y = 2;
+inline void Vector4::clear_y() {
+  _impl_.y_ = 0;
+}
+inline float Vector4::_internal_y() const {
+  return _impl_.y_;
+}
+inline float Vector4::y() const {
+  // @@protoc_insertion_point(field_get:proto.Vector4.y)
+  return _internal_y();
+}
+inline void Vector4::_internal_set_y(float value) {
+  
+  _impl_.y_ = value;
+}
+inline void Vector4::set_y(float value) {
+  _internal_set_y(value);
+  // @@protoc_insertion_point(field_set:proto.Vector4.y)
+}
+
+// float z = 3;
+inline void Vector4::clear_z() {
+  _impl_.z_ = 0;
+}
+inline float Vector4::_internal_z() const {
+  return _impl_.z_;
+}
+inline float Vector4::z() const {
+  // @@protoc_insertion_point(field_get:proto.Vector4.z)
+  return _internal_z();
+}
+inline void Vector4::_internal_set_z(float value) {
+  
+  _impl_.z_ = value;
+}
+inline void Vector4::set_z(float value) {
+  _internal_set_z(value);
+  // @@protoc_insertion_point(field_set:proto.Vector4.z)
+}
+
+// float w = 4;
+inline void Vector4::clear_w() {
+  _impl_.w_ = 0;
+}
+inline float Vector4::_internal_w() const {
+  return _impl_.w_;
+}
+inline float Vector4::w() const {
+  // @@protoc_insertion_point(field_get:proto.Vector4.w)
+  return _internal_w();
+}
+inline void Vector4::_internal_set_w(float value) {
+  
+  _impl_.w_ = value;
+}
+inline void Vector4::set_w(float value) {
+  _internal_set_w(value);
+  // @@protoc_insertion_point(field_set:proto.Vector4.w)
+}
+
+// -------------------------------------------------------------------
+
 // Physic
 
 // float radius = 1;
@@ -1341,6 +1690,26 @@ inline void Physic::_internal_set_radius(float value) {
 inline void Physic::set_radius(float value) {
   _internal_set_radius(value);
   // @@protoc_insertion_point(field_set:proto.Physic.radius)
+}
+
+// float total_weight = 2;
+inline void Physic::clear_total_weight() {
+  _impl_.total_weight_ = 0;
+}
+inline float Physic::_internal_total_weight() const {
+  return _impl_.total_weight_;
+}
+inline float Physic::total_weight() const {
+  // @@protoc_insertion_point(field_get:proto.Physic.total_weight)
+  return _internal_total_weight();
+}
+inline void Physic::_internal_set_total_weight(float value) {
+  
+  _impl_.total_weight_ = value;
+}
+inline void Physic::set_total_weight(float value) {
+  _internal_set_total_weight(value);
+  // @@protoc_insertion_point(field_set:proto.Physic.total_weight)
 }
 
 // .proto.Vector3 position = 3;
@@ -1611,6 +1980,96 @@ inline void Physic::set_allocated_speed(::proto::Vector3* speed) {
   }
   _impl_.speed_ = speed;
   // @@protoc_insertion_point(field_set_allocated:proto.Physic.speed)
+}
+
+// .proto.Vector4 rotation = 6;
+inline bool Physic::_internal_has_rotation() const {
+  return this != internal_default_instance() && _impl_.rotation_ != nullptr;
+}
+inline bool Physic::has_rotation() const {
+  return _internal_has_rotation();
+}
+inline void Physic::clear_rotation() {
+  if (GetArenaForAllocation() == nullptr && _impl_.rotation_ != nullptr) {
+    delete _impl_.rotation_;
+  }
+  _impl_.rotation_ = nullptr;
+}
+inline const ::proto::Vector4& Physic::_internal_rotation() const {
+  const ::proto::Vector4* p = _impl_.rotation_;
+  return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector4&>(
+      ::proto::_Vector4_default_instance_);
+}
+inline const ::proto::Vector4& Physic::rotation() const {
+  // @@protoc_insertion_point(field_get:proto.Physic.rotation)
+  return _internal_rotation();
+}
+inline void Physic::unsafe_arena_set_allocated_rotation(
+    ::proto::Vector4* rotation) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.rotation_);
+  }
+  _impl_.rotation_ = rotation;
+  if (rotation) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.Physic.rotation)
+}
+inline ::proto::Vector4* Physic::release_rotation() {
+  
+  ::proto::Vector4* temp = _impl_.rotation_;
+  _impl_.rotation_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::proto::Vector4* Physic::unsafe_arena_release_rotation() {
+  // @@protoc_insertion_point(field_release:proto.Physic.rotation)
+  
+  ::proto::Vector4* temp = _impl_.rotation_;
+  _impl_.rotation_ = nullptr;
+  return temp;
+}
+inline ::proto::Vector4* Physic::_internal_mutable_rotation() {
+  
+  if (_impl_.rotation_ == nullptr) {
+    auto* p = CreateMaybeMessage<::proto::Vector4>(GetArenaForAllocation());
+    _impl_.rotation_ = p;
+  }
+  return _impl_.rotation_;
+}
+inline ::proto::Vector4* Physic::mutable_rotation() {
+  ::proto::Vector4* _msg = _internal_mutable_rotation();
+  // @@protoc_insertion_point(field_mutable:proto.Physic.rotation)
+  return _msg;
+}
+inline void Physic::set_allocated_rotation(::proto::Vector4* rotation) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.rotation_;
+  }
+  if (rotation) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(rotation);
+    if (message_arena != submessage_arena) {
+      rotation = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, rotation, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.rotation_ = rotation;
+  // @@protoc_insertion_point(field_set_allocated:proto.Physic.rotation)
 }
 
 // -------------------------------------------------------------------
@@ -1931,6 +2390,96 @@ inline void Player::set_allocated_material(std::string* material) {
   // @@protoc_insertion_point(field_set_allocated:proto.Player.material)
 }
 
+// .proto.Physic physic = 3;
+inline bool Player::_internal_has_physic() const {
+  return this != internal_default_instance() && _impl_.physic_ != nullptr;
+}
+inline bool Player::has_physic() const {
+  return _internal_has_physic();
+}
+inline void Player::clear_physic() {
+  if (GetArenaForAllocation() == nullptr && _impl_.physic_ != nullptr) {
+    delete _impl_.physic_;
+  }
+  _impl_.physic_ = nullptr;
+}
+inline const ::proto::Physic& Player::_internal_physic() const {
+  const ::proto::Physic* p = _impl_.physic_;
+  return p != nullptr ? *p : reinterpret_cast<const ::proto::Physic&>(
+      ::proto::_Physic_default_instance_);
+}
+inline const ::proto::Physic& Player::physic() const {
+  // @@protoc_insertion_point(field_get:proto.Player.physic)
+  return _internal_physic();
+}
+inline void Player::unsafe_arena_set_allocated_physic(
+    ::proto::Physic* physic) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.physic_);
+  }
+  _impl_.physic_ = physic;
+  if (physic) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.Player.physic)
+}
+inline ::proto::Physic* Player::release_physic() {
+  
+  ::proto::Physic* temp = _impl_.physic_;
+  _impl_.physic_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::proto::Physic* Player::unsafe_arena_release_physic() {
+  // @@protoc_insertion_point(field_release:proto.Player.physic)
+  
+  ::proto::Physic* temp = _impl_.physic_;
+  _impl_.physic_ = nullptr;
+  return temp;
+}
+inline ::proto::Physic* Player::_internal_mutable_physic() {
+  
+  if (_impl_.physic_ == nullptr) {
+    auto* p = CreateMaybeMessage<::proto::Physic>(GetArenaForAllocation());
+    _impl_.physic_ = p;
+  }
+  return _impl_.physic_;
+}
+inline ::proto::Physic* Player::mutable_physic() {
+  ::proto::Physic* _msg = _internal_mutable_physic();
+  // @@protoc_insertion_point(field_mutable:proto.Player.physic)
+  return _msg;
+}
+inline void Player::set_allocated_physic(::proto::Physic* physic) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.physic_;
+  }
+  if (physic) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(physic);
+    if (message_arena != submessage_arena) {
+      physic = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, physic, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.physic_ = physic;
+  // @@protoc_insertion_point(field_set_allocated:proto.Player.physic)
+}
+
 // -------------------------------------------------------------------
 
 // UpdateRequest
@@ -2219,9 +2768,101 @@ inline void UpdateResponse::set_time(double value) {
   // @@protoc_insertion_point(field_set:proto.UpdateResponse.time)
 }
 
+// .proto.Vector3 local_g = 4;
+inline bool UpdateResponse::_internal_has_local_g() const {
+  return this != internal_default_instance() && _impl_.local_g_ != nullptr;
+}
+inline bool UpdateResponse::has_local_g() const {
+  return _internal_has_local_g();
+}
+inline void UpdateResponse::clear_local_g() {
+  if (GetArenaForAllocation() == nullptr && _impl_.local_g_ != nullptr) {
+    delete _impl_.local_g_;
+  }
+  _impl_.local_g_ = nullptr;
+}
+inline const ::proto::Vector3& UpdateResponse::_internal_local_g() const {
+  const ::proto::Vector3* p = _impl_.local_g_;
+  return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector3&>(
+      ::proto::_Vector3_default_instance_);
+}
+inline const ::proto::Vector3& UpdateResponse::local_g() const {
+  // @@protoc_insertion_point(field_get:proto.UpdateResponse.local_g)
+  return _internal_local_g();
+}
+inline void UpdateResponse::unsafe_arena_set_allocated_local_g(
+    ::proto::Vector3* local_g) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.local_g_);
+  }
+  _impl_.local_g_ = local_g;
+  if (local_g) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.UpdateResponse.local_g)
+}
+inline ::proto::Vector3* UpdateResponse::release_local_g() {
+  
+  ::proto::Vector3* temp = _impl_.local_g_;
+  _impl_.local_g_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::proto::Vector3* UpdateResponse::unsafe_arena_release_local_g() {
+  // @@protoc_insertion_point(field_release:proto.UpdateResponse.local_g)
+  
+  ::proto::Vector3* temp = _impl_.local_g_;
+  _impl_.local_g_ = nullptr;
+  return temp;
+}
+inline ::proto::Vector3* UpdateResponse::_internal_mutable_local_g() {
+  
+  if (_impl_.local_g_ == nullptr) {
+    auto* p = CreateMaybeMessage<::proto::Vector3>(GetArenaForAllocation());
+    _impl_.local_g_ = p;
+  }
+  return _impl_.local_g_;
+}
+inline ::proto::Vector3* UpdateResponse::mutable_local_g() {
+  ::proto::Vector3* _msg = _internal_mutable_local_g();
+  // @@protoc_insertion_point(field_mutable:proto.UpdateResponse.local_g)
+  return _msg;
+}
+inline void UpdateResponse::set_allocated_local_g(::proto::Vector3* local_g) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.local_g_;
+  }
+  if (local_g) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(local_g);
+    if (message_arena != submessage_arena) {
+      local_g = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, local_g, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.local_g_ = local_g;
+  // @@protoc_insertion_point(field_set_allocated:proto.UpdateResponse.local_g)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

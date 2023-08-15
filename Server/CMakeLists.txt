@@ -3,7 +3,9 @@
 add_executable(DarwinServer
     darwin_service_impl.cpp
     darwin_service_impl.h
+    element_info.h
     main.cpp
+    player_info.h
     world_state.cpp
     world_state.h
 )

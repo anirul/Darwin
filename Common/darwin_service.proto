@@ -10,6 +10,14 @@ message Vector3 {
     float z = 3;
 }
 
+// Vector 4 this is representing a quaternion (rotation).
+message Vector4 {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+    float w = 4;
+}
+
 // Physical property of the element.
 // Next: 6
 message Physic {
@@ -21,8 +29,10 @@ message Physic {
     Vector3 position = 3;
     // Sphere look direction.
     Vector3 direction = 4;
-    // Velocity the speed it has.
+    // Velocity the speed it has dx/dt.
     Vector3 speed = 5;
+    // Rotation dp/dt.
+    Vector4 rotation = 6;
 }
 
 // Sphere element in the world.
