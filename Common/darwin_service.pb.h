@@ -588,7 +588,7 @@ class Physic final :
     kSpeedFieldNumber = 5,
     kRotationFieldNumber = 6,
     kRadiusFieldNumber = 1,
-    kTotalWeightFieldNumber = 2,
+    kMassFieldNumber = 2,
   };
   // .proto.Vector3 position = 3;
   bool has_position() const;
@@ -671,13 +671,13 @@ class Physic final :
   void _internal_set_radius(float value);
   public:
 
-  // float total_weight = 2;
-  void clear_total_weight();
-  float total_weight() const;
-  void set_total_weight(float value);
+  // float mass = 2;
+  void clear_mass();
+  float mass() const;
+  void set_mass(float value);
   private:
-  float _internal_total_weight() const;
-  void _internal_set_total_weight(float value);
+  float _internal_mass() const;
+  void _internal_set_mass(float value);
   public:
 
   // @@protoc_insertion_point(class_scope:proto.Physic)
@@ -693,7 +693,7 @@ class Physic final :
     ::proto::Vector3* speed_;
     ::proto::Vector4* rotation_;
     float radius_;
-    float total_weight_;
+    float mass_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1692,24 +1692,24 @@ inline void Physic::set_radius(float value) {
   // @@protoc_insertion_point(field_set:proto.Physic.radius)
 }
 
-// float total_weight = 2;
-inline void Physic::clear_total_weight() {
-  _impl_.total_weight_ = 0;
+// float mass = 2;
+inline void Physic::clear_mass() {
+  _impl_.mass_ = 0;
 }
-inline float Physic::_internal_total_weight() const {
-  return _impl_.total_weight_;
+inline float Physic::_internal_mass() const {
+  return _impl_.mass_;
 }
-inline float Physic::total_weight() const {
-  // @@protoc_insertion_point(field_get:proto.Physic.total_weight)
-  return _internal_total_weight();
+inline float Physic::mass() const {
+  // @@protoc_insertion_point(field_get:proto.Physic.mass)
+  return _internal_mass();
 }
-inline void Physic::_internal_set_total_weight(float value) {
+inline void Physic::_internal_set_mass(float value) {
   
-  _impl_.total_weight_ = value;
+  _impl_.mass_ = value;
 }
-inline void Physic::set_total_weight(float value) {
-  _internal_set_total_weight(value);
-  // @@protoc_insertion_point(field_set:proto.Physic.total_weight)
+inline void Physic::set_mass(float value) {
+  _internal_set_mass(value);
+  // @@protoc_insertion_point(field_set:proto.Physic.mass)
 }
 
 // .proto.Vector3 position = 3;

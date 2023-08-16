@@ -1,6 +1,8 @@
 # Darwin client.
 
 add_executable(DarwinServer
+    convert_math.cpp
+    convert_math.h
     darwin_service_impl.cpp
     darwin_service_impl.h
     element_info.h

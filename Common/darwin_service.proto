@@ -24,7 +24,7 @@ message Physic {
     // Sphere radius.
     float radius = 1;
     // weight total.
-    float total_weight = 2;
+    float mass = 2;
     // Sphere position.
     Vector3 position = 3;
     // Velocity the speed it has dx/dt.
