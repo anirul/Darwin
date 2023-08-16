@@ -27,10 +27,10 @@ message Physic {
     float total_weight = 2;
     // Sphere position.
     Vector3 position = 3;
-    // Sphere look direction.
-    Vector3 direction = 4;
     // Velocity the speed it has dx/dt.
     Vector3 speed = 5;
+    // Sphere look direction.
+    Vector4 orientation = 4;
     // Rotation dp/dt.
     Vector4 rotation = 6;
 }
@@ -38,7 +38,7 @@ message Physic {
 // Sphere element in the world.
 // Next: 5
 message Element {
-    string element_name = 1;
+    string name = 1;
     // Material string.
     string material = 2;
     // Physic, position, speed etc...
@@ -60,7 +60,7 @@ message Element {
 // Next: 4
 message Player {
     // Player name.
-    string user_name = 1;
+    string name = 1;
     // Material string.
     string material = 2;
     // Physic paramters.
