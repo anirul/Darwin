@@ -12,37 +12,67 @@ glm::vec3 PhysicEngine::ComputeGravitationalForce(
   return glm::normalize(r) * F;
 }
 
-void PhysicEngine::ComputeElementInfo(double delta) {
-  std::vector<proto::Element> element_grounds;
-  for (auto& p : element_infos_) {
-    auto& element_info = p.second;
-    if (element_info.element.type_enum() == proto::Element::GROUND) {
-      element_grounds.push_back(element_info.element);
-    }
+void PhysicEngine::ComputeGravitationBetweenGround(
+    double delta, std::vector<proto::Physic>& physics) const {
+  if (physics.empty()) {
+    std::cerr << "No bodies?" << std::endl;
+    return;
   }
-  std::vector<glm::vec3> forces(element_grounds.size(), glm::vec3(0.0f));
-
-  for (size_t i = 0; i < element_grounds.size(); ++i) {
-    for (size_t j = i + 1; j < element_grounds.size(); ++j) {
-      glm::vec3 F = ComputeGravitationalForce(element_grounds[i].physic(),
-                                              element_grounds[j].physic());
+  // Create a list of forces to be applied to these elements.
+  std::vector<glm::vec3> forces(physics.size(), glm::vec3(0.0f));
+  // Fill it up.
+  for (size_t i = 0; i < physics.size(); ++i) {
+    for (size_t j = i + 1; j < physics.size(); ++j) {
+      glm::vec3 F = ComputeGravitationalForce(physics[i], physics[j]);
       forces[i] += F;
       forces[j] -= F;
     }
   }
-
-  for (size_t i = 0; i < element_grounds.size(); ++i) {
-    auto velocity = ProtoVector2Glm(element_grounds[i].physic().velocity()) +
-                    (forces[i] / element_grounds[i].physic().mass()) *
-                        static_cast<float>(delta);
-    *element_grounds[i].mutable_physic()->mutable_velocity() =
-        Glm2ProtoVector(velocity);
-    auto position = ProtoVector2Glm(element_grounds[i].physic().position()) +
-                    ProtoVector2Glm(element_grounds[i].physic().velocity()) *
-                        static_cast<float>(delta);
-    *element_grounds[i].mutable_physic()->mutable_position() =
-        Glm2ProtoVector(position);
+  // Now compute the new position according to this simulation.
+  for (size_t i = 0; i < physics.size(); ++i) {
+    auto velocity = ProtoVector2Glm(physics[i].velocity()) +
+                    (forces[i] / physics[i].mass()) * static_cast<float>(delta);
+    *physics[i].mutable_velocity() = Glm2ProtoVector(velocity);
+    auto position =
+        ProtoVector2Glm(physics[i].position()) +
+        ProtoVector2Glm(physics[i].velocity()) * static_cast<float>(delta);
+    *physics[i].mutable_position() = Glm2ProtoVector(position);
   }
+}
+
+std::vector<proto::Physic> PhysicEngine::GetElementPhysics(proto::Element::TypeEnum type_enum) const {
+    std::vector<proto::Physic> physics;
+  for (const auto& p : element_infos_) {
+    const auto& element_info = p.second;
+    if (element_info.element.type_enum() == proto::Element::GROUND) {
+      physics.push_back(element_info.element.physic());
+    }
+  }
+  return physics;
+}
+
+void PhysicEngine::SetElementPhysics(
+    proto::Element::TypeEnum type_enum,
+    const std::vector<proto::Physic>& physics) {
+    std::size_t i = 0;
+    for (auto& p : element_infos_) {
+        if (i < physics.size()) {
+            std::cerr << "Size mismatch." << std::endl;
+            return;
+        }
+        if (p.second.element.type_enum() == type_enum) {
+            *p.second.element.mutable_physic() = physics[i];
+            ++i;
+        }
+    }
+}
+
+void PhysicEngine::ComputeElementInfo(double delta) {
+  // Create a list of element that can interact between each other, things like
+  // planets and ground elements.
+  std::vector<proto::Physic> physics = GetElementPhysics(proto::Element::GROUND);
+  ComputeGravitationBetweenGround(delta, physics);
+  SetElementPhysics(proto::Element::GROUND, physics);
 }
 
 void PhysicEngine::ComputePlayerInfo(double delta) {}

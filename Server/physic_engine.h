@@ -19,6 +19,12 @@ class PhysicEngine {
   void ComputePlayerInfo(double delta);
   glm::vec3 ComputeGravitationalForce(const proto::Physic& a,
                                       const proto::Physic& b) const;
+  void ComputeGravitationBetweenGround(
+      double delta, std::vector<proto::Physic>& physics) const;
+  std::vector<proto::Physic> GetElementPhysics(
+      proto::Element::TypeEnum type_enum) const;
+  void SetElementPhysics(proto::Element::TypeEnum type_enum,
+                         const std::vector<proto::Physic>& physics);
 
  protected:
   std::map<std::string, ElementInfo>& element_infos_;
