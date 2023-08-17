@@ -585,7 +585,7 @@ class Physic final :
   enum : int {
     kPositionFieldNumber = 3,
     kOrientationFieldNumber = 4,
-    kSpeedFieldNumber = 5,
+    kVelocityFieldNumber = 5,
     kRotationFieldNumber = 6,
     kRadiusFieldNumber = 1,
     kMassFieldNumber = 2,
@@ -626,23 +626,23 @@ class Physic final :
       ::proto::Vector4* orientation);
   ::proto::Vector4* unsafe_arena_release_orientation();
 
-  // .proto.Vector3 speed = 5;
-  bool has_speed() const;
+  // .proto.Vector3 velocity = 5;
+  bool has_velocity() const;
   private:
-  bool _internal_has_speed() const;
+  bool _internal_has_velocity() const;
   public:
-  void clear_speed();
-  const ::proto::Vector3& speed() const;
-  PROTOBUF_NODISCARD ::proto::Vector3* release_speed();
-  ::proto::Vector3* mutable_speed();
-  void set_allocated_speed(::proto::Vector3* speed);
+  void clear_velocity();
+  const ::proto::Vector3& velocity() const;
+  PROTOBUF_NODISCARD ::proto::Vector3* release_velocity();
+  ::proto::Vector3* mutable_velocity();
+  void set_allocated_velocity(::proto::Vector3* velocity);
   private:
-  const ::proto::Vector3& _internal_speed() const;
-  ::proto::Vector3* _internal_mutable_speed();
+  const ::proto::Vector3& _internal_velocity() const;
+  ::proto::Vector3* _internal_mutable_velocity();
   public:
-  void unsafe_arena_set_allocated_speed(
-      ::proto::Vector3* speed);
-  ::proto::Vector3* unsafe_arena_release_speed();
+  void unsafe_arena_set_allocated_velocity(
+      ::proto::Vector3* velocity);
+  ::proto::Vector3* unsafe_arena_release_velocity();
 
   // .proto.Vector4 rotation = 6;
   bool has_rotation() const;
@@ -690,7 +690,7 @@ class Physic final :
   struct Impl_ {
     ::proto::Vector3* position_;
     ::proto::Vector4* orientation_;
-    ::proto::Vector3* speed_;
+    ::proto::Vector3* velocity_;
     ::proto::Vector4* rotation_;
     float radius_;
     float mass_;
@@ -1802,45 +1802,45 @@ inline void Physic::set_allocated_position(::proto::Vector3* position) {
   // @@protoc_insertion_point(field_set_allocated:proto.Physic.position)
 }
 
-// .proto.Vector3 speed = 5;
-inline bool Physic::_internal_has_speed() const {
-  return this != internal_default_instance() && _impl_.speed_ != nullptr;
+// .proto.Vector3 velocity = 5;
+inline bool Physic::_internal_has_velocity() const {
+  return this != internal_default_instance() && _impl_.velocity_ != nullptr;
 }
-inline bool Physic::has_speed() const {
-  return _internal_has_speed();
+inline bool Physic::has_velocity() const {
+  return _internal_has_velocity();
 }
-inline void Physic::clear_speed() {
-  if (GetArenaForAllocation() == nullptr && _impl_.speed_ != nullptr) {
-    delete _impl_.speed_;
+inline void Physic::clear_velocity() {
+  if (GetArenaForAllocation() == nullptr && _impl_.velocity_ != nullptr) {
+    delete _impl_.velocity_;
   }
-  _impl_.speed_ = nullptr;
+  _impl_.velocity_ = nullptr;
 }
-inline const ::proto::Vector3& Physic::_internal_speed() const {
-  const ::proto::Vector3* p = _impl_.speed_;
+inline const ::proto::Vector3& Physic::_internal_velocity() const {
+  const ::proto::Vector3* p = _impl_.velocity_;
   return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector3&>(
       ::proto::_Vector3_default_instance_);
 }
-inline const ::proto::Vector3& Physic::speed() const {
-  // @@protoc_insertion_point(field_get:proto.Physic.speed)
-  return _internal_speed();
+inline const ::proto::Vector3& Physic::velocity() const {
+  // @@protoc_insertion_point(field_get:proto.Physic.velocity)
+  return _internal_velocity();
 }
-inline void Physic::unsafe_arena_set_allocated_speed(
-    ::proto::Vector3* speed) {
+inline void Physic::unsafe_arena_set_allocated_velocity(
+    ::proto::Vector3* velocity) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.speed_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.velocity_);
   }
-  _impl_.speed_ = speed;
-  if (speed) {
+  _impl_.velocity_ = velocity;
+  if (velocity) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.Physic.speed)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.Physic.velocity)
 }
-inline ::proto::Vector3* Physic::release_speed() {
+inline ::proto::Vector3* Physic::release_velocity() {
   
-  ::proto::Vector3* temp = _impl_.speed_;
-  _impl_.speed_ = nullptr;
+  ::proto::Vector3* temp = _impl_.velocity_;
+  _impl_.velocity_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -1852,44 +1852,44 @@ inline ::proto::Vector3* Physic::release_speed() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::proto::Vector3* Physic::unsafe_arena_release_speed() {
-  // @@protoc_insertion_point(field_release:proto.Physic.speed)
+inline ::proto::Vector3* Physic::unsafe_arena_release_velocity() {
+  // @@protoc_insertion_point(field_release:proto.Physic.velocity)
   
-  ::proto::Vector3* temp = _impl_.speed_;
-  _impl_.speed_ = nullptr;
+  ::proto::Vector3* temp = _impl_.velocity_;
+  _impl_.velocity_ = nullptr;
   return temp;
 }
-inline ::proto::Vector3* Physic::_internal_mutable_speed() {
+inline ::proto::Vector3* Physic::_internal_mutable_velocity() {
   
-  if (_impl_.speed_ == nullptr) {
+  if (_impl_.velocity_ == nullptr) {
     auto* p = CreateMaybeMessage<::proto::Vector3>(GetArenaForAllocation());
-    _impl_.speed_ = p;
+    _impl_.velocity_ = p;
   }
-  return _impl_.speed_;
+  return _impl_.velocity_;
 }
-inline ::proto::Vector3* Physic::mutable_speed() {
-  ::proto::Vector3* _msg = _internal_mutable_speed();
-  // @@protoc_insertion_point(field_mutable:proto.Physic.speed)
+inline ::proto::Vector3* Physic::mutable_velocity() {
+  ::proto::Vector3* _msg = _internal_mutable_velocity();
+  // @@protoc_insertion_point(field_mutable:proto.Physic.velocity)
   return _msg;
 }
-inline void Physic::set_allocated_speed(::proto::Vector3* speed) {
+inline void Physic::set_allocated_velocity(::proto::Vector3* velocity) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.speed_;
+    delete _impl_.velocity_;
   }
-  if (speed) {
+  if (velocity) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(speed);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(velocity);
     if (message_arena != submessage_arena) {
-      speed = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, speed, submessage_arena);
+      velocity = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, velocity, submessage_arena);
     }
     
   } else {
     
   }
-  _impl_.speed_ = speed;
-  // @@protoc_insertion_point(field_set_allocated:proto.Physic.speed)
+  _impl_.velocity_ = velocity;
+  // @@protoc_insertion_point(field_set_allocated:proto.Physic.velocity)
 }
 
 // .proto.Vector4 orientation = 4;

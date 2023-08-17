@@ -28,10 +28,10 @@ message Physic {
     // Sphere position.
     Vector3 position = 3;
     // Velocity the speed it has dx/dt.
-    Vector3 speed = 5;
+    Vector3 velocity = 5;
     // Sphere look direction.
     Vector4 orientation = 4;
-    // Rotation dp/dt.
+    // Rotation do/dt.
     Vector4 rotation = 6;
 }
 

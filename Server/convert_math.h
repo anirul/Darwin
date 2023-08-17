@@ -7,7 +7,9 @@
 
 namespace darwin {
     
-glm::vec3 ConvertProtoVector3(const proto::Vector3& vector3);
-glm::quat ConvertProtoVector4(const proto::Vector4& vector4);
+glm::vec3 ProtoVector2Glm(const proto::Vector3& vector3);
+glm::quat ProtoVector2Glm(const proto::Vector4& vector4);
+proto::Vector3 Glm2ProtoVector(const glm::vec3& vector3);
+proto::Vector4 Glm2ProtoVector(const glm::quat& vector4);
 
-}
+} // namespace darwin
