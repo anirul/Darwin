@@ -12,6 +12,24 @@ glm::vec3 PhysicEngine::ComputeGravitationalForce(
   return glm::normalize(r) * F;
 }
 
+void PhysicEngine::ComputeGravitation(
+    double delta, std::vector<proto::Physic>& physics,
+    const std::vector<proto::Physic>& ground_physics) const {
+  for (auto& physic : physics) {
+    glm::vec3 F(0.0f);
+    for (const auto& ground_physic : ground_physics) {
+      F += ComputeGravitationalForce(physic, ground_physic);
+    }
+    auto velocity = ProtoVector2Glm(physic.velocity()) +
+                    (F / physic.mass()) * static_cast<float>(delta);
+    *physic.mutable_velocity() = Glm2ProtoVector(velocity);
+    auto position =
+        ProtoVector2Glm(physic.position()) +
+        ProtoVector2Glm(physic.velocity()) * static_cast<float>(delta);
+    *physic.mutable_position() = Glm2ProtoVector(position);
+  }
+}
+
 void PhysicEngine::ComputeGravitationBetweenGround(
     double delta, std::vector<proto::Physic>& physics) const {
   if (physics.empty()) {
@@ -40,8 +58,9 @@ void PhysicEngine::ComputeGravitationBetweenGround(
   }
 }
 
-std::vector<proto::Physic> PhysicEngine::GetElementPhysics(proto::Element::TypeEnum type_enum) const {
-    std::vector<proto::Physic> physics;
+std::vector<proto::Physic> PhysicEngine::GetElementPhysics(
+    proto::Element::TypeEnum type_enum) const {
+  std::vector<proto::Physic> physics;
   for (const auto& p : element_infos_) {
     const auto& element_info = p.second;
     if (element_info.element.type_enum() == proto::Element::GROUND) {
@@ -54,27 +73,50 @@ std::vector<proto::Physic> PhysicEngine::GetElementPhysics(proto::Element::TypeE
 void PhysicEngine::SetElementPhysics(
     proto::Element::TypeEnum type_enum,
     const std::vector<proto::Physic>& physics) {
-    std::size_t i = 0;
-    for (auto& p : element_infos_) {
-        if (i < physics.size()) {
-            std::cerr << "Size mismatch." << std::endl;
-            return;
-        }
-        if (p.second.element.type_enum() == type_enum) {
-            *p.second.element.mutable_physic() = physics[i];
-            ++i;
-        }
+  std::size_t i = 0;
+  for (auto& p : element_infos_) {
+    if (i < physics.size()) {
+      std::cerr << "Size mismatch." << std::endl;
+      return;
+    }
+    if (p.second.element.type_enum() == type_enum) {
+      *p.second.element.mutable_physic() = physics[i];
+      ++i;
+    }
+  }
+}
+
+void PhysicEngine::ComputeAllInfo(double delta) {
+  // Create a list of element that can interact between each other, things like
+  // planets and ground elements.
+  std::vector<proto::Physic> ground_physics =
+      GetElementPhysics(proto::Element::GROUND);
+  // Compute the gravitational force between them.
+  ComputeGravitationBetweenGround(delta, ground_physics);
+  // Update the physics.
+  SetElementPhysics(proto::Element::GROUND, ground_physics);
+  ComputeElementInfo(delta, ground_physics);
+  ComputePlayerInfo(delta, ground_physics);
+}
+
+void PhysicEngine::ComputeElementInfo(
+    double delta, const std::vector<proto::Physic>& ground_physics) {
+  std::vector<proto::Element::TypeEnum> types = {
+      proto::Element::EXPLOSION, proto::Element::UPGRADE, proto::Element::GREEN,
+      proto::Element::BROWN, proto::Element::WATER};
+  for (const auto type : types) {
+    std::vector<proto::Physic> physics = GetElementPhysics(type);
+    ComputeGravitation(delta, physics, ground_physics);
+    SetElementPhysics(type, physics);
+  }
+}
+
+void PhysicEngine::ComputePlayerInfo(
+    double delta, const std::vector<proto::Physic>& ground_physics) {
+    std::vector<proto::Physic> player_physics;
+    for (const auto& player_info : player_infos_) {
+        
     }
 }
 
-void PhysicEngine::ComputeElementInfo(double delta) {
-  // Create a list of element that can interact between each other, things like
-  // planets and ground elements.
-  std::vector<proto::Physic> physics = GetElementPhysics(proto::Element::GROUND);
-  ComputeGravitationBetweenGround(delta, physics);
-  SetElementPhysics(proto::Element::GROUND, physics);
-}
-
-void PhysicEngine::ComputePlayerInfo(double delta) {}
-
-}  // namespace darwin
+}  // namespace darwin.

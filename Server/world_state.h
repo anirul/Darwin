@@ -15,6 +15,10 @@ class WorldState {
   const std::vector<proto::Element>& GetElement() const;
 
  private:
+  void FillVectorsLocked();
+
+ private:
+  std::mutex mutex_info_;
   std::map<std::string, PlayerInfo> player_infos_;
   std::map<std::string, ElementInfo> element_infos_;
   double last_updated_;
