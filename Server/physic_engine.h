@@ -37,6 +37,8 @@ class PhysicEngine {
       proto::Element::TypeEnum type_enum) const;
   void SetElementPhysics(proto::Element::TypeEnum type_enum,
                          const std::vector<proto::Physic>& physics);
+  bool IsIntersect(const proto::Physic& a, const proto::Physic& b) const;
+  void ReactIntersectGtoundDynamic(const proto::Physic& a, proto::Physic& b);
 
  protected:
   std::map<std::string, ElementInfo>& element_infos_;

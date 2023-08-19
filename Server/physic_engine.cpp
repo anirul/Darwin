@@ -100,6 +100,39 @@ void PhysicEngine::SetElementPhysics(
   }
 }
 
+bool PhysicEngine::IsIntersect(const proto::Physic& a,
+                               const proto::Physic& b) const {
+  glm::vec3 diff =
+      ProtoVector2Glm(a.position()) - ProtoVector2Glm(b.position());
+  float distanceSquared = glm::dot(diff, diff);
+  float sumOfRadii = a.radius() + b.radius();
+  return distanceSquared <= sumOfRadii * sumOfRadii;
+}
+
+void PhysicEngine::ReactIntersectGtoundDynamic(const proto::Physic& a,
+                                               proto::Physic& b) {
+  glm::vec3 collisionNormal = glm::normalize(ProtoVector2Glm(a.position()) -
+                                             ProtoVector2Glm(b.position()));
+  // Compute the relative velocity
+  glm::vec3 relVel =
+      ProtoVector2Glm(a.velocity()) - ProtoVector2Glm(b.velocity());
+  // Compute the velocity along the normal
+  float velAlongNormal = glm::dot(relVel, collisionNormal);
+  // Do not resolve if velocities are separating
+  if (velAlongNormal > 0) {
+    return;
+  }
+  // Compute the restitution (bounciness)
+  float e = 0.2f;
+  // Compute impulse scalar
+  float j = -(1 + e) * velAlongNormal;
+  j /= (1 / a.mass() + 1 / b.mass());
+  // Apply impulse
+  glm::vec3 impulse = j * collisionNormal;
+  *b.mutable_velocity() =
+      Glm2ProtoVector(ProtoVector2Glm(b.velocity()) - (1 / b.mass()) * impulse);
+}
+
 void PhysicEngine::ComputeAllInfo(double now) {
   // Create a list of element that can interact between each other, things like
   // planets and ground elements.
@@ -123,6 +156,13 @@ void PhysicEngine::ComputeElementInfo(
     std::vector<proto::Physic> physics = GetElementPhysics(type);
     std::vector<double> times = GetElementTimes(type);
     ComputeGravitation(times, now, physics, ground_physics);
+    for (auto i = 0; i < ground_physics.size(); ++i) {
+      for (auto j = 0; j < physics.size(); ++j) {
+        if (IsIntersect(ground_physics[i], physics[j])) {
+          ReactIntersectGtoundDynamic(ground_physics[i], physics[j]);
+        }
+      }
+    }
     SetElementPhysics(type, physics);
   }
 }
@@ -130,12 +170,15 @@ void PhysicEngine::ComputeElementInfo(
 void PhysicEngine::ComputePlayerInfo(
     double now, const std::vector<proto::Physic>& ground_physics) {
   std::vector<proto::Physic> player_physics;
-  for (const auto& player_info : player_infos_) {
+  for (auto& player_info : player_infos_) {
     auto time = player_info.second.time;
     auto physic = player_info.second.player.physic();
     glm::vec3 F(0.0f);
     for (const auto& ground_physic : ground_physics) {
       F += ComputeGravitationalForce(physic, ground_physic);
+      if (IsIntersect(ground_physic, physic)) {
+          ReactIntersectGtoundDynamic(ground_physic, physic);
+      }
     }
     auto delta = now - time;
     auto velocity = ProtoVector2Glm(physic.velocity()) +
@@ -145,6 +188,7 @@ void PhysicEngine::ComputePlayerInfo(
         ProtoVector2Glm(physic.position()) +
         ProtoVector2Glm(physic.velocity()) * static_cast<float>(delta);
     *physic.mutable_position() = Glm2ProtoVector(position);
+    *player_info.second.player.mutable_physic() = physic;
   }
 }
 
