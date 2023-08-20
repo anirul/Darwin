@@ -11,6 +11,15 @@ class DarwinServiceImpl final : public proto::DarwinService::Service {
   grpc::Status Update(
       grpc::ServerContext* context, const proto::UpdateRequest* request,
       grpc::ServerWriter<proto::UpdateResponse>* writer) override;
+  void BroadcastUpdate(const proto::UpdateResponse& response);
+  void SetElements(std::vector<proto::Element>&& elements);
+  void SetPlayers(std::vector<proto::Player>&& players);
+
+ protected:
+     std::list<grpc::ServerWriter<proto::UpdateResponse>*> writers_;
+     std::mutex writers_mutex_;
+     std::vector<proto::Element> elements_;
+     std::vector<proto::Player> players_;
 };
 
-}  // End namespace darwin.
+}  // namespace darwin.

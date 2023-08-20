@@ -1,6 +1,8 @@
 # Darwin client.
 
 add_executable(DarwinServer
+    compute_world.cpp
+    compute_world.h
     convert_math.cpp
     convert_math.h
     darwin_service_impl.cpp

@@ -6,25 +6,31 @@ grpc::Status DarwinServiceImpl::Update(
       grpc::ServerContext* context, 
       const proto::UpdateRequest* request,
       grpc::ServerWriter<proto::UpdateResponse>* writer) {
-    while (true) {
-        auto now_begin = std::chrono::system_clock::now();
-      // Check if the client has cancelled the request
-      if (context->IsCancelled()) {
-        return grpc::Status::OK;
-      }
+  {
+    std::lock_guard<std::mutex> lock(writers_mutex_);
+    writers_.push_back(writer);
+  }
 
-      proto::UpdateResponse response;
-      // TODO update a response.
-      // Compute new physic.
-      // Compute the move of players.
-      // return the present state of the game.
+  // This will block the connection, you can use a condition variable to detect
+  // disconnect or a keep-alive mechanism.
+  while (!context->IsCancelled()) {
+    std::this_thread::sleep_for(
+        std::chrono::milliseconds(500));  // Just an example
+  }
 
-      writer->Write(response);
+  {
+    std::lock_guard<std::mutex> lock(writers_mutex_);
+    writers_.remove(writer);
+  }
 
-      std::this_thread::sleep_until(now_begin +
-          std::chrono::seconds(1));  // Sleep for 1 seconds
-    }
-    return grpc::Status::OK;
+  return grpc::Status::OK;
+}
+
+void DarwinServiceImpl::BroadcastUpdate(const proto::UpdateResponse& response) {
+  std::lock_guard<std::mutex> lock(writers_mutex_);
+  for (auto writer : writers_) {
+    writer->Write(response);
+  }
 }
 
 } // End namespace darwin.
