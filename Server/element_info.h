@@ -4,9 +4,9 @@
 
 namespace darwin {
 
-struct ElementInfo {
-  double time;
-  proto::Element element;
-};
+    struct ElementInfo {
+        double time;
+        proto::Element element;
+    };
 
 }  // End namespace darwin.

@@ -5,6 +5,6 @@
 
 namespace darwin {
 
-void ComputeWorld(darwin::DarwinServiceImpl& service);
+    void ComputeWorld(darwin::DarwinServiceImpl& service);
 
 } // namespace darwin.
