@@ -5,26 +5,26 @@ package proto;
 // Vector 3 this store position or other 3 float values.
 // Next: 4
 message Vector3 {
-    float x = 1;
-    float y = 2;
-    float z = 3;
+    double x = 1;
+    double y = 2;
+    double z = 3;
 }
 
 // Vector 4 this is representing a quaternion (rotation).
 message Vector4 {
-    float x = 1;
-    float y = 2;
-    float z = 3;
-    float w = 4;
+    double x = 1;
+    double y = 2;
+    double z = 3;
+    double w = 4;
 }
 
 // Physical property of the element.
 // Next: 6
 message Physic {
     // Sphere radius.
-    float radius = 1;
+    double radius = 1;
     // weight total.
-    float mass = 2;
+    double mass = 2;
     // Sphere position.
     Vector3 position = 3;
     // Velocity the speed it has dx/dt.

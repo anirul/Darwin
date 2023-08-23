@@ -7,6 +7,7 @@ namespace test {
     public:
         WorldStateTest() = default;
         proto::Element CreateBasicGroundElement(
+            const std::string& name,
             proto::Vector3 vector3, 
             double mass, 
             double radius) const;

@@ -6,9 +6,9 @@ namespace darwin {
 
 glm::vec3 PhysicEngine::ComputeGravitationalForce(
     const proto::Physic& a, const proto::Physic& b) const {
-  glm::vec3 r = ProtoVector2Glm(b.position()) - ProtoVector2Glm(b.position());
-  float distanceSquared = glm::length(r) * glm::length(r);
-  float F = (G * a.mass() * b.mass()) / distanceSquared;
+  glm::dvec3 r = ProtoVector2Glm(b.position()) - ProtoVector2Glm(a.position());
+  double distanceSquared = glm::length(r) * glm::length(r);
+  double F = (G * a.mass() * b.mass()) / distanceSquared;
   return glm::normalize(r) * F;
 }
 
@@ -17,17 +17,17 @@ void PhysicEngine::ComputeGravitation(
     std::vector<proto::Physic>& physics,
     const std::vector<proto::Physic>& ground_physics) const {
   for (auto i = 0; i < physics.size(); ++i) {
-    glm::vec3 F(0.0f);
+    glm::dvec3 F(0.0f);
     for (const auto& ground_physic : ground_physics) {
       F += ComputeGravitationalForce(physics[i], ground_physic);
     }
-    auto delta = now - times[i];
-    auto velocity = ProtoVector2Glm(physics[i].velocity()) +
-                    (F / physics[i].mass()) * static_cast<float>(delta);
+    double delta = now - times[i];
+    glm::dvec3 velocity = ProtoVector2Glm(physics[i].velocity()) +
+                    (F / physics[i].mass()) * delta;
     *physics[i].mutable_velocity() = Glm2ProtoVector(velocity);
     auto position =
         ProtoVector2Glm(physics[i].position()) +
-        ProtoVector2Glm(physics[i].velocity()) * static_cast<float>(delta);
+        ProtoVector2Glm(physics[i].velocity()) * delta;
     *physics[i].mutable_position() = Glm2ProtoVector(position);
   }
 }
@@ -40,24 +40,24 @@ void PhysicEngine::ComputeGravitationBetweenGround(
     return;
   }
   // Create a list of forces to be applied to these elements.
-  std::vector<glm::vec3> forces(physics.size(), glm::vec3(0.0f));
+  std::vector<glm::dvec3> forces(physics.size(), glm::dvec3(0.0));
   // Fill it up.
   for (size_t i = 0; i < physics.size(); ++i) {
     for (size_t j = i + 1; j < physics.size(); ++j) {
-      glm::vec3 F = ComputeGravitationalForce(physics[i], physics[j]);
+      glm::dvec3 F = ComputeGravitationalForce(physics[i], physics[j]);
       forces[i] += F;
       forces[j] -= F;
     }
   }
   // Now compute the new position according to this simulation.
   for (size_t i = 0; i < physics.size(); ++i) {
-    auto delta = now - times[i];
+    double delta = now - times[i];
     auto velocity = ProtoVector2Glm(physics[i].velocity()) +
-                    (forces[i] / physics[i].mass()) * static_cast<float>(delta);
+                    (forces[i] / physics[i].mass()) * delta;
     *physics[i].mutable_velocity() = Glm2ProtoVector(velocity);
     auto position =
         ProtoVector2Glm(physics[i].position()) +
-        ProtoVector2Glm(physics[i].velocity()) * static_cast<float>(delta);
+        ProtoVector2Glm(physics[i].velocity()) * delta;
     *physics[i].mutable_position() = Glm2ProtoVector(position);
   }
 }
@@ -102,33 +102,33 @@ void PhysicEngine::SetElementPhysics(
 
 bool PhysicEngine::IsIntersect(const proto::Physic& a,
                                const proto::Physic& b) const {
-  glm::vec3 diff =
+  glm::dvec3 diff =
       ProtoVector2Glm(a.position()) - ProtoVector2Glm(b.position());
-  float distanceSquared = glm::dot(diff, diff);
-  float sumOfRadii = a.radius() + b.radius();
+  double distanceSquared = glm::dot(diff, diff);
+  double sumOfRadii = a.radius() + b.radius();
   return distanceSquared <= sumOfRadii * sumOfRadii;
 }
 
 void PhysicEngine::ReactIntersectGtoundDynamic(const proto::Physic& a,
                                                proto::Physic& b) {
-  glm::vec3 collisionNormal = glm::normalize(ProtoVector2Glm(a.position()) -
+  glm::dvec3 collisionNormal = glm::normalize(ProtoVector2Glm(a.position()) -
                                              ProtoVector2Glm(b.position()));
   // Compute the relative velocity
-  glm::vec3 relVel =
+  glm::dvec3 relVel =
       ProtoVector2Glm(a.velocity()) - ProtoVector2Glm(b.velocity());
   // Compute the velocity along the normal
-  float velAlongNormal = glm::dot(relVel, collisionNormal);
+  double velAlongNormal = glm::dot(relVel, collisionNormal);
   // Do not resolve if velocities are separating
   if (velAlongNormal > 0) {
     return;
   }
   // Compute the restitution (bounciness)
-  float e = 0.2f;
+  double e = 0.2;
   // Compute impulse scalar
-  float j = -(1 + e) * velAlongNormal;
+  double j = -(1 + e) * velAlongNormal;
   j /= (1 / a.mass() + 1 / b.mass());
   // Apply impulse
-  glm::vec3 impulse = j * collisionNormal;
+  glm::dvec3 impulse = j * collisionNormal;
   *b.mutable_velocity() =
       Glm2ProtoVector(ProtoVector2Glm(b.velocity()) - (1 / b.mass()) * impulse);
 }
@@ -183,22 +183,22 @@ void PhysicEngine::ComputePlayerInfo(
     double now, const std::vector<proto::Physic>& ground_physics) {
   std::vector<proto::Physic> player_physics;
   for (auto& player_info : player_infos_) {
-    auto time = player_info.second.time;
+    double time = player_info.second.time;
     auto physic = player_info.second.player.physic();
-    glm::vec3 F(0.0f);
+    glm::dvec3 F(0.0);
     for (const auto& ground_physic : ground_physics) {
       F += ComputeGravitationalForce(physic, ground_physic);
       if (IsIntersect(ground_physic, physic)) {
           ReactIntersectGtoundDynamic(ground_physic, physic);
       }
     }
-    auto delta = now - time;
+    double delta = now - time;
     auto velocity = ProtoVector2Glm(physic.velocity()) +
-                    (F / physic.mass()) * static_cast<float>(delta);
+                    (F / physic.mass()) * delta;
     *physic.mutable_velocity() = Glm2ProtoVector(velocity);
     auto position =
         ProtoVector2Glm(physic.position()) +
-        ProtoVector2Glm(physic.velocity()) * static_cast<float>(delta);
+        ProtoVector2Glm(physic.velocity()) * delta;
     *physic.mutable_position() = Glm2ProtoVector(position);
     *player_info.second.player.mutable_physic() = physic;
   }

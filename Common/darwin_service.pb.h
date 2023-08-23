@@ -236,31 +236,31 @@ class Vector3 final :
     kYFieldNumber = 2,
     kZFieldNumber = 3,
   };
-  // float x = 1;
+  // double x = 1;
   void clear_x();
-  float x() const;
-  void set_x(float value);
+  double x() const;
+  void set_x(double value);
   private:
-  float _internal_x() const;
-  void _internal_set_x(float value);
+  double _internal_x() const;
+  void _internal_set_x(double value);
   public:
 
-  // float y = 2;
+  // double y = 2;
   void clear_y();
-  float y() const;
-  void set_y(float value);
+  double y() const;
+  void set_y(double value);
   private:
-  float _internal_y() const;
-  void _internal_set_y(float value);
+  double _internal_y() const;
+  void _internal_set_y(double value);
   public:
 
-  // float z = 3;
+  // double z = 3;
   void clear_z();
-  float z() const;
-  void set_z(float value);
+  double z() const;
+  void set_z(double value);
   private:
-  float _internal_z() const;
-  void _internal_set_z(float value);
+  double _internal_z() const;
+  void _internal_set_z(double value);
   public:
 
   // @@protoc_insertion_point(class_scope:proto.Vector3)
@@ -271,9 +271,9 @@ class Vector3 final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    float x_;
-    float y_;
-    float z_;
+    double x_;
+    double y_;
+    double z_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -407,40 +407,40 @@ class Vector4 final :
     kZFieldNumber = 3,
     kWFieldNumber = 4,
   };
-  // float x = 1;
+  // double x = 1;
   void clear_x();
-  float x() const;
-  void set_x(float value);
+  double x() const;
+  void set_x(double value);
   private:
-  float _internal_x() const;
-  void _internal_set_x(float value);
+  double _internal_x() const;
+  void _internal_set_x(double value);
   public:
 
-  // float y = 2;
+  // double y = 2;
   void clear_y();
-  float y() const;
-  void set_y(float value);
+  double y() const;
+  void set_y(double value);
   private:
-  float _internal_y() const;
-  void _internal_set_y(float value);
+  double _internal_y() const;
+  void _internal_set_y(double value);
   public:
 
-  // float z = 3;
+  // double z = 3;
   void clear_z();
-  float z() const;
-  void set_z(float value);
+  double z() const;
+  void set_z(double value);
   private:
-  float _internal_z() const;
-  void _internal_set_z(float value);
+  double _internal_z() const;
+  void _internal_set_z(double value);
   public:
 
-  // float w = 4;
+  // double w = 4;
   void clear_w();
-  float w() const;
-  void set_w(float value);
+  double w() const;
+  void set_w(double value);
   private:
-  float _internal_w() const;
-  void _internal_set_w(float value);
+  double _internal_w() const;
+  void _internal_set_w(double value);
   public:
 
   // @@protoc_insertion_point(class_scope:proto.Vector4)
@@ -451,10 +451,10 @@ class Vector4 final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    float x_;
-    float y_;
-    float z_;
-    float w_;
+    double x_;
+    double y_;
+    double z_;
+    double w_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -662,22 +662,22 @@ class Physic final :
       ::proto::Vector4* rotation);
   ::proto::Vector4* unsafe_arena_release_rotation();
 
-  // float radius = 1;
+  // double radius = 1;
   void clear_radius();
-  float radius() const;
-  void set_radius(float value);
+  double radius() const;
+  void set_radius(double value);
   private:
-  float _internal_radius() const;
-  void _internal_set_radius(float value);
+  double _internal_radius() const;
+  void _internal_set_radius(double value);
   public:
 
-  // float mass = 2;
+  // double mass = 2;
   void clear_mass();
-  float mass() const;
-  void set_mass(float value);
+  double mass() const;
+  void set_mass(double value);
   private:
-  float _internal_mass() const;
-  void _internal_set_mass(float value);
+  double _internal_mass() const;
+  void _internal_set_mass(double value);
   public:
 
   // @@protoc_insertion_point(class_scope:proto.Physic)
@@ -692,8 +692,8 @@ class Physic final :
     ::proto::Vector4* orientation_;
     ::proto::Vector3* velocity_;
     ::proto::Vector4* rotation_;
-    float radius_;
-    float mass_;
+    double radius_;
+    double mass_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1524,62 +1524,62 @@ class UpdateResponse final :
 #endif  // __GNUC__
 // Vector3
 
-// float x = 1;
+// double x = 1;
 inline void Vector3::clear_x() {
   _impl_.x_ = 0;
 }
-inline float Vector3::_internal_x() const {
+inline double Vector3::_internal_x() const {
   return _impl_.x_;
 }
-inline float Vector3::x() const {
+inline double Vector3::x() const {
   // @@protoc_insertion_point(field_get:proto.Vector3.x)
   return _internal_x();
 }
-inline void Vector3::_internal_set_x(float value) {
+inline void Vector3::_internal_set_x(double value) {
   
   _impl_.x_ = value;
 }
-inline void Vector3::set_x(float value) {
+inline void Vector3::set_x(double value) {
   _internal_set_x(value);
   // @@protoc_insertion_point(field_set:proto.Vector3.x)
 }
 
-// float y = 2;
+// double y = 2;
 inline void Vector3::clear_y() {
   _impl_.y_ = 0;
 }
-inline float Vector3::_internal_y() const {
+inline double Vector3::_internal_y() const {
   return _impl_.y_;
 }
-inline float Vector3::y() const {
+inline double Vector3::y() const {
   // @@protoc_insertion_point(field_get:proto.Vector3.y)
   return _internal_y();
 }
-inline void Vector3::_internal_set_y(float value) {
+inline void Vector3::_internal_set_y(double value) {
   
   _impl_.y_ = value;
 }
-inline void Vector3::set_y(float value) {
+inline void Vector3::set_y(double value) {
   _internal_set_y(value);
   // @@protoc_insertion_point(field_set:proto.Vector3.y)
 }
 
-// float z = 3;
+// double z = 3;
 inline void Vector3::clear_z() {
   _impl_.z_ = 0;
 }
-inline float Vector3::_internal_z() const {
+inline double Vector3::_internal_z() const {
   return _impl_.z_;
 }
-inline float Vector3::z() const {
+inline double Vector3::z() const {
   // @@protoc_insertion_point(field_get:proto.Vector3.z)
   return _internal_z();
 }
-inline void Vector3::_internal_set_z(float value) {
+inline void Vector3::_internal_set_z(double value) {
   
   _impl_.z_ = value;
 }
-inline void Vector3::set_z(float value) {
+inline void Vector3::set_z(double value) {
   _internal_set_z(value);
   // @@protoc_insertion_point(field_set:proto.Vector3.z)
 }
@@ -1588,82 +1588,82 @@ inline void Vector3::set_z(float value) {
 
 // Vector4
 
-// float x = 1;
+// double x = 1;
 inline void Vector4::clear_x() {
   _impl_.x_ = 0;
 }
-inline float Vector4::_internal_x() const {
+inline double Vector4::_internal_x() const {
   return _impl_.x_;
 }
-inline float Vector4::x() const {
+inline double Vector4::x() const {
   // @@protoc_insertion_point(field_get:proto.Vector4.x)
   return _internal_x();
 }
-inline void Vector4::_internal_set_x(float value) {
+inline void Vector4::_internal_set_x(double value) {
   
   _impl_.x_ = value;
 }
-inline void Vector4::set_x(float value) {
+inline void Vector4::set_x(double value) {
   _internal_set_x(value);
   // @@protoc_insertion_point(field_set:proto.Vector4.x)
 }
 
-// float y = 2;
+// double y = 2;
 inline void Vector4::clear_y() {
   _impl_.y_ = 0;
 }
-inline float Vector4::_internal_y() const {
+inline double Vector4::_internal_y() const {
   return _impl_.y_;
 }
-inline float Vector4::y() const {
+inline double Vector4::y() const {
   // @@protoc_insertion_point(field_get:proto.Vector4.y)
   return _internal_y();
 }
-inline void Vector4::_internal_set_y(float value) {
+inline void Vector4::_internal_set_y(double value) {
   
   _impl_.y_ = value;
 }
-inline void Vector4::set_y(float value) {
+inline void Vector4::set_y(double value) {
   _internal_set_y(value);
   // @@protoc_insertion_point(field_set:proto.Vector4.y)
 }
 
-// float z = 3;
+// double z = 3;
 inline void Vector4::clear_z() {
   _impl_.z_ = 0;
 }
-inline float Vector4::_internal_z() const {
+inline double Vector4::_internal_z() const {
   return _impl_.z_;
 }
-inline float Vector4::z() const {
+inline double Vector4::z() const {
   // @@protoc_insertion_point(field_get:proto.Vector4.z)
   return _internal_z();
 }
-inline void Vector4::_internal_set_z(float value) {
+inline void Vector4::_internal_set_z(double value) {
   
   _impl_.z_ = value;
 }
-inline void Vector4::set_z(float value) {
+inline void Vector4::set_z(double value) {
   _internal_set_z(value);
   // @@protoc_insertion_point(field_set:proto.Vector4.z)
 }
 
-// float w = 4;
+// double w = 4;
 inline void Vector4::clear_w() {
   _impl_.w_ = 0;
 }
-inline float Vector4::_internal_w() const {
+inline double Vector4::_internal_w() const {
   return _impl_.w_;
 }
-inline float Vector4::w() const {
+inline double Vector4::w() const {
   // @@protoc_insertion_point(field_get:proto.Vector4.w)
   return _internal_w();
 }
-inline void Vector4::_internal_set_w(float value) {
+inline void Vector4::_internal_set_w(double value) {
   
   _impl_.w_ = value;
 }
-inline void Vector4::set_w(float value) {
+inline void Vector4::set_w(double value) {
   _internal_set_w(value);
   // @@protoc_insertion_point(field_set:proto.Vector4.w)
 }
@@ -1672,42 +1672,42 @@ inline void Vector4::set_w(float value) {
 
 // Physic
 
-// float radius = 1;
+// double radius = 1;
 inline void Physic::clear_radius() {
   _impl_.radius_ = 0;
 }
-inline float Physic::_internal_radius() const {
+inline double Physic::_internal_radius() const {
   return _impl_.radius_;
 }
-inline float Physic::radius() const {
+inline double Physic::radius() const {
   // @@protoc_insertion_point(field_get:proto.Physic.radius)
   return _internal_radius();
 }
-inline void Physic::_internal_set_radius(float value) {
+inline void Physic::_internal_set_radius(double value) {
   
   _impl_.radius_ = value;
 }
-inline void Physic::set_radius(float value) {
+inline void Physic::set_radius(double value) {
   _internal_set_radius(value);
   // @@protoc_insertion_point(field_set:proto.Physic.radius)
 }
 
-// float mass = 2;
+// double mass = 2;
 inline void Physic::clear_mass() {
   _impl_.mass_ = 0;
 }
-inline float Physic::_internal_mass() const {
+inline double Physic::_internal_mass() const {
   return _impl_.mass_;
 }
-inline float Physic::mass() const {
+inline double Physic::mass() const {
   // @@protoc_insertion_point(field_get:proto.Physic.mass)
   return _internal_mass();
 }
-inline void Physic::_internal_set_mass(float value) {
+inline void Physic::_internal_set_mass(double value) {
   
   _impl_.mass_ = value;
 }
-inline void Physic::set_mass(float value) {
+inline void Physic::set_mass(double value) {
   _internal_set_mass(value);
   // @@protoc_insertion_point(field_set:proto.Physic.mass)
 }
