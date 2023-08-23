@@ -66,7 +66,7 @@ std::vector<proto::Physic> PhysicEngine::GetElementPhysics(
     proto::Element::TypeEnum type_enum) const {
   std::vector<proto::Physic> physics;
   for (const auto& [_, element_info] : element_infos_) {
-    if (element_info.element.type_enum() == proto::Element::GROUND) {
+    if (element_info.element.type_enum() == type_enum) {
       physics.push_back(element_info.element.physic());
     }
   }
@@ -89,7 +89,7 @@ void PhysicEngine::SetElementPhysics(
     const std::vector<proto::Physic>& physics) {
   std::size_t i = 0;
   for (auto& p : element_infos_) {
-    if (i < physics.size()) {
+    if (i > physics.size()) {
       std::cerr << "Size mismatch." << std::endl;
       return;
     }
@@ -155,10 +155,22 @@ void PhysicEngine::ComputeElementInfo(
   for (const auto type : types) {
     std::vector<proto::Physic> physics = GetElementPhysics(type);
     std::vector<double> times = GetElementTimes(type);
+    // Check if there is any element to treat.
+    if (physics.empty() && times.empty()) {
+      continue;
+    }
+    // Check if the size are the same.
+    if (physics.size() != times.size()) {
+      std::cerr << "Size mismatch." << std::endl;
+      continue;
+    }
+    // Compute the gravitational force between them.
     ComputeGravitation(times, now, physics, ground_physics);
     for (auto i = 0; i < ground_physics.size(); ++i) {
       for (auto j = 0; j < physics.size(); ++j) {
+        // Check if there is any intersection.
         if (IsIntersect(ground_physics[i], physics[j])) {
+          // React to the intersection.
           ReactIntersectGtoundDynamic(ground_physics[i], physics[j]);
         }
       }

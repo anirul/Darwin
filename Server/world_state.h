@@ -12,7 +12,7 @@ class WorldState {
   void AddElement(double time, const proto::Element& element);
   void Update(double time);
   const std::vector<proto::Player>& GetPlayers() const;
-  const std::vector<proto::Element>& GetElement() const;
+  const std::vector<proto::Element>& GetElements() const;
 
  private:
   void FillVectorsLocked();

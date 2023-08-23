@@ -12,7 +12,7 @@ void ComputeWorld(darwin::DarwinServiceImpl& service) {
                       now.time_since_epoch())
                       .count();
     world_state.Update(time);
-    const auto& elements = world_state.GetElement();
+    const auto& elements = world_state.GetElements();
     const auto& players = world_state.GetPlayers();
     proto::UpdateResponse response;
     response.mutable_elements()->CopyFrom({elements.begin(), elements.end()});

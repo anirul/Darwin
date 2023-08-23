@@ -44,7 +44,7 @@ const std::vector<proto::Player>& WorldState::GetPlayers() const {
   return players_;
 }
 
-const std::vector<proto::Element>& WorldState::GetElement() const {
+const std::vector<proto::Element>& WorldState::GetElements() const {
   return elements_;
 }
 
