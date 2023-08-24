@@ -45,10 +45,19 @@ class DarwinService final {
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::proto::UpdateResponse>> PrepareAsyncUpdate(::grpc::ClientContext* context, const ::proto::UpdateRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::proto::UpdateResponse>>(PrepareAsyncUpdateRaw(context, request, cq));
     }
+    virtual ::grpc::Status Push(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::proto::PushResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::PushResponse>> AsyncPush(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::PushResponse>>(AsyncPushRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::PushResponse>> PrepareAsyncPush(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::PushResponse>>(PrepareAsyncPushRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
       virtual void Update(::grpc::ClientContext* context, const ::proto::UpdateRequest* request, ::grpc::ClientReadReactor< ::proto::UpdateResponse>* reactor) = 0;
+      virtual void Push(::grpc::ClientContext* context, const ::proto::PushRequest* request, ::proto::PushResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void Push(::grpc::ClientContext* context, const ::proto::PushRequest* request, ::proto::PushResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -57,6 +66,8 @@ class DarwinService final {
     virtual ::grpc::ClientReaderInterface< ::proto::UpdateResponse>* UpdateRaw(::grpc::ClientContext* context, const ::proto::UpdateRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::proto::UpdateResponse>* AsyncUpdateRaw(::grpc::ClientContext* context, const ::proto::UpdateRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::proto::UpdateResponse>* PrepareAsyncUpdateRaw(::grpc::ClientContext* context, const ::proto::UpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::PushResponse>* AsyncPushRaw(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::PushResponse>* PrepareAsyncPushRaw(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -70,10 +81,19 @@ class DarwinService final {
     std::unique_ptr< ::grpc::ClientAsyncReader< ::proto::UpdateResponse>> PrepareAsyncUpdate(::grpc::ClientContext* context, const ::proto::UpdateRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReader< ::proto::UpdateResponse>>(PrepareAsyncUpdateRaw(context, request, cq));
     }
+    ::grpc::Status Push(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::proto::PushResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::PushResponse>> AsyncPush(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::PushResponse>>(AsyncPushRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::PushResponse>> PrepareAsyncPush(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::PushResponse>>(PrepareAsyncPushRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
       void Update(::grpc::ClientContext* context, const ::proto::UpdateRequest* request, ::grpc::ClientReadReactor< ::proto::UpdateResponse>* reactor) override;
+      void Push(::grpc::ClientContext* context, const ::proto::PushRequest* request, ::proto::PushResponse* response, std::function<void(::grpc::Status)>) override;
+      void Push(::grpc::ClientContext* context, const ::proto::PushRequest* request, ::proto::PushResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -88,7 +108,10 @@ class DarwinService final {
     ::grpc::ClientReader< ::proto::UpdateResponse>* UpdateRaw(::grpc::ClientContext* context, const ::proto::UpdateRequest& request) override;
     ::grpc::ClientAsyncReader< ::proto::UpdateResponse>* AsyncUpdateRaw(::grpc::ClientContext* context, const ::proto::UpdateRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::proto::UpdateResponse>* PrepareAsyncUpdateRaw(::grpc::ClientContext* context, const ::proto::UpdateRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proto::PushResponse>* AsyncPushRaw(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proto::PushResponse>* PrepareAsyncPushRaw(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_Update_;
+    const ::grpc::internal::RpcMethod rpcmethod_Push_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -97,6 +120,7 @@ class DarwinService final {
     Service();
     virtual ~Service();
     virtual ::grpc::Status Update(::grpc::ServerContext* context, const ::proto::UpdateRequest* request, ::grpc::ServerWriter< ::proto::UpdateResponse>* writer);
+    virtual ::grpc::Status Push(::grpc::ServerContext* context, const ::proto::PushRequest* request, ::proto::PushResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_Update : public BaseClass {
@@ -118,7 +142,27 @@ class DarwinService final {
       ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_Update<Service > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_Push : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_Push() {
+      ::grpc::Service::MarkMethodAsync(1);
+    }
+    ~WithAsyncMethod_Push() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Push(::grpc::ServerContext* /*context*/, const ::proto::PushRequest* /*request*/, ::proto::PushResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestPush(::grpc::ServerContext* context, ::proto::PushRequest* request, ::grpc::ServerAsyncResponseWriter< ::proto::PushResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_Update<WithAsyncMethod_Push<Service > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_Update : public BaseClass {
    private:
@@ -141,7 +185,34 @@ class DarwinService final {
     virtual ::grpc::ServerWriteReactor< ::proto::UpdateResponse>* Update(
       ::grpc::CallbackServerContext* /*context*/, const ::proto::UpdateRequest* /*request*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_Update<Service > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_Push : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_Push() {
+      ::grpc::Service::MarkMethodCallback(1,
+          new ::grpc::internal::CallbackUnaryHandler< ::proto::PushRequest, ::proto::PushResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::proto::PushRequest* request, ::proto::PushResponse* response) { return this->Push(context, request, response); }));}
+    void SetMessageAllocatorFor_Push(
+        ::grpc::MessageAllocator< ::proto::PushRequest, ::proto::PushResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proto::PushRequest, ::proto::PushResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_Push() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Push(::grpc::ServerContext* /*context*/, const ::proto::PushRequest* /*request*/, ::proto::PushResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* Push(
+      ::grpc::CallbackServerContext* /*context*/, const ::proto::PushRequest* /*request*/, ::proto::PushResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_Update<WithCallbackMethod_Push<Service > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_Update : public BaseClass {
@@ -156,6 +227,23 @@ class DarwinService final {
     }
     // disable synchronous version of this method
     ::grpc::Status Update(::grpc::ServerContext* /*context*/, const ::proto::UpdateRequest* /*request*/, ::grpc::ServerWriter< ::proto::UpdateResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_Push : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_Push() {
+      ::grpc::Service::MarkMethodGeneric(1);
+    }
+    ~WithGenericMethod_Push() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Push(::grpc::ServerContext* /*context*/, const ::proto::PushRequest* /*request*/, ::proto::PushResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -181,6 +269,26 @@ class DarwinService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_Push : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_Push() {
+      ::grpc::Service::MarkMethodRaw(1);
+    }
+    ~WithRawMethod_Push() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Push(::grpc::ServerContext* /*context*/, const ::proto::PushRequest* /*request*/, ::proto::PushResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestPush(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawCallbackMethod_Update : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -202,7 +310,56 @@ class DarwinService final {
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* Update(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
-  typedef Service StreamedUnaryService;
+  template <class BaseClass>
+  class WithRawCallbackMethod_Push : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_Push() {
+      ::grpc::Service::MarkMethodRawCallback(1,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Push(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_Push() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Push(::grpc::ServerContext* /*context*/, const ::proto::PushRequest* /*request*/, ::proto::PushResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* Push(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_Push : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_Push() {
+      ::grpc::Service::MarkMethodStreamed(1,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::proto::PushRequest, ::proto::PushResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::proto::PushRequest, ::proto::PushResponse>* streamer) {
+                       return this->StreamedPush(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_Push() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status Push(::grpc::ServerContext* /*context*/, const ::proto::PushRequest* /*request*/, ::proto::PushResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedPush(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proto::PushRequest,::proto::PushResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_Push<Service > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_Update : public BaseClass {
    private:
@@ -231,7 +388,7 @@ class DarwinService final {
     virtual ::grpc::Status StreamedUpdate(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::proto::UpdateRequest,::proto::UpdateResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_Update<Service > SplitStreamedService;
-  typedef WithSplitStreamingMethod_Update<Service > StreamedService;
+  typedef WithSplitStreamingMethod_Update<WithStreamedUnaryMethod_Push<Service > > StreamedService;
 };
 
 }  // namespace proto

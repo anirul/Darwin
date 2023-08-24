@@ -19,7 +19,7 @@ message Vector4 {
 }
 
 // Physical property of the element.
-// Next: 6
+// Next: 7
 message Physic {
     // Sphere radius.
     double radius = 1;
@@ -27,11 +27,11 @@ message Physic {
     double mass = 2;
     // Sphere position.
     Vector3 position = 3;
-    // Velocity the speed it has dx/dt.
+    // Velocity the speed it has d(position)/dt.
     Vector3 velocity = 5;
     // Sphere look direction.
     Vector4 orientation = 4;
-    // Rotation do/dt.
+    // Rotation d(orientation)/dt.
     Vector4 rotation = 6;
 }
 
@@ -45,7 +45,7 @@ message Element {
     Physic physic = 3;
     // What type of element is it?
     enum TypeEnum {
-        UKNOWN = 0;     // Unknown ???
+        UKNOWN = 0;     // Unknown this is an error!
         GROUND = 1;     // From where the gravity is generated.
         EXPLOSION = 2;  // Explosion that push stuff around.
         UPGRADE = 3;    // Upgrade to upgrade players.
@@ -56,7 +56,7 @@ message Element {
     TypeEnum type_enum = 4;
 }
 
-// Player will be (for now) be represented by spheres.
+// Player it will be represented by a sphere on server.
 // Next: 4
 message Player {
     // Player name.
@@ -65,25 +65,45 @@ message Player {
     string material = 2;
     // Physic paramters.
     Physic physic = 3;
+    // Local g axis (used for local camera angle).
+    Vector3 g_normal = 4;
+    // G force (used for local computation).
+    double g_force = 5;
 }
 
 // UpdateRequest
-// Next: 3
+// Next: 2
 message UpdateRequest {
-    Player player = 1;
-    Element element = 2;
+    // Ask for a named object.
+    string name = 1;
 }
 
 // UpdateResponse
 // Next: 5
 message UpdateResponse {
+    // Player list and position.
     repeated Player players = 1;
+    // Elements list and position.
     repeated Element elements = 2;
+    // Present time on the server.
     double time = 3;
-    Vector3 local_g = 4;
 }
+
+// PushRequest
+// Next: 3
+message PushRequest {
+    // Player name.
+    string name = 1;
+    // New physic.
+    Physic physic = 2;
+}
+
+// PushResponse
+// Next: 1
+message PushResponse {}
 
 // The darwin service.
 service DarwinService {
     rpc Update(UpdateRequest) returns (stream UpdateResponse);
+    rpc Push(PushRequest) returns (PushResponse);
 }

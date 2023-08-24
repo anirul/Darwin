@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Server/world_state.h"
 #include <gtest/gtest.h>
 
@@ -8,8 +10,8 @@ namespace test {
         WorldStateTest() = default;
         proto::Element CreateBasicGroundElement(
             const std::string& name,
-            proto::Vector3 vector3, 
-            double mass, 
+            proto::Vector3 vector3,
+            double mass,
             double radius) const;
         proto::Vector3 CreateBasicVector3(double x, double y, double z) const;
 

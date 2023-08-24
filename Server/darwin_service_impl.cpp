@@ -11,8 +11,8 @@ namespace darwin {
             std::lock_guard<std::mutex> lock(writers_mutex_);
             writers_.push_back(writer);
         }
-        // This will block the connection, you can use a condition variable to detect
-        // disconnect or a keep-alive mechanism.
+        // This will block the connection, you can use a condition variable to
+        // detect disconnect or a keep-alive mechanism.
         while (!context->IsCancelled()) {
             std::this_thread::sleep_for(
                 std::chrono::milliseconds(500));  // Just an example
