@@ -111,6 +111,17 @@ namespace darwin {
         }
     }
 
+    void PhysicEngine::SetElementTimes(
+        proto::Element::TypeEnum type_enum, 
+        double time)
+    {
+        for (auto& p : element_infos_) {
+            if (p.second.element.type_enum() == type_enum) {
+                p.second.time = time;
+            }
+        }
+    }
+
     bool PhysicEngine::IsIntersect(
         const proto::Physic& a,
         const proto::Physic& b) const
@@ -129,25 +140,11 @@ namespace darwin {
         glm::dvec3 collisionNormal =
             glm::normalize(
                 ProtoVector2Glm(a.position()) - ProtoVector2Glm(b.position()));
-        // Compute the relative velocity
-        glm::dvec3 relVel =
-            ProtoVector2Glm(a.velocity()) - ProtoVector2Glm(b.velocity());
-        // Compute the velocity along the normal
-        double velAlongNormal = glm::dot(relVel, collisionNormal);
-        // Do not resolve if velocities are separating
-        if (velAlongNormal > 0) {
-            return;
-        }
-        // Compute the restitution (bounciness)
-        double e = 0.2;
-        // Compute impulse scalar
-        double j = -(1 + e) * velAlongNormal;
-        j /= (1 / a.mass() + 1 / b.mass());
-        // Apply impulse
-        glm::dvec3 impulse = j * collisionNormal;
-        *b.mutable_velocity() =
+        *b.mutable_velocity() = a.velocity();
+        *b.mutable_position() =
             Glm2ProtoVector(
-                ProtoVector2Glm(b.velocity()) - (1 / b.mass()) * impulse);
+                -collisionNormal * (a.radius() + b.radius()) + 
+                ProtoVector2Glm(a.position()));
     }
 
     void PhysicEngine::ComputeAllInfo(double now) {
@@ -202,6 +199,7 @@ namespace darwin {
                 }
             }
             SetElementPhysics(type, physics);
+            SetElementTimes(type, now);
         }
     }
 
@@ -215,9 +213,10 @@ namespace darwin {
             auto physic = player_info.second.player.physic();
             glm::dvec3 F(0.0);
             for (const auto& ground_physic : ground_physics) {
-                F += ComputeGravitationalForce(physic, ground_physic);
                 if (IsIntersect(ground_physic, physic)) {
                     ReactIntersectGtoundDynamic(ground_physic, physic);
+                } else {
+                    F += ComputeGravitationalForce(physic, ground_physic);
                 }
             }
             double delta = now - time;
@@ -229,6 +228,8 @@ namespace darwin {
                 ProtoVector2Glm(physic.velocity()) * delta;
             *physic.mutable_position() = Glm2ProtoVector(position);
             *player_info.second.player.mutable_physic() = physic;
+            // Update the time.
+            player_info.second.time = now;
         }
     }
 

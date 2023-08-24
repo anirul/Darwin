@@ -44,6 +44,7 @@ namespace darwin {
         void SetElementPhysics(
             proto::Element::TypeEnum type_enum,
             const std::vector<proto::Physic>& physics);
+        void SetElementTimes(proto::Element::TypeEnum type_enum, double time);
         bool IsIntersect(const proto::Physic& a, const proto::Physic& b) const;
         void ReactIntersectGtoundDynamic(
             const proto::Physic& a, 

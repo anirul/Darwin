@@ -8,7 +8,13 @@ namespace test {
     class WorldStateTest : public testing::Test {
     public:
         WorldStateTest() = default;
-        proto::Element CreateBasicGroundElement(
+        proto::Element CreateBasicElement(
+            const std::string& name,
+            proto::Element::TypeEnum type_enum,
+            proto::Vector3 vector3,
+            double mass,
+            double radius) const;
+        proto::Player CreateBasicPlayer(
             const std::string& name,
             proto::Vector3 vector3,
             double mass,
