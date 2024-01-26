@@ -12,8 +12,8 @@ You will need the followings:
 
 To build the server part and then the client you need to follow the following procedures:
 
-1 - You need to install [vcpkg](https://vcpkg.io/en/).
-2 - You need to build the project.
+1. You need to install [vcpkg](https://vcpkg.io/en/).
+2. You need to build the project.
 
 ### Install VCPKG
 
