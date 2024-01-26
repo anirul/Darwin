@@ -1,11 +1,14 @@
 #include "Server/compute_world.h"
 
 #include <chrono>
+#include <optional>
 
 namespace darwin {
 
-    void ComputeWorld(darwin::DarwinServiceImpl& service) {
-        WorldState world_state;
+    void ComputeWorld(
+        darwin::DarwinServiceImpl& service, 
+        WorldState& world_state)
+    {
         while (true) {
             auto now = std::chrono::system_clock::now();
             double time =

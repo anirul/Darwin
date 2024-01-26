@@ -21,7 +21,7 @@ namespace darwin {
         std::mutex mutex_info_;
         std::map<std::string, PlayerInfo> player_infos_;
         std::map<std::string, ElementInfo> element_infos_;
-        double last_updated_;
+        double last_updated_ = 0.0;
         std::vector<proto::Player> players_;
         std::vector<proto::Element> elements_;
     };

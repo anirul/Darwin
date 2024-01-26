@@ -9,8 +9,9 @@
 int main(int ac, char** av) {
     grpc::ServerBuilder builder;
     darwin::DarwinServiceImpl service;
+    darwin::WorldState world_state;
 
-    std::thread update_thread(darwin::ComputeWorld, std::ref(service));
+    std::thread update_thread(darwin::ComputeWorld, std::ref(service), std::ref(world_state));
 
     builder.AddListeningPort(
         "0.0.0.0:50051", 
