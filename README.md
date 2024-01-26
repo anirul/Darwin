@@ -12,8 +12,8 @@ You will need the followings:
 
 To build the server part and then the client you need to follow the following procedures:
 
-1- You need to install [vcpkg](https://vcpkg.io/en/).
-2- You need to build the project.
+1. You need to install [vcpkg](https://vcpkg.io/en/).
+2. You need to build the project.
 
 ### Install VCPKG
 
@@ -33,8 +33,8 @@ You now need to create a project for the compiler (and IDE) you want. You can us
 
 ```pwsh
 git clone https://github.com/anirul/grpc-server.git
-git submodule update --init --recursive
 cd grpc-server
+git submodule update --init --recursive
 mkdir Build
 cd Build
 cmake .. -DCMAKE_TOOLCHAIN_FILE="[path to VCPKG]\scripts\buildsystems\vcpkg.cmake"
