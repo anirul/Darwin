@@ -14,6 +14,8 @@ add_executable(DarwinServer
     player_info.h
     world_state.cpp
     world_state.h
+    world_state_file.cpp
+    world_state_file.h
 )
 
 target_include_directories(DarwinServer

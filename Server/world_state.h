@@ -13,6 +13,8 @@ namespace darwin {
         void Update(double time);
         const std::vector<proto::Player>& GetPlayers() const;
         const std::vector<proto::Element>& GetElements() const;
+        double GetLastUpdated() const;
+        bool operator==(const WorldState& other) const;
 
     private:
         void FillVectorsLocked();

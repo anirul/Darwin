@@ -7,9 +7,13 @@ add_executable(DarwinServerTest
     ${CMAKE_SOURCE_DIR}/Server/physic_engine.h
     ${CMAKE_SOURCE_DIR}/Server/world_state.cpp
     ${CMAKE_SOURCE_DIR}/Server/world_state.h
+    ${CMAKE_SOURCE_DIR}/Server/world_state_file.cpp
+    ${CMAKE_SOURCE_DIR}/Server/world_state_file.h
     main.cpp
     world_state_test.cpp
     world_state_test.h
+    world_state_file_test.cpp
+    world_state_file_test.h
 )
 
 target_include_directories(DarwinServerTest

@@ -27,12 +27,12 @@ namespace darwin {
                 F += ComputeGravitationalForce(physics[i], ground_physic);
             }
             double delta = now - times[i];
-            glm::dvec3 velocity = ProtoVector2Glm(physics[i].velocity()) +
+            glm::dvec3 velocity = ProtoVector2Glm(physics[i].position_dt()) +
                 (F / physics[i].mass()) * delta;
-            *physics[i].mutable_velocity() = Glm2ProtoVector(velocity);
+            *physics[i].mutable_position_dt() = Glm2ProtoVector(velocity);
             auto position =
                 ProtoVector2Glm(physics[i].position()) +
-                ProtoVector2Glm(physics[i].velocity()) * delta;
+                ProtoVector2Glm(physics[i].position_dt()) * delta;
             *physics[i].mutable_position() = Glm2ProtoVector(position);
         }
     }
@@ -60,12 +60,12 @@ namespace darwin {
         // Now compute the new position according to this simulation.
         for (size_t i = 0; i < physics.size(); ++i) {
             double delta = now - times[i];
-            auto velocity = ProtoVector2Glm(physics[i].velocity()) +
+            auto velocity = ProtoVector2Glm(physics[i].position_dt()) +
                 (forces[i] / physics[i].mass()) * delta;
-            *physics[i].mutable_velocity() = Glm2ProtoVector(velocity);
+            *physics[i].mutable_position_dt() = Glm2ProtoVector(velocity);
             auto position =
                 ProtoVector2Glm(physics[i].position()) +
-                ProtoVector2Glm(physics[i].velocity()) * delta;
+                ProtoVector2Glm(physics[i].position_dt()) * delta;
             *physics[i].mutable_position() = Glm2ProtoVector(position);
         }
     }
@@ -140,7 +140,7 @@ namespace darwin {
         glm::dvec3 collisionNormal =
             glm::normalize(
                 ProtoVector2Glm(a.position()) - ProtoVector2Glm(b.position()));
-        *b.mutable_velocity() = a.velocity();
+        *b.mutable_position_dt() = a.position_dt();
         *b.mutable_position() =
             Glm2ProtoVector(
                 -collisionNormal * (a.radius() + b.radius()) + 
@@ -220,12 +220,12 @@ namespace darwin {
                 }
             }
             double delta = now - time;
-            auto velocity = ProtoVector2Glm(physic.velocity()) +
+            auto velocity = ProtoVector2Glm(physic.position_dt()) +
                 (F / physic.mass()) * delta;
-            *physic.mutable_velocity() = Glm2ProtoVector(velocity);
+            *physic.mutable_position_dt() = Glm2ProtoVector(velocity);
             auto position =
                 ProtoVector2Glm(physic.position()) +
-                ProtoVector2Glm(physic.velocity()) * delta;
+                ProtoVector2Glm(physic.position_dt()) * delta;
             *physic.mutable_position() = Glm2ProtoVector(position);
             *player_info.second.player.mutable_physic() = physic;
             // Update the time.

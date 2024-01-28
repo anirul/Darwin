@@ -1,6 +1,7 @@
 #include "world_state.h"
 
 #include "physic_engine.h"
+#include "Common/stl_proto_wrapper.h"
 
 namespace darwin {
 
@@ -32,15 +33,11 @@ namespace darwin {
 
     void WorldState::Update(double time) {
         std::scoped_lock l(mutex_info_);
-        if (time == last_updated_) {
-            std::cerr 
-                << "Warning try to re-update the world state." 
-                << std::endl;
-            return;
+        if (time != last_updated_) {
+            last_updated_ = time;
+            PhysicEngine physic_engine(element_infos_, player_infos_);
+            physic_engine.ComputeAllInfo(time);
         }
-        last_updated_ = time;
-        PhysicEngine physic_engine(element_infos_, player_infos_);
-        physic_engine.ComputeAllInfo(time);
         FillVectorsLocked();
     }
 
@@ -52,6 +49,10 @@ namespace darwin {
         return elements_;
     }
 
+    double WorldState::GetLastUpdated() const {
+        return last_updated_;
+    }
+
     void WorldState::FillVectorsLocked() {
         players_.clear();
         elements_.clear();
@@ -61,6 +62,29 @@ namespace darwin {
         for (const auto& [_, element_info] : element_infos_) {
             elements_.push_back(element_info.element);
         }
+    }
+
+    bool WorldState::operator==(const WorldState& other) const {
+        if (last_updated_ != other.last_updated_) {
+            return false;
+        }
+        if (player_infos_.size() != other.player_infos_.size()) {
+            return false;
+        }
+        if (element_infos_.size() != other.element_infos_.size()) {
+            return false;
+        }
+        for (size_t i = 0; i < players_.size(); ++i) {
+            if (!(players_[i] == other.players_[i])) {
+                return false;
+            }
+        }
+        for (size_t i = 0; i < elements_.size(); ++i) {
+            if (!(elements_[i] == other.elements_[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }  // End namespace darwin.

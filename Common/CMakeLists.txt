@@ -1,6 +1,8 @@
 # grpc-server Common part (mainly proto).
 add_library(DarwinCommon
     STATIC
+        stl_proto_wrapper.cpp
+        stl_proto_wrapper.h
         darwin_service.proto
 )
 

@@ -28,11 +28,11 @@ message Physic {
     // Sphere position.
     Vector3 position = 3;
     // Velocity the speed it has d(position)/dt.
-    Vector3 velocity = 5;
+    Vector3 position_dt = 5;
     // Sphere look direction.
     Vector4 orientation = 4;
     // Rotation d(orientation)/dt.
-    Vector4 rotation = 6;
+    Vector4 orientation_dt = 6;
 }
 
 // Sphere element in the world.
@@ -69,6 +69,17 @@ message Player {
     Vector3 g_normal = 4;
     // G force (used for local computation).
     double g_force = 5;
+}
+
+// World saved as a file.
+// Next: 1
+message World {
+    // Elements list.
+    repeated Element elements = 1;
+    // Players list.
+    repeated Player players = 2;
+    // Present time on the server.
+    double time = 3;
 }
 
 // UpdateRequest
