@@ -9,6 +9,10 @@ namespace darwin {
     class WorldState {
     public:
         void AddPlayer(double time, const proto::Player& player);
+        void UpdatePlayer(
+            double time, 
+            const std::string& name, 
+            const proto::Physic& player);
         void AddElement(double time, const proto::Element& element);
         void Update(double time);
         const std::vector<proto::Player>& GetPlayers() const;

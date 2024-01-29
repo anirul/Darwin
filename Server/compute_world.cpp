@@ -15,6 +15,18 @@ namespace darwin {
                 std::chrono::duration_cast<std::chrono::duration<double>>(
                     now.time_since_epoch())
                 .count();
+            // Update the players.
+            {
+                std::lock_guard<std::mutex> lock(service.GetTimePLayersMutex());
+                for (const auto& time_player : service.GetTimePlayers()) {
+                    world_state.UpdatePlayer(
+                        time_player.first, 
+                        time_player.second.name(), 
+                        time_player.second.physic());
+                }
+                service.ClearTimePlayers();
+            }
+            // Update the elements in the world.
             world_state.Update(time);
             const auto& elements = world_state.GetElements();
             const auto& players = world_state.GetPlayers();

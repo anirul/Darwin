@@ -12,9 +12,17 @@ namespace darwin {
             grpc::ServerContext* context, 
             const proto::UpdateRequest* request,
             grpc::ServerWriter<proto::UpdateResponse>* writer) override;
+        grpc::Status Push(
+            grpc::ServerContext* context, 
+            const proto::PushRequest* request,
+            proto::PushResponse* response) override;
         void BroadcastUpdate(const proto::UpdateResponse& response);
+        std::map<double, proto::Player>& GetTimePlayers();
+        void ClearTimePlayers();
+        std::mutex& GetTimePLayersMutex();
 
     protected:
+        std::map<double, proto::Player> time_players_;
         std::list<grpc::ServerWriter<proto::UpdateResponse>*> writers_;
         std::mutex writers_mutex_;
         std::vector<proto::Element> elements_;

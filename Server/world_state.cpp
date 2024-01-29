@@ -18,6 +18,26 @@ namespace darwin {
         }
     }
 
+    void WorldState::UpdatePlayer(
+        double time, 
+        const std::string& name, 
+        const proto::Physic& physic) 
+    {
+        std::scoped_lock l(mutex_info_);
+        auto it = player_infos_.find(name);
+        if (it == player_infos_.end()) {
+            proto::Player player;
+            player.set_name(name);
+            *player.mutable_physic() = physic;
+            PlayerInfo player_info{ time, player };
+            player_infos_.emplace(name, player_info);
+        }
+        else {
+            it->second.time = time;
+            *it->second.player.mutable_physic() = physic;
+        }
+    }
+
     void WorldState::AddElement(double time, const proto::Element& element) {
         std::scoped_lock l(mutex_info_);
         auto it = element_infos_.find(element.name());

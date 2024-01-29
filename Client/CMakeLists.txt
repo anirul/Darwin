@@ -3,6 +3,10 @@
 add_executable(DarwinClient
     WIN32
         main.cpp
+        darwin_client.cpp
+        darwin_client.h
+        world_client.cpp
+        world_client.h
         darwin_client.json
 )
 
@@ -18,6 +22,7 @@ target_link_libraries(DarwinClient
         FrameCommon
         FrameOpenGL
         FrameProto
+        DarwinCommon
 )
 
 set_property(TARGET DarwinClient PROPERTY FOLDER "DarwinClient")

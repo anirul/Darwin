@@ -47,6 +47,7 @@ namespace test {
 
     TEST_F(WorldStateFileTest, LoadAndSaveFromLocalProto) {
         PopulateWorldState();
+        // Forced to copy from map to players/elements vectors.
         world_state_.Update(0.0);
         std::string json;
         EXPECT_NO_THROW(
@@ -58,6 +59,7 @@ namespace test {
             darwin::LoadWorldStateFromString(
                 world_state, 
                 json));
+        // Forced to copy from map to players/elements vectors.
         world_state.Update(0.0);
         EXPECT_EQ(world_state_, world_state);
     }
