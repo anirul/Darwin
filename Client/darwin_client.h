@@ -16,6 +16,7 @@ namespace darwin {
         DarwinClient(const std::string& name, std::shared_ptr<grpc::Channel> channel);
         void Push(const proto::Physic& physic);
         void Update(WorldClient& world_client);
+        bool IsConnected() const;
 
     private:
         std::string name_;

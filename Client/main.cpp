@@ -11,6 +11,7 @@
 #include "frame/file/file_system.h"
 #include "frame/file/image_stb.h"
 #include "frame/window_factory.h"
+#include "world_client.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 int WINAPI WinMain(
@@ -20,7 +21,8 @@ int WINAPI WinMain(
     _In_ int nShowCmd) try
 {
 #else
-int main(int ac, char** av) try {
+int main(int ac, char** av) try 
+{
 #endif
     frame::common::Application app(
         frame::CreateNewWindow(

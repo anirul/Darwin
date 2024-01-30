@@ -7,6 +7,8 @@ add_executable(DarwinClient
         darwin_client.h
         world_client.cpp
         world_client.h
+        network_app.cpp
+        network_app.h
         darwin_client.json
 )
 

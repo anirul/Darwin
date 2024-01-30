@@ -49,4 +49,8 @@ namespace darwin {
         }
     }
 
+    bool DarwinClient::IsConnected() const {
+        return stub_ != nullptr;
+    }
+
 } // namespace darwin.
