@@ -11,6 +11,7 @@
 #include "frame/file/file_system.h"
 #include "frame/file/image_stb.h"
 #include "frame/window_factory.h"
+#include "frame/gui/draw_gui_factory.h"
 #include "world_client.h"
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -24,12 +25,14 @@ int WINAPI WinMain(
 int main(int ac, char** av) try 
 {
 #endif
-    frame::common::Application app(
-        frame::CreateNewWindow(
-            frame::DrawingTargetEnum::WINDOW,
-            frame::RenderingAPIEnum::OPENGL, 
-            { 1280, 720 }));
+    auto win = frame::CreateNewWindow(
+        frame::DrawingTargetEnum::WINDOW,
+        frame::RenderingAPIEnum::OPENGL,
+        { 1280, 720 });
+    auto gui_window = frame::gui::CreateDrawGui(*win.get(), {}, 20.0f);
+    frame::common::Application app(std::move(win));
     app.Startup(frame::file::FindFile("Client/darwin_client.json"));
+    // Add a load from file for resolution.
     app.Run();
     return 0;
 }

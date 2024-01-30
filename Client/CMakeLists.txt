@@ -21,8 +21,10 @@ target_include_directories(DarwinClient
 target_link_libraries(DarwinClient
     PUBLIC
         Frame
+        FrameGui
         FrameCommon
         FrameOpenGL
+        FrameOpenGLGui
         FrameProto
         DarwinCommon
 )
