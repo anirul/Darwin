@@ -9,7 +9,7 @@ add_executable(DarwinClient
         world_client.h
         network_app.cpp
         network_app.h
-        darwin_client.json
+        ${CMAKE_CURRENT_SOURCE_DIR}/../asset/json/darwin_client.json
 )
 
 target_include_directories(DarwinClient

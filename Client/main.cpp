@@ -31,7 +31,7 @@ int main(int ac, char** av) try
         { 1280, 720 });
     auto gui_window = frame::gui::CreateDrawGui(*win.get(), {}, 20.0f);
     frame::common::Application app(std::move(win));
-    app.Startup(frame::file::FindFile("Client/darwin_client.json"));
+    app.Startup(frame::file::FindFile("asset/json/darwin_client.json"));
     // Add a load from file for resolution.
     app.Run();
     return 0;
