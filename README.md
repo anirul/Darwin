@@ -1,4 +1,4 @@
-# grpc-server
+# Darwin
 
 A very simple [gRPC](https://grpc.io) based client server application.
 
@@ -32,8 +32,8 @@ Congratulation you now have VCPKG on you drive! Remember where you installed it 
 You now need to create a project for the compiler (and IDE) you want. You can use the `-G` option to select witch generator to use, it should select the default for your system if you don't use it.
 
 ```pwsh
-git clone https://github.com/anirul/grpc-server.git
-cd grpc-server
+git clone https://github.com/anirul/darwin.git
+cd Darwin
 git submodule update --init --recursive
 mkdir Build
 cd Build
