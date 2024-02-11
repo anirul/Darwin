@@ -37,7 +37,7 @@ cd Darwin
 git submodule update --init --recursive
 mkdir Build
 cd Build
-cmake .. -DCMAKE_TOOLCHAIN_FILE="[path to VCPKG]\scripts\buildsystems\vcpkg.cmake"
+cmake .. -DCMAKE_TOOLCHAIN_FILE="[path to VCPKG]/scripts/buildsystems/vcpkg.cmake"
 ```
 
 Now either open the .sln file or use cmake to build the project.
