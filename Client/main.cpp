@@ -12,6 +12,7 @@
 #include "frame/file/image_stb.h"
 #include "frame/window_factory.h"
 #include "frame/gui/draw_gui_factory.h"
+#include "frame/gui/window_logger.h"
 #include "world_client.h"
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -30,6 +31,8 @@ int main(int ac, char** av) try
         frame::RenderingAPIEnum::OPENGL,
         { 1280, 720 });
     auto gui_window = frame::gui::CreateDrawGui(*win.get(), {}, 20.0f);
+    gui_window->AddWindow(std::make_unique<frame::gui::WindowLogger>("Logger"));
+    win->GetDevice().AddPlugin(std::move(gui_window));
     frame::common::Application app(std::move(win));
     app.Startup(frame::file::FindFile("asset/json/darwin_client.json"));
     // Add a load from file for resolution.
