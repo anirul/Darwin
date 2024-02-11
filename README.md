@@ -17,7 +17,7 @@ To build the server part and then the client you need to follow the following pr
 
 ### Install VCPKG
 
-Install [vcpkg](https://vcpkg.io/en/), from the [github](https://github.com/microsoft/vcpkg) page, if possible in the same subdirectory as the grpc-server project.
+Install [vcpkg](https://vcpkg.io/en/), from the [github](https://github.com/microsoft/vcpkg) page, if possible in the same subdirectory as the `darwin` project. The project was builded with the tag version: `2024.01.12`, but it should work with any version via minor changes.
 
 ```pwsh
 git clone https://github.com/microsoft/vcpkg.git
