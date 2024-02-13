@@ -13,6 +13,7 @@
 #include "frame/window_factory.h"
 #include "frame/gui/draw_gui_factory.h"
 #include "frame/gui/window_logger.h"
+#include "frame/logger.h"
 #include "world_client.h"
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -35,8 +36,14 @@ int main(int ac, char** av) try
     win->GetDevice().AddPlugin(std::move(gui_window));
     frame::common::Application app(std::move(win));
     app.Startup(frame::file::FindFile("asset/json/darwin_client.json"));
+    frame::Logger& logger = frame::Logger::GetInstance();
+    int i = 0;
     // Add a load from file for resolution.
-    app.Run();
+    app.Run([&logger, &i] {
+            if (i == 0) logger->warn("Hello");
+            if (i == 1) logger->error("World");
+            i++;
+        });
     return 0;
 }
 catch (std::exception ex) {
