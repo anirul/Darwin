@@ -7,6 +7,8 @@
 #include <windows.h>
 #endif
 
+#include "state_context.h"
+#include "state_title.h"
 #include "frame/common/application.h"
 #include "frame/file/file_system.h"
 #include "frame/file/image_stb.h"
@@ -24,7 +26,7 @@ int WINAPI WinMain(
     _In_ int nShowCmd) try
 {
 #else
-int main(int ac, char** av) try 
+int main(int ac, char** av) try
 {
 #endif
     auto win = frame::CreateNewWindow(
@@ -38,11 +40,11 @@ int main(int ac, char** av) try
     app.Startup(frame::file::FindFile("asset/json/darwin_client.json"));
     frame::Logger& logger = frame::Logger::GetInstance();
     int i = 0;
+    darwin::state::StateContext state_context(
+        std::make_unique<darwin::state::StateTitle>(app));
     // Add a load from file for resolution.
-    app.Run([&logger, &i] {
-            if (i == 0) logger->warn("Hello");
-            if (i == 1) logger->error("World");
-            i++;
+    app.Run([&state_context] {
+            state_context.Update();
         });
     return 0;
 }

@@ -9,6 +9,17 @@ add_executable(DarwinClient
         world_client.h
         network_app.cpp
         network_app.h
+        state_interface.h
+        state_context.cpp
+        state_context.h
+        state_disconnected.cpp
+        state_disconnected.h
+        state_login.cpp
+        state_login.h
+        state_title.cpp
+        state_title.h
+        state_play.cpp
+        state_play.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/json/darwin_client.json
 )
 

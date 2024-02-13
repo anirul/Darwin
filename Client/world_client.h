@@ -16,7 +16,7 @@ namespace darwin {
         mutable std::mutex mutex_;
         std::vector<proto::Element> elements_;
         std::vector<proto::Player> players_;
-        frame::Logger logger_ = frame::Logger::GetInstance();
+        frame::Logger& logger_ = frame::Logger::GetInstance();
     };
 
 } // namespace darwin.
