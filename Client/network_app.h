@@ -20,6 +20,7 @@ namespace darwin {
         std::unique_ptr<darwin::DarwinClient> darwin_client_;
         darwin::WorldClient world_client_;
         std::string name_;
+        frame::Logger& logger_ = frame::Logger::GetInstance();
     };
 
 }  // namespace darwin.

@@ -8,6 +8,7 @@
 #include "world_client.h"
 #include "Common/darwin_service.pb.h"
 #include "Common/darwin_service.grpc.pb.h"
+#include "frame/logger.h"
 
 namespace darwin {
 
@@ -21,6 +22,7 @@ namespace darwin {
     private:
         std::string name_;
         std::unique_ptr<proto::DarwinService::Stub> stub_;
+        frame::Logger& logger_ = frame::Logger::GetInstance();
     };
 
 } // namespace darwin.

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common/darwin_service.pb.h"
+#include "frame/logger.h"
 
 namespace darwin {
 
@@ -15,6 +16,7 @@ namespace darwin {
         mutable std::mutex mutex_;
         std::vector<proto::Element> elements_;
         std::vector<proto::Player> players_;
+        frame::Logger logger_ = frame::Logger::GetInstance();
     };
 
 } // namespace darwin.

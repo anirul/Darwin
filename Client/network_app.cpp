@@ -9,6 +9,7 @@ namespace darwin {
         if (darwin_client_) {
             darwin_client_.reset();
         }
+        logger_->info("Enter world: {}", name);
         // Create a connection to the server.
         darwin_client_ = std::make_unique<darwin::DarwinClient>(
             name_, 

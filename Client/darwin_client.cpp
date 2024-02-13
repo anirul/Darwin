@@ -15,10 +15,10 @@ namespace darwin {
 
         grpc::Status status = stub_->Push(&context, request, &response);
         if (status.ok()) {
-            std::cout << "Push successful!" << std::endl;
+            logger_->info("Pushed physic: {}", physic.DebugString());
         }
         else {
-            std::cout << "Push failed: " << status.error_code() << ": " << status.error_message() << std::endl;
+            logger_->warn("Push failed: {}", status.error_message());
         }
     }
 
@@ -36,7 +36,7 @@ namespace darwin {
         // Read the stream of responses
         while (reader->Read(&response)) {
             // Process each response
-            std::cout << "Received update for time: " << response.time() << std::endl;
+            logger_->info("Received update for time: {}", response.time());
 
             world_client.SetElements({ response.elements().begin(), response.elements().end() });
             world_client.SetPlayers({ response.players().begin(), response.players().end() });
@@ -45,7 +45,7 @@ namespace darwin {
         // Finish the stream
         grpc::Status status = reader->Finish();
         if (!status.ok()) {
-            std::cout << "Update stream failed: " << status.error_message() << std::endl;
+            logger_->warn("Update stream failed: {}", status.error_message());
         }
     }
 
