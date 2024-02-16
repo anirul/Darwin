@@ -45,7 +45,31 @@ namespace darwin {
         // Finish the stream
         grpc::Status status = reader->Finish();
         if (!status.ok()) {
-            logger_->warn("Update stream failed: {}", status.error_message());
+            frame::Logger::GetInstance()->warn(
+                "Update stream failed: {}", 
+                status.error_message());
+        }
+    }
+
+    bool DarwinClient::Ping(std::int32_t val) {
+        proto::PingRequest request;
+        request.set_value(val);
+
+        proto::PingResponse response;
+        grpc::ClientContext context;
+
+        grpc::Status status = stub_->Ping(&context, request, &response);
+        if (status.ok()) {
+            logger_->info(
+                "Ping response server time: {}", 
+                response.value(), 
+                response.time());
+            server_time_ = response.time();
+            return true;
+        }
+        else {
+            frame::Logger::GetInstance()->warn("Ping failed: {}", status.error_message());
+            return false;
         }
     }
 

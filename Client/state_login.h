@@ -8,10 +8,13 @@ namespace darwin::state {
 
     class StateLogin : public StateInterface {
     public:
-        StateLogin(frame::common::Application& app);
+        StateLogin(
+            frame::common::Application& app, 
+            std::unique_ptr<darwin::NetworkApp> network_app) :
+            app_(app), network_app_(std::move(network_app)) {}
         ~StateLogin() override = default;
         void Enter() override;
-        void Update() override;
+        void Update(StateContext& state_context) override;
         void Exit() override;
 
     private:

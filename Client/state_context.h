@@ -6,6 +6,24 @@
 
 namespace darwin::state {
 
+    /**
+     * @class StateContext
+     * @brief The StateContext class is a context for the state pattern.
+     * 
+     * States are as follows:
+     * - StateTitle (initial state) 
+     *      goto StateServer
+     * - StateDisconnect (you are disconnected)
+     *      goto StateTitle
+     * - StateServer (you select a server) 
+     *      goto StateLogin or StateTitle or StateDisconnect
+     * - StateLogin (you login) 
+     *      goto StateCharacter or StateDisconnect
+     * - StateCharacter (you select a character) 
+     *      goto StatePlay or StateTitle or StateDisconnect
+     * - StatePlay (you enter the world) 
+     *      goto StateDisconnect or StateCharacter
+     */
     class StateContext {
     public:
         StateContext(std::unique_ptr<StateInterface> state);

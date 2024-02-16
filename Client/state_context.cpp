@@ -13,7 +13,7 @@ void StateContext::ChangeState(std::unique_ptr<StateInterface> state) {
 }
 
 void StateContext::Update() {
-    state_->Update();
+    state_->Update(*this);
 }
 
 StateContext::~StateContext() {

@@ -15,7 +15,7 @@ namespace darwin::state {
         logger_->info("Exited play state");
     }
 
-    void StatePlay::Update() {
+    void StatePlay::Update(StateContext& state_context) {
         network_app_->Run();
     }
 

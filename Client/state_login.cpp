@@ -1,17 +1,16 @@
 #include "state_login.h"
 
-namespace darwin::state {
+#include "state_context.h"
 
-    StateLogin::StateLogin(frame::common::Application& app) : app_(app) {
-        network_app_ = std::make_unique<darwin::NetworkApp>();
-    }
+namespace darwin::state {
 
     void StateLogin::Enter() {
         logger_->info("Entering login state");
     }
 
-    void StateLogin::Update() {
+    void StateLogin::Update(StateContext& state_context) {
         network_app_->Run();
+
     }
 
     void StateLogin::Exit() {

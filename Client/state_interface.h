@@ -2,6 +2,8 @@
 
 namespace darwin::state {
 
+    class StateContext;
+
     /**
     * @class StateInterface
     * @brief Interface for state machine design pattern.
@@ -12,7 +14,7 @@ namespace darwin::state {
         //! @brief Enter state.
         virtual void Enter() = 0;
         //! @brief Update state.
-        virtual void Update() = 0;
+        virtual void Update(StateContext& state_context) = 0;
         //! @brief Exit state.
         virtual void Exit() = 0;
     };

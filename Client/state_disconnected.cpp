@@ -15,6 +15,6 @@ namespace darwin::state {
         logger_->info("State disconnected exited");
     }
 
-    void StateDisconnected::Update() {}
+    void StateDisconnected::Update(StateContext& state_context) {}
 
 } // namespace darwin::state.

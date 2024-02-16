@@ -5,16 +5,21 @@ namespace darwin {
     NetworkApp::NetworkApp() {}
 
     void NetworkApp::EnterWorld(const std::string& name) {
-        name_ = name;
+        if (name_ == "") {
+            name_ = "localhost:45233";
+        } 
+        else {
+            name_ = name;
+        }
         if (darwin_client_) {
             darwin_client_.reset();
         }
-        logger_->info("Enter world: {}", name);
+        logger_->info("Enter world: {}", name_);
         // Create a connection to the server.
         darwin_client_ = std::make_unique<darwin::DarwinClient>(
             name_, 
             grpc::CreateChannel(
-                "localhost:50051", 
+                name_, 
                 grpc::InsecureChannelCredentials()));
         // Create a new thread to the update.
         std::thread update_thread(
@@ -22,6 +27,14 @@ namespace darwin {
             darwin_client_.get(), 
             std::ref(world_client_));
         update_thread.detach();
+    }
+
+    bool NetworkApp::Ping(std::int32_t& val) {
+        if (!darwin_client_->Ping(val)) {
+            val = 0;
+            return false;
+        }
+        return true;
     }
 
     std::string NetworkApp::GetName() const {

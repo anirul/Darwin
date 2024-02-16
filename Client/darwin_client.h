@@ -17,10 +17,12 @@ namespace darwin {
         DarwinClient(const std::string& name, std::shared_ptr<grpc::Channel> channel);
         void Push(const proto::Physic& physic);
         void Update(WorldClient& world_client);
+        bool Ping(std::int32_t val = 45233);
         bool IsConnected() const;
 
     private:
         std::string name_;
+        double server_time_ = 0.0;
         std::unique_ptr<proto::DarwinService::Stub> stub_;
         frame::Logger& logger_ = frame::Logger::GetInstance();
     };

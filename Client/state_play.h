@@ -13,7 +13,7 @@ namespace darwin::state {
             std::unique_ptr<darwin::NetworkApp> network_app);
         ~StatePlay() override = default;
         void Enter() override;
-        void Update() override;
+        void Update(StateContext& state_context) override;
         void Exit() override;
 
     private:

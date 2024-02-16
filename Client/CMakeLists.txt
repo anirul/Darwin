@@ -7,9 +7,17 @@ add_executable(DarwinClient
         darwin_client.h
         world_client.cpp
         world_client.h
+        modal_login.cpp
+        modal_login.h
+        modal_ping.cpp
+        modal_ping.h
+        modal_server.cpp
+        modal_server.h
         network_app.cpp
         network_app.h
         state_interface.h
+        state_character.cpp
+        state_character.h
         state_context.cpp
         state_context.h
         state_disconnected.cpp
@@ -20,6 +28,8 @@ add_executable(DarwinClient
         state_title.h
         state_play.cpp
         state_play.h
+        state_server.cpp
+        state_server.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/json/darwin_client.json
 )
 

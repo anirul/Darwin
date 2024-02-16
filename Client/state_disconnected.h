@@ -11,7 +11,7 @@ namespace darwin::state {
         StateDisconnected(frame::common::Application& app);
         ~StateDisconnected() override = default;
         void Enter() override;
-        void Update() override;
+        void Update(StateContext& state_context) override;
         void Exit() override;
 
     private:

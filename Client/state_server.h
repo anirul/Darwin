@@ -1,0 +1,46 @@
+#pragma once
+
+#include "state_interface.h"
+#include "frame/common/application.h"
+#include "frame/gui/draw_gui_interface.h"
+#include "frame/logger.h"
+#include "modal_server.h"
+#include "modal_ping.h"
+#include "network_app.h"
+
+namespace darwin::state {
+
+    class StateContext;
+
+    /**
+     * @class StateInterface
+     * @brief Interface for state machine design pattern.
+     */
+    class StateServer : public StateInterface {
+    public:
+        StateServer(frame::common::Application& app) : app_(app) {}
+        ~StateServer() = default;
+        //! @brief Enter state.
+        void Enter() override;
+        //! @brief Update state.
+        void Update(StateContext& state_context) override;
+        //! @brief Exit state.
+        void Exit() override;
+
+    protected:
+        enum class ModalStatus {
+            kServer,
+            kPing,
+        };
+
+    private:
+        frame::common::Application& app_;
+        frame::Logger& logger_ = frame::Logger::GetInstance();
+        frame::gui::DrawGuiInterface* draw_gui_interface_ = nullptr;
+        modal::ModalServerParams modal_server_params_;
+        modal::ModalPingParams modal_ping_params_;
+        ModalStatus modal_status_ = ModalStatus::kServer;
+        std::unique_ptr<NetworkApp> network_app_ = nullptr;
+    };
+
+} // namespace darwin::state.
