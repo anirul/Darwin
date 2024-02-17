@@ -8,7 +8,7 @@ namespace darwin::state {
 
     class StateDisconnected : public StateInterface {
     public:
-        StateDisconnected(frame::common::Application& app);
+        StateDisconnected(frame::common::Application& app) : app_(app) {}
         ~StateDisconnected() override = default;
         void Enter() override;
         void Update(StateContext& state_context) override;

@@ -21,12 +21,12 @@ namespace darwin::modal {
         params_.username = username;
         params_.password = password;
         if (ImGui::Button("Login")) {
-            params_.succeeded = true;
+            params_.button_result = ModalLoginButton::Login;
             end_ = true;
         }
         ImGui::SameLine();
         if (ImGui::Button("Cancel")) {
-            params_.succeeded = false;
+            params_.button_result = ModalLoginButton::Cancel;
             end_ = true;
         }
         return true;

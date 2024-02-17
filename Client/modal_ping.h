@@ -1,7 +1,6 @@
 #pragma once
 
 #include <functional>
-#include <mutex>
 #include <future>
 
 #include "frame/gui/gui_window_interface.h"

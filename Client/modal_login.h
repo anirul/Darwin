@@ -3,11 +3,17 @@
 #include "frame/gui/gui_window_interface.h"
 
 namespace darwin::modal {
+
+    enum class ModalLoginButton {
+        None,
+        Login,
+        Cancel,
+    };
     
     struct ModalLoginParams {
         std::string username;
         std::string password;
-        bool succeeded = false;
+        ModalLoginButton button_result = ModalLoginButton::None;
     };
 
     class ModalLogin : public frame::gui::GuiWindowInterface {

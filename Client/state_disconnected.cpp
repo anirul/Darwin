@@ -4,9 +4,6 @@
 
 namespace darwin::state {
 
-    StateDisconnected::StateDisconnected(
-        frame::common::Application &app) : app_(app) {}
-
     void StateDisconnected::Enter() {
         logger_->info("State disconnected entered");
     }

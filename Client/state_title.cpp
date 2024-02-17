@@ -16,7 +16,7 @@ namespace darwin::state {
         logger_->info("Entering title state");
         start_time_ = std::chrono::system_clock::now();
         app_.GetWindow().AddKeyCallback(' ', [this] {
-                frame::Logger::GetInstance()->info("Space key pressed");
+                logger_->info("Space key pressed");
                 passed_ = true;
                 return true;
             });
@@ -24,7 +24,7 @@ namespace darwin::state {
 
     void StateTitle::Exit() {
         logger_->info("Exiting title state");
-        app_.GetWindow().AddKeyCallback(' ', [] { return false; });
+        app_.GetWindow().RemoveKeyCallback(' ');
     }
 
     void StateTitle::Update(StateContext& state_context) {

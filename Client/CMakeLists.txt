@@ -7,6 +7,8 @@ add_executable(DarwinClient
         darwin_client.h
         world_client.cpp
         world_client.h
+        modal_disconnected.cpp
+        modal_disconnected.h
         modal_login.cpp
         modal_login.h
         modal_ping.cpp
