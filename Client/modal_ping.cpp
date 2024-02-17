@@ -1,38 +1,37 @@
 #include "modal_ping.h"
 
 #include <imgui.h>
-#include <thread>
 
 namespace darwin::modal {
 
     ModalPing::ModalPing(
         const std::string& name, 
         ModalPingParams& params, 
-        std::function<bool()> callback) :
+        std::function<ModalPingParams()> callback) :
         name_(name), params_(params) {
-        thread_ = std::thread([this, callback]() {
-            bool temp = callback();
-            std::lock_guard<std::mutex> lock(mutex_);
-            params_.ping_value = (temp) ? params_.ping_value : 0;
-            params_.succeeded = true;
-            end_ = true;
+        future_ = std::async(std::launch::async, [callback]() {
+            return callback();
         });
-        thread_.detach();
     }
 
     bool ModalPing::DrawCallback() {
         ImGui::Text("Pinging...");
         if (ImGui::Button("Cancel")) {
-            std::lock_guard<std::mutex> lock(mutex_);
             params_.ping_value = 0;
-            params_.succeeded = true;
+            params_.button_result = ModalPingButton::Cancel;
+            end_ = true;
+        }
+        auto status = future_.wait_for(std::chrono::milliseconds(0));
+        if (status == std::future_status::ready) {
+            auto result = future_.get();
+            params_.ping_value = result.ping_value;
+            params_.button_result = result.button_result;
             end_ = true;
         }
         return true;
     }
 
     bool ModalPing::End() const {
-        // thread_.join();
         return end_;
     }
 

@@ -15,7 +15,7 @@ namespace darwin {
         std::string GetName() const;
         bool IsConnected() const;
         void Run();
-        bool Ping(std::int32_t& val);
+        std::int32_t Ping(std::int32_t val);
 
     private:
         std::unique_ptr<darwin::DarwinClient> darwin_client_;

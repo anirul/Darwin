@@ -113,8 +113,18 @@ message PushRequest {
 // Next: 1
 message PushResponse {}
 
+message PingRequest {
+    int32 value = 1;
+}
+
+message PingResponse {
+    int32 value = 1;
+    double time = 2;
+}
+
 // The darwin service.
 service DarwinService {
     rpc Update(UpdateRequest) returns (stream UpdateResponse);
     rpc Push(PushRequest) returns (PushResponse);
+    rpc Ping(PingRequest) returns (PingResponse);
 }

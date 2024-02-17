@@ -4,9 +4,15 @@
 
 namespace darwin::modal {
 
+    enum class ModalServerButton {
+        None,
+        Connect,
+        Cancel,
+    };
+
     struct ModalServerParams {
         std::string server_name;
-        bool succeeded = false;
+        ModalServerButton button_result = ModalServerButton::None;
     };
 
     class ModalServer : public frame::gui::GuiWindowInterface {

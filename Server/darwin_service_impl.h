@@ -16,6 +16,10 @@ namespace darwin {
             grpc::ServerContext* context, 
             const proto::PushRequest* request,
             proto::PushResponse* response) override;
+        grpc::Status Ping(
+            grpc::ServerContext* context, 
+            const proto::PingRequest* request,
+            proto::PingResponse* response) override;
         void BroadcastUpdate(const proto::UpdateResponse& response);
         std::map<double, proto::Player>& GetTimePlayers();
         void ClearTimePlayers();

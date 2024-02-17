@@ -17,6 +17,8 @@ namespace darwin::state {
      *      goto StateTitle
      * - StateServer (you select a server) 
      *      goto StateLogin or StateTitle or StateDisconnect
+     * - StatePing (you ping a server)
+     *      goto StateLogin or StateDisconnect
      * - StateLogin (you login) 
      *      goto StateCharacter or StateDisconnect
      * - StateCharacter (you select a character) 

@@ -69,6 +69,26 @@ namespace darwin {
         return grpc::Status::OK;
     }
 
+    grpc::Status DarwinServiceImpl::Ping(
+        grpc::ServerContext* context,
+        const proto::PingRequest* request,
+        proto::PingResponse* response)
+    {
+        std::cout << 
+            std::format(
+                "Got a ping request from {}:{}\n", 
+                context->peer(), 
+                request->value());
+        response->set_value(request->value());
+        auto now = std::chrono::system_clock::now();
+        double time =
+            std::chrono::duration_cast<std::chrono::duration<double>>(
+                now.time_since_epoch())
+            .count();
+        response->set_time(time);
+        return grpc::Status::OK;
+    }
+
     void DarwinServiceImpl::BroadcastUpdate(
         const proto::UpdateResponse& response) 
     {

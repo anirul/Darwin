@@ -29,12 +29,8 @@ namespace darwin {
         update_thread.detach();
     }
 
-    bool NetworkApp::Ping(std::int32_t& val) {
-        if (!darwin_client_->Ping(val)) {
-            val = 0;
-            return false;
-        }
-        return true;
+    std::int32_t NetworkApp::Ping(std::int32_t val) {
+        return darwin_client_->Ping(val);
     }
 
     std::string NetworkApp::GetName() const {

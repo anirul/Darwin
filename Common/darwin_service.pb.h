@@ -53,6 +53,12 @@ extern ElementDefaultTypeInternal _Element_default_instance_;
 class Physic;
 struct PhysicDefaultTypeInternal;
 extern PhysicDefaultTypeInternal _Physic_default_instance_;
+class PingRequest;
+struct PingRequestDefaultTypeInternal;
+extern PingRequestDefaultTypeInternal _PingRequest_default_instance_;
+class PingResponse;
+struct PingResponseDefaultTypeInternal;
+extern PingResponseDefaultTypeInternal _PingResponse_default_instance_;
 class Player;
 struct PlayerDefaultTypeInternal;
 extern PlayerDefaultTypeInternal _Player_default_instance_;
@@ -81,6 +87,8 @@ extern WorldDefaultTypeInternal _World_default_instance_;
 PROTOBUF_NAMESPACE_OPEN
 template<> ::proto::Element* Arena::CreateMaybeMessage<::proto::Element>(Arena*);
 template<> ::proto::Physic* Arena::CreateMaybeMessage<::proto::Physic>(Arena*);
+template<> ::proto::PingRequest* Arena::CreateMaybeMessage<::proto::PingRequest>(Arena*);
+template<> ::proto::PingResponse* Arena::CreateMaybeMessage<::proto::PingResponse>(Arena*);
 template<> ::proto::Player* Arena::CreateMaybeMessage<::proto::Player>(Arena*);
 template<> ::proto::PushRequest* Arena::CreateMaybeMessage<::proto::PushRequest>(Arena*);
 template<> ::proto::PushResponse* Arena::CreateMaybeMessage<::proto::PushResponse>(Arena*);
@@ -1992,6 +2000,313 @@ class PushResponse final :
   };
   friend struct ::TableStruct_darwin_5fservice_2eproto;
 };
+// -------------------------------------------------------------------
+
+class PingRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.PingRequest) */ {
+ public:
+  inline PingRequest() : PingRequest(nullptr) {}
+  ~PingRequest() override;
+  explicit PROTOBUF_CONSTEXPR PingRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PingRequest(const PingRequest& from);
+  PingRequest(PingRequest&& from) noexcept
+    : PingRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline PingRequest& operator=(const PingRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PingRequest& operator=(PingRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PingRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PingRequest* internal_default_instance() {
+    return reinterpret_cast<const PingRequest*>(
+               &_PingRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    10;
+
+  friend void swap(PingRequest& a, PingRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PingRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PingRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PingRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PingRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PingRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PingRequest& from) {
+    PingRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PingRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "proto.PingRequest";
+  }
+  protected:
+  explicit PingRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kValueFieldNumber = 1,
+  };
+  // int32 value = 1;
+  void clear_value();
+  int32_t value() const;
+  void set_value(int32_t value);
+  private:
+  int32_t _internal_value() const;
+  void _internal_set_value(int32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:proto.PingRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    int32_t value_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_darwin_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
+class PingResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.PingResponse) */ {
+ public:
+  inline PingResponse() : PingResponse(nullptr) {}
+  ~PingResponse() override;
+  explicit PROTOBUF_CONSTEXPR PingResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PingResponse(const PingResponse& from);
+  PingResponse(PingResponse&& from) noexcept
+    : PingResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline PingResponse& operator=(const PingResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PingResponse& operator=(PingResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PingResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PingResponse* internal_default_instance() {
+    return reinterpret_cast<const PingResponse*>(
+               &_PingResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    11;
+
+  friend void swap(PingResponse& a, PingResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PingResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PingResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PingResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PingResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PingResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PingResponse& from) {
+    PingResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PingResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "proto.PingResponse";
+  }
+  protected:
+  explicit PingResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTimeFieldNumber = 2,
+    kValueFieldNumber = 1,
+  };
+  // double time = 2;
+  void clear_time();
+  double time() const;
+  void set_time(double value);
+  private:
+  double _internal_time() const;
+  void _internal_set_time(double value);
+  public:
+
+  // int32 value = 1;
+  void clear_value();
+  int32_t value() const;
+  void set_value(int32_t value);
+  private:
+  int32_t _internal_value() const;
+  void _internal_set_value(int32_t value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:proto.PingResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    double time_;
+    int32_t value_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_darwin_5fservice_2eproto;
+};
 // ===================================================================
 
 
@@ -3479,9 +3794,81 @@ inline void PushRequest::set_allocated_physic(::proto::Physic* physic) {
 
 // PushResponse
 
+// -------------------------------------------------------------------
+
+// PingRequest
+
+// int32 value = 1;
+inline void PingRequest::clear_value() {
+  _impl_.value_ = 0;
+}
+inline int32_t PingRequest::_internal_value() const {
+  return _impl_.value_;
+}
+inline int32_t PingRequest::value() const {
+  // @@protoc_insertion_point(field_get:proto.PingRequest.value)
+  return _internal_value();
+}
+inline void PingRequest::_internal_set_value(int32_t value) {
+  
+  _impl_.value_ = value;
+}
+inline void PingRequest::set_value(int32_t value) {
+  _internal_set_value(value);
+  // @@protoc_insertion_point(field_set:proto.PingRequest.value)
+}
+
+// -------------------------------------------------------------------
+
+// PingResponse
+
+// int32 value = 1;
+inline void PingResponse::clear_value() {
+  _impl_.value_ = 0;
+}
+inline int32_t PingResponse::_internal_value() const {
+  return _impl_.value_;
+}
+inline int32_t PingResponse::value() const {
+  // @@protoc_insertion_point(field_get:proto.PingResponse.value)
+  return _internal_value();
+}
+inline void PingResponse::_internal_set_value(int32_t value) {
+  
+  _impl_.value_ = value;
+}
+inline void PingResponse::set_value(int32_t value) {
+  _internal_set_value(value);
+  // @@protoc_insertion_point(field_set:proto.PingResponse.value)
+}
+
+// double time = 2;
+inline void PingResponse::clear_time() {
+  _impl_.time_ = 0;
+}
+inline double PingResponse::_internal_time() const {
+  return _impl_.time_;
+}
+inline double PingResponse::time() const {
+  // @@protoc_insertion_point(field_get:proto.PingResponse.time)
+  return _internal_time();
+}
+inline void PingResponse::_internal_set_time(double value) {
+  
+  _impl_.time_ = value;
+}
+inline void PingResponse::set_time(double value) {
+  _internal_set_time(value);
+  // @@protoc_insertion_point(field_set:proto.PingResponse.time)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

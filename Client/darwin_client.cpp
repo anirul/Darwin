@@ -51,7 +51,7 @@ namespace darwin {
         }
     }
 
-    bool DarwinClient::Ping(std::int32_t val) {
+    std::int32_t DarwinClient::Ping(std::int32_t val) {
         proto::PingRequest request;
         request.set_value(val);
 
@@ -65,11 +65,11 @@ namespace darwin {
                 response.value(), 
                 response.time());
             server_time_ = response.time();
-            return true;
+            return response.value();
         }
         else {
-            frame::Logger::GetInstance()->warn("Ping failed: {}", status.error_message());
-            return false;
+            logger_->warn("Ping failed: {}", status.error_message());
+            return 0;
         }
     }
 

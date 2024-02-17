@@ -52,12 +52,21 @@ class DarwinService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::PushResponse>> PrepareAsyncPush(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::PushResponse>>(PrepareAsyncPushRaw(context, request, cq));
     }
+    virtual ::grpc::Status Ping(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::proto::PingResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::PingResponse>> AsyncPing(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::PingResponse>>(AsyncPingRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::PingResponse>> PrepareAsyncPing(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::PingResponse>>(PrepareAsyncPingRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
       virtual void Update(::grpc::ClientContext* context, const ::proto::UpdateRequest* request, ::grpc::ClientReadReactor< ::proto::UpdateResponse>* reactor) = 0;
       virtual void Push(::grpc::ClientContext* context, const ::proto::PushRequest* request, ::proto::PushResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void Push(::grpc::ClientContext* context, const ::proto::PushRequest* request, ::proto::PushResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void Ping(::grpc::ClientContext* context, const ::proto::PingRequest* request, ::proto::PingResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void Ping(::grpc::ClientContext* context, const ::proto::PingRequest* request, ::proto::PingResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -68,6 +77,8 @@ class DarwinService final {
     virtual ::grpc::ClientAsyncReaderInterface< ::proto::UpdateResponse>* PrepareAsyncUpdateRaw(::grpc::ClientContext* context, const ::proto::UpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::PushResponse>* AsyncPushRaw(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::PushResponse>* PrepareAsyncPushRaw(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::PingResponse>* AsyncPingRaw(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::PingResponse>* PrepareAsyncPingRaw(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -88,12 +99,21 @@ class DarwinService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::PushResponse>> PrepareAsyncPush(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::PushResponse>>(PrepareAsyncPushRaw(context, request, cq));
     }
+    ::grpc::Status Ping(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::proto::PingResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::PingResponse>> AsyncPing(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::PingResponse>>(AsyncPingRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::PingResponse>> PrepareAsyncPing(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::PingResponse>>(PrepareAsyncPingRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
       void Update(::grpc::ClientContext* context, const ::proto::UpdateRequest* request, ::grpc::ClientReadReactor< ::proto::UpdateResponse>* reactor) override;
       void Push(::grpc::ClientContext* context, const ::proto::PushRequest* request, ::proto::PushResponse* response, std::function<void(::grpc::Status)>) override;
       void Push(::grpc::ClientContext* context, const ::proto::PushRequest* request, ::proto::PushResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void Ping(::grpc::ClientContext* context, const ::proto::PingRequest* request, ::proto::PingResponse* response, std::function<void(::grpc::Status)>) override;
+      void Ping(::grpc::ClientContext* context, const ::proto::PingRequest* request, ::proto::PingResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -110,8 +130,11 @@ class DarwinService final {
     ::grpc::ClientAsyncReader< ::proto::UpdateResponse>* PrepareAsyncUpdateRaw(::grpc::ClientContext* context, const ::proto::UpdateRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::proto::PushResponse>* AsyncPushRaw(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::proto::PushResponse>* PrepareAsyncPushRaw(::grpc::ClientContext* context, const ::proto::PushRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proto::PingResponse>* AsyncPingRaw(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proto::PingResponse>* PrepareAsyncPingRaw(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_Update_;
     const ::grpc::internal::RpcMethod rpcmethod_Push_;
+    const ::grpc::internal::RpcMethod rpcmethod_Ping_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -121,6 +144,7 @@ class DarwinService final {
     virtual ~Service();
     virtual ::grpc::Status Update(::grpc::ServerContext* context, const ::proto::UpdateRequest* request, ::grpc::ServerWriter< ::proto::UpdateResponse>* writer);
     virtual ::grpc::Status Push(::grpc::ServerContext* context, const ::proto::PushRequest* request, ::proto::PushResponse* response);
+    virtual ::grpc::Status Ping(::grpc::ServerContext* context, const ::proto::PingRequest* request, ::proto::PingResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_Update : public BaseClass {
@@ -162,7 +186,27 @@ class DarwinService final {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_Update<WithAsyncMethod_Push<Service > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_Ping : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_Ping() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_Ping() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Ping(::grpc::ServerContext* /*context*/, const ::proto::PingRequest* /*request*/, ::proto::PingResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestPing(::grpc::ServerContext* context, ::proto::PingRequest* request, ::grpc::ServerAsyncResponseWriter< ::proto::PingResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_Update<WithAsyncMethod_Push<WithAsyncMethod_Ping<Service > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_Update : public BaseClass {
    private:
@@ -212,7 +256,34 @@ class DarwinService final {
     virtual ::grpc::ServerUnaryReactor* Push(
       ::grpc::CallbackServerContext* /*context*/, const ::proto::PushRequest* /*request*/, ::proto::PushResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_Update<WithCallbackMethod_Push<Service > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_Ping : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_Ping() {
+      ::grpc::Service::MarkMethodCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::proto::PingRequest, ::proto::PingResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::proto::PingRequest* request, ::proto::PingResponse* response) { return this->Ping(context, request, response); }));}
+    void SetMessageAllocatorFor_Ping(
+        ::grpc::MessageAllocator< ::proto::PingRequest, ::proto::PingResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proto::PingRequest, ::proto::PingResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_Ping() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Ping(::grpc::ServerContext* /*context*/, const ::proto::PingRequest* /*request*/, ::proto::PingResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* Ping(
+      ::grpc::CallbackServerContext* /*context*/, const ::proto::PingRequest* /*request*/, ::proto::PingResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_Update<WithCallbackMethod_Push<WithCallbackMethod_Ping<Service > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_Update : public BaseClass {
@@ -244,6 +315,23 @@ class DarwinService final {
     }
     // disable synchronous version of this method
     ::grpc::Status Push(::grpc::ServerContext* /*context*/, const ::proto::PushRequest* /*request*/, ::proto::PushResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_Ping : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_Ping() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_Ping() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Ping(::grpc::ServerContext* /*context*/, const ::proto::PingRequest* /*request*/, ::proto::PingResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -286,6 +374,26 @@ class DarwinService final {
     }
     void RequestPush(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_Ping : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_Ping() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_Ping() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Ping(::grpc::ServerContext* /*context*/, const ::proto::PingRequest* /*request*/, ::proto::PingResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestPing(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -333,6 +441,28 @@ class DarwinService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_Ping : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_Ping() {
+      ::grpc::Service::MarkMethodRawCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Ping(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_Ping() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Ping(::grpc::ServerContext* /*context*/, const ::proto::PingRequest* /*request*/, ::proto::PingResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* Ping(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_Push : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -359,7 +489,34 @@ class DarwinService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedPush(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proto::PushRequest,::proto::PushResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_Push<Service > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_Ping : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_Ping() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::proto::PingRequest, ::proto::PingResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::proto::PingRequest, ::proto::PingResponse>* streamer) {
+                       return this->StreamedPing(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_Ping() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status Ping(::grpc::ServerContext* /*context*/, const ::proto::PingRequest* /*request*/, ::proto::PingResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedPing(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proto::PingRequest,::proto::PingResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_Push<WithStreamedUnaryMethod_Ping<Service > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_Update : public BaseClass {
    private:
@@ -388,7 +545,7 @@ class DarwinService final {
     virtual ::grpc::Status StreamedUpdate(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::proto::UpdateRequest,::proto::UpdateResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_Update<Service > SplitStreamedService;
-  typedef WithSplitStreamingMethod_Update<WithStreamedUnaryMethod_Push<Service > > StreamedService;
+  typedef WithSplitStreamingMethod_Update<WithStreamedUnaryMethod_Push<WithStreamedUnaryMethod_Ping<Service > > > StreamedService;
 };
 
 }  // namespace proto

@@ -13,12 +13,12 @@ namespace darwin::modal {
             ImGuiInputTextFlags_CharsNoBlank);
         params_.server_name = server;
         if (ImGui::Button("Connect")) {
-            params_.succeeded = true;
+            params_.button_result = ModalServerButton::Connect;
             end_ = true;
         }
         ImGui::SameLine();
         if (ImGui::Button("Cancel")) {
-            params_.succeeded = false;
+            params_.button_result = ModalServerButton::Cancel;
             end_ = true;
         }
         return true;

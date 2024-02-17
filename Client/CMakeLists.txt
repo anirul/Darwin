@@ -26,6 +26,8 @@ add_executable(DarwinClient
         state_login.h
         state_title.cpp
         state_title.h
+        state_ping.cpp
+        state_ping.h
         state_play.cpp
         state_play.h
         state_server.cpp
