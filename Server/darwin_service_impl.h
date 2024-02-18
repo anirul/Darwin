@@ -4,10 +4,13 @@
 
 #include <grpc++/grpc++.h>
 
+#include "user_state.h"
+
 namespace darwin {
 
     class DarwinServiceImpl final : public proto::DarwinService::Service {
     public:
+        DarwinServiceImpl(UserState& user_state) : user_state_(user_state) {}
         grpc::Status Update(
             grpc::ServerContext* context, 
             const proto::UpdateRequest* request,
@@ -41,6 +44,7 @@ namespace darwin {
         std::mutex writers_mutex_;
         std::vector<proto::Element> elements_;
         std::vector<proto::Character> characters_;
+        UserState& user_state_;
     };
 
 }  // namespace darwin.

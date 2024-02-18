@@ -8,7 +8,7 @@ namespace darwin {
 
     void SaveWorldStateToString(std::string& json, const WorldState& world_state)
     {
-        proto::World world;
+        proto::WorldDatabase world;
         world.set_time(world_state.GetLastUpdated());
         for (const auto& character : world_state.GetCharacters())
         {
@@ -25,7 +25,7 @@ namespace darwin {
         WorldState& world_state, 
         const std::string& str)
     {
-        proto::World world = LoadProtoFromJson<proto::World>(str);
+        auto world = LoadProtoFromJson<proto::WorldDatabase>(str);
         double time = world.time();
         for (const auto& character : world.characters())
         {
@@ -42,13 +42,13 @@ namespace darwin {
         WorldState& world_state,
         const std::filesystem::path filename)
     {
-        proto::World word = LoadProtoFromJsonFile<proto::World>(filename);
-        double time = word.time();
-        for (const auto& character : word.characters())
+        auto world = LoadProtoFromJsonFile<proto::WorldDatabase>(filename);
+        double time = world.time();
+        for (const auto& character : world.characters())
         {
             world_state.AddCharacter(time, character);
         }
-        for (const auto& element : word.elements())
+        for (const auto& element : world.elements())
         {
             world_state.AddElement(time, element);
         }
@@ -59,17 +59,17 @@ namespace darwin {
         const WorldState& world_state,
         const std::filesystem::path filename)
     {
-        proto::World word;
-        word.set_time(world_state.GetLastUpdated());
+        proto::WorldDatabase world;
+        world.set_time(world_state.GetLastUpdated());
         for (const auto& character : world_state.GetCharacters())
         {
-            *word.add_characters() = character;
+            *world.add_characters() = character;
         }
         for (const auto& element : world_state.GetElements())
         {
-            *word.add_elements() = element;
+            *world.add_elements() = element;
         }
-        SaveProtoToJsonFile(word, filename);
+        SaveProtoToJsonFile(world, filename);
     }
 
 } // namespace darwin.

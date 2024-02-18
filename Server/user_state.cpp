@@ -59,7 +59,7 @@ namespace darwin {
         return user.salt();
     }
 
-    const std::vector<proto::User>& UserState::GetUsers() {
+    const std::vector<proto::User>& UserState::GetUsers() const {
         std::lock_guard<std::mutex> lock(mutex_);
         std::vector<proto::User> users;
         for (auto& pair : id_users_) {

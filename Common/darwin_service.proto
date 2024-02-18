@@ -89,13 +89,13 @@ message Character {
     int32 user_id = 6;
 }
 
-// UserDB
+// UserDatabase
 // Next: 3
-message UserDB {
+message UserDatabase {
     // Features list.
     enum ParameterEnum {
         NONE = 0;
-        ALLOW_FREE_LOGIN = 1;
+        ALLOW_USER_CREATION = 1;
     }
     // Enable features list.
     repeated ParameterEnum features = 1;
@@ -103,9 +103,9 @@ message UserDB {
     repeated User users = 2;
 }
 
-// World saved as a file.
+// WorldDatabase saved as a file.
 // Next: 4
-message World {
+message WorldDatabase {
     // Elements list.
     repeated Element elements = 2;
     // Characters list.

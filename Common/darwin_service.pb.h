@@ -88,18 +88,18 @@ extern UpdateResponseDefaultTypeInternal _UpdateResponse_default_instance_;
 class User;
 struct UserDefaultTypeInternal;
 extern UserDefaultTypeInternal _User_default_instance_;
-class UserDB;
-struct UserDBDefaultTypeInternal;
-extern UserDBDefaultTypeInternal _UserDB_default_instance_;
+class UserDatabase;
+struct UserDatabaseDefaultTypeInternal;
+extern UserDatabaseDefaultTypeInternal _UserDatabase_default_instance_;
 class Vector3;
 struct Vector3DefaultTypeInternal;
 extern Vector3DefaultTypeInternal _Vector3_default_instance_;
 class Vector4;
 struct Vector4DefaultTypeInternal;
 extern Vector4DefaultTypeInternal _Vector4_default_instance_;
-class World;
-struct WorldDefaultTypeInternal;
-extern WorldDefaultTypeInternal _World_default_instance_;
+class WorldDatabase;
+struct WorldDatabaseDefaultTypeInternal;
+extern WorldDatabaseDefaultTypeInternal _WorldDatabase_default_instance_;
 }  // namespace proto
 PROTOBUF_NAMESPACE_OPEN
 template<> ::proto::Character* Arena::CreateMaybeMessage<::proto::Character>(Arena*);
@@ -116,10 +116,10 @@ template<> ::proto::ReportMovementResponse* Arena::CreateMaybeMessage<::proto::R
 template<> ::proto::UpdateRequest* Arena::CreateMaybeMessage<::proto::UpdateRequest>(Arena*);
 template<> ::proto::UpdateResponse* Arena::CreateMaybeMessage<::proto::UpdateResponse>(Arena*);
 template<> ::proto::User* Arena::CreateMaybeMessage<::proto::User>(Arena*);
-template<> ::proto::UserDB* Arena::CreateMaybeMessage<::proto::UserDB>(Arena*);
+template<> ::proto::UserDatabase* Arena::CreateMaybeMessage<::proto::UserDatabase>(Arena*);
 template<> ::proto::Vector3* Arena::CreateMaybeMessage<::proto::Vector3>(Arena*);
 template<> ::proto::Vector4* Arena::CreateMaybeMessage<::proto::Vector4>(Arena*);
-template<> ::proto::World* Arena::CreateMaybeMessage<::proto::World>(Arena*);
+template<> ::proto::WorldDatabase* Arena::CreateMaybeMessage<::proto::WorldDatabase>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace proto {
 
@@ -153,30 +153,30 @@ inline bool Element_TypeEnum_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Element_TypeEnum>(
     Element_TypeEnum_descriptor(), name, value);
 }
-enum UserDB_ParameterEnum : int {
-  UserDB_ParameterEnum_NONE = 0,
-  UserDB_ParameterEnum_ALLOW_FREE_LOGIN = 1,
-  UserDB_ParameterEnum_UserDB_ParameterEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  UserDB_ParameterEnum_UserDB_ParameterEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+enum UserDatabase_ParameterEnum : int {
+  UserDatabase_ParameterEnum_NONE = 0,
+  UserDatabase_ParameterEnum_ALLOW_USER_CREATION = 1,
+  UserDatabase_ParameterEnum_UserDatabase_ParameterEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  UserDatabase_ParameterEnum_UserDatabase_ParameterEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
-bool UserDB_ParameterEnum_IsValid(int value);
-constexpr UserDB_ParameterEnum UserDB_ParameterEnum_ParameterEnum_MIN = UserDB_ParameterEnum_NONE;
-constexpr UserDB_ParameterEnum UserDB_ParameterEnum_ParameterEnum_MAX = UserDB_ParameterEnum_ALLOW_FREE_LOGIN;
-constexpr int UserDB_ParameterEnum_ParameterEnum_ARRAYSIZE = UserDB_ParameterEnum_ParameterEnum_MAX + 1;
+bool UserDatabase_ParameterEnum_IsValid(int value);
+constexpr UserDatabase_ParameterEnum UserDatabase_ParameterEnum_ParameterEnum_MIN = UserDatabase_ParameterEnum_NONE;
+constexpr UserDatabase_ParameterEnum UserDatabase_ParameterEnum_ParameterEnum_MAX = UserDatabase_ParameterEnum_ALLOW_USER_CREATION;
+constexpr int UserDatabase_ParameterEnum_ParameterEnum_ARRAYSIZE = UserDatabase_ParameterEnum_ParameterEnum_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* UserDB_ParameterEnum_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* UserDatabase_ParameterEnum_descriptor();
 template<typename T>
-inline const std::string& UserDB_ParameterEnum_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, UserDB_ParameterEnum>::value ||
+inline const std::string& UserDatabase_ParameterEnum_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, UserDatabase_ParameterEnum>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function UserDB_ParameterEnum_Name.");
+    "Incorrect type passed to function UserDatabase_ParameterEnum_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    UserDB_ParameterEnum_descriptor(), enum_t_value);
+    UserDatabase_ParameterEnum_descriptor(), enum_t_value);
 }
-inline bool UserDB_ParameterEnum_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, UserDB_ParameterEnum* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<UserDB_ParameterEnum>(
-    UserDB_ParameterEnum_descriptor(), name, value);
+inline bool UserDatabase_ParameterEnum_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, UserDatabase_ParameterEnum* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<UserDatabase_ParameterEnum>(
+    UserDatabase_ParameterEnum_descriptor(), name, value);
 }
 enum ReturnEnum : int {
   RETURN_ERROR = 0,
@@ -1479,24 +1479,24 @@ class Character final :
 };
 // -------------------------------------------------------------------
 
-class UserDB final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.UserDB) */ {
+class UserDatabase final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.UserDatabase) */ {
  public:
-  inline UserDB() : UserDB(nullptr) {}
-  ~UserDB() override;
-  explicit PROTOBUF_CONSTEXPR UserDB(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UserDatabase() : UserDatabase(nullptr) {}
+  ~UserDatabase() override;
+  explicit PROTOBUF_CONSTEXPR UserDatabase(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  UserDB(const UserDB& from);
-  UserDB(UserDB&& from) noexcept
-    : UserDB() {
+  UserDatabase(const UserDatabase& from);
+  UserDatabase(UserDatabase&& from) noexcept
+    : UserDatabase() {
     *this = ::std::move(from);
   }
 
-  inline UserDB& operator=(const UserDB& from) {
+  inline UserDatabase& operator=(const UserDatabase& from) {
     CopyFrom(from);
     return *this;
   }
-  inline UserDB& operator=(UserDB&& from) noexcept {
+  inline UserDatabase& operator=(UserDatabase&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -1519,20 +1519,20 @@ class UserDB final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const UserDB& default_instance() {
+  static const UserDatabase& default_instance() {
     return *internal_default_instance();
   }
-  static inline const UserDB* internal_default_instance() {
-    return reinterpret_cast<const UserDB*>(
-               &_UserDB_default_instance_);
+  static inline const UserDatabase* internal_default_instance() {
+    return reinterpret_cast<const UserDatabase*>(
+               &_UserDatabase_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     6;
 
-  friend void swap(UserDB& a, UserDB& b) {
+  friend void swap(UserDatabase& a, UserDatabase& b) {
     a.Swap(&b);
   }
-  inline void Swap(UserDB* other) {
+  inline void Swap(UserDatabase* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -1545,7 +1545,7 @@ class UserDB final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(UserDB* other) {
+  void UnsafeArenaSwap(UserDatabase* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -1553,14 +1553,14 @@ class UserDB final :
 
   // implements Message ----------------------------------------------
 
-  UserDB* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<UserDB>(arena);
+  UserDatabase* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<UserDatabase>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const UserDB& from);
+  void CopyFrom(const UserDatabase& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const UserDB& from) {
-    UserDB::MergeImpl(*this, from);
+  void MergeFrom( const UserDatabase& from) {
+    UserDatabase::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -1578,15 +1578,15 @@ class UserDB final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(UserDB* other);
+  void InternalSwap(UserDatabase* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proto.UserDB";
+    return "proto.UserDatabase";
   }
   protected:
-  explicit UserDB(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UserDatabase(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -1597,34 +1597,34 @@ class UserDB final :
 
   // nested types ----------------------------------------------------
 
-  typedef UserDB_ParameterEnum ParameterEnum;
+  typedef UserDatabase_ParameterEnum ParameterEnum;
   static constexpr ParameterEnum NONE =
-    UserDB_ParameterEnum_NONE;
-  static constexpr ParameterEnum ALLOW_FREE_LOGIN =
-    UserDB_ParameterEnum_ALLOW_FREE_LOGIN;
+    UserDatabase_ParameterEnum_NONE;
+  static constexpr ParameterEnum ALLOW_USER_CREATION =
+    UserDatabase_ParameterEnum_ALLOW_USER_CREATION;
   static inline bool ParameterEnum_IsValid(int value) {
-    return UserDB_ParameterEnum_IsValid(value);
+    return UserDatabase_ParameterEnum_IsValid(value);
   }
   static constexpr ParameterEnum ParameterEnum_MIN =
-    UserDB_ParameterEnum_ParameterEnum_MIN;
+    UserDatabase_ParameterEnum_ParameterEnum_MIN;
   static constexpr ParameterEnum ParameterEnum_MAX =
-    UserDB_ParameterEnum_ParameterEnum_MAX;
+    UserDatabase_ParameterEnum_ParameterEnum_MAX;
   static constexpr int ParameterEnum_ARRAYSIZE =
-    UserDB_ParameterEnum_ParameterEnum_ARRAYSIZE;
+    UserDatabase_ParameterEnum_ParameterEnum_ARRAYSIZE;
   static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
   ParameterEnum_descriptor() {
-    return UserDB_ParameterEnum_descriptor();
+    return UserDatabase_ParameterEnum_descriptor();
   }
   template<typename T>
   static inline const std::string& ParameterEnum_Name(T enum_t_value) {
     static_assert(::std::is_same<T, ParameterEnum>::value ||
       ::std::is_integral<T>::value,
       "Incorrect type passed to function ParameterEnum_Name.");
-    return UserDB_ParameterEnum_Name(enum_t_value);
+    return UserDatabase_ParameterEnum_Name(enum_t_value);
   }
   static inline bool ParameterEnum_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
       ParameterEnum* value) {
-    return UserDB_ParameterEnum_Parse(name, value);
+    return UserDatabase_ParameterEnum_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
@@ -1633,20 +1633,20 @@ class UserDB final :
     kFeaturesFieldNumber = 1,
     kUsersFieldNumber = 2,
   };
-  // repeated .proto.UserDB.ParameterEnum features = 1;
+  // repeated .proto.UserDatabase.ParameterEnum features = 1;
   int features_size() const;
   private:
   int _internal_features_size() const;
   public:
   void clear_features();
   private:
-  ::proto::UserDB_ParameterEnum _internal_features(int index) const;
-  void _internal_add_features(::proto::UserDB_ParameterEnum value);
+  ::proto::UserDatabase_ParameterEnum _internal_features(int index) const;
+  void _internal_add_features(::proto::UserDatabase_ParameterEnum value);
   ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>* _internal_mutable_features();
   public:
-  ::proto::UserDB_ParameterEnum features(int index) const;
-  void set_features(int index, ::proto::UserDB_ParameterEnum value);
-  void add_features(::proto::UserDB_ParameterEnum value);
+  ::proto::UserDatabase_ParameterEnum features(int index) const;
+  void set_features(int index, ::proto::UserDatabase_ParameterEnum value);
+  void add_features(::proto::UserDatabase_ParameterEnum value);
   const ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>& features() const;
   ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>* mutable_features();
 
@@ -1668,7 +1668,7 @@ class UserDB final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::User >&
       users() const;
 
-  // @@protoc_insertion_point(class_scope:proto.UserDB)
+  // @@protoc_insertion_point(class_scope:proto.UserDatabase)
  private:
   class _Internal;
 
@@ -1686,24 +1686,24 @@ class UserDB final :
 };
 // -------------------------------------------------------------------
 
-class World final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.World) */ {
+class WorldDatabase final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.WorldDatabase) */ {
  public:
-  inline World() : World(nullptr) {}
-  ~World() override;
-  explicit PROTOBUF_CONSTEXPR World(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline WorldDatabase() : WorldDatabase(nullptr) {}
+  ~WorldDatabase() override;
+  explicit PROTOBUF_CONSTEXPR WorldDatabase(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  World(const World& from);
-  World(World&& from) noexcept
-    : World() {
+  WorldDatabase(const WorldDatabase& from);
+  WorldDatabase(WorldDatabase&& from) noexcept
+    : WorldDatabase() {
     *this = ::std::move(from);
   }
 
-  inline World& operator=(const World& from) {
+  inline WorldDatabase& operator=(const WorldDatabase& from) {
     CopyFrom(from);
     return *this;
   }
-  inline World& operator=(World&& from) noexcept {
+  inline WorldDatabase& operator=(WorldDatabase&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -1726,20 +1726,20 @@ class World final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const World& default_instance() {
+  static const WorldDatabase& default_instance() {
     return *internal_default_instance();
   }
-  static inline const World* internal_default_instance() {
-    return reinterpret_cast<const World*>(
-               &_World_default_instance_);
+  static inline const WorldDatabase* internal_default_instance() {
+    return reinterpret_cast<const WorldDatabase*>(
+               &_WorldDatabase_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     7;
 
-  friend void swap(World& a, World& b) {
+  friend void swap(WorldDatabase& a, WorldDatabase& b) {
     a.Swap(&b);
   }
-  inline void Swap(World* other) {
+  inline void Swap(WorldDatabase* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -1752,7 +1752,7 @@ class World final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(World* other) {
+  void UnsafeArenaSwap(WorldDatabase* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -1760,14 +1760,14 @@ class World final :
 
   // implements Message ----------------------------------------------
 
-  World* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<World>(arena);
+  WorldDatabase* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<WorldDatabase>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const World& from);
+  void CopyFrom(const WorldDatabase& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const World& from) {
-    World::MergeImpl(*this, from);
+  void MergeFrom( const WorldDatabase& from) {
+    WorldDatabase::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -1785,15 +1785,15 @@ class World final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(World* other);
+  void InternalSwap(WorldDatabase* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proto.World";
+    return "proto.WorldDatabase";
   }
   protected:
-  explicit World(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit WorldDatabase(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -1856,7 +1856,7 @@ class World final :
   void _internal_set_time(double value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proto.World)
+  // @@protoc_insertion_point(class_scope:proto.WorldDatabase)
  private:
   class _Internal;
 
@@ -4845,193 +4845,193 @@ inline void Character::set_user_id(int32_t value) {
 
 // -------------------------------------------------------------------
 
-// UserDB
+// UserDatabase
 
-// repeated .proto.UserDB.ParameterEnum features = 1;
-inline int UserDB::_internal_features_size() const {
+// repeated .proto.UserDatabase.ParameterEnum features = 1;
+inline int UserDatabase::_internal_features_size() const {
   return _impl_.features_.size();
 }
-inline int UserDB::features_size() const {
+inline int UserDatabase::features_size() const {
   return _internal_features_size();
 }
-inline void UserDB::clear_features() {
+inline void UserDatabase::clear_features() {
   _impl_.features_.Clear();
 }
-inline ::proto::UserDB_ParameterEnum UserDB::_internal_features(int index) const {
-  return static_cast< ::proto::UserDB_ParameterEnum >(_impl_.features_.Get(index));
+inline ::proto::UserDatabase_ParameterEnum UserDatabase::_internal_features(int index) const {
+  return static_cast< ::proto::UserDatabase_ParameterEnum >(_impl_.features_.Get(index));
 }
-inline ::proto::UserDB_ParameterEnum UserDB::features(int index) const {
-  // @@protoc_insertion_point(field_get:proto.UserDB.features)
+inline ::proto::UserDatabase_ParameterEnum UserDatabase::features(int index) const {
+  // @@protoc_insertion_point(field_get:proto.UserDatabase.features)
   return _internal_features(index);
 }
-inline void UserDB::set_features(int index, ::proto::UserDB_ParameterEnum value) {
+inline void UserDatabase::set_features(int index, ::proto::UserDatabase_ParameterEnum value) {
   _impl_.features_.Set(index, value);
-  // @@protoc_insertion_point(field_set:proto.UserDB.features)
+  // @@protoc_insertion_point(field_set:proto.UserDatabase.features)
 }
-inline void UserDB::_internal_add_features(::proto::UserDB_ParameterEnum value) {
+inline void UserDatabase::_internal_add_features(::proto::UserDatabase_ParameterEnum value) {
   _impl_.features_.Add(value);
 }
-inline void UserDB::add_features(::proto::UserDB_ParameterEnum value) {
+inline void UserDatabase::add_features(::proto::UserDatabase_ParameterEnum value) {
   _internal_add_features(value);
-  // @@protoc_insertion_point(field_add:proto.UserDB.features)
+  // @@protoc_insertion_point(field_add:proto.UserDatabase.features)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>&
-UserDB::features() const {
-  // @@protoc_insertion_point(field_list:proto.UserDB.features)
+UserDatabase::features() const {
+  // @@protoc_insertion_point(field_list:proto.UserDatabase.features)
   return _impl_.features_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>*
-UserDB::_internal_mutable_features() {
+UserDatabase::_internal_mutable_features() {
   return &_impl_.features_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>*
-UserDB::mutable_features() {
-  // @@protoc_insertion_point(field_mutable_list:proto.UserDB.features)
+UserDatabase::mutable_features() {
+  // @@protoc_insertion_point(field_mutable_list:proto.UserDatabase.features)
   return _internal_mutable_features();
 }
 
 // repeated .proto.User users = 2;
-inline int UserDB::_internal_users_size() const {
+inline int UserDatabase::_internal_users_size() const {
   return _impl_.users_.size();
 }
-inline int UserDB::users_size() const {
+inline int UserDatabase::users_size() const {
   return _internal_users_size();
 }
-inline void UserDB::clear_users() {
+inline void UserDatabase::clear_users() {
   _impl_.users_.Clear();
 }
-inline ::proto::User* UserDB::mutable_users(int index) {
-  // @@protoc_insertion_point(field_mutable:proto.UserDB.users)
+inline ::proto::User* UserDatabase::mutable_users(int index) {
+  // @@protoc_insertion_point(field_mutable:proto.UserDatabase.users)
   return _impl_.users_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::User >*
-UserDB::mutable_users() {
-  // @@protoc_insertion_point(field_mutable_list:proto.UserDB.users)
+UserDatabase::mutable_users() {
+  // @@protoc_insertion_point(field_mutable_list:proto.UserDatabase.users)
   return &_impl_.users_;
 }
-inline const ::proto::User& UserDB::_internal_users(int index) const {
+inline const ::proto::User& UserDatabase::_internal_users(int index) const {
   return _impl_.users_.Get(index);
 }
-inline const ::proto::User& UserDB::users(int index) const {
-  // @@protoc_insertion_point(field_get:proto.UserDB.users)
+inline const ::proto::User& UserDatabase::users(int index) const {
+  // @@protoc_insertion_point(field_get:proto.UserDatabase.users)
   return _internal_users(index);
 }
-inline ::proto::User* UserDB::_internal_add_users() {
+inline ::proto::User* UserDatabase::_internal_add_users() {
   return _impl_.users_.Add();
 }
-inline ::proto::User* UserDB::add_users() {
+inline ::proto::User* UserDatabase::add_users() {
   ::proto::User* _add = _internal_add_users();
-  // @@protoc_insertion_point(field_add:proto.UserDB.users)
+  // @@protoc_insertion_point(field_add:proto.UserDatabase.users)
   return _add;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::User >&
-UserDB::users() const {
-  // @@protoc_insertion_point(field_list:proto.UserDB.users)
+UserDatabase::users() const {
+  // @@protoc_insertion_point(field_list:proto.UserDatabase.users)
   return _impl_.users_;
 }
 
 // -------------------------------------------------------------------
 
-// World
+// WorldDatabase
 
 // repeated .proto.Element elements = 2;
-inline int World::_internal_elements_size() const {
+inline int WorldDatabase::_internal_elements_size() const {
   return _impl_.elements_.size();
 }
-inline int World::elements_size() const {
+inline int WorldDatabase::elements_size() const {
   return _internal_elements_size();
 }
-inline void World::clear_elements() {
+inline void WorldDatabase::clear_elements() {
   _impl_.elements_.Clear();
 }
-inline ::proto::Element* World::mutable_elements(int index) {
-  // @@protoc_insertion_point(field_mutable:proto.World.elements)
+inline ::proto::Element* WorldDatabase::mutable_elements(int index) {
+  // @@protoc_insertion_point(field_mutable:proto.WorldDatabase.elements)
   return _impl_.elements_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::Element >*
-World::mutable_elements() {
-  // @@protoc_insertion_point(field_mutable_list:proto.World.elements)
+WorldDatabase::mutable_elements() {
+  // @@protoc_insertion_point(field_mutable_list:proto.WorldDatabase.elements)
   return &_impl_.elements_;
 }
-inline const ::proto::Element& World::_internal_elements(int index) const {
+inline const ::proto::Element& WorldDatabase::_internal_elements(int index) const {
   return _impl_.elements_.Get(index);
 }
-inline const ::proto::Element& World::elements(int index) const {
-  // @@protoc_insertion_point(field_get:proto.World.elements)
+inline const ::proto::Element& WorldDatabase::elements(int index) const {
+  // @@protoc_insertion_point(field_get:proto.WorldDatabase.elements)
   return _internal_elements(index);
 }
-inline ::proto::Element* World::_internal_add_elements() {
+inline ::proto::Element* WorldDatabase::_internal_add_elements() {
   return _impl_.elements_.Add();
 }
-inline ::proto::Element* World::add_elements() {
+inline ::proto::Element* WorldDatabase::add_elements() {
   ::proto::Element* _add = _internal_add_elements();
-  // @@protoc_insertion_point(field_add:proto.World.elements)
+  // @@protoc_insertion_point(field_add:proto.WorldDatabase.elements)
   return _add;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::Element >&
-World::elements() const {
-  // @@protoc_insertion_point(field_list:proto.World.elements)
+WorldDatabase::elements() const {
+  // @@protoc_insertion_point(field_list:proto.WorldDatabase.elements)
   return _impl_.elements_;
 }
 
 // repeated .proto.Character characters = 3;
-inline int World::_internal_characters_size() const {
+inline int WorldDatabase::_internal_characters_size() const {
   return _impl_.characters_.size();
 }
-inline int World::characters_size() const {
+inline int WorldDatabase::characters_size() const {
   return _internal_characters_size();
 }
-inline void World::clear_characters() {
+inline void WorldDatabase::clear_characters() {
   _impl_.characters_.Clear();
 }
-inline ::proto::Character* World::mutable_characters(int index) {
-  // @@protoc_insertion_point(field_mutable:proto.World.characters)
+inline ::proto::Character* WorldDatabase::mutable_characters(int index) {
+  // @@protoc_insertion_point(field_mutable:proto.WorldDatabase.characters)
   return _impl_.characters_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::Character >*
-World::mutable_characters() {
-  // @@protoc_insertion_point(field_mutable_list:proto.World.characters)
+WorldDatabase::mutable_characters() {
+  // @@protoc_insertion_point(field_mutable_list:proto.WorldDatabase.characters)
   return &_impl_.characters_;
 }
-inline const ::proto::Character& World::_internal_characters(int index) const {
+inline const ::proto::Character& WorldDatabase::_internal_characters(int index) const {
   return _impl_.characters_.Get(index);
 }
-inline const ::proto::Character& World::characters(int index) const {
-  // @@protoc_insertion_point(field_get:proto.World.characters)
+inline const ::proto::Character& WorldDatabase::characters(int index) const {
+  // @@protoc_insertion_point(field_get:proto.WorldDatabase.characters)
   return _internal_characters(index);
 }
-inline ::proto::Character* World::_internal_add_characters() {
+inline ::proto::Character* WorldDatabase::_internal_add_characters() {
   return _impl_.characters_.Add();
 }
-inline ::proto::Character* World::add_characters() {
+inline ::proto::Character* WorldDatabase::add_characters() {
   ::proto::Character* _add = _internal_add_characters();
-  // @@protoc_insertion_point(field_add:proto.World.characters)
+  // @@protoc_insertion_point(field_add:proto.WorldDatabase.characters)
   return _add;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::Character >&
-World::characters() const {
-  // @@protoc_insertion_point(field_list:proto.World.characters)
+WorldDatabase::characters() const {
+  // @@protoc_insertion_point(field_list:proto.WorldDatabase.characters)
   return _impl_.characters_;
 }
 
 // double time = 4;
-inline void World::clear_time() {
+inline void WorldDatabase::clear_time() {
   _impl_.time_ = 0;
 }
-inline double World::_internal_time() const {
+inline double WorldDatabase::_internal_time() const {
   return _impl_.time_;
 }
-inline double World::time() const {
-  // @@protoc_insertion_point(field_get:proto.World.time)
+inline double WorldDatabase::time() const {
+  // @@protoc_insertion_point(field_get:proto.WorldDatabase.time)
   return _internal_time();
 }
-inline void World::_internal_set_time(double value) {
+inline void WorldDatabase::_internal_set_time(double value) {
   
   _impl_.time_ = value;
 }
-inline void World::set_time(double value) {
+inline void WorldDatabase::set_time(double value) {
   _internal_set_time(value);
-  // @@protoc_insertion_point(field_set:proto.World.time)
+  // @@protoc_insertion_point(field_set:proto.WorldDatabase.time)
 }
 
 // -------------------------------------------------------------------
@@ -5893,10 +5893,10 @@ template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::proto::Element_TypeEnum>() {
   return ::proto::Element_TypeEnum_descriptor();
 }
-template <> struct is_proto_enum< ::proto::UserDB_ParameterEnum> : ::std::true_type {};
+template <> struct is_proto_enum< ::proto::UserDatabase_ParameterEnum> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::proto::UserDB_ParameterEnum>() {
-  return ::proto::UserDB_ParameterEnum_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::proto::UserDatabase_ParameterEnum>() {
+  return ::proto::UserDatabase_ParameterEnum_descriptor();
 }
 template <> struct is_proto_enum< ::proto::ReturnEnum> : ::std::true_type {};
 template <>
