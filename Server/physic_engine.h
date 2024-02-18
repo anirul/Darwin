@@ -4,7 +4,7 @@
 
 #include "Common/darwin_service.grpc.pb.h"
 #include "Server/element_info.h"
-#include "Server/player_info.h"
+#include "Server/character_info.h"
 
 namespace darwin {
 
@@ -15,15 +15,15 @@ namespace darwin {
     public:
         PhysicEngine(
             std::map<std::string, ElementInfo>& element_infos,
-            std::map<std::string, PlayerInfo>& player_infos)
-            : element_infos_(element_infos), player_infos_(player_infos) {}
+            std::map<std::string, CharacterInfo>& character_infos)
+            : element_infos_(element_infos), character_infos_(character_infos) {}
         void ComputeAllInfo(double now);
 
     private:
         void ComputeElementInfo(
             double now,
             const std::vector<proto::Physic>& ground_physics);
-        void ComputePlayerInfo(
+        void ComputeCharacterInfo(
             double now,
             const std::vector<proto::Physic>& ground_physics);
         glm::vec3 ComputeGravitationalForce(
@@ -52,7 +52,7 @@ namespace darwin {
 
     protected:
         std::map<std::string, ElementInfo>& element_infos_;
-        std::map<std::string, PlayerInfo>& player_infos_;
+        std::map<std::string, CharacterInfo>& character_infos_;
     };
 
 }  // namespace darwin

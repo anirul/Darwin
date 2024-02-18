@@ -21,7 +21,7 @@ namespace darwin::modal {
         ModalDisconnected(
             const std::string& name, 
             ModalDisconnectedParams& params);
-        ~ModalDisconnected() override;
+        ~ModalDisconnected() override = default;
         bool DrawCallback() override;
         bool End() const override;
         std::string GetName() const override;
@@ -30,6 +30,7 @@ namespace darwin::modal {
     private:
         std::string name_;
         ModalDisconnectedParams& params_;
+        bool end_ = false;
     };
 
 } // namespace darwin::modal.

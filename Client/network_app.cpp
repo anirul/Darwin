@@ -6,7 +6,7 @@ namespace darwin {
 
     void NetworkApp::EnterWorld(const std::string& name) {
         if (name_ == "") {
-            name_ = "localhost:45233";
+            name_ = "localhost:45323";
         } 
         else {
             name_ = name;

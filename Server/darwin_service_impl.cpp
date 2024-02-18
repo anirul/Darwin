@@ -41,21 +41,21 @@ namespace darwin {
         return grpc::Status::OK;
     }
 
-    grpc::Status DarwinServiceImpl::Push(
+    grpc::Status DarwinServiceImpl::ReportMovement(
         grpc::ServerContext* context,
-        const proto::PushRequest* request,
-        proto::PushResponse* response) 
+        const proto::ReportMovementRequest* request,
+        proto::ReportMovementResponse* response)
     {
         std::cout << std::format("Got a push request from {}:{}\n", request->name(), context->peer());
         {
             std::lock_guard<std::mutex> lock(writers_mutex_);
             // Delete previous entry.
-            proto::Player player;
-            player.set_name(request->name());
-            *player.mutable_physic() = request->physic();
-            for (const auto& time_player : time_players_) {
-                if (time_player.second.name() == request->name()) {
-                    time_players_.erase(time_player.first);
+            proto::Character character;
+            character.set_name(request->name());
+            *character.mutable_physic() = request->physic();
+            for (const auto& time_character : time_characters_) {
+                if (time_character.second.name() == request->name()) {
+                    time_characters_.erase(time_character.first);
                     break;
                 }
             }
@@ -64,8 +64,26 @@ namespace darwin {
                 std::chrono::duration_cast<std::chrono::duration<double>>(
                     now.time_since_epoch())
                 .count();
-            time_players_.insert({ time, player });
+            time_characters_.insert({ time, character });
         }
+        return grpc::Status::OK;
+    }
+
+    grpc::Status DarwinServiceImpl::Login(
+        grpc::ServerContext* context,
+        const proto::LoginRequest* request,
+        proto::LoginResponse* response)
+    {
+        throw std::runtime_error("Not implemented");
+        return grpc::Status::OK;
+    }
+
+    grpc::Status DarwinServiceImpl::CreateCharacter(
+        grpc::ServerContext* context,
+        const proto::CreateCharacterRequest* request,
+        proto::CreateCharacterResponse* response)
+    {
+        throw std::runtime_error("Not implemented");
         return grpc::Status::OK;
     }
 
@@ -98,17 +116,17 @@ namespace darwin {
         }
     }
 
-    std::map<double, proto::Player>& DarwinServiceImpl::GetTimePlayers()
+    std::map<double, proto::Character>& DarwinServiceImpl::GetTimeCharacters()
     {
-        return time_players_;
+        return time_characters_;
     }
 
-    void DarwinServiceImpl::ClearTimePlayers()
+    void DarwinServiceImpl::ClearTimeCharacters()
     {
-        time_players_.clear();
+        time_characters_.clear();
     }
 
-    std::mutex& DarwinServiceImpl::GetTimePLayersMutex()
+    std::mutex& DarwinServiceImpl::GetTimeCharacterMutex()
     {
         return writers_mutex_;
     }

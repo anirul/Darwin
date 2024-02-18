@@ -158,7 +158,7 @@ namespace darwin {
         // Update the physics.
         SetElementPhysics(proto::Element::GROUND, ground_physics);
         ComputeElementInfo(now, ground_physics);
-        ComputePlayerInfo(now, ground_physics);
+        ComputeCharacterInfo(now, ground_physics);
     }
 
     void PhysicEngine::ComputeElementInfo(
@@ -203,14 +203,14 @@ namespace darwin {
         }
     }
 
-    void PhysicEngine::ComputePlayerInfo(
+    void PhysicEngine::ComputeCharacterInfo(
         double now,
         const std::vector<proto::Physic>& ground_physics)
     {
-        std::vector<proto::Physic> player_physics;
-        for (auto& player_info : player_infos_) {
-            double time = player_info.second.time;
-            auto physic = player_info.second.player.physic();
+        std::vector<proto::Physic> character_physics;
+        for (auto& character_info : character_infos_) {
+            double time = character_info.second.time;
+            auto physic = character_info.second.character.physic();
             glm::dvec3 F(0.0);
             for (const auto& ground_physic : ground_physics) {
                 if (IsIntersect(ground_physic, physic)) {
@@ -227,9 +227,9 @@ namespace darwin {
                 ProtoVector2Glm(physic.position()) +
                 ProtoVector2Glm(physic.position_dt()) * delta;
             *physic.mutable_position() = Glm2ProtoVector(position);
-            *player_info.second.player.mutable_physic() = physic;
+            *character_info.second.character.mutable_physic() = physic;
             // Update the time.
-            player_info.second.time = now;
+            character_info.second.time = now;
         }
     }
 

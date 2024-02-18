@@ -7,19 +7,21 @@ namespace darwin {
         return elements_;
     }
 
-    std::vector<proto::Player> WorldClient::GetPlayers() const {
+    std::vector<proto::Character> WorldClient::GetCharacters() const {
         std::lock_guard<std::mutex> lock(mutex_);
-        return players_;
+        return characters_;
     }
 
-    void WorldClient::SetElements(const std::vector<proto::Element>& elements) {
+    void WorldClient::SetElements(
+        const std::vector<proto::Element>& elements) {
         std::lock_guard<std::mutex> lock(mutex_);
         elements_ = elements;
     }
 
-    void WorldClient::SetPlayers(const std::vector<proto::Player>& players) {
+    void WorldClient::SetCharacters(
+        const std::vector<proto::Character>& characters) {
         std::lock_guard<std::mutex> lock(mutex_);
-        players_ = players;
+        characters_ = characters;
     }
 
 } // namespace darwin.

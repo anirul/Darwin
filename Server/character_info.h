@@ -4,9 +4,9 @@
 
 namespace darwin {
 
-    struct PlayerInfo {
+    struct CharacterInfo {
         double time;
-        proto::Player player;
+        proto::Character character;
     };
 
 }  // End namespace darwin.

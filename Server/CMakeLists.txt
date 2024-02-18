@@ -11,7 +11,11 @@ add_executable(DarwinServer
     main.cpp
     physic_engine.cpp
     physic_engine.h
-    player_info.h
+    character_info.h
+    user_state.cpp
+    user_state.h
+    user_state_file.cpp
+    user_state_file.h
     world_state.cpp
     world_state.h
     world_state_file.cpp

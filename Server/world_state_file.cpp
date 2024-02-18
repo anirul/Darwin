@@ -10,9 +10,9 @@ namespace darwin {
     {
         proto::World world;
         world.set_time(world_state.GetLastUpdated());
-        for (const auto& player : world_state.GetPlayers())
+        for (const auto& character : world_state.GetCharacters())
         {
-            *world.add_players() = player;
+            *world.add_characters() = character;
         }
         for (const auto& element : world_state.GetElements())
         {
@@ -27,9 +27,9 @@ namespace darwin {
     {
         proto::World world = LoadProtoFromJson<proto::World>(str);
         double time = world.time();
-        for (const auto& player : world.players())
+        for (const auto& character : world.characters())
         {
-            world_state.AddPlayer(time, player);
+            world_state.AddCharacter(time, character);
         }
         for (const auto& element : world.elements())
         {
@@ -44,9 +44,9 @@ namespace darwin {
     {
         proto::World word = LoadProtoFromJsonFile<proto::World>(filename);
         double time = word.time();
-        for (const auto& player : word.players())
+        for (const auto& character : word.characters())
         {
-            world_state.AddPlayer(time, player);
+            world_state.AddCharacter(time, character);
         }
         for (const auto& element : word.elements())
         {
@@ -61,9 +61,9 @@ namespace darwin {
     {
         proto::World word;
         word.set_time(world_state.GetLastUpdated());
-        for (const auto& player : world_state.GetPlayers())
+        for (const auto& character : world_state.GetCharacters())
         {
-            *word.add_players() = player;
+            *word.add_characters() = character;
         }
         for (const auto& element : world_state.GetElements())
         {

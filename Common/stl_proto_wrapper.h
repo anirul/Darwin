@@ -71,14 +71,19 @@ namespace darwin {
         std::ofstream ofs(filename.string(), std::ios::out);
         if (!ofs.is_open())
         {
-            throw std::runtime_error("Couldn't open file: " + filename.string());
+            throw std::runtime_error(
+                "Couldn't open file: " + filename.string());
         }
         ofs << contents;
     }
 
-    bool operator==(const proto::Player& player_left, const proto::Player& player_right);
+    bool operator==(
+        const proto::Character& character_left, 
+        const proto::Character& character_right);
 
-    bool operator==(const proto::Element& element_left, const proto::Element& element_right);
+    bool operator==(
+        const proto::Element& element_left, 
+        const proto::Element& element_right);
 
     // Helper functions.
     proto::Element CreateBasicElement(
@@ -87,7 +92,7 @@ namespace darwin {
         proto::Vector3 vector3,
         double mass,
         double radius);
-    proto::Player CreateBasicPlayer(
+    proto::Character CreateBasicCharacter(
         const std::string& name,
         proto::Vector3 vector3,
         double mass,

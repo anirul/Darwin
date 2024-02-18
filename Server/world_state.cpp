@@ -5,36 +5,38 @@
 
 namespace darwin {
 
-    void WorldState::AddPlayer(double time, const proto::Player& player) {
+    void WorldState::AddCharacter(
+        double time, 
+        const proto::Character& character) {
         std::scoped_lock l(mutex_info_);
-        auto it = player_infos_.find(player.name());
-        if (it == player_infos_.end()) {
-            PlayerInfo player_info{ time, player };
-            player_infos_.emplace(player.name(), player_info);
+        auto it = character_infos_.find(character.name());
+        if (it == character_infos_.end()) {
+            CharacterInfo character_info{ time, character };
+            character_infos_.emplace(character.name(), character_info);
         }
         else {
             it->second.time = time;
-            it->second.player = player;
+            it->second.character = character;
         }
     }
 
-    void WorldState::UpdatePlayer(
+    void WorldState::UpdateCharacter(
         double time, 
         const std::string& name, 
         const proto::Physic& physic) 
     {
         std::scoped_lock l(mutex_info_);
-        auto it = player_infos_.find(name);
-        if (it == player_infos_.end()) {
-            proto::Player player;
-            player.set_name(name);
-            *player.mutable_physic() = physic;
-            PlayerInfo player_info{ time, player };
-            player_infos_.emplace(name, player_info);
+        auto it = character_infos_.find(name);
+        if (it == character_infos_.end()) {
+            proto::Character character;
+            character.set_name(name);
+            *character.mutable_physic() = physic;
+            CharacterInfo character_info{ time, character };
+            character_infos_.emplace(name, character_info);
         }
         else {
             it->second.time = time;
-            *it->second.player.mutable_physic() = physic;
+            *it->second.character.mutable_physic() = physic;
         }
     }
 
@@ -55,14 +57,14 @@ namespace darwin {
         std::scoped_lock l(mutex_info_);
         if (time != last_updated_) {
             last_updated_ = time;
-            PhysicEngine physic_engine(element_infos_, player_infos_);
+            PhysicEngine physic_engine(element_infos_, character_infos_);
             physic_engine.ComputeAllInfo(time);
         }
         FillVectorsLocked();
     }
 
-    const std::vector<proto::Player>& WorldState::GetPlayers() const {
-        return players_;
+    const std::vector<proto::Character>& WorldState::GetCharacters() const {
+        return characters_;
     }
 
     const std::vector<proto::Element>& WorldState::GetElements() const {
@@ -74,10 +76,10 @@ namespace darwin {
     }
 
     void WorldState::FillVectorsLocked() {
-        players_.clear();
+        characters_.clear();
         elements_.clear();
-        for (const auto& [_, player_info] : player_infos_) {
-            players_.push_back(player_info.player);
+        for (const auto& [_, character_info] : character_infos_) {
+            characters_.push_back(character_info.character);
         }
         for (const auto& [_, element_info] : element_infos_) {
             elements_.push_back(element_info.element);
@@ -88,14 +90,14 @@ namespace darwin {
         if (last_updated_ != other.last_updated_) {
             return false;
         }
-        if (player_infos_.size() != other.player_infos_.size()) {
+        if (character_infos_.size() != other.character_infos_.size()) {
             return false;
         }
         if (element_infos_.size() != other.element_infos_.size()) {
             return false;
         }
-        for (size_t i = 0; i < players_.size(); ++i) {
-            if (!(players_[i] == other.players_[i])) {
+        for (size_t i = 0; i < characters_.size(); ++i) {
+            if (!(characters_[i] == other.characters_[i])) {
                 return false;
             }
         }

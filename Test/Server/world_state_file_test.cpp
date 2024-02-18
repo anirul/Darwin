@@ -20,17 +20,17 @@ namespace test {
                 darwin::CreateBasicVector3(4.0, 5.0, 6.0),
                 2.0,
                 2.0));
-        world_state_.AddPlayer(
+        world_state_.AddCharacter(
             0.0,
-            darwin::CreateBasicPlayer(
-                "player1",
+            darwin::CreateBasicCharacter(
+                "character1",
                 darwin::CreateBasicVector3(7.0, 8.0, 9.0),
                 3.0,
                 3.0));
-        world_state_.AddPlayer(
+        world_state_.AddCharacter(
             0.0,
-            darwin::CreateBasicPlayer(
-                "player2",
+            darwin::CreateBasicCharacter(
+                "character2",
                 darwin::CreateBasicVector3(10.0, 11.0, 12.0),
                 4.0,
                 4.0));
@@ -47,7 +47,7 @@ namespace test {
 
     TEST_F(WorldStateFileTest, LoadAndSaveFromLocalProto) {
         PopulateWorldState();
-        // Forced to copy from map to players/elements vectors.
+        // Forced to copy from map to characters/elements vectors.
         world_state_.Update(0.0);
         std::string json;
         EXPECT_NO_THROW(
@@ -59,7 +59,7 @@ namespace test {
             darwin::LoadWorldStateFromString(
                 world_state, 
                 json));
-        // Forced to copy from map to players/elements vectors.
+        // Forced to copy from map to characters/elements vectors.
         world_state.Update(0.0);
         EXPECT_EQ(world_state_, world_state);
     }

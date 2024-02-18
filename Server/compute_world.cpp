@@ -17,24 +17,24 @@ namespace darwin {
                 .count();
             // Update the players.
             {
-                std::lock_guard<std::mutex> lock(service.GetTimePLayersMutex());
-                for (const auto& time_player : service.GetTimePlayers()) {
-                    world_state.UpdatePlayer(
+                std::lock_guard<std::mutex> lock(service.GetTimeCharacterMutex());
+                for (const auto& time_player : service.GetTimeCharacters()) {
+                    world_state.UpdateCharacter(
                         time_player.first, 
                         time_player.second.name(), 
                         time_player.second.physic());
                 }
-                service.ClearTimePlayers();
+                service.ClearTimeCharacters();
             }
             // Update the elements in the world.
             world_state.Update(time);
             const auto& elements = world_state.GetElements();
-            const auto& players = world_state.GetPlayers();
+            const auto& characters = world_state.GetCharacters();
             proto::UpdateResponse response;
             response.mutable_elements()->CopyFrom(
                 { elements.begin(), elements.end() });
-            response.mutable_players()->CopyFrom(
-                { players.begin(), players.end() });
+            response.mutable_characters()->CopyFrom(
+                { characters.begin(), characters.end() });
             response.set_time(time);
             service.BroadcastUpdate(response);
             std::this_thread::sleep_until(now + std::chrono::milliseconds(500));

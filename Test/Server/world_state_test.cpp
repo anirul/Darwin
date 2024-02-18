@@ -116,7 +116,7 @@ namespace test {
         EXPECT_NEAR(height, 10.1, 0.01);
     }
 
-    TEST_F(WorldStateTest, WorldStateTestGroundAndPlayer) {
+    TEST_F(WorldStateTest, WorldStateTestGroundAndCharacter) {
         EXPECT_FALSE(world_state_);
         world_state_ = std::make_unique<darwin::WorldState>();
         EXPECT_TRUE(world_state_);
@@ -130,11 +130,11 @@ namespace test {
                 darwin::CreateBasicVector3(-10.0, 20.0, -30.0),
                 1'000'000'000.0,
                 10.0));
-        // a player with a mass of 80'000.0g (80kg) and a radius of 1.0.
-        world_state_->AddPlayer(
+        // a character with a mass of 80'000.0g (80kg) and a radius of 1.0.
+        world_state_->AddCharacter(
             0.0, 
-            darwin::CreateBasicPlayer(
-                "player",
+            darwin::CreateBasicCharacter(
+                "character",
                 darwin::CreateBasicVector3(1.0, -4.0, 2.0),
                 80'000.0,
                 1.0));
@@ -142,12 +142,12 @@ namespace test {
         double time = 1.0;
         for (int i = 0; i < 10'000; ++i) {
             world_state_->Update(time++);
-            auto players = world_state_->GetPlayers();
+            auto characters = world_state_->GetCharacters();
             auto elements = world_state_->GetElements();
             EXPECT_EQ(elements.size(), 1);
-            EXPECT_EQ(players.size(), 1);
+            EXPECT_EQ(characters.size(), 1);
             auto distance = glm::distance(
-                darwin::ProtoVector2Glm(players[0].physic().position()), 
+                darwin::ProtoVector2Glm(characters[0].physic().position()), 
                 darwin::ProtoVector2Glm(elements[0].physic().position()));
             EXPECT_LE(distance, height + 0.01);
             height = (distance < 11.0) ? 11.0 : distance;

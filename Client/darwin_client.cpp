@@ -5,20 +5,22 @@ namespace darwin {
     DarwinClient::DarwinClient(const std::string& name, std::shared_ptr<grpc::Channel> channel)
         : stub_(proto::DarwinService::NewStub(channel)), name_(name) {}
 
-    void DarwinClient::Push(const proto::Physic& physic) {
-        proto::PushRequest request;
+    void DarwinClient::ReportMovement(const proto::Physic& physic) {
+        proto::ReportMovementRequest request;
         request.set_name(name_);
         *request.mutable_physic() = physic;
 
-        proto::PushResponse response;
+        proto::ReportMovementResponse response;
         grpc::ClientContext context;
 
-        grpc::Status status = stub_->Push(&context, request, &response);
+        // TODO(anirul): Check if the user is valid!
+
+        grpc::Status status = stub_->ReportMovement(&context, request, &response);
         if (status.ok()) {
-            logger_->info("Pushed physic: {}", physic.DebugString());
+            logger_->info("Report movement physic: {}", physic.DebugString());
         }
         else {
-            logger_->warn("Push failed: {}", status.error_message());
+            logger_->warn("Report movement failed: {}", status.error_message());
         }
     }
 
@@ -38,8 +40,11 @@ namespace darwin {
             // Process each response
             logger_->info("Received update for time: {}", response.time());
 
-            world_client.SetElements({ response.elements().begin(), response.elements().end() });
-            world_client.SetPlayers({ response.players().begin(), response.players().end() });
+            world_client.SetElements(
+                { response.elements().begin(), response.elements().end() });
+            world_client.SetCharacters(
+                { response.characters().begin(), 
+                  response.characters().end() });
         }
 
         // Finish the stream

@@ -11,6 +11,7 @@ message Vector3 {
 }
 
 // Vector 4 this is representing a quaternion (rotation).
+// Next: 5
 message Vector4 {
     double x = 1;
     double y = 2;
@@ -48,7 +49,7 @@ message Element {
         UKNOWN = 0;     // Unknown this is an error!
         GROUND = 1;     // From where the gravity is generated.
         EXPLOSION = 2;  // Explosion that push stuff around.
-        UPGRADE = 3;    // Upgrade to upgrade players.
+        UPGRADE = 3;    // Upgrade to upgrade character.
         GREEN = 4;      // Greenery (no effect on anything).
         BROWN = 5;      // Tree bark and non destructible elements.
         WATER = 6;      // Water.
@@ -56,10 +57,25 @@ message Element {
     TypeEnum type_enum = 4;
 }
 
-// Player it will be represented by a sphere on server.
+// User
 // Next: 4
-message Player {
-    // Player name.
+message User {
+    // User name.
+    string name = 1;
+    // Password this will be hashed and salted!
+    string password = 2;
+    // The password salt.
+    string salt = 3;
+    // Session tocken.
+    string session_tocken = 4;
+    // User id.
+    int32 user_id = 5;
+}
+
+// Character it will be represented by a sphere on server.
+// Next: 7
+message Character {
+    // Character name.
     string name = 1;
     // Material string.
     string material = 2;
@@ -69,17 +85,39 @@ message Player {
     Vector3 g_normal = 4;
     // G force (used for local computation).
     double g_force = 5;
+    // User parameters.
+    int32 user_id = 6;
+}
+
+// UserDB
+// Next: 3
+message UserDB {
+    // Features list.
+    enum ParameterEnum {
+        NONE = 0;
+        ALLOW_FREE_LOGIN = 1;
+    }
+    // Enable features list.
+    repeated ParameterEnum features = 1;
+    // Users list.
+    repeated User users = 2;
 }
 
 // World saved as a file.
-// Next: 1
+// Next: 4
 message World {
     // Elements list.
-    repeated Element elements = 1;
-    // Players list.
-    repeated Player players = 2;
+    repeated Element elements = 2;
+    // Characters list.
+    repeated Character characters = 3;
     // Present time on the server.
-    double time = 3;
+    double time = 4;
+}
+
+enum ReturnEnum {
+    RETURN_ERROR = 0;
+    RETURN_OK = 1;
+    RETURN_REJECTED = 2;
 }
 
 // UpdateRequest
@@ -90,41 +128,94 @@ message UpdateRequest {
 }
 
 // UpdateResponse
-// Next: 5
+// Next: 4
 message UpdateResponse {
-    // Player list and position.
-    repeated Player players = 1;
+    // Character list and position.
+    repeated Character characters = 1;
     // Elements list and position.
     repeated Element elements = 2;
     // Present time on the server.
     double time = 3;
 }
 
-// PushRequest
-// Next: 3
-message PushRequest {
-    // Player name.
+// ReportMovementRequest
+// Next: 4
+message ReportMovementRequest {
+    // Character name.
     string name = 1;
     // New physic.
     Physic physic = 2;
+    // Tocken.
+    string session_tocken = 3;
 }
 
-// PushResponse
-// Next: 1
-message PushResponse {}
+// ReportMovementResponse
+// Next: 3
+message ReportMovementResponse {
+    // Return enum.
+    ReturnEnum return_enum = 1;
+    // Present time on the server.
+    double time = 2;
+}
 
+// LoginRequest
+// Next: 3
+message LoginRequest {
+    // Character name.
+    string name = 1;
+    // Password this will be hashed!
+    string password = 2;
+    // The password salt (if needed).
+    string salt = 3;
+}
+
+// LoginResponse
+// Next: 3
+message LoginResponse {
+    // Is the password correct?
+    ReturnEnum return_enum = 1;
+    // Session tocken.
+    string session_tocken = 2;
+}
+
+// CreateCharacterRequest
+// Next: 2
+message CreateCharacterRequest {
+    Vector3 color = 1;
+}
+
+// CreateCharacterResponse
+// Next: 2
+message CreateCharacterResponse {
+    ReturnEnum return_enum = 1;
+}
+
+// PingRequest
+// Next: 2
 message PingRequest {
+    // Value to check.
     int32 value = 1;
 }
 
+// PingResponse
+// Next: 3
 message PingResponse {
+    // Returned value.
     int32 value = 1;
+    // Present time on the server.
     double time = 2;
 }
 
 // The darwin service.
 service DarwinService {
+    // Update the position of object in the world to the clients.
     rpc Update(UpdateRequest) returns (stream UpdateResponse);
-    rpc Push(PushRequest) returns (PushResponse);
+    // Client report the change of position and speed of a player.
+    rpc ReportMovement(ReportMovementRequest) returns (ReportMovementResponse);
+    // Try to log into a server.
+    rpc Login(LoginRequest) returns (LoginResponse);
+    // Create a new character.
+    rpc CreateCharacter(CreateCharacterRequest) returns (CreateCharacterResponse);
+    // Ping the server.
     rpc Ping(PingRequest) returns (PingResponse);
 }
