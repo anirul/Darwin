@@ -1,0 +1,14 @@
+{
+  "features": [
+    "ALLOW_USER_CREATION"
+  ],
+  "users": [
+    {
+      "name": "anirul",
+      "password": "",
+      "salt": "",
+      "session_tocken": "",
+      "user_id": "1"
+    }
+  ]
+}

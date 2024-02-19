@@ -11,6 +11,8 @@ namespace darwin {
     class DarwinServiceImpl final : public proto::DarwinService::Service {
     public:
         DarwinServiceImpl(UserState& user_state) : user_state_(user_state) {}
+
+    public:
         grpc::Status Update(
             grpc::ServerContext* context, 
             const proto::UpdateRequest* request,

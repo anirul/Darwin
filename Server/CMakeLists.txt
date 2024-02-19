@@ -20,6 +20,8 @@ add_executable(DarwinServer
     world_state.h
     world_state_file.cpp
     world_state_file.h
+    user_db.json
+    world_db.json
 )
 
 target_include_directories(DarwinServer
@@ -30,6 +32,7 @@ target_include_directories(DarwinServer
 
 target_link_libraries(DarwinServer
     PUBLIC
+        absl::flags_parse
         DarwinCommon
 )
 
