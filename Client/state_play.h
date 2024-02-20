@@ -1,7 +1,7 @@
 #pragma once
 
 #include "state_interface.h"
-#include "network_app.h"
+#include "darwin_client.h"
 #include "frame/common/application.h"
 
 namespace darwin::state {
@@ -10,7 +10,7 @@ namespace darwin::state {
     public:
         StatePlay(
             frame::common::Application& app, 
-            std::unique_ptr<darwin::NetworkApp> network_app);
+            std::unique_ptr<darwin::DarwinClient> darwin_client);
         ~StatePlay() override = default;
         void Enter() override;
         void Update(StateContext& state_context) override;
@@ -18,7 +18,7 @@ namespace darwin::state {
 
     private:
         frame::common::Application& app_;
-        std::unique_ptr<darwin::NetworkApp> network_app_;
+        std::unique_ptr<darwin::DarwinClient> darwin_client_;
         frame::Logger& logger_ = frame::Logger::GetInstance();
     };
 

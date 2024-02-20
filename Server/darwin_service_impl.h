@@ -4,14 +4,9 @@
 
 #include <grpc++/grpc++.h>
 
-#include "user_state.h"
-
 namespace darwin {
 
     class DarwinServiceImpl final : public proto::DarwinService::Service {
-    public:
-        DarwinServiceImpl(UserState& user_state) : user_state_(user_state) {}
-
     public:
         grpc::Status Update(
             grpc::ServerContext* context, 
@@ -21,10 +16,6 @@ namespace darwin {
             grpc::ServerContext* context, 
             const proto::ReportMovementRequest* request,
             proto::ReportMovementResponse* response) override;
-        grpc::Status Login(
-            grpc::ServerContext* context, 
-            const proto::LoginRequest* request,
-            proto::LoginResponse* response) override;
         grpc::Status CreateCharacter(
             grpc::ServerContext* context, 
             const proto::CreateCharacterRequest* request,
@@ -33,6 +24,10 @@ namespace darwin {
             grpc::ServerContext* context, 
             const proto::PingRequest* request,
             proto::PingResponse* response) override;
+        grpc::Status DeathReport(
+            grpc::ServerContext* context, 
+            const proto::DeathReportRequest* request,
+            proto::DeathReportResponse* response) override;
 
     public:
         void BroadcastUpdate(const proto::UpdateResponse& response);
@@ -44,9 +39,6 @@ namespace darwin {
         std::map<double, proto::Character> time_characters_;
         std::list<grpc::ServerWriter<proto::UpdateResponse>*> writers_;
         std::mutex writers_mutex_;
-        std::vector<proto::Element> elements_;
-        std::vector<proto::Character> characters_;
-        UserState& user_state_;
     };
 
 }  // namespace darwin.

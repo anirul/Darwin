@@ -6,7 +6,7 @@
 #include "frame/logger.h"
 #include "modal_server.h"
 #include "modal_ping.h"
-#include "network_app.h"
+#include "darwin_client.h"
 
 namespace darwin::state {
 
@@ -32,7 +32,7 @@ namespace darwin::state {
         frame::Logger& logger_ = frame::Logger::GetInstance();
         frame::gui::DrawGuiInterface* draw_gui_interface_ = nullptr;
         modal::ModalServerParams modal_server_params_;
-        std::unique_ptr<NetworkApp> network_app_ = nullptr;
+        std::unique_ptr<DarwinClient> darwin_client_ = nullptr;
     };
 
 } // namespace darwin::state.

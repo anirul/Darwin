@@ -2,8 +2,53 @@
 
 namespace darwin {
 
-    DarwinClient::DarwinClient(const std::string& name, std::shared_ptr<grpc::Channel> channel)
-        : stub_(proto::DarwinService::NewStub(channel)), name_(name) {}
+    DarwinClient::DarwinClient(const std::string& name)
+        : name_(name) {
+        if (name_ == "") {
+            name_ = "localhost:45323";
+        }
+        else {
+            name_ = name;
+        }
+        auto channel = 
+            grpc::CreateChannel(
+                name_, 
+                grpc::InsecureChannelCredentials());
+        stub_ = proto::DarwinService::NewStub(channel);
+        // Create a new thread to the update.
+        future_ = std::async(std::launch::async, [this] { 
+                Update(world_client_);
+            });
+    }
+
+    DarwinClient::~DarwinClient() {
+        end_.store(true);
+        future_.wait();
+    }
+
+    bool DarwinClient::CreateCharacter(
+        const std::string& name, 
+        const proto::Vector3& color) {
+        proto::CreateCharacterRequest request;
+        request.set_name(name);
+        request.mutable_color()->CopyFrom(color);
+
+        proto::CreateCharacterResponse response;
+        grpc::ClientContext context;
+
+        grpc::Status status = 
+            stub_->CreateCharacter(&context, request, &response);
+        if (status.ok()) {
+            logger_->info("Create character: {}", name);
+            return true;
+        }
+        else {
+            logger_->warn(
+                "Create character failed: {}", 
+                status.error_message());
+            return false;
+        }
+    }
 
     void DarwinClient::ReportMovement(const proto::Physic& physic) {
         proto::ReportMovementRequest request;
@@ -13,14 +58,15 @@ namespace darwin {
         proto::ReportMovementResponse response;
         grpc::ClientContext context;
 
-        // TODO(anirul): Check if the user is valid!
-
-        grpc::Status status = stub_->ReportMovement(&context, request, &response);
+        grpc::Status status = 
+            stub_->ReportMovement(&context, request, &response);
         if (status.ok()) {
             logger_->info("Report movement physic: {}", physic.DebugString());
         }
         else {
-            logger_->warn("Report movement failed: {}", status.error_message());
+            logger_->warn(
+                "Report movement failed: {}", 
+                status.error_message());
         }
     }
 
@@ -45,6 +91,11 @@ namespace darwin {
             world_client.SetCharacters(
                 { response.characters().begin(), 
                   response.characters().end() });
+
+            if (end_.load()) {
+                logger_->warn("Force exiting...");
+                return;
+            }
         }
 
         // Finish the stream

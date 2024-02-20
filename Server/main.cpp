@@ -8,18 +8,12 @@
 #include "Server/compute_world.h"
 #include "Server/darwin_service_impl.h"
 #include "world_state_file.h"
-#include "user_state_file.h"
 
 ABSL_FLAG(
     std::string, 
     server_name, 
     "0.0.0.0:45323", 
     "The name of the server to connect to.");
-ABSL_FLAG(
-    std::string, 
-    user_db, 
-    "user_db.json", 
-    "The name of the user database file.");
 ABSL_FLAG(
     std::string, 
     world_db, 
@@ -31,9 +25,7 @@ int main(int ac, char** av) try {
     grpc::ServerBuilder builder;
     darwin::WorldState world_state;
     LoadWorldStateFromFile(world_state, absl::GetFlag(FLAGS_world_db));
-    darwin::UserState user_state;
-    LoadUserStateFromFile(user_state, absl::GetFlag(FLAGS_user_db));
-    darwin::DarwinServiceImpl service{ user_state };
+    darwin::DarwinServiceImpl service;
 
     std::thread update_thread(
         darwin::ComputeWorld, 

@@ -16,15 +16,15 @@ namespace darwin::state {
      * - StateDisconnect (you are disconnected)
      *      goto StateTitle
      * - StateServer (you select a server) 
-     *      goto StateLogin or StateTitle or StateDisconnect
+     *      goto StatePing or StateTitle or StateDisconnect
      * - StatePing (you ping a server)
-     *      goto StateLogin or StateDisconnect
-     * - StateLogin (you login) 
      *      goto StateCharacter or StateDisconnect
      * - StateCharacter (you select a character) 
      *      goto StatePlay or StateTitle or StateDisconnect
      * - StatePlay (you enter the world) 
-     *      goto StateDisconnect or StateCharacter
+     *      goto StateDisconnect or StateCharacter or StateDead
+     * - StateDead (you are dead)
+     *      goto StateCharacter or StateTitle or StateDisconnect
      */
     class StateContext {
     public:

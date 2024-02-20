@@ -4,7 +4,7 @@
 #include "frame/common/application.h"
 #include "frame/logger.h"
 #include "modal_disconnected.h"
-#include "network_app.h"
+#include "darwin_client.h"
 #include "frame/gui/draw_gui_interface.h"
 
 namespace darwin::state {
@@ -13,8 +13,8 @@ namespace darwin::state {
     public:
         StateDisconnected(
             frame::common::Application& app, 
-            std::unique_ptr<NetworkApp> network_app) :
-            app_(app), network_app_(std::move(network_app)) {}
+            std::unique_ptr<DarwinClient> darwin_client) :
+            app_(app), darwin_client_(std::move(darwin_client)) {}
         ~StateDisconnected() override = default;
         void Enter() override;
         void Update(StateContext& state_context) override;
@@ -25,7 +25,7 @@ namespace darwin::state {
         frame::Logger& logger_ = frame::Logger::GetInstance();
         frame::gui::DrawGuiInterface* draw_gui_ = nullptr;
         modal::ModalDisconnectedParams modal_disconnected_params_;
-        std::unique_ptr<NetworkApp> network_app_;
+        std::unique_ptr<DarwinClient> darwin_client_;
     };
 
 } // namespace darwin::state.

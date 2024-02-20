@@ -41,7 +41,7 @@ namespace darwin::state {
                 state_context.ChangeState(
                     std::make_unique<StatePing>(
                         app_,
-                        std::move(network_app_)));
+                        std::move(darwin_client_)));
                 break;
             case modal::ModalDisconnectedButton::Cancel:
                 state_context.ChangeState(

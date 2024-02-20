@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "state_interface.h"
-#include "network_app.h"
+#include "darwin_client.h"
 #include "frame/common/application.h"
 #include "frame/logger.h"
 #include "frame/gui/draw_gui_interface.h"
@@ -15,8 +15,8 @@ namespace darwin::state {
     public:
         StatePing(
             frame::common::Application& app, 
-            std::unique_ptr<darwin::NetworkApp> network_app) :
-            app_(app), network_app_(std::move(network_app)) {}
+            std::unique_ptr<darwin::DarwinClient> darwin_client) :
+            app_(app), darwin_client_(std::move(darwin_client)) {}
         ~StatePing() override = default;
         void Enter() override;
         void Update(StateContext& state_context) override;
@@ -24,7 +24,7 @@ namespace darwin::state {
 
     private:
         frame::common::Application& app_;
-        std::unique_ptr<darwin::NetworkApp> network_app_;
+        std::unique_ptr<darwin::DarwinClient> darwin_client_;
         frame::Logger& logger_ = frame::Logger::GetInstance();
         frame::gui::DrawGuiInterface* draw_gui_ = nullptr;
         std::mutex mutex_;

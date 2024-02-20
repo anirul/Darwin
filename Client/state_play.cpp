@@ -4,8 +4,8 @@ namespace darwin::state {
 
     StatePlay::StatePlay(
         frame::common::Application& app,
-        std::unique_ptr<darwin::NetworkApp> network_app) :
-        app_(app), network_app_(std::move(network_app)) {}
+        std::unique_ptr<darwin::DarwinClient> darwin_client) :
+        app_(app), darwin_client_(std::move(darwin_client)) {}
 
     void StatePlay::Enter() {
         logger_->info("Entered play state");
@@ -15,8 +15,6 @@ namespace darwin::state {
         logger_->info("Exited play state");
     }
 
-    void StatePlay::Update(StateContext& state_context) {
-        network_app_->Run();
-    }
+    void StatePlay::Update(StateContext& state_context) {}
 
 } // namespace darwin::state.

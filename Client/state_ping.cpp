@@ -12,7 +12,10 @@ namespace darwin::state {
     void StatePing::Enter() {
         logger_->info("Entering ping state");
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
-            logger_->info("\tPlugin: [{}] {}", (std::uint64_t)plugin, plugin->GetName().c_str());
+            logger_->info(
+                "\tPlugin: [{}] {}", 
+                (std::uint64_t)plugin, 
+                plugin->GetName().c_str());
             if (!draw_gui_) {
                 draw_gui_ =
                     dynamic_cast<frame::gui::DrawGuiInterface*>(
@@ -28,7 +31,7 @@ namespace darwin::state {
                 modal_ping_params_,
                 [this] { 
                     modal::ModalPingParams params;
-                    bool result = network_app_->Ping(45323);
+                    bool result = darwin_client_->Ping(45323);
                     if (result) {
                         params.ping_value = 45323;
                         params.button_result = modal::ModalPingButton::Pong;
@@ -48,13 +51,13 @@ namespace darwin::state {
                     state_context.ChangeState(
                         std::make_unique<StateCharacter>(
                             app_, 
-                            std::move(network_app_)));
+                            std::move(darwin_client_)));
                     break;
                 case modal::ModalPingButton::Cancel:
                     state_context.ChangeState(
                         std::make_unique<StateDisconnected>(
                             app_, 
-                            std::move(network_app_)));
+                            std::move(darwin_client_)));
                     break;
             }
         }

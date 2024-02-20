@@ -54,14 +54,6 @@ class DarwinService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::ReportMovementResponse>> PrepareAsyncReportMovement(::grpc::ClientContext* context, const ::proto::ReportMovementRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::ReportMovementResponse>>(PrepareAsyncReportMovementRaw(context, request, cq));
     }
-    // Try to log into a server.
-    virtual ::grpc::Status Login(::grpc::ClientContext* context, const ::proto::LoginRequest& request, ::proto::LoginResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::LoginResponse>> AsyncLogin(::grpc::ClientContext* context, const ::proto::LoginRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::LoginResponse>>(AsyncLoginRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::LoginResponse>> PrepareAsyncLogin(::grpc::ClientContext* context, const ::proto::LoginRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::LoginResponse>>(PrepareAsyncLoginRaw(context, request, cq));
-    }
     // Create a new character.
     virtual ::grpc::Status CreateCharacter(::grpc::ClientContext* context, const ::proto::CreateCharacterRequest& request, ::proto::CreateCharacterResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::CreateCharacterResponse>> AsyncCreateCharacter(::grpc::ClientContext* context, const ::proto::CreateCharacterRequest& request, ::grpc::CompletionQueue* cq) {
@@ -78,6 +70,14 @@ class DarwinService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::PingResponse>> PrepareAsyncPing(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::PingResponse>>(PrepareAsyncPingRaw(context, request, cq));
     }
+    // Death report.
+    virtual ::grpc::Status DeathReport(::grpc::ClientContext* context, const ::proto::DeathReportRequest& request, ::proto::DeathReportResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::DeathReportResponse>> AsyncDeathReport(::grpc::ClientContext* context, const ::proto::DeathReportRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::DeathReportResponse>>(AsyncDeathReportRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::DeathReportResponse>> PrepareAsyncDeathReport(::grpc::ClientContext* context, const ::proto::DeathReportRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::proto::DeathReportResponse>>(PrepareAsyncDeathReportRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -86,15 +86,15 @@ class DarwinService final {
       // Client report the change of position and speed of a player.
       virtual void ReportMovement(::grpc::ClientContext* context, const ::proto::ReportMovementRequest* request, ::proto::ReportMovementResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ReportMovement(::grpc::ClientContext* context, const ::proto::ReportMovementRequest* request, ::proto::ReportMovementResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Try to log into a server.
-      virtual void Login(::grpc::ClientContext* context, const ::proto::LoginRequest* request, ::proto::LoginResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void Login(::grpc::ClientContext* context, const ::proto::LoginRequest* request, ::proto::LoginResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // Create a new character.
       virtual void CreateCharacter(::grpc::ClientContext* context, const ::proto::CreateCharacterRequest* request, ::proto::CreateCharacterResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void CreateCharacter(::grpc::ClientContext* context, const ::proto::CreateCharacterRequest* request, ::proto::CreateCharacterResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // Ping the server.
       virtual void Ping(::grpc::ClientContext* context, const ::proto::PingRequest* request, ::proto::PingResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void Ping(::grpc::ClientContext* context, const ::proto::PingRequest* request, ::proto::PingResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Death report.
+      virtual void DeathReport(::grpc::ClientContext* context, const ::proto::DeathReportRequest* request, ::proto::DeathReportResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void DeathReport(::grpc::ClientContext* context, const ::proto::DeathReportRequest* request, ::proto::DeathReportResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -105,12 +105,12 @@ class DarwinService final {
     virtual ::grpc::ClientAsyncReaderInterface< ::proto::UpdateResponse>* PrepareAsyncUpdateRaw(::grpc::ClientContext* context, const ::proto::UpdateRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::ReportMovementResponse>* AsyncReportMovementRaw(::grpc::ClientContext* context, const ::proto::ReportMovementRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::ReportMovementResponse>* PrepareAsyncReportMovementRaw(::grpc::ClientContext* context, const ::proto::ReportMovementRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::LoginResponse>* AsyncLoginRaw(::grpc::ClientContext* context, const ::proto::LoginRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::LoginResponse>* PrepareAsyncLoginRaw(::grpc::ClientContext* context, const ::proto::LoginRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::CreateCharacterResponse>* AsyncCreateCharacterRaw(::grpc::ClientContext* context, const ::proto::CreateCharacterRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::CreateCharacterResponse>* PrepareAsyncCreateCharacterRaw(::grpc::ClientContext* context, const ::proto::CreateCharacterRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::PingResponse>* AsyncPingRaw(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::PingResponse>* PrepareAsyncPingRaw(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::DeathReportResponse>* AsyncDeathReportRaw(::grpc::ClientContext* context, const ::proto::DeathReportRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::proto::DeathReportResponse>* PrepareAsyncDeathReportRaw(::grpc::ClientContext* context, const ::proto::DeathReportRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -131,13 +131,6 @@ class DarwinService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::ReportMovementResponse>> PrepareAsyncReportMovement(::grpc::ClientContext* context, const ::proto::ReportMovementRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::ReportMovementResponse>>(PrepareAsyncReportMovementRaw(context, request, cq));
     }
-    ::grpc::Status Login(::grpc::ClientContext* context, const ::proto::LoginRequest& request, ::proto::LoginResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::LoginResponse>> AsyncLogin(::grpc::ClientContext* context, const ::proto::LoginRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::LoginResponse>>(AsyncLoginRaw(context, request, cq));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::LoginResponse>> PrepareAsyncLogin(::grpc::ClientContext* context, const ::proto::LoginRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::LoginResponse>>(PrepareAsyncLoginRaw(context, request, cq));
-    }
     ::grpc::Status CreateCharacter(::grpc::ClientContext* context, const ::proto::CreateCharacterRequest& request, ::proto::CreateCharacterResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::CreateCharacterResponse>> AsyncCreateCharacter(::grpc::ClientContext* context, const ::proto::CreateCharacterRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::CreateCharacterResponse>>(AsyncCreateCharacterRaw(context, request, cq));
@@ -152,18 +145,25 @@ class DarwinService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::PingResponse>> PrepareAsyncPing(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::PingResponse>>(PrepareAsyncPingRaw(context, request, cq));
     }
+    ::grpc::Status DeathReport(::grpc::ClientContext* context, const ::proto::DeathReportRequest& request, ::proto::DeathReportResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::DeathReportResponse>> AsyncDeathReport(::grpc::ClientContext* context, const ::proto::DeathReportRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::DeathReportResponse>>(AsyncDeathReportRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::DeathReportResponse>> PrepareAsyncDeathReport(::grpc::ClientContext* context, const ::proto::DeathReportRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::proto::DeathReportResponse>>(PrepareAsyncDeathReportRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
       void Update(::grpc::ClientContext* context, const ::proto::UpdateRequest* request, ::grpc::ClientReadReactor< ::proto::UpdateResponse>* reactor) override;
       void ReportMovement(::grpc::ClientContext* context, const ::proto::ReportMovementRequest* request, ::proto::ReportMovementResponse* response, std::function<void(::grpc::Status)>) override;
       void ReportMovement(::grpc::ClientContext* context, const ::proto::ReportMovementRequest* request, ::proto::ReportMovementResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void Login(::grpc::ClientContext* context, const ::proto::LoginRequest* request, ::proto::LoginResponse* response, std::function<void(::grpc::Status)>) override;
-      void Login(::grpc::ClientContext* context, const ::proto::LoginRequest* request, ::proto::LoginResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void CreateCharacter(::grpc::ClientContext* context, const ::proto::CreateCharacterRequest* request, ::proto::CreateCharacterResponse* response, std::function<void(::grpc::Status)>) override;
       void CreateCharacter(::grpc::ClientContext* context, const ::proto::CreateCharacterRequest* request, ::proto::CreateCharacterResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void Ping(::grpc::ClientContext* context, const ::proto::PingRequest* request, ::proto::PingResponse* response, std::function<void(::grpc::Status)>) override;
       void Ping(::grpc::ClientContext* context, const ::proto::PingRequest* request, ::proto::PingResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void DeathReport(::grpc::ClientContext* context, const ::proto::DeathReportRequest* request, ::proto::DeathReportResponse* response, std::function<void(::grpc::Status)>) override;
+      void DeathReport(::grpc::ClientContext* context, const ::proto::DeathReportRequest* request, ::proto::DeathReportResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -180,17 +180,17 @@ class DarwinService final {
     ::grpc::ClientAsyncReader< ::proto::UpdateResponse>* PrepareAsyncUpdateRaw(::grpc::ClientContext* context, const ::proto::UpdateRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::proto::ReportMovementResponse>* AsyncReportMovementRaw(::grpc::ClientContext* context, const ::proto::ReportMovementRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::proto::ReportMovementResponse>* PrepareAsyncReportMovementRaw(::grpc::ClientContext* context, const ::proto::ReportMovementRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proto::LoginResponse>* AsyncLoginRaw(::grpc::ClientContext* context, const ::proto::LoginRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::proto::LoginResponse>* PrepareAsyncLoginRaw(::grpc::ClientContext* context, const ::proto::LoginRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::proto::CreateCharacterResponse>* AsyncCreateCharacterRaw(::grpc::ClientContext* context, const ::proto::CreateCharacterRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::proto::CreateCharacterResponse>* PrepareAsyncCreateCharacterRaw(::grpc::ClientContext* context, const ::proto::CreateCharacterRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::proto::PingResponse>* AsyncPingRaw(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::proto::PingResponse>* PrepareAsyncPingRaw(::grpc::ClientContext* context, const ::proto::PingRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proto::DeathReportResponse>* AsyncDeathReportRaw(::grpc::ClientContext* context, const ::proto::DeathReportRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::proto::DeathReportResponse>* PrepareAsyncDeathReportRaw(::grpc::ClientContext* context, const ::proto::DeathReportRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_Update_;
     const ::grpc::internal::RpcMethod rpcmethod_ReportMovement_;
-    const ::grpc::internal::RpcMethod rpcmethod_Login_;
     const ::grpc::internal::RpcMethod rpcmethod_CreateCharacter_;
     const ::grpc::internal::RpcMethod rpcmethod_Ping_;
+    const ::grpc::internal::RpcMethod rpcmethod_DeathReport_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -202,12 +202,12 @@ class DarwinService final {
     virtual ::grpc::Status Update(::grpc::ServerContext* context, const ::proto::UpdateRequest* request, ::grpc::ServerWriter< ::proto::UpdateResponse>* writer);
     // Client report the change of position and speed of a player.
     virtual ::grpc::Status ReportMovement(::grpc::ServerContext* context, const ::proto::ReportMovementRequest* request, ::proto::ReportMovementResponse* response);
-    // Try to log into a server.
-    virtual ::grpc::Status Login(::grpc::ServerContext* context, const ::proto::LoginRequest* request, ::proto::LoginResponse* response);
     // Create a new character.
     virtual ::grpc::Status CreateCharacter(::grpc::ServerContext* context, const ::proto::CreateCharacterRequest* request, ::proto::CreateCharacterResponse* response);
     // Ping the server.
     virtual ::grpc::Status Ping(::grpc::ServerContext* context, const ::proto::PingRequest* request, ::proto::PingResponse* response);
+    // Death report.
+    virtual ::grpc::Status DeathReport(::grpc::ServerContext* context, const ::proto::DeathReportRequest* request, ::proto::DeathReportResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_Update : public BaseClass {
@@ -250,32 +250,12 @@ class DarwinService final {
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_Login : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithAsyncMethod_Login() {
-      ::grpc::Service::MarkMethodAsync(2);
-    }
-    ~WithAsyncMethod_Login() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status Login(::grpc::ServerContext* /*context*/, const ::proto::LoginRequest* /*request*/, ::proto::LoginResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestLogin(::grpc::ServerContext* context, ::proto::LoginRequest* request, ::grpc::ServerAsyncResponseWriter< ::proto::LoginResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
   class WithAsyncMethod_CreateCharacter : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_CreateCharacter() {
-      ::grpc::Service::MarkMethodAsync(3);
+      ::grpc::Service::MarkMethodAsync(2);
     }
     ~WithAsyncMethod_CreateCharacter() override {
       BaseClassMustBeDerivedFromService(this);
@@ -286,7 +266,7 @@ class DarwinService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestCreateCharacter(::grpc::ServerContext* context, ::proto::CreateCharacterRequest* request, ::grpc::ServerAsyncResponseWriter< ::proto::CreateCharacterResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -295,7 +275,7 @@ class DarwinService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_Ping() {
-      ::grpc::Service::MarkMethodAsync(4);
+      ::grpc::Service::MarkMethodAsync(3);
     }
     ~WithAsyncMethod_Ping() override {
       BaseClassMustBeDerivedFromService(this);
@@ -306,10 +286,30 @@ class DarwinService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestPing(::grpc::ServerContext* context, ::proto::PingRequest* request, ::grpc::ServerAsyncResponseWriter< ::proto::PingResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_DeathReport : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_DeathReport() {
+      ::grpc::Service::MarkMethodAsync(4);
+    }
+    ~WithAsyncMethod_DeathReport() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DeathReport(::grpc::ServerContext* /*context*/, const ::proto::DeathReportRequest* /*request*/, ::proto::DeathReportResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDeathReport(::grpc::ServerContext* context, ::proto::DeathReportRequest* request, ::grpc::ServerAsyncResponseWriter< ::proto::DeathReportResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_Update<WithAsyncMethod_ReportMovement<WithAsyncMethod_Login<WithAsyncMethod_CreateCharacter<WithAsyncMethod_Ping<Service > > > > > AsyncService;
+  typedef WithAsyncMethod_Update<WithAsyncMethod_ReportMovement<WithAsyncMethod_CreateCharacter<WithAsyncMethod_Ping<WithAsyncMethod_DeathReport<Service > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_Update : public BaseClass {
    private:
@@ -360,45 +360,18 @@ class DarwinService final {
       ::grpc::CallbackServerContext* /*context*/, const ::proto::ReportMovementRequest* /*request*/, ::proto::ReportMovementResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithCallbackMethod_Login : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithCallbackMethod_Login() {
-      ::grpc::Service::MarkMethodCallback(2,
-          new ::grpc::internal::CallbackUnaryHandler< ::proto::LoginRequest, ::proto::LoginResponse>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const ::proto::LoginRequest* request, ::proto::LoginResponse* response) { return this->Login(context, request, response); }));}
-    void SetMessageAllocatorFor_Login(
-        ::grpc::MessageAllocator< ::proto::LoginRequest, ::proto::LoginResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::proto::LoginRequest, ::proto::LoginResponse>*>(handler)
-              ->SetMessageAllocator(allocator);
-    }
-    ~WithCallbackMethod_Login() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status Login(::grpc::ServerContext* /*context*/, const ::proto::LoginRequest* /*request*/, ::proto::LoginResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerUnaryReactor* Login(
-      ::grpc::CallbackServerContext* /*context*/, const ::proto::LoginRequest* /*request*/, ::proto::LoginResponse* /*response*/)  { return nullptr; }
-  };
-  template <class BaseClass>
   class WithCallbackMethod_CreateCharacter : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_CreateCharacter() {
-      ::grpc::Service::MarkMethodCallback(3,
+      ::grpc::Service::MarkMethodCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::proto::CreateCharacterRequest, ::proto::CreateCharacterResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::proto::CreateCharacterRequest* request, ::proto::CreateCharacterResponse* response) { return this->CreateCharacter(context, request, response); }));}
     void SetMessageAllocatorFor_CreateCharacter(
         ::grpc::MessageAllocator< ::proto::CreateCharacterRequest, ::proto::CreateCharacterResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::proto::CreateCharacterRequest, ::proto::CreateCharacterResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -419,13 +392,13 @@ class DarwinService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_Ping() {
-      ::grpc::Service::MarkMethodCallback(4,
+      ::grpc::Service::MarkMethodCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::proto::PingRequest, ::proto::PingResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::proto::PingRequest* request, ::proto::PingResponse* response) { return this->Ping(context, request, response); }));}
     void SetMessageAllocatorFor_Ping(
         ::grpc::MessageAllocator< ::proto::PingRequest, ::proto::PingResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::proto::PingRequest, ::proto::PingResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -440,7 +413,34 @@ class DarwinService final {
     virtual ::grpc::ServerUnaryReactor* Ping(
       ::grpc::CallbackServerContext* /*context*/, const ::proto::PingRequest* /*request*/, ::proto::PingResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_Update<WithCallbackMethod_ReportMovement<WithCallbackMethod_Login<WithCallbackMethod_CreateCharacter<WithCallbackMethod_Ping<Service > > > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_DeathReport : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_DeathReport() {
+      ::grpc::Service::MarkMethodCallback(4,
+          new ::grpc::internal::CallbackUnaryHandler< ::proto::DeathReportRequest, ::proto::DeathReportResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::proto::DeathReportRequest* request, ::proto::DeathReportResponse* response) { return this->DeathReport(context, request, response); }));}
+    void SetMessageAllocatorFor_DeathReport(
+        ::grpc::MessageAllocator< ::proto::DeathReportRequest, ::proto::DeathReportResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::proto::DeathReportRequest, ::proto::DeathReportResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_DeathReport() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DeathReport(::grpc::ServerContext* /*context*/, const ::proto::DeathReportRequest* /*request*/, ::proto::DeathReportResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DeathReport(
+      ::grpc::CallbackServerContext* /*context*/, const ::proto::DeathReportRequest* /*request*/, ::proto::DeathReportResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_Update<WithCallbackMethod_ReportMovement<WithCallbackMethod_CreateCharacter<WithCallbackMethod_Ping<WithCallbackMethod_DeathReport<Service > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_Update : public BaseClass {
@@ -477,29 +477,12 @@ class DarwinService final {
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_Login : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithGenericMethod_Login() {
-      ::grpc::Service::MarkMethodGeneric(2);
-    }
-    ~WithGenericMethod_Login() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status Login(::grpc::ServerContext* /*context*/, const ::proto::LoginRequest* /*request*/, ::proto::LoginResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-  };
-  template <class BaseClass>
   class WithGenericMethod_CreateCharacter : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_CreateCharacter() {
-      ::grpc::Service::MarkMethodGeneric(3);
+      ::grpc::Service::MarkMethodGeneric(2);
     }
     ~WithGenericMethod_CreateCharacter() override {
       BaseClassMustBeDerivedFromService(this);
@@ -516,13 +499,30 @@ class DarwinService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_Ping() {
-      ::grpc::Service::MarkMethodGeneric(4);
+      ::grpc::Service::MarkMethodGeneric(3);
     }
     ~WithGenericMethod_Ping() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
     ::grpc::Status Ping(::grpc::ServerContext* /*context*/, const ::proto::PingRequest* /*request*/, ::proto::PingResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_DeathReport : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_DeathReport() {
+      ::grpc::Service::MarkMethodGeneric(4);
+    }
+    ~WithGenericMethod_DeathReport() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DeathReport(::grpc::ServerContext* /*context*/, const ::proto::DeathReportRequest* /*request*/, ::proto::DeathReportResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -568,32 +568,12 @@ class DarwinService final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_Login : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawMethod_Login() {
-      ::grpc::Service::MarkMethodRaw(2);
-    }
-    ~WithRawMethod_Login() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status Login(::grpc::ServerContext* /*context*/, const ::proto::LoginRequest* /*request*/, ::proto::LoginResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestLogin(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
   class WithRawMethod_CreateCharacter : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_CreateCharacter() {
-      ::grpc::Service::MarkMethodRaw(3);
+      ::grpc::Service::MarkMethodRaw(2);
     }
     ~WithRawMethod_CreateCharacter() override {
       BaseClassMustBeDerivedFromService(this);
@@ -604,7 +584,7 @@ class DarwinService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestCreateCharacter(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -613,7 +593,7 @@ class DarwinService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_Ping() {
-      ::grpc::Service::MarkMethodRaw(4);
+      ::grpc::Service::MarkMethodRaw(3);
     }
     ~WithRawMethod_Ping() override {
       BaseClassMustBeDerivedFromService(this);
@@ -624,6 +604,26 @@ class DarwinService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestPing(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_DeathReport : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_DeathReport() {
+      ::grpc::Service::MarkMethodRaw(4);
+    }
+    ~WithRawMethod_DeathReport() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DeathReport(::grpc::ServerContext* /*context*/, const ::proto::DeathReportRequest* /*request*/, ::proto::DeathReportResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDeathReport(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -672,34 +672,12 @@ class DarwinService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_Login : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawCallbackMethod_Login() {
-      ::grpc::Service::MarkMethodRawCallback(2,
-          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Login(context, request, response); }));
-    }
-    ~WithRawCallbackMethod_Login() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status Login(::grpc::ServerContext* /*context*/, const ::proto::LoginRequest* /*request*/, ::proto::LoginResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerUnaryReactor* Login(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
-  };
-  template <class BaseClass>
   class WithRawCallbackMethod_CreateCharacter : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_CreateCharacter() {
-      ::grpc::Service::MarkMethodRawCallback(3,
+      ::grpc::Service::MarkMethodRawCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->CreateCharacter(context, request, response); }));
@@ -721,7 +699,7 @@ class DarwinService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_Ping() {
-      ::grpc::Service::MarkMethodRawCallback(4,
+      ::grpc::Service::MarkMethodRawCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Ping(context, request, response); }));
@@ -735,6 +713,28 @@ class DarwinService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* Ping(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_DeathReport : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_DeathReport() {
+      ::grpc::Service::MarkMethodRawCallback(4,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->DeathReport(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_DeathReport() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DeathReport(::grpc::ServerContext* /*context*/, const ::proto::DeathReportRequest* /*request*/, ::proto::DeathReportResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DeathReport(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -765,39 +765,12 @@ class DarwinService final {
     virtual ::grpc::Status StreamedReportMovement(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proto::ReportMovementRequest,::proto::ReportMovementResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_Login : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithStreamedUnaryMethod_Login() {
-      ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::StreamedUnaryHandler<
-          ::proto::LoginRequest, ::proto::LoginResponse>(
-            [this](::grpc::ServerContext* context,
-                   ::grpc::ServerUnaryStreamer<
-                     ::proto::LoginRequest, ::proto::LoginResponse>* streamer) {
-                       return this->StreamedLogin(context,
-                         streamer);
-                  }));
-    }
-    ~WithStreamedUnaryMethod_Login() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable regular version of this method
-    ::grpc::Status Login(::grpc::ServerContext* /*context*/, const ::proto::LoginRequest* /*request*/, ::proto::LoginResponse* /*response*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedLogin(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proto::LoginRequest,::proto::LoginResponse>* server_unary_streamer) = 0;
-  };
-  template <class BaseClass>
   class WithStreamedUnaryMethod_CreateCharacter : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_CreateCharacter() {
-      ::grpc::Service::MarkMethodStreamed(3,
+      ::grpc::Service::MarkMethodStreamed(2,
         new ::grpc::internal::StreamedUnaryHandler<
           ::proto::CreateCharacterRequest, ::proto::CreateCharacterResponse>(
             [this](::grpc::ServerContext* context,
@@ -824,7 +797,7 @@ class DarwinService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_Ping() {
-      ::grpc::Service::MarkMethodStreamed(4,
+      ::grpc::Service::MarkMethodStreamed(3,
         new ::grpc::internal::StreamedUnaryHandler<
           ::proto::PingRequest, ::proto::PingResponse>(
             [this](::grpc::ServerContext* context,
@@ -845,7 +818,34 @@ class DarwinService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedPing(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proto::PingRequest,::proto::PingResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_ReportMovement<WithStreamedUnaryMethod_Login<WithStreamedUnaryMethod_CreateCharacter<WithStreamedUnaryMethod_Ping<Service > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_DeathReport : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_DeathReport() {
+      ::grpc::Service::MarkMethodStreamed(4,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::proto::DeathReportRequest, ::proto::DeathReportResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::proto::DeathReportRequest, ::proto::DeathReportResponse>* streamer) {
+                       return this->StreamedDeathReport(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_DeathReport() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status DeathReport(::grpc::ServerContext* /*context*/, const ::proto::DeathReportRequest* /*request*/, ::proto::DeathReportResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedDeathReport(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::proto::DeathReportRequest,::proto::DeathReportResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_ReportMovement<WithStreamedUnaryMethod_CreateCharacter<WithStreamedUnaryMethod_Ping<WithStreamedUnaryMethod_DeathReport<Service > > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_Update : public BaseClass {
    private:
@@ -874,7 +874,7 @@ class DarwinService final {
     virtual ::grpc::Status StreamedUpdate(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::proto::UpdateRequest,::proto::UpdateResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_Update<Service > SplitStreamedService;
-  typedef WithSplitStreamingMethod_Update<WithStreamedUnaryMethod_ReportMovement<WithStreamedUnaryMethod_Login<WithStreamedUnaryMethod_CreateCharacter<WithStreamedUnaryMethod_Ping<Service > > > > > StreamedService;
+  typedef WithSplitStreamingMethod_Update<WithStreamedUnaryMethod_ReportMovement<WithStreamedUnaryMethod_CreateCharacter<WithStreamedUnaryMethod_Ping<WithStreamedUnaryMethod_DeathReport<Service > > > > > StreamedService;
 };
 
 }  // namespace proto

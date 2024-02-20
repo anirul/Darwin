@@ -12,15 +12,10 @@ add_executable(DarwinServer
     physic_engine.cpp
     physic_engine.h
     character_info.h
-    user_state.cpp
-    user_state.h
-    user_state_file.cpp
-    user_state_file.h
     world_state.cpp
     world_state.h
     world_state_file.cpp
     world_state_file.h
-    user_db.json
     world_db.json
 )
 

@@ -49,21 +49,24 @@ namespace proto {
 class Character;
 struct CharacterDefaultTypeInternal;
 extern CharacterDefaultTypeInternal _Character_default_instance_;
+class CharacterReport;
+struct CharacterReportDefaultTypeInternal;
+extern CharacterReportDefaultTypeInternal _CharacterReport_default_instance_;
 class CreateCharacterRequest;
 struct CreateCharacterRequestDefaultTypeInternal;
 extern CreateCharacterRequestDefaultTypeInternal _CreateCharacterRequest_default_instance_;
 class CreateCharacterResponse;
 struct CreateCharacterResponseDefaultTypeInternal;
 extern CreateCharacterResponseDefaultTypeInternal _CreateCharacterResponse_default_instance_;
+class DeathReportRequest;
+struct DeathReportRequestDefaultTypeInternal;
+extern DeathReportRequestDefaultTypeInternal _DeathReportRequest_default_instance_;
+class DeathReportResponse;
+struct DeathReportResponseDefaultTypeInternal;
+extern DeathReportResponseDefaultTypeInternal _DeathReportResponse_default_instance_;
 class Element;
 struct ElementDefaultTypeInternal;
 extern ElementDefaultTypeInternal _Element_default_instance_;
-class LoginRequest;
-struct LoginRequestDefaultTypeInternal;
-extern LoginRequestDefaultTypeInternal _LoginRequest_default_instance_;
-class LoginResponse;
-struct LoginResponseDefaultTypeInternal;
-extern LoginResponseDefaultTypeInternal _LoginResponse_default_instance_;
 class Physic;
 struct PhysicDefaultTypeInternal;
 extern PhysicDefaultTypeInternal _Physic_default_instance_;
@@ -85,12 +88,6 @@ extern UpdateRequestDefaultTypeInternal _UpdateRequest_default_instance_;
 class UpdateResponse;
 struct UpdateResponseDefaultTypeInternal;
 extern UpdateResponseDefaultTypeInternal _UpdateResponse_default_instance_;
-class User;
-struct UserDefaultTypeInternal;
-extern UserDefaultTypeInternal _User_default_instance_;
-class UserDatabase;
-struct UserDatabaseDefaultTypeInternal;
-extern UserDatabaseDefaultTypeInternal _UserDatabase_default_instance_;
 class Vector3;
 struct Vector3DefaultTypeInternal;
 extern Vector3DefaultTypeInternal _Vector3_default_instance_;
@@ -103,11 +100,12 @@ extern WorldDatabaseDefaultTypeInternal _WorldDatabase_default_instance_;
 }  // namespace proto
 PROTOBUF_NAMESPACE_OPEN
 template<> ::proto::Character* Arena::CreateMaybeMessage<::proto::Character>(Arena*);
+template<> ::proto::CharacterReport* Arena::CreateMaybeMessage<::proto::CharacterReport>(Arena*);
 template<> ::proto::CreateCharacterRequest* Arena::CreateMaybeMessage<::proto::CreateCharacterRequest>(Arena*);
 template<> ::proto::CreateCharacterResponse* Arena::CreateMaybeMessage<::proto::CreateCharacterResponse>(Arena*);
+template<> ::proto::DeathReportRequest* Arena::CreateMaybeMessage<::proto::DeathReportRequest>(Arena*);
+template<> ::proto::DeathReportResponse* Arena::CreateMaybeMessage<::proto::DeathReportResponse>(Arena*);
 template<> ::proto::Element* Arena::CreateMaybeMessage<::proto::Element>(Arena*);
-template<> ::proto::LoginRequest* Arena::CreateMaybeMessage<::proto::LoginRequest>(Arena*);
-template<> ::proto::LoginResponse* Arena::CreateMaybeMessage<::proto::LoginResponse>(Arena*);
 template<> ::proto::Physic* Arena::CreateMaybeMessage<::proto::Physic>(Arena*);
 template<> ::proto::PingRequest* Arena::CreateMaybeMessage<::proto::PingRequest>(Arena*);
 template<> ::proto::PingResponse* Arena::CreateMaybeMessage<::proto::PingResponse>(Arena*);
@@ -115,8 +113,6 @@ template<> ::proto::ReportMovementRequest* Arena::CreateMaybeMessage<::proto::Re
 template<> ::proto::ReportMovementResponse* Arena::CreateMaybeMessage<::proto::ReportMovementResponse>(Arena*);
 template<> ::proto::UpdateRequest* Arena::CreateMaybeMessage<::proto::UpdateRequest>(Arena*);
 template<> ::proto::UpdateResponse* Arena::CreateMaybeMessage<::proto::UpdateResponse>(Arena*);
-template<> ::proto::User* Arena::CreateMaybeMessage<::proto::User>(Arena*);
-template<> ::proto::UserDatabase* Arena::CreateMaybeMessage<::proto::UserDatabase>(Arena*);
 template<> ::proto::Vector3* Arena::CreateMaybeMessage<::proto::Vector3>(Arena*);
 template<> ::proto::Vector4* Arena::CreateMaybeMessage<::proto::Vector4>(Arena*);
 template<> ::proto::WorldDatabase* Arena::CreateMaybeMessage<::proto::WorldDatabase>(Arena*);
@@ -153,31 +149,6 @@ inline bool Element_TypeEnum_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Element_TypeEnum>(
     Element_TypeEnum_descriptor(), name, value);
 }
-enum UserDatabase_ParameterEnum : int {
-  UserDatabase_ParameterEnum_NONE = 0,
-  UserDatabase_ParameterEnum_ALLOW_USER_CREATION = 1,
-  UserDatabase_ParameterEnum_UserDatabase_ParameterEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  UserDatabase_ParameterEnum_UserDatabase_ParameterEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
-};
-bool UserDatabase_ParameterEnum_IsValid(int value);
-constexpr UserDatabase_ParameterEnum UserDatabase_ParameterEnum_ParameterEnum_MIN = UserDatabase_ParameterEnum_NONE;
-constexpr UserDatabase_ParameterEnum UserDatabase_ParameterEnum_ParameterEnum_MAX = UserDatabase_ParameterEnum_ALLOW_USER_CREATION;
-constexpr int UserDatabase_ParameterEnum_ParameterEnum_ARRAYSIZE = UserDatabase_ParameterEnum_ParameterEnum_MAX + 1;
-
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* UserDatabase_ParameterEnum_descriptor();
-template<typename T>
-inline const std::string& UserDatabase_ParameterEnum_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, UserDatabase_ParameterEnum>::value ||
-    ::std::is_integral<T>::value,
-    "Incorrect type passed to function UserDatabase_ParameterEnum_Name.");
-  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    UserDatabase_ParameterEnum_descriptor(), enum_t_value);
-}
-inline bool UserDatabase_ParameterEnum_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, UserDatabase_ParameterEnum* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<UserDatabase_ParameterEnum>(
-    UserDatabase_ParameterEnum_descriptor(), name, value);
-}
 enum ReturnEnum : int {
   RETURN_ERROR = 0,
   RETURN_OK = 1,
@@ -203,6 +174,32 @@ inline bool ReturnEnum_Parse(
     ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ReturnEnum* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ReturnEnum>(
     ReturnEnum_descriptor(), name, value);
+}
+enum StatusEnum : int {
+  STATUS_NONE = 0,
+  STATUS_ALIVE = 1,
+  STATUS_DEAD = 2,
+  StatusEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  StatusEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool StatusEnum_IsValid(int value);
+constexpr StatusEnum StatusEnum_MIN = STATUS_NONE;
+constexpr StatusEnum StatusEnum_MAX = STATUS_DEAD;
+constexpr int StatusEnum_ARRAYSIZE = StatusEnum_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* StatusEnum_descriptor();
+template<typename T>
+inline const std::string& StatusEnum_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, StatusEnum>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function StatusEnum_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    StatusEnum_descriptor(), enum_t_value);
+}
+inline bool StatusEnum_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, StatusEnum* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<StatusEnum>(
+    StatusEnum_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -1036,218 +1033,6 @@ class Element final :
 };
 // -------------------------------------------------------------------
 
-class User final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.User) */ {
- public:
-  inline User() : User(nullptr) {}
-  ~User() override;
-  explicit PROTOBUF_CONSTEXPR User(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  User(const User& from);
-  User(User&& from) noexcept
-    : User() {
-    *this = ::std::move(from);
-  }
-
-  inline User& operator=(const User& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline User& operator=(User&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const User& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const User* internal_default_instance() {
-    return reinterpret_cast<const User*>(
-               &_User_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    4;
-
-  friend void swap(User& a, User& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(User* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(User* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  User* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<User>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const User& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const User& from) {
-    User::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(User* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proto.User";
-  }
-  protected:
-  explicit User(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kNameFieldNumber = 1,
-    kPasswordFieldNumber = 2,
-    kSaltFieldNumber = 3,
-    kSessionTockenFieldNumber = 4,
-    kUserIdFieldNumber = 5,
-  };
-  // string name = 1;
-  void clear_name();
-  const std::string& name() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_name(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_name();
-  PROTOBUF_NODISCARD std::string* release_name();
-  void set_allocated_name(std::string* name);
-  private:
-  const std::string& _internal_name() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
-  std::string* _internal_mutable_name();
-  public:
-
-  // string password = 2;
-  void clear_password();
-  const std::string& password() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_password(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_password();
-  PROTOBUF_NODISCARD std::string* release_password();
-  void set_allocated_password(std::string* password);
-  private:
-  const std::string& _internal_password() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_password(const std::string& value);
-  std::string* _internal_mutable_password();
-  public:
-
-  // string salt = 3;
-  void clear_salt();
-  const std::string& salt() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_salt(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_salt();
-  PROTOBUF_NODISCARD std::string* release_salt();
-  void set_allocated_salt(std::string* salt);
-  private:
-  const std::string& _internal_salt() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_salt(const std::string& value);
-  std::string* _internal_mutable_salt();
-  public:
-
-  // string session_tocken = 4;
-  void clear_session_tocken();
-  const std::string& session_tocken() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_session_tocken(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_session_tocken();
-  PROTOBUF_NODISCARD std::string* release_session_tocken();
-  void set_allocated_session_tocken(std::string* session_tocken);
-  private:
-  const std::string& _internal_session_tocken() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_session_tocken(const std::string& value);
-  std::string* _internal_mutable_session_tocken();
-  public:
-
-  // int32 user_id = 5;
-  void clear_user_id();
-  int32_t user_id() const;
-  void set_user_id(int32_t value);
-  private:
-  int32_t _internal_user_id() const;
-  void _internal_set_user_id(int32_t value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:proto.User)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr password_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr salt_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr session_tocken_;
-    int32_t user_id_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_darwin_5fservice_2eproto;
-};
-// -------------------------------------------------------------------
-
 class Character final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.Character) */ {
  public:
@@ -1296,7 +1081,7 @@ class Character final :
                &_Character_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    4;
 
   friend void swap(Character& a, Character& b) {
     a.Swap(&b);
@@ -1374,7 +1159,6 @@ class Character final :
     kPhysicFieldNumber = 3,
     kGNormalFieldNumber = 4,
     kGForceFieldNumber = 5,
-    kUserIdFieldNumber = 6,
   };
   // string name = 1;
   void clear_name();
@@ -1449,15 +1233,6 @@ class Character final :
   void _internal_set_g_force(double value);
   public:
 
-  // int32 user_id = 6;
-  void clear_user_id();
-  int32_t user_id() const;
-  void set_user_id(int32_t value);
-  private:
-  int32_t _internal_user_id() const;
-  void _internal_set_user_id(int32_t value);
-  public:
-
   // @@protoc_insertion_point(class_scope:proto.Character)
  private:
   class _Internal;
@@ -1471,7 +1246,6 @@ class Character final :
     ::proto::Physic* physic_;
     ::proto::Vector3* g_normal_;
     double g_force_;
-    int32_t user_id_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1479,24 +1253,24 @@ class Character final :
 };
 // -------------------------------------------------------------------
 
-class UserDatabase final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.UserDatabase) */ {
+class CharacterReport final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.CharacterReport) */ {
  public:
-  inline UserDatabase() : UserDatabase(nullptr) {}
-  ~UserDatabase() override;
-  explicit PROTOBUF_CONSTEXPR UserDatabase(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline CharacterReport() : CharacterReport(nullptr) {}
+  ~CharacterReport() override;
+  explicit PROTOBUF_CONSTEXPR CharacterReport(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  UserDatabase(const UserDatabase& from);
-  UserDatabase(UserDatabase&& from) noexcept
-    : UserDatabase() {
+  CharacterReport(const CharacterReport& from);
+  CharacterReport(CharacterReport&& from) noexcept
+    : CharacterReport() {
     *this = ::std::move(from);
   }
 
-  inline UserDatabase& operator=(const UserDatabase& from) {
+  inline CharacterReport& operator=(const CharacterReport& from) {
     CopyFrom(from);
     return *this;
   }
-  inline UserDatabase& operator=(UserDatabase&& from) noexcept {
+  inline CharacterReport& operator=(CharacterReport&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -1519,20 +1293,20 @@ class UserDatabase final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const UserDatabase& default_instance() {
+  static const CharacterReport& default_instance() {
     return *internal_default_instance();
   }
-  static inline const UserDatabase* internal_default_instance() {
-    return reinterpret_cast<const UserDatabase*>(
-               &_UserDatabase_default_instance_);
+  static inline const CharacterReport* internal_default_instance() {
+    return reinterpret_cast<const CharacterReport*>(
+               &_CharacterReport_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    5;
 
-  friend void swap(UserDatabase& a, UserDatabase& b) {
+  friend void swap(CharacterReport& a, CharacterReport& b) {
     a.Swap(&b);
   }
-  inline void Swap(UserDatabase* other) {
+  inline void Swap(CharacterReport* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -1545,7 +1319,7 @@ class UserDatabase final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(UserDatabase* other) {
+  void UnsafeArenaSwap(CharacterReport* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -1553,14 +1327,14 @@ class UserDatabase final :
 
   // implements Message ----------------------------------------------
 
-  UserDatabase* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<UserDatabase>(arena);
+  CharacterReport* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CharacterReport>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const UserDatabase& from);
+  void CopyFrom(const CharacterReport& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const UserDatabase& from) {
-    UserDatabase::MergeImpl(*this, from);
+  void MergeFrom( const CharacterReport& from) {
+    CharacterReport::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -1578,15 +1352,15 @@ class UserDatabase final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(UserDatabase* other);
+  void InternalSwap(CharacterReport* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proto.UserDatabase";
+    return "proto.CharacterReport";
   }
   protected:
-  explicit UserDatabase(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit CharacterReport(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -1597,78 +1371,75 @@ class UserDatabase final :
 
   // nested types ----------------------------------------------------
 
-  typedef UserDatabase_ParameterEnum ParameterEnum;
-  static constexpr ParameterEnum NONE =
-    UserDatabase_ParameterEnum_NONE;
-  static constexpr ParameterEnum ALLOW_USER_CREATION =
-    UserDatabase_ParameterEnum_ALLOW_USER_CREATION;
-  static inline bool ParameterEnum_IsValid(int value) {
-    return UserDatabase_ParameterEnum_IsValid(value);
-  }
-  static constexpr ParameterEnum ParameterEnum_MIN =
-    UserDatabase_ParameterEnum_ParameterEnum_MIN;
-  static constexpr ParameterEnum ParameterEnum_MAX =
-    UserDatabase_ParameterEnum_ParameterEnum_MAX;
-  static constexpr int ParameterEnum_ARRAYSIZE =
-    UserDatabase_ParameterEnum_ParameterEnum_ARRAYSIZE;
-  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
-  ParameterEnum_descriptor() {
-    return UserDatabase_ParameterEnum_descriptor();
-  }
-  template<typename T>
-  static inline const std::string& ParameterEnum_Name(T enum_t_value) {
-    static_assert(::std::is_same<T, ParameterEnum>::value ||
-      ::std::is_integral<T>::value,
-      "Incorrect type passed to function ParameterEnum_Name.");
-    return UserDatabase_ParameterEnum_Name(enum_t_value);
-  }
-  static inline bool ParameterEnum_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
-      ParameterEnum* value) {
-    return UserDatabase_ParameterEnum_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
 
   enum : int {
-    kFeaturesFieldNumber = 1,
-    kUsersFieldNumber = 2,
+    kNameFieldNumber = 1,
+    kColorFieldNumber = 4,
+    kRadiusFieldNumber = 2,
+    kStatusFieldNumber = 3,
+    kLastSeenFieldNumber = 5,
   };
-  // repeated .proto.UserDatabase.ParameterEnum features = 1;
-  int features_size() const;
+  // string name = 1;
+  void clear_name();
+  const std::string& name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_name();
+  PROTOBUF_NODISCARD std::string* release_name();
+  void set_allocated_name(std::string* name);
   private:
-  int _internal_features_size() const;
+  const std::string& _internal_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
+  std::string* _internal_mutable_name();
   public:
-  void clear_features();
-  private:
-  ::proto::UserDatabase_ParameterEnum _internal_features(int index) const;
-  void _internal_add_features(::proto::UserDatabase_ParameterEnum value);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>* _internal_mutable_features();
-  public:
-  ::proto::UserDatabase_ParameterEnum features(int index) const;
-  void set_features(int index, ::proto::UserDatabase_ParameterEnum value);
-  void add_features(::proto::UserDatabase_ParameterEnum value);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>& features() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>* mutable_features();
 
-  // repeated .proto.User users = 2;
-  int users_size() const;
+  // .proto.Vector3 color = 4;
+  bool has_color() const;
   private:
-  int _internal_users_size() const;
+  bool _internal_has_color() const;
   public:
-  void clear_users();
-  ::proto::User* mutable_users(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::User >*
-      mutable_users();
+  void clear_color();
+  const ::proto::Vector3& color() const;
+  PROTOBUF_NODISCARD ::proto::Vector3* release_color();
+  ::proto::Vector3* mutable_color();
+  void set_allocated_color(::proto::Vector3* color);
   private:
-  const ::proto::User& _internal_users(int index) const;
-  ::proto::User* _internal_add_users();
+  const ::proto::Vector3& _internal_color() const;
+  ::proto::Vector3* _internal_mutable_color();
   public:
-  const ::proto::User& users(int index) const;
-  ::proto::User* add_users();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::User >&
-      users() const;
+  void unsafe_arena_set_allocated_color(
+      ::proto::Vector3* color);
+  ::proto::Vector3* unsafe_arena_release_color();
 
-  // @@protoc_insertion_point(class_scope:proto.UserDatabase)
+  // float radius = 2;
+  void clear_radius();
+  float radius() const;
+  void set_radius(float value);
+  private:
+  float _internal_radius() const;
+  void _internal_set_radius(float value);
+  public:
+
+  // .proto.StatusEnum status = 3;
+  void clear_status();
+  ::proto::StatusEnum status() const;
+  void set_status(::proto::StatusEnum value);
+  private:
+  ::proto::StatusEnum _internal_status() const;
+  void _internal_set_status(::proto::StatusEnum value);
+  public:
+
+  // double last_seen = 5;
+  void clear_last_seen();
+  double last_seen() const;
+  void set_last_seen(double value);
+  private:
+  double _internal_last_seen() const;
+  void _internal_set_last_seen(double value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:proto.CharacterReport)
  private:
   class _Internal;
 
@@ -1676,9 +1447,11 @@ class UserDatabase final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedField<int> features_;
-    mutable std::atomic<int> _features_cached_byte_size_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::User > users_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+    ::proto::Vector3* color_;
+    float radius_;
+    int status_;
+    double last_seen_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1734,7 +1507,7 @@ class WorldDatabase final :
                &_WorldDatabase_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    6;
 
   friend void swap(WorldDatabase& a, WorldDatabase& b) {
     a.Swap(&b);
@@ -1922,7 +1695,7 @@ class UpdateRequest final :
                &_UpdateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    7;
 
   friend void swap(UpdateRequest& a, UpdateRequest& b) {
     a.Swap(&b);
@@ -2075,7 +1848,7 @@ class UpdateResponse final :
                &_UpdateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    8;
 
   friend void swap(UpdateResponse& a, UpdateResponse& b) {
     a.Swap(&b);
@@ -2263,7 +2036,7 @@ class ReportMovementRequest final :
                &_ReportMovementRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    9;
 
   friend void swap(ReportMovementRequest& a, ReportMovementRequest& b) {
     a.Swap(&b);
@@ -2452,7 +2225,7 @@ class ReportMovementResponse final :
                &_ReportMovementResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    10;
 
   friend void swap(ReportMovementResponse& a, ReportMovementResponse& b) {
     a.Swap(&b);
@@ -2563,355 +2336,6 @@ class ReportMovementResponse final :
 };
 // -------------------------------------------------------------------
 
-class LoginRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.LoginRequest) */ {
- public:
-  inline LoginRequest() : LoginRequest(nullptr) {}
-  ~LoginRequest() override;
-  explicit PROTOBUF_CONSTEXPR LoginRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  LoginRequest(const LoginRequest& from);
-  LoginRequest(LoginRequest&& from) noexcept
-    : LoginRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline LoginRequest& operator=(const LoginRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline LoginRequest& operator=(LoginRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const LoginRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const LoginRequest* internal_default_instance() {
-    return reinterpret_cast<const LoginRequest*>(
-               &_LoginRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    12;
-
-  friend void swap(LoginRequest& a, LoginRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(LoginRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(LoginRequest* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  LoginRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<LoginRequest>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const LoginRequest& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const LoginRequest& from) {
-    LoginRequest::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(LoginRequest* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proto.LoginRequest";
-  }
-  protected:
-  explicit LoginRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kNameFieldNumber = 1,
-    kPasswordFieldNumber = 2,
-    kSaltFieldNumber = 3,
-  };
-  // string name = 1;
-  void clear_name();
-  const std::string& name() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_name(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_name();
-  PROTOBUF_NODISCARD std::string* release_name();
-  void set_allocated_name(std::string* name);
-  private:
-  const std::string& _internal_name() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
-  std::string* _internal_mutable_name();
-  public:
-
-  // string password = 2;
-  void clear_password();
-  const std::string& password() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_password(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_password();
-  PROTOBUF_NODISCARD std::string* release_password();
-  void set_allocated_password(std::string* password);
-  private:
-  const std::string& _internal_password() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_password(const std::string& value);
-  std::string* _internal_mutable_password();
-  public:
-
-  // string salt = 3;
-  void clear_salt();
-  const std::string& salt() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_salt(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_salt();
-  PROTOBUF_NODISCARD std::string* release_salt();
-  void set_allocated_salt(std::string* salt);
-  private:
-  const std::string& _internal_salt() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_salt(const std::string& value);
-  std::string* _internal_mutable_salt();
-  public:
-
-  // @@protoc_insertion_point(class_scope:proto.LoginRequest)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr password_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr salt_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_darwin_5fservice_2eproto;
-};
-// -------------------------------------------------------------------
-
-class LoginResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.LoginResponse) */ {
- public:
-  inline LoginResponse() : LoginResponse(nullptr) {}
-  ~LoginResponse() override;
-  explicit PROTOBUF_CONSTEXPR LoginResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  LoginResponse(const LoginResponse& from);
-  LoginResponse(LoginResponse&& from) noexcept
-    : LoginResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline LoginResponse& operator=(const LoginResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline LoginResponse& operator=(LoginResponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const LoginResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const LoginResponse* internal_default_instance() {
-    return reinterpret_cast<const LoginResponse*>(
-               &_LoginResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    13;
-
-  friend void swap(LoginResponse& a, LoginResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(LoginResponse* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(LoginResponse* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  LoginResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<LoginResponse>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const LoginResponse& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const LoginResponse& from) {
-    LoginResponse::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(LoginResponse* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proto.LoginResponse";
-  }
-  protected:
-  explicit LoginResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kSessionTockenFieldNumber = 2,
-    kReturnEnumFieldNumber = 1,
-  };
-  // string session_tocken = 2;
-  void clear_session_tocken();
-  const std::string& session_tocken() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_session_tocken(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_session_tocken();
-  PROTOBUF_NODISCARD std::string* release_session_tocken();
-  void set_allocated_session_tocken(std::string* session_tocken);
-  private:
-  const std::string& _internal_session_tocken() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_session_tocken(const std::string& value);
-  std::string* _internal_mutable_session_tocken();
-  public:
-
-  // .proto.ReturnEnum return_enum = 1;
-  void clear_return_enum();
-  ::proto::ReturnEnum return_enum() const;
-  void set_return_enum(::proto::ReturnEnum value);
-  private:
-  ::proto::ReturnEnum _internal_return_enum() const;
-  void _internal_set_return_enum(::proto::ReturnEnum value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:proto.LoginResponse)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr session_tocken_;
-    int return_enum_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_darwin_5fservice_2eproto;
-};
-// -------------------------------------------------------------------
-
 class CreateCharacterRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.CreateCharacterRequest) */ {
  public:
@@ -2960,7 +2384,7 @@ class CreateCharacterRequest final :
                &_CreateCharacterRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    11;
 
   friend void swap(CreateCharacterRequest& a, CreateCharacterRequest& b) {
     a.Swap(&b);
@@ -3033,9 +2457,24 @@ class CreateCharacterRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kColorFieldNumber = 1,
+    kNameFieldNumber = 1,
+    kColorFieldNumber = 2,
   };
-  // .proto.Vector3 color = 1;
+  // string name = 1;
+  void clear_name();
+  const std::string& name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_name();
+  PROTOBUF_NODISCARD std::string* release_name();
+  void set_allocated_name(std::string* name);
+  private:
+  const std::string& _internal_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
+  std::string* _internal_mutable_name();
+  public:
+
+  // .proto.Vector3 color = 2;
   bool has_color() const;
   private:
   bool _internal_has_color() const;
@@ -3061,6 +2500,7 @@ class CreateCharacterRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
     ::proto::Vector3* color_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -3117,7 +2557,7 @@ class CreateCharacterResponse final :
                &_CreateCharacterResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    12;
 
   friend void swap(CreateCharacterResponse& a, CreateCharacterResponse& b) {
     a.Swap(&b);
@@ -3265,7 +2705,7 @@ class PingRequest final :
                &_PingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    13;
 
   friend void swap(PingRequest& a, PingRequest& b) {
     a.Swap(&b);
@@ -3413,7 +2853,7 @@ class PingResponse final :
                &_PingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    14;
 
   friend void swap(PingResponse& a, PingResponse& b) {
     a.Swap(&b);
@@ -3517,6 +2957,354 @@ class PingResponse final :
   struct Impl_ {
     double time_;
     int32_t value_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_darwin_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DeathReportRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.DeathReportRequest) */ {
+ public:
+  inline DeathReportRequest() : DeathReportRequest(nullptr) {}
+  ~DeathReportRequest() override;
+  explicit PROTOBUF_CONSTEXPR DeathReportRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  DeathReportRequest(const DeathReportRequest& from);
+  DeathReportRequest(DeathReportRequest&& from) noexcept
+    : DeathReportRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline DeathReportRequest& operator=(const DeathReportRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DeathReportRequest& operator=(DeathReportRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DeathReportRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DeathReportRequest* internal_default_instance() {
+    return reinterpret_cast<const DeathReportRequest*>(
+               &_DeathReportRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    15;
+
+  friend void swap(DeathReportRequest& a, DeathReportRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DeathReportRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DeathReportRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DeathReportRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<DeathReportRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DeathReportRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const DeathReportRequest& from) {
+    DeathReportRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DeathReportRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "proto.DeathReportRequest";
+  }
+  protected:
+  explicit DeathReportRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kNameFieldNumber = 1,
+    kSessionTockenFieldNumber = 2,
+  };
+  // string name = 1;
+  void clear_name();
+  const std::string& name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_name();
+  PROTOBUF_NODISCARD std::string* release_name();
+  void set_allocated_name(std::string* name);
+  private:
+  const std::string& _internal_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
+  std::string* _internal_mutable_name();
+  public:
+
+  // string session_tocken = 2;
+  void clear_session_tocken();
+  const std::string& session_tocken() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_session_tocken(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_session_tocken();
+  PROTOBUF_NODISCARD std::string* release_session_tocken();
+  void set_allocated_session_tocken(std::string* session_tocken);
+  private:
+  const std::string& _internal_session_tocken() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_session_tocken(const std::string& value);
+  std::string* _internal_mutable_session_tocken();
+  public:
+
+  // @@protoc_insertion_point(class_scope:proto.DeathReportRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr session_tocken_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_darwin_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
+class DeathReportResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.DeathReportResponse) */ {
+ public:
+  inline DeathReportResponse() : DeathReportResponse(nullptr) {}
+  ~DeathReportResponse() override;
+  explicit PROTOBUF_CONSTEXPR DeathReportResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  DeathReportResponse(const DeathReportResponse& from);
+  DeathReportResponse(DeathReportResponse&& from) noexcept
+    : DeathReportResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline DeathReportResponse& operator=(const DeathReportResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DeathReportResponse& operator=(DeathReportResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DeathReportResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DeathReportResponse* internal_default_instance() {
+    return reinterpret_cast<const DeathReportResponse*>(
+               &_DeathReportResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    16;
+
+  friend void swap(DeathReportResponse& a, DeathReportResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DeathReportResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DeathReportResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DeathReportResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<DeathReportResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const DeathReportResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const DeathReportResponse& from) {
+    DeathReportResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DeathReportResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "proto.DeathReportResponse";
+  }
+  protected:
+  explicit DeathReportResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCharacterReportsFieldNumber = 3,
+    kTimeFieldNumber = 2,
+    kReturnEnumFieldNumber = 1,
+  };
+  // repeated .proto.CharacterReport character_reports = 3;
+  int character_reports_size() const;
+  private:
+  int _internal_character_reports_size() const;
+  public:
+  void clear_character_reports();
+  ::proto::CharacterReport* mutable_character_reports(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::CharacterReport >*
+      mutable_character_reports();
+  private:
+  const ::proto::CharacterReport& _internal_character_reports(int index) const;
+  ::proto::CharacterReport* _internal_add_character_reports();
+  public:
+  const ::proto::CharacterReport& character_reports(int index) const;
+  ::proto::CharacterReport* add_character_reports();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::CharacterReport >&
+      character_reports() const;
+
+  // double time = 2;
+  void clear_time();
+  double time() const;
+  void set_time(double value);
+  private:
+  double _internal_time() const;
+  void _internal_set_time(double value);
+  public:
+
+  // .proto.ReturnEnum return_enum = 1;
+  void clear_return_enum();
+  ::proto::ReturnEnum return_enum() const;
+  void set_return_enum(::proto::ReturnEnum value);
+  private:
+  ::proto::ReturnEnum _internal_return_enum() const;
+  void _internal_set_return_enum(::proto::ReturnEnum value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:proto.DeathReportResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::CharacterReport > character_reports_;
+    double time_;
+    int return_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -4297,230 +4085,6 @@ inline void Element::set_type_enum(::proto::Element_TypeEnum value) {
 
 // -------------------------------------------------------------------
 
-// User
-
-// string name = 1;
-inline void User::clear_name() {
-  _impl_.name_.ClearToEmpty();
-}
-inline const std::string& User::name() const {
-  // @@protoc_insertion_point(field_get:proto.User.name)
-  return _internal_name();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void User::set_name(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.User.name)
-}
-inline std::string* User::mutable_name() {
-  std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:proto.User.name)
-  return _s;
-}
-inline const std::string& User::_internal_name() const {
-  return _impl_.name_.Get();
-}
-inline void User::_internal_set_name(const std::string& value) {
-  
-  _impl_.name_.Set(value, GetArenaForAllocation());
-}
-inline std::string* User::_internal_mutable_name() {
-  
-  return _impl_.name_.Mutable(GetArenaForAllocation());
-}
-inline std::string* User::release_name() {
-  // @@protoc_insertion_point(field_release:proto.User.name)
-  return _impl_.name_.Release();
-}
-inline void User::set_allocated_name(std::string* name) {
-  if (name != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.name_.SetAllocated(name, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.name_.IsDefault()) {
-    _impl_.name_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.User.name)
-}
-
-// string password = 2;
-inline void User::clear_password() {
-  _impl_.password_.ClearToEmpty();
-}
-inline const std::string& User::password() const {
-  // @@protoc_insertion_point(field_get:proto.User.password)
-  return _internal_password();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void User::set_password(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.password_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.User.password)
-}
-inline std::string* User::mutable_password() {
-  std::string* _s = _internal_mutable_password();
-  // @@protoc_insertion_point(field_mutable:proto.User.password)
-  return _s;
-}
-inline const std::string& User::_internal_password() const {
-  return _impl_.password_.Get();
-}
-inline void User::_internal_set_password(const std::string& value) {
-  
-  _impl_.password_.Set(value, GetArenaForAllocation());
-}
-inline std::string* User::_internal_mutable_password() {
-  
-  return _impl_.password_.Mutable(GetArenaForAllocation());
-}
-inline std::string* User::release_password() {
-  // @@protoc_insertion_point(field_release:proto.User.password)
-  return _impl_.password_.Release();
-}
-inline void User::set_allocated_password(std::string* password) {
-  if (password != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.password_.SetAllocated(password, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.password_.IsDefault()) {
-    _impl_.password_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.User.password)
-}
-
-// string salt = 3;
-inline void User::clear_salt() {
-  _impl_.salt_.ClearToEmpty();
-}
-inline const std::string& User::salt() const {
-  // @@protoc_insertion_point(field_get:proto.User.salt)
-  return _internal_salt();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void User::set_salt(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.salt_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.User.salt)
-}
-inline std::string* User::mutable_salt() {
-  std::string* _s = _internal_mutable_salt();
-  // @@protoc_insertion_point(field_mutable:proto.User.salt)
-  return _s;
-}
-inline const std::string& User::_internal_salt() const {
-  return _impl_.salt_.Get();
-}
-inline void User::_internal_set_salt(const std::string& value) {
-  
-  _impl_.salt_.Set(value, GetArenaForAllocation());
-}
-inline std::string* User::_internal_mutable_salt() {
-  
-  return _impl_.salt_.Mutable(GetArenaForAllocation());
-}
-inline std::string* User::release_salt() {
-  // @@protoc_insertion_point(field_release:proto.User.salt)
-  return _impl_.salt_.Release();
-}
-inline void User::set_allocated_salt(std::string* salt) {
-  if (salt != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.salt_.SetAllocated(salt, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.salt_.IsDefault()) {
-    _impl_.salt_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.User.salt)
-}
-
-// string session_tocken = 4;
-inline void User::clear_session_tocken() {
-  _impl_.session_tocken_.ClearToEmpty();
-}
-inline const std::string& User::session_tocken() const {
-  // @@protoc_insertion_point(field_get:proto.User.session_tocken)
-  return _internal_session_tocken();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void User::set_session_tocken(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.session_tocken_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.User.session_tocken)
-}
-inline std::string* User::mutable_session_tocken() {
-  std::string* _s = _internal_mutable_session_tocken();
-  // @@protoc_insertion_point(field_mutable:proto.User.session_tocken)
-  return _s;
-}
-inline const std::string& User::_internal_session_tocken() const {
-  return _impl_.session_tocken_.Get();
-}
-inline void User::_internal_set_session_tocken(const std::string& value) {
-  
-  _impl_.session_tocken_.Set(value, GetArenaForAllocation());
-}
-inline std::string* User::_internal_mutable_session_tocken() {
-  
-  return _impl_.session_tocken_.Mutable(GetArenaForAllocation());
-}
-inline std::string* User::release_session_tocken() {
-  // @@protoc_insertion_point(field_release:proto.User.session_tocken)
-  return _impl_.session_tocken_.Release();
-}
-inline void User::set_allocated_session_tocken(std::string* session_tocken) {
-  if (session_tocken != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.session_tocken_.SetAllocated(session_tocken, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.session_tocken_.IsDefault()) {
-    _impl_.session_tocken_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.User.session_tocken)
-}
-
-// int32 user_id = 5;
-inline void User::clear_user_id() {
-  _impl_.user_id_ = 0;
-}
-inline int32_t User::_internal_user_id() const {
-  return _impl_.user_id_;
-}
-inline int32_t User::user_id() const {
-  // @@protoc_insertion_point(field_get:proto.User.user_id)
-  return _internal_user_id();
-}
-inline void User::_internal_set_user_id(int32_t value) {
-  
-  _impl_.user_id_ = value;
-}
-inline void User::set_user_id(int32_t value) {
-  _internal_set_user_id(value);
-  // @@protoc_insertion_point(field_set:proto.User.user_id)
-}
-
-// -------------------------------------------------------------------
-
 // Character
 
 // string name = 1;
@@ -4823,111 +4387,208 @@ inline void Character::set_g_force(double value) {
   // @@protoc_insertion_point(field_set:proto.Character.g_force)
 }
 
-// int32 user_id = 6;
-inline void Character::clear_user_id() {
-  _impl_.user_id_ = 0;
-}
-inline int32_t Character::_internal_user_id() const {
-  return _impl_.user_id_;
-}
-inline int32_t Character::user_id() const {
-  // @@protoc_insertion_point(field_get:proto.Character.user_id)
-  return _internal_user_id();
-}
-inline void Character::_internal_set_user_id(int32_t value) {
-  
-  _impl_.user_id_ = value;
-}
-inline void Character::set_user_id(int32_t value) {
-  _internal_set_user_id(value);
-  // @@protoc_insertion_point(field_set:proto.Character.user_id)
-}
-
 // -------------------------------------------------------------------
 
-// UserDatabase
+// CharacterReport
 
-// repeated .proto.UserDatabase.ParameterEnum features = 1;
-inline int UserDatabase::_internal_features_size() const {
-  return _impl_.features_.size();
+// string name = 1;
+inline void CharacterReport::clear_name() {
+  _impl_.name_.ClearToEmpty();
 }
-inline int UserDatabase::features_size() const {
-  return _internal_features_size();
+inline const std::string& CharacterReport::name() const {
+  // @@protoc_insertion_point(field_get:proto.CharacterReport.name)
+  return _internal_name();
 }
-inline void UserDatabase::clear_features() {
-  _impl_.features_.Clear();
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void CharacterReport::set_name(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:proto.CharacterReport.name)
 }
-inline ::proto::UserDatabase_ParameterEnum UserDatabase::_internal_features(int index) const {
-  return static_cast< ::proto::UserDatabase_ParameterEnum >(_impl_.features_.Get(index));
+inline std::string* CharacterReport::mutable_name() {
+  std::string* _s = _internal_mutable_name();
+  // @@protoc_insertion_point(field_mutable:proto.CharacterReport.name)
+  return _s;
 }
-inline ::proto::UserDatabase_ParameterEnum UserDatabase::features(int index) const {
-  // @@protoc_insertion_point(field_get:proto.UserDatabase.features)
-  return _internal_features(index);
+inline const std::string& CharacterReport::_internal_name() const {
+  return _impl_.name_.Get();
 }
-inline void UserDatabase::set_features(int index, ::proto::UserDatabase_ParameterEnum value) {
-  _impl_.features_.Set(index, value);
-  // @@protoc_insertion_point(field_set:proto.UserDatabase.features)
+inline void CharacterReport::_internal_set_name(const std::string& value) {
+  
+  _impl_.name_.Set(value, GetArenaForAllocation());
 }
-inline void UserDatabase::_internal_add_features(::proto::UserDatabase_ParameterEnum value) {
-  _impl_.features_.Add(value);
+inline std::string* CharacterReport::_internal_mutable_name() {
+  
+  return _impl_.name_.Mutable(GetArenaForAllocation());
 }
-inline void UserDatabase::add_features(::proto::UserDatabase_ParameterEnum value) {
-  _internal_add_features(value);
-  // @@protoc_insertion_point(field_add:proto.UserDatabase.features)
+inline std::string* CharacterReport::release_name() {
+  // @@protoc_insertion_point(field_release:proto.CharacterReport.name)
+  return _impl_.name_.Release();
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>&
-UserDatabase::features() const {
-  // @@protoc_insertion_point(field_list:proto.UserDatabase.features)
-  return _impl_.features_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>*
-UserDatabase::_internal_mutable_features() {
-  return &_impl_.features_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField<int>*
-UserDatabase::mutable_features() {
-  // @@protoc_insertion_point(field_mutable_list:proto.UserDatabase.features)
-  return _internal_mutable_features();
+inline void CharacterReport::set_allocated_name(std::string* name) {
+  if (name != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.name_.SetAllocated(name, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.name_.IsDefault()) {
+    _impl_.name_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:proto.CharacterReport.name)
 }
 
-// repeated .proto.User users = 2;
-inline int UserDatabase::_internal_users_size() const {
-  return _impl_.users_.size();
+// float radius = 2;
+inline void CharacterReport::clear_radius() {
+  _impl_.radius_ = 0;
 }
-inline int UserDatabase::users_size() const {
-  return _internal_users_size();
+inline float CharacterReport::_internal_radius() const {
+  return _impl_.radius_;
 }
-inline void UserDatabase::clear_users() {
-  _impl_.users_.Clear();
+inline float CharacterReport::radius() const {
+  // @@protoc_insertion_point(field_get:proto.CharacterReport.radius)
+  return _internal_radius();
 }
-inline ::proto::User* UserDatabase::mutable_users(int index) {
-  // @@protoc_insertion_point(field_mutable:proto.UserDatabase.users)
-  return _impl_.users_.Mutable(index);
+inline void CharacterReport::_internal_set_radius(float value) {
+  
+  _impl_.radius_ = value;
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::User >*
-UserDatabase::mutable_users() {
-  // @@protoc_insertion_point(field_mutable_list:proto.UserDatabase.users)
-  return &_impl_.users_;
+inline void CharacterReport::set_radius(float value) {
+  _internal_set_radius(value);
+  // @@protoc_insertion_point(field_set:proto.CharacterReport.radius)
 }
-inline const ::proto::User& UserDatabase::_internal_users(int index) const {
-  return _impl_.users_.Get(index);
+
+// .proto.StatusEnum status = 3;
+inline void CharacterReport::clear_status() {
+  _impl_.status_ = 0;
 }
-inline const ::proto::User& UserDatabase::users(int index) const {
-  // @@protoc_insertion_point(field_get:proto.UserDatabase.users)
-  return _internal_users(index);
+inline ::proto::StatusEnum CharacterReport::_internal_status() const {
+  return static_cast< ::proto::StatusEnum >(_impl_.status_);
 }
-inline ::proto::User* UserDatabase::_internal_add_users() {
-  return _impl_.users_.Add();
+inline ::proto::StatusEnum CharacterReport::status() const {
+  // @@protoc_insertion_point(field_get:proto.CharacterReport.status)
+  return _internal_status();
 }
-inline ::proto::User* UserDatabase::add_users() {
-  ::proto::User* _add = _internal_add_users();
-  // @@protoc_insertion_point(field_add:proto.UserDatabase.users)
-  return _add;
+inline void CharacterReport::_internal_set_status(::proto::StatusEnum value) {
+  
+  _impl_.status_ = value;
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::User >&
-UserDatabase::users() const {
-  // @@protoc_insertion_point(field_list:proto.UserDatabase.users)
-  return _impl_.users_;
+inline void CharacterReport::set_status(::proto::StatusEnum value) {
+  _internal_set_status(value);
+  // @@protoc_insertion_point(field_set:proto.CharacterReport.status)
+}
+
+// .proto.Vector3 color = 4;
+inline bool CharacterReport::_internal_has_color() const {
+  return this != internal_default_instance() && _impl_.color_ != nullptr;
+}
+inline bool CharacterReport::has_color() const {
+  return _internal_has_color();
+}
+inline void CharacterReport::clear_color() {
+  if (GetArenaForAllocation() == nullptr && _impl_.color_ != nullptr) {
+    delete _impl_.color_;
+  }
+  _impl_.color_ = nullptr;
+}
+inline const ::proto::Vector3& CharacterReport::_internal_color() const {
+  const ::proto::Vector3* p = _impl_.color_;
+  return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector3&>(
+      ::proto::_Vector3_default_instance_);
+}
+inline const ::proto::Vector3& CharacterReport::color() const {
+  // @@protoc_insertion_point(field_get:proto.CharacterReport.color)
+  return _internal_color();
+}
+inline void CharacterReport::unsafe_arena_set_allocated_color(
+    ::proto::Vector3* color) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.color_);
+  }
+  _impl_.color_ = color;
+  if (color) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.CharacterReport.color)
+}
+inline ::proto::Vector3* CharacterReport::release_color() {
+  
+  ::proto::Vector3* temp = _impl_.color_;
+  _impl_.color_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::proto::Vector3* CharacterReport::unsafe_arena_release_color() {
+  // @@protoc_insertion_point(field_release:proto.CharacterReport.color)
+  
+  ::proto::Vector3* temp = _impl_.color_;
+  _impl_.color_ = nullptr;
+  return temp;
+}
+inline ::proto::Vector3* CharacterReport::_internal_mutable_color() {
+  
+  if (_impl_.color_ == nullptr) {
+    auto* p = CreateMaybeMessage<::proto::Vector3>(GetArenaForAllocation());
+    _impl_.color_ = p;
+  }
+  return _impl_.color_;
+}
+inline ::proto::Vector3* CharacterReport::mutable_color() {
+  ::proto::Vector3* _msg = _internal_mutable_color();
+  // @@protoc_insertion_point(field_mutable:proto.CharacterReport.color)
+  return _msg;
+}
+inline void CharacterReport::set_allocated_color(::proto::Vector3* color) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.color_;
+  }
+  if (color) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(color);
+    if (message_arena != submessage_arena) {
+      color = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, color, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.color_ = color;
+  // @@protoc_insertion_point(field_set_allocated:proto.CharacterReport.color)
+}
+
+// double last_seen = 5;
+inline void CharacterReport::clear_last_seen() {
+  _impl_.last_seen_ = 0;
+}
+inline double CharacterReport::_internal_last_seen() const {
+  return _impl_.last_seen_;
+}
+inline double CharacterReport::last_seen() const {
+  // @@protoc_insertion_point(field_get:proto.CharacterReport.last_seen)
+  return _internal_last_seen();
+}
+inline void CharacterReport::_internal_set_last_seen(double value) {
+  
+  _impl_.last_seen_ = value;
+}
+inline void CharacterReport::set_last_seen(double value) {
+  _internal_set_last_seen(value);
+  // @@protoc_insertion_point(field_set:proto.CharacterReport.last_seen)
 }
 
 // -------------------------------------------------------------------
@@ -5432,44 +5093,44 @@ inline void ReportMovementResponse::set_time(double value) {
 
 // -------------------------------------------------------------------
 
-// LoginRequest
+// CreateCharacterRequest
 
 // string name = 1;
-inline void LoginRequest::clear_name() {
+inline void CreateCharacterRequest::clear_name() {
   _impl_.name_.ClearToEmpty();
 }
-inline const std::string& LoginRequest::name() const {
-  // @@protoc_insertion_point(field_get:proto.LoginRequest.name)
+inline const std::string& CreateCharacterRequest::name() const {
+  // @@protoc_insertion_point(field_get:proto.CreateCharacterRequest.name)
   return _internal_name();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void LoginRequest::set_name(ArgT0&& arg0, ArgT... args) {
+void CreateCharacterRequest::set_name(ArgT0&& arg0, ArgT... args) {
  
  _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.LoginRequest.name)
+  // @@protoc_insertion_point(field_set:proto.CreateCharacterRequest.name)
 }
-inline std::string* LoginRequest::mutable_name() {
+inline std::string* CreateCharacterRequest::mutable_name() {
   std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:proto.LoginRequest.name)
+  // @@protoc_insertion_point(field_mutable:proto.CreateCharacterRequest.name)
   return _s;
 }
-inline const std::string& LoginRequest::_internal_name() const {
+inline const std::string& CreateCharacterRequest::_internal_name() const {
   return _impl_.name_.Get();
 }
-inline void LoginRequest::_internal_set_name(const std::string& value) {
+inline void CreateCharacterRequest::_internal_set_name(const std::string& value) {
   
   _impl_.name_.Set(value, GetArenaForAllocation());
 }
-inline std::string* LoginRequest::_internal_mutable_name() {
+inline std::string* CreateCharacterRequest::_internal_mutable_name() {
   
   return _impl_.name_.Mutable(GetArenaForAllocation());
 }
-inline std::string* LoginRequest::release_name() {
-  // @@protoc_insertion_point(field_release:proto.LoginRequest.name)
+inline std::string* CreateCharacterRequest::release_name() {
+  // @@protoc_insertion_point(field_release:proto.CreateCharacterRequest.name)
   return _impl_.name_.Release();
 }
-inline void LoginRequest::set_allocated_name(std::string* name) {
+inline void CreateCharacterRequest::set_allocated_name(std::string* name) {
   if (name != nullptr) {
     
   } else {
@@ -5481,188 +5142,10 @@ inline void LoginRequest::set_allocated_name(std::string* name) {
     _impl_.name_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.LoginRequest.name)
+  // @@protoc_insertion_point(field_set_allocated:proto.CreateCharacterRequest.name)
 }
 
-// string password = 2;
-inline void LoginRequest::clear_password() {
-  _impl_.password_.ClearToEmpty();
-}
-inline const std::string& LoginRequest::password() const {
-  // @@protoc_insertion_point(field_get:proto.LoginRequest.password)
-  return _internal_password();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void LoginRequest::set_password(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.password_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.LoginRequest.password)
-}
-inline std::string* LoginRequest::mutable_password() {
-  std::string* _s = _internal_mutable_password();
-  // @@protoc_insertion_point(field_mutable:proto.LoginRequest.password)
-  return _s;
-}
-inline const std::string& LoginRequest::_internal_password() const {
-  return _impl_.password_.Get();
-}
-inline void LoginRequest::_internal_set_password(const std::string& value) {
-  
-  _impl_.password_.Set(value, GetArenaForAllocation());
-}
-inline std::string* LoginRequest::_internal_mutable_password() {
-  
-  return _impl_.password_.Mutable(GetArenaForAllocation());
-}
-inline std::string* LoginRequest::release_password() {
-  // @@protoc_insertion_point(field_release:proto.LoginRequest.password)
-  return _impl_.password_.Release();
-}
-inline void LoginRequest::set_allocated_password(std::string* password) {
-  if (password != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.password_.SetAllocated(password, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.password_.IsDefault()) {
-    _impl_.password_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.LoginRequest.password)
-}
-
-// string salt = 3;
-inline void LoginRequest::clear_salt() {
-  _impl_.salt_.ClearToEmpty();
-}
-inline const std::string& LoginRequest::salt() const {
-  // @@protoc_insertion_point(field_get:proto.LoginRequest.salt)
-  return _internal_salt();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void LoginRequest::set_salt(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.salt_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.LoginRequest.salt)
-}
-inline std::string* LoginRequest::mutable_salt() {
-  std::string* _s = _internal_mutable_salt();
-  // @@protoc_insertion_point(field_mutable:proto.LoginRequest.salt)
-  return _s;
-}
-inline const std::string& LoginRequest::_internal_salt() const {
-  return _impl_.salt_.Get();
-}
-inline void LoginRequest::_internal_set_salt(const std::string& value) {
-  
-  _impl_.salt_.Set(value, GetArenaForAllocation());
-}
-inline std::string* LoginRequest::_internal_mutable_salt() {
-  
-  return _impl_.salt_.Mutable(GetArenaForAllocation());
-}
-inline std::string* LoginRequest::release_salt() {
-  // @@protoc_insertion_point(field_release:proto.LoginRequest.salt)
-  return _impl_.salt_.Release();
-}
-inline void LoginRequest::set_allocated_salt(std::string* salt) {
-  if (salt != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.salt_.SetAllocated(salt, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.salt_.IsDefault()) {
-    _impl_.salt_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.LoginRequest.salt)
-}
-
-// -------------------------------------------------------------------
-
-// LoginResponse
-
-// .proto.ReturnEnum return_enum = 1;
-inline void LoginResponse::clear_return_enum() {
-  _impl_.return_enum_ = 0;
-}
-inline ::proto::ReturnEnum LoginResponse::_internal_return_enum() const {
-  return static_cast< ::proto::ReturnEnum >(_impl_.return_enum_);
-}
-inline ::proto::ReturnEnum LoginResponse::return_enum() const {
-  // @@protoc_insertion_point(field_get:proto.LoginResponse.return_enum)
-  return _internal_return_enum();
-}
-inline void LoginResponse::_internal_set_return_enum(::proto::ReturnEnum value) {
-  
-  _impl_.return_enum_ = value;
-}
-inline void LoginResponse::set_return_enum(::proto::ReturnEnum value) {
-  _internal_set_return_enum(value);
-  // @@protoc_insertion_point(field_set:proto.LoginResponse.return_enum)
-}
-
-// string session_tocken = 2;
-inline void LoginResponse::clear_session_tocken() {
-  _impl_.session_tocken_.ClearToEmpty();
-}
-inline const std::string& LoginResponse::session_tocken() const {
-  // @@protoc_insertion_point(field_get:proto.LoginResponse.session_tocken)
-  return _internal_session_tocken();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void LoginResponse::set_session_tocken(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.session_tocken_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.LoginResponse.session_tocken)
-}
-inline std::string* LoginResponse::mutable_session_tocken() {
-  std::string* _s = _internal_mutable_session_tocken();
-  // @@protoc_insertion_point(field_mutable:proto.LoginResponse.session_tocken)
-  return _s;
-}
-inline const std::string& LoginResponse::_internal_session_tocken() const {
-  return _impl_.session_tocken_.Get();
-}
-inline void LoginResponse::_internal_set_session_tocken(const std::string& value) {
-  
-  _impl_.session_tocken_.Set(value, GetArenaForAllocation());
-}
-inline std::string* LoginResponse::_internal_mutable_session_tocken() {
-  
-  return _impl_.session_tocken_.Mutable(GetArenaForAllocation());
-}
-inline std::string* LoginResponse::release_session_tocken() {
-  // @@protoc_insertion_point(field_release:proto.LoginResponse.session_tocken)
-  return _impl_.session_tocken_.Release();
-}
-inline void LoginResponse::set_allocated_session_tocken(std::string* session_tocken) {
-  if (session_tocken != nullptr) {
-    
-  } else {
-    
-  }
-  _impl_.session_tocken_.SetAllocated(session_tocken, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.session_tocken_.IsDefault()) {
-    _impl_.session_tocken_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.LoginResponse.session_tocken)
-}
-
-// -------------------------------------------------------------------
-
-// CreateCharacterRequest
-
-// .proto.Vector3 color = 1;
+// .proto.Vector3 color = 2;
 inline bool CreateCharacterRequest::_internal_has_color() const {
   return this != internal_default_instance() && _impl_.color_ != nullptr;
 }
@@ -5844,11 +5327,197 @@ inline void PingResponse::set_time(double value) {
   // @@protoc_insertion_point(field_set:proto.PingResponse.time)
 }
 
+// -------------------------------------------------------------------
+
+// DeathReportRequest
+
+// string name = 1;
+inline void DeathReportRequest::clear_name() {
+  _impl_.name_.ClearToEmpty();
+}
+inline const std::string& DeathReportRequest::name() const {
+  // @@protoc_insertion_point(field_get:proto.DeathReportRequest.name)
+  return _internal_name();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DeathReportRequest::set_name(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:proto.DeathReportRequest.name)
+}
+inline std::string* DeathReportRequest::mutable_name() {
+  std::string* _s = _internal_mutable_name();
+  // @@protoc_insertion_point(field_mutable:proto.DeathReportRequest.name)
+  return _s;
+}
+inline const std::string& DeathReportRequest::_internal_name() const {
+  return _impl_.name_.Get();
+}
+inline void DeathReportRequest::_internal_set_name(const std::string& value) {
+  
+  _impl_.name_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DeathReportRequest::_internal_mutable_name() {
+  
+  return _impl_.name_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DeathReportRequest::release_name() {
+  // @@protoc_insertion_point(field_release:proto.DeathReportRequest.name)
+  return _impl_.name_.Release();
+}
+inline void DeathReportRequest::set_allocated_name(std::string* name) {
+  if (name != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.name_.SetAllocated(name, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.name_.IsDefault()) {
+    _impl_.name_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:proto.DeathReportRequest.name)
+}
+
+// string session_tocken = 2;
+inline void DeathReportRequest::clear_session_tocken() {
+  _impl_.session_tocken_.ClearToEmpty();
+}
+inline const std::string& DeathReportRequest::session_tocken() const {
+  // @@protoc_insertion_point(field_get:proto.DeathReportRequest.session_tocken)
+  return _internal_session_tocken();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void DeathReportRequest::set_session_tocken(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.session_tocken_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:proto.DeathReportRequest.session_tocken)
+}
+inline std::string* DeathReportRequest::mutable_session_tocken() {
+  std::string* _s = _internal_mutable_session_tocken();
+  // @@protoc_insertion_point(field_mutable:proto.DeathReportRequest.session_tocken)
+  return _s;
+}
+inline const std::string& DeathReportRequest::_internal_session_tocken() const {
+  return _impl_.session_tocken_.Get();
+}
+inline void DeathReportRequest::_internal_set_session_tocken(const std::string& value) {
+  
+  _impl_.session_tocken_.Set(value, GetArenaForAllocation());
+}
+inline std::string* DeathReportRequest::_internal_mutable_session_tocken() {
+  
+  return _impl_.session_tocken_.Mutable(GetArenaForAllocation());
+}
+inline std::string* DeathReportRequest::release_session_tocken() {
+  // @@protoc_insertion_point(field_release:proto.DeathReportRequest.session_tocken)
+  return _impl_.session_tocken_.Release();
+}
+inline void DeathReportRequest::set_allocated_session_tocken(std::string* session_tocken) {
+  if (session_tocken != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.session_tocken_.SetAllocated(session_tocken, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.session_tocken_.IsDefault()) {
+    _impl_.session_tocken_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:proto.DeathReportRequest.session_tocken)
+}
+
+// -------------------------------------------------------------------
+
+// DeathReportResponse
+
+// .proto.ReturnEnum return_enum = 1;
+inline void DeathReportResponse::clear_return_enum() {
+  _impl_.return_enum_ = 0;
+}
+inline ::proto::ReturnEnum DeathReportResponse::_internal_return_enum() const {
+  return static_cast< ::proto::ReturnEnum >(_impl_.return_enum_);
+}
+inline ::proto::ReturnEnum DeathReportResponse::return_enum() const {
+  // @@protoc_insertion_point(field_get:proto.DeathReportResponse.return_enum)
+  return _internal_return_enum();
+}
+inline void DeathReportResponse::_internal_set_return_enum(::proto::ReturnEnum value) {
+  
+  _impl_.return_enum_ = value;
+}
+inline void DeathReportResponse::set_return_enum(::proto::ReturnEnum value) {
+  _internal_set_return_enum(value);
+  // @@protoc_insertion_point(field_set:proto.DeathReportResponse.return_enum)
+}
+
+// double time = 2;
+inline void DeathReportResponse::clear_time() {
+  _impl_.time_ = 0;
+}
+inline double DeathReportResponse::_internal_time() const {
+  return _impl_.time_;
+}
+inline double DeathReportResponse::time() const {
+  // @@protoc_insertion_point(field_get:proto.DeathReportResponse.time)
+  return _internal_time();
+}
+inline void DeathReportResponse::_internal_set_time(double value) {
+  
+  _impl_.time_ = value;
+}
+inline void DeathReportResponse::set_time(double value) {
+  _internal_set_time(value);
+  // @@protoc_insertion_point(field_set:proto.DeathReportResponse.time)
+}
+
+// repeated .proto.CharacterReport character_reports = 3;
+inline int DeathReportResponse::_internal_character_reports_size() const {
+  return _impl_.character_reports_.size();
+}
+inline int DeathReportResponse::character_reports_size() const {
+  return _internal_character_reports_size();
+}
+inline void DeathReportResponse::clear_character_reports() {
+  _impl_.character_reports_.Clear();
+}
+inline ::proto::CharacterReport* DeathReportResponse::mutable_character_reports(int index) {
+  // @@protoc_insertion_point(field_mutable:proto.DeathReportResponse.character_reports)
+  return _impl_.character_reports_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::CharacterReport >*
+DeathReportResponse::mutable_character_reports() {
+  // @@protoc_insertion_point(field_mutable_list:proto.DeathReportResponse.character_reports)
+  return &_impl_.character_reports_;
+}
+inline const ::proto::CharacterReport& DeathReportResponse::_internal_character_reports(int index) const {
+  return _impl_.character_reports_.Get(index);
+}
+inline const ::proto::CharacterReport& DeathReportResponse::character_reports(int index) const {
+  // @@protoc_insertion_point(field_get:proto.DeathReportResponse.character_reports)
+  return _internal_character_reports(index);
+}
+inline ::proto::CharacterReport* DeathReportResponse::_internal_add_character_reports() {
+  return _impl_.character_reports_.Add();
+}
+inline ::proto::CharacterReport* DeathReportResponse::add_character_reports() {
+  ::proto::CharacterReport* _add = _internal_add_character_reports();
+  // @@protoc_insertion_point(field_add:proto.DeathReportResponse.character_reports)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::CharacterReport >&
+DeathReportResponse::character_reports() const {
+  // @@protoc_insertion_point(field_list:proto.DeathReportResponse.character_reports)
+  return _impl_.character_reports_;
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -5893,15 +5562,15 @@ template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::proto::Element_TypeEnum>() {
   return ::proto::Element_TypeEnum_descriptor();
 }
-template <> struct is_proto_enum< ::proto::UserDatabase_ParameterEnum> : ::std::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::proto::UserDatabase_ParameterEnum>() {
-  return ::proto::UserDatabase_ParameterEnum_descriptor();
-}
 template <> struct is_proto_enum< ::proto::ReturnEnum> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::proto::ReturnEnum>() {
   return ::proto::ReturnEnum_descriptor();
+}
+template <> struct is_proto_enum< ::proto::StatusEnum> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::proto::StatusEnum>() {
+  return ::proto::StatusEnum_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

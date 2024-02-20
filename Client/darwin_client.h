@@ -1,5 +1,6 @@
 #pragma once
 
+#include <future>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -14,7 +15,11 @@ namespace darwin {
 
     class DarwinClient {
     public:
-        DarwinClient(const std::string& name, std::shared_ptr<grpc::Channel> channel);
+        DarwinClient(const std::string& name);
+        ~DarwinClient();
+        bool CreateCharacter(
+            const std::string& name, 
+            const proto::Vector3& color);
         void ReportMovement(const proto::Physic& physic);
         void Update(WorldClient& world_client);
         std::int32_t Ping(std::int32_t val = 45323);
@@ -25,6 +30,9 @@ namespace darwin {
         double server_time_ = 0.0;
         std::unique_ptr<proto::DarwinService::Stub> stub_;
         frame::Logger& logger_ = frame::Logger::GetInstance();
+        darwin::WorldClient world_client_;
+        std::future<void> future_;
+        std::atomic<bool> end_{ false };
     };
 
 } // namespace darwin.

@@ -7,16 +7,14 @@ add_executable(DarwinClient
         darwin_client.h
         world_client.cpp
         world_client.h
+        modal_character.cpp
+        modal_character.h
         modal_disconnected.cpp
         modal_disconnected.h
-        modal_login.cpp
-        modal_login.h
         modal_ping.cpp
         modal_ping.h
         modal_server.cpp
         modal_server.h
-        network_app.cpp
-        network_app.h
         state_interface.h
         state_character.cpp
         state_character.h
@@ -24,8 +22,6 @@ add_executable(DarwinClient
         state_context.h
         state_disconnected.cpp
         state_disconnected.h
-        state_login.cpp
-        state_login.h
         state_title.cpp
         state_title.h
         state_ping.cpp

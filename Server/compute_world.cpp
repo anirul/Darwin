@@ -17,7 +17,8 @@ namespace darwin {
                 .count();
             // Update the players.
             {
-                std::lock_guard<std::mutex> lock(service.GetTimeCharacterMutex());
+                std::lock_guard<std::mutex> lock(
+                    service.GetTimeCharacterMutex());
                 for (const auto& time_player : service.GetTimeCharacters()) {
                     world_state.UpdateCharacter(
                         time_player.first, 
@@ -37,7 +38,8 @@ namespace darwin {
                 { characters.begin(), characters.end() });
             response.set_time(time);
             service.BroadcastUpdate(response);
-            std::this_thread::sleep_until(now + std::chrono::milliseconds(500));
+            std::this_thread::sleep_until(
+                now + std::chrono::milliseconds(100));
         }
     }
 

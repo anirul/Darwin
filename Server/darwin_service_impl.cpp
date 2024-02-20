@@ -13,9 +13,9 @@ namespace darwin {
 #ifdef _DEBUG
         std::cout << 
             std::format(
-                "Added a writer {}:{}\n", 
-                request->name(), 
-                context->peer());
+                "[{}] Added a writer {}\n",
+                context->peer(),
+                request->name());
 #endif
         {
             std::lock_guard<std::mutex> lock(writers_mutex_);
@@ -30,10 +30,10 @@ namespace darwin {
 #ifdef _DEBUG
         std::cout << 
             std::format(
-                "Removed a writer {}:{}\n", 
-                request->name(), 
-                context->peer());
-#endif
+                "[{}] Removed a writer {}\n",
+                context->peer(),
+                request->name());
+#endif // _DEBUG
         {
             std::lock_guard<std::mutex> lock(writers_mutex_);
             writers_.remove(writer);
@@ -46,8 +46,13 @@ namespace darwin {
         const proto::ReportMovementRequest* request,
         proto::ReportMovementResponse* response)
     {
-        std::cout << std::format("Got a push request from {}:{}\n", request->name(), context->peer());
+#ifdef _DEBUG
+        std::cout << std::format(
+            "[{}] Got a push request from {}\n",
+            context->peer(),
+            request->name());
         {
+#endif // _DEBUG
             std::lock_guard<std::mutex> lock(writers_mutex_);
             // Delete previous entry.
             proto::Character character;
@@ -69,20 +74,18 @@ namespace darwin {
         return grpc::Status::OK;
     }
 
-    grpc::Status DarwinServiceImpl::Login(
-        grpc::ServerContext* context,
-        const proto::LoginRequest* request,
-        proto::LoginResponse* response)
-    {
-        throw std::runtime_error("Not implemented");
-        return grpc::Status::OK;
-    }
-
     grpc::Status DarwinServiceImpl::CreateCharacter(
         grpc::ServerContext* context,
         const proto::CreateCharacterRequest* request,
         proto::CreateCharacterResponse* response)
     {
+#ifdef _DEBUG
+        std::cout <<
+            std::format(
+                "[{}] Got a create character request from {}\n",
+                context->peer(),
+                request->name());
+#endif // _DEBUG
         throw std::runtime_error("Not implemented");
         return grpc::Status::OK;
     }
@@ -92,11 +95,13 @@ namespace darwin {
         const proto::PingRequest* request,
         proto::PingResponse* response)
     {
+#ifdef _DEBUG
         std::cout << 
             std::format(
-                "Got a ping request from {}:{}\n", 
-                context->peer(), 
+                "[{}] Got a ping request from {}\n",
+                context->peer(),
                 request->value());
+#endif // _DEBUG
         response->set_value(request->value());
         auto now = std::chrono::system_clock::now();
         double time =
@@ -104,6 +109,22 @@ namespace darwin {
                 now.time_since_epoch())
             .count();
         response->set_time(time);
+        return grpc::Status::OK;
+    }
+
+    grpc::Status DarwinServiceImpl::DeathReport(
+        grpc::ServerContext* context,
+        const proto::DeathReportRequest* request,
+        proto::DeathReportResponse* response)
+    {
+#ifdef _DEBUG
+        std::cout << 
+            std::format(
+                "[{}] Got a death report from {}\n",
+                context->peer(),
+                request->name());
+#endif // _DEBUG
+        throw std::runtime_error("Not implemented");
         return grpc::Status::OK;
     }
 

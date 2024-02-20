@@ -4,7 +4,6 @@
 
 #include "frame/gui/draw_gui_interface.h"
 #include "state_context.h"
-#include "state_login.h"
 #include "state_disconnected.h"
 #include "state_title.h"
 #include "state_ping.h"
@@ -35,12 +34,13 @@ namespace darwin::state {
             modal::ModalServerButton::None) {
             switch (modal_server_params_.button_result) {
             case modal::ModalServerButton::Connect:
-                network_app_ = std::make_unique<NetworkApp>();
-                network_app_->EnterWorld(modal_server_params_.server_name);
+                darwin_client_ = 
+                    std::make_unique<DarwinClient>(
+                        modal_server_params_.server_name);
                 state_context.ChangeState(
                     std::make_unique<StatePing>(
                         app_,
-                        std::move(network_app_)));
+                        std::move(darwin_client_)));
                 break;
             case modal::ModalServerButton::Cancel:
                 state_context.ChangeState(

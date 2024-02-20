@@ -2,6 +2,18 @@ syntax = "proto3";
 
 package proto;
 
+enum ReturnEnum {
+    RETURN_ERROR = 0;
+    RETURN_OK = 1;
+    RETURN_REJECTED = 2;
+}
+
+enum StatusEnum {
+    STATUS_NONE = 0;
+    STATUS_ALIVE = 1;
+    STATUS_DEAD = 2;
+}
+
 // Vector 3 this store position or other 3 float values.
 // Next: 4
 message Vector3 {
@@ -57,23 +69,8 @@ message Element {
     TypeEnum type_enum = 4;
 }
 
-// User
-// Next: 4
-message User {
-    // User name.
-    string name = 1;
-    // Password this will be hashed and salted!
-    string password = 2;
-    // The password salt.
-    string salt = 3;
-    // Session tocken.
-    string session_tocken = 4;
-    // User id.
-    int32 user_id = 5;
-}
-
 // Character it will be represented by a sphere on server.
-// Next: 7
+// Next: 6
 message Character {
     // Character name.
     string name = 1;
@@ -85,22 +82,21 @@ message Character {
     Vector3 g_normal = 4;
     // G force (used for local computation).
     double g_force = 5;
-    // User parameters.
-    int32 user_id = 6;
 }
 
-// UserDatabase
-// Next: 3
-message UserDatabase {
-    // Features list.
-    enum ParameterEnum {
-        NONE = 0;
-        ALLOW_USER_CREATION = 1;
-    }
-    // Enable features list.
-    repeated ParameterEnum features = 1;
-    // Users list.
-    repeated User users = 2;
+// CharacterReport
+// Next: 5
+message CharacterReport {
+    // Character name.
+    string name = 1;
+    // Radius (score).
+    float radius = 2;
+    // Status.
+    StatusEnum status = 3;
+    // Color.
+    Vector3 color = 4;
+    // Last seen time.
+    double last_seen = 5;
 }
 
 // WorldDatabase saved as a file.
@@ -112,12 +108,6 @@ message WorldDatabase {
     repeated Character characters = 3;
     // Present time on the server.
     double time = 4;
-}
-
-enum ReturnEnum {
-    RETURN_ERROR = 0;
-    RETURN_OK = 1;
-    RETURN_REJECTED = 2;
 }
 
 // UpdateRequest
@@ -158,30 +148,13 @@ message ReportMovementResponse {
     double time = 2;
 }
 
-// LoginRequest
-// Next: 3
-message LoginRequest {
-    // Character name.
-    string name = 1;
-    // Password this will be hashed!
-    string password = 2;
-    // The password salt (if needed).
-    string salt = 3;
-}
-
-// LoginResponse
-// Next: 3
-message LoginResponse {
-    // Is the password correct?
-    ReturnEnum return_enum = 1;
-    // Session tocken.
-    string session_tocken = 2;
-}
-
 // CreateCharacterRequest
 // Next: 2
 message CreateCharacterRequest {
-    Vector3 color = 1;
+    // Character name.
+    string name = 1;
+    // Character color.
+    Vector3 color = 2;
 }
 
 // CreateCharacterResponse
@@ -206,16 +179,36 @@ message PingResponse {
     double time = 2;
 }
 
+// DeathReportRequest
+// Next: 3
+message DeathReportRequest {
+    // Character name.
+    string name = 1;
+    // Tocken.
+    string session_tocken = 2;
+}
+
+// DeathReportResponse
+// Next: 4
+message DeathReportResponse {
+    // Return enum.
+    ReturnEnum return_enum = 1;
+    // Present time on the server.
+    double time = 2;
+    // Report.
+    repeated CharacterReport character_reports = 3;
+}
+
 // The darwin service.
 service DarwinService {
     // Update the position of object in the world to the clients.
     rpc Update(UpdateRequest) returns (stream UpdateResponse);
     // Client report the change of position and speed of a player.
     rpc ReportMovement(ReportMovementRequest) returns (ReportMovementResponse);
-    // Try to log into a server.
-    rpc Login(LoginRequest) returns (LoginResponse);
     // Create a new character.
     rpc CreateCharacter(CreateCharacterRequest) returns (CreateCharacterResponse);
     // Ping the server.
     rpc Ping(PingRequest) returns (PingResponse);
+    // Death report.
+    rpc DeathReport(DeathReportRequest) returns (DeathReportResponse);
 }
