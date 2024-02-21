@@ -2,6 +2,7 @@
 
 #include "Server/convert_math.h"
 #include "Common/stl_proto_wrapper.h"
+#include "Common/vector.h"
 
 namespace test {
 
@@ -19,7 +20,7 @@ namespace test {
             0.0, 
             darwin::CreateBasicElement(
                 "ground",
-                proto::Element::GROUND,
+                proto::TYPE_GROUND,
                 darwin::CreateBasicVector3(1.0, 1.0, 1.0),
                 1.0,
                 1.0));
@@ -36,7 +37,7 @@ namespace test {
             0.0,
             darwin::CreateBasicElement(
                 "ground",
-                proto::Element::GROUND,
+                proto::TYPE_GROUND,
                 darwin::CreateBasicVector3(1.0, 1.0, 1.0),
                 1.0,
                 1.0));
@@ -57,7 +58,7 @@ namespace test {
             0.0,
             darwin::CreateBasicElement(
                 "ground1",
-                proto::Element::GROUND,
+                proto::TYPE_GROUND,
                 darwin::CreateBasicVector3(-2.0, 0.0, 0.0),
                 1'000'000.0,
                 1.0));
@@ -65,7 +66,7 @@ namespace test {
             0.0,
             darwin::CreateBasicElement(
                 "ground2",
-                proto::Element::GROUND,
+                proto::TYPE_GROUND,
                 darwin::CreateBasicVector3(2.0, 0.0, 0.0),
                 1'000'000.0,
                 1.0));
@@ -88,7 +89,7 @@ namespace test {
             0.0,
             darwin::CreateBasicElement(
                 "ground",
-                proto::Element::GROUND,
+                proto::TYPE_GROUND,
                 darwin::CreateBasicVector3(-10.0, 20.0, -30.0),
                 1'000'000'000.0,
                 10.0));
@@ -97,7 +98,7 @@ namespace test {
             0.0,
             darwin::CreateBasicElement(
                 "elem",
-                proto::Element::BROWN,
+                proto::TYPE_BROWN,
                 darwin::CreateBasicVector3(0, 0, 0),
                 1.0,
                 0.1));
@@ -126,7 +127,7 @@ namespace test {
             0.0,
             darwin::CreateBasicElement(
                 "ground",
-                proto::Element::GROUND,
+                proto::TYPE_GROUND,
                 darwin::CreateBasicVector3(-10.0, 20.0, -30.0),
                 1'000'000'000.0,
                 10.0));

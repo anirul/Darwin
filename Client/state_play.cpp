@@ -1,5 +1,8 @@
 #include "state_play.h"
 
+#include "state_disconnected.h"
+#include "state_context.h"
+
 namespace darwin::state {
 
     StatePlay::StatePlay(
@@ -15,6 +18,22 @@ namespace darwin::state {
         logger_->info("Exited play state");
     }
 
-    void StatePlay::Update(StateContext& state_context) {}
+    void StatePlay::Update(StateContext& state_context) {
+        if (!darwin_client_->IsConnected()) {
+            state_context.ChangeState(
+                std::make_unique<StateDisconnected>(
+                    app_, 
+                    std::move(darwin_client_)));
+        }
+        else {
+            // Store the server time to only update in case it has changed.
+            static double server_time = 0.0;
+            if (server_time != darwin_client_->GetServerTime()) {
+                auto elements = darwin_client_->GetElements();
+                auto characters = darwin_client_->GetCharacters();
+                server_time = darwin_client_->GetServerTime();
+            }
+        }
+    }
 
 } // namespace darwin::state.

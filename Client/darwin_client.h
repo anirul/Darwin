@@ -25,12 +25,23 @@ namespace darwin {
         std::int32_t Ping(std::int32_t val = 45323);
         bool IsConnected() const;
 
+    public:
+        std::vector<proto::Element> GetElements() const {
+            return world_client_.GetElements();
+        }
+        std::vector<proto::Character> GetCharacters() const {
+            return world_client_.GetCharacters();
+        }
+        double GetServerTime() const {
+            return server_time_;
+        }
+
     private:
         std::string name_;
         double server_time_ = 0.0;
         std::unique_ptr<proto::DarwinService::Stub> stub_;
         frame::Logger& logger_ = frame::Logger::GetInstance();
-        darwin::WorldClient world_client_;
+        WorldClient world_client_;
         std::future<void> future_;
         std::atomic<bool> end_{ false };
     };

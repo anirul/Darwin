@@ -3,15 +3,26 @@ syntax = "proto3";
 package proto;
 
 enum ReturnEnum {
-    RETURN_ERROR = 0;
-    RETURN_OK = 1;
-    RETURN_REJECTED = 2;
+    RETURN_ERROR = 0;       // Error in the function?
+    RETURN_OK = 1;          // OK this passed well.
+    RETURN_REJECTED = 2;    // Rejected by the server.
 }
 
 enum StatusEnum {
-    STATUS_NONE = 0;
-    STATUS_ALIVE = 1;
-    STATUS_DEAD = 2;
+    STATUS_NONE = 0;        // Error status incorrect.
+    STATUS_ALIVE = 1;       // The player is alive and kicking.
+    STATUS_DEAD = 2;        // This player is dead.
+    STATUS_LOADING = 3;     // This player is loading in.
+}
+
+enum TypeEnum {
+    TYPE_UKNOWN = 0;        // Unknown this is an error!
+    TYPE_GROUND = 1;        // From where the gravity is generated.
+    TYPE_EXPLOSION = 2;     // Explosion that push stuff around.
+    TYPE_UPGRADE = 3;       // Upgrade to upgrade character.
+    TYPE_GREEN = 4;         // Greenery (no effect on anything).
+    TYPE_BROWN = 5;         // Tree bark and non destructible elements.
+    TYPE_WATER = 6;         // Water.
 }
 
 // Vector 3 this store position or other 3 float values.
@@ -57,15 +68,6 @@ message Element {
     // Physic, position, speed etc...
     Physic physic = 3;
     // What type of element is it?
-    enum TypeEnum {
-        UKNOWN = 0;     // Unknown this is an error!
-        GROUND = 1;     // From where the gravity is generated.
-        EXPLOSION = 2;  // Explosion that push stuff around.
-        UPGRADE = 3;    // Upgrade to upgrade character.
-        GREEN = 4;      // Greenery (no effect on anything).
-        BROWN = 5;      // Tree bark and non destructible elements.
-        WATER = 6;      // Water.
-    }
     TypeEnum type_enum = 4;
 }
 
@@ -74,8 +76,8 @@ message Element {
 message Character {
     // Character name.
     string name = 1;
-    // Material string.
-    string material = 2;
+    // Color string.
+    Vector3 color = 2;
     // Physic paramters.
     Physic physic = 3;
     // Local g axis (used for local camera angle).
@@ -144,8 +146,6 @@ message ReportMovementRequest {
 message ReportMovementResponse {
     // Return enum.
     ReturnEnum return_enum = 1;
-    // Present time on the server.
-    double time = 2;
 }
 
 // CreateCharacterRequest

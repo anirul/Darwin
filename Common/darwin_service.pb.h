@@ -119,36 +119,6 @@ template<> ::proto::WorldDatabase* Arena::CreateMaybeMessage<::proto::WorldDatab
 PROTOBUF_NAMESPACE_CLOSE
 namespace proto {
 
-enum Element_TypeEnum : int {
-  Element_TypeEnum_UKNOWN = 0,
-  Element_TypeEnum_GROUND = 1,
-  Element_TypeEnum_EXPLOSION = 2,
-  Element_TypeEnum_UPGRADE = 3,
-  Element_TypeEnum_GREEN = 4,
-  Element_TypeEnum_BROWN = 5,
-  Element_TypeEnum_WATER = 6,
-  Element_TypeEnum_Element_TypeEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  Element_TypeEnum_Element_TypeEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
-};
-bool Element_TypeEnum_IsValid(int value);
-constexpr Element_TypeEnum Element_TypeEnum_TypeEnum_MIN = Element_TypeEnum_UKNOWN;
-constexpr Element_TypeEnum Element_TypeEnum_TypeEnum_MAX = Element_TypeEnum_WATER;
-constexpr int Element_TypeEnum_TypeEnum_ARRAYSIZE = Element_TypeEnum_TypeEnum_MAX + 1;
-
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Element_TypeEnum_descriptor();
-template<typename T>
-inline const std::string& Element_TypeEnum_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, Element_TypeEnum>::value ||
-    ::std::is_integral<T>::value,
-    "Incorrect type passed to function Element_TypeEnum_Name.");
-  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    Element_TypeEnum_descriptor(), enum_t_value);
-}
-inline bool Element_TypeEnum_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, Element_TypeEnum* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Element_TypeEnum>(
-    Element_TypeEnum_descriptor(), name, value);
-}
 enum ReturnEnum : int {
   RETURN_ERROR = 0,
   RETURN_OK = 1,
@@ -179,12 +149,13 @@ enum StatusEnum : int {
   STATUS_NONE = 0,
   STATUS_ALIVE = 1,
   STATUS_DEAD = 2,
+  STATUS_LOADING = 3,
   StatusEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   StatusEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool StatusEnum_IsValid(int value);
 constexpr StatusEnum StatusEnum_MIN = STATUS_NONE;
-constexpr StatusEnum StatusEnum_MAX = STATUS_DEAD;
+constexpr StatusEnum StatusEnum_MAX = STATUS_LOADING;
 constexpr int StatusEnum_ARRAYSIZE = StatusEnum_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* StatusEnum_descriptor();
@@ -200,6 +171,36 @@ inline bool StatusEnum_Parse(
     ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, StatusEnum* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<StatusEnum>(
     StatusEnum_descriptor(), name, value);
+}
+enum TypeEnum : int {
+  TYPE_UKNOWN = 0,
+  TYPE_GROUND = 1,
+  TYPE_EXPLOSION = 2,
+  TYPE_UPGRADE = 3,
+  TYPE_GREEN = 4,
+  TYPE_BROWN = 5,
+  TYPE_WATER = 6,
+  TypeEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  TypeEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool TypeEnum_IsValid(int value);
+constexpr TypeEnum TypeEnum_MIN = TYPE_UKNOWN;
+constexpr TypeEnum TypeEnum_MAX = TYPE_WATER;
+constexpr int TypeEnum_ARRAYSIZE = TypeEnum_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* TypeEnum_descriptor();
+template<typename T>
+inline const std::string& TypeEnum_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, TypeEnum>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function TypeEnum_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    TypeEnum_descriptor(), enum_t_value);
+}
+inline bool TypeEnum_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, TypeEnum* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<TypeEnum>(
+    TypeEnum_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -911,46 +912,6 @@ class Element final :
 
   // nested types ----------------------------------------------------
 
-  typedef Element_TypeEnum TypeEnum;
-  static constexpr TypeEnum UKNOWN =
-    Element_TypeEnum_UKNOWN;
-  static constexpr TypeEnum GROUND =
-    Element_TypeEnum_GROUND;
-  static constexpr TypeEnum EXPLOSION =
-    Element_TypeEnum_EXPLOSION;
-  static constexpr TypeEnum UPGRADE =
-    Element_TypeEnum_UPGRADE;
-  static constexpr TypeEnum GREEN =
-    Element_TypeEnum_GREEN;
-  static constexpr TypeEnum BROWN =
-    Element_TypeEnum_BROWN;
-  static constexpr TypeEnum WATER =
-    Element_TypeEnum_WATER;
-  static inline bool TypeEnum_IsValid(int value) {
-    return Element_TypeEnum_IsValid(value);
-  }
-  static constexpr TypeEnum TypeEnum_MIN =
-    Element_TypeEnum_TypeEnum_MIN;
-  static constexpr TypeEnum TypeEnum_MAX =
-    Element_TypeEnum_TypeEnum_MAX;
-  static constexpr int TypeEnum_ARRAYSIZE =
-    Element_TypeEnum_TypeEnum_ARRAYSIZE;
-  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
-  TypeEnum_descriptor() {
-    return Element_TypeEnum_descriptor();
-  }
-  template<typename T>
-  static inline const std::string& TypeEnum_Name(T enum_t_value) {
-    static_assert(::std::is_same<T, TypeEnum>::value ||
-      ::std::is_integral<T>::value,
-      "Incorrect type passed to function TypeEnum_Name.");
-    return Element_TypeEnum_Name(enum_t_value);
-  }
-  static inline bool TypeEnum_Parse(::PROTOBUF_NAMESPACE_ID::ConstStringParam name,
-      TypeEnum* value) {
-    return Element_TypeEnum_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
 
   enum : int {
@@ -1005,13 +966,13 @@ class Element final :
       ::proto::Physic* physic);
   ::proto::Physic* unsafe_arena_release_physic();
 
-  // .proto.Element.TypeEnum type_enum = 4;
+  // .proto.TypeEnum type_enum = 4;
   void clear_type_enum();
-  ::proto::Element_TypeEnum type_enum() const;
-  void set_type_enum(::proto::Element_TypeEnum value);
+  ::proto::TypeEnum type_enum() const;
+  void set_type_enum(::proto::TypeEnum value);
   private:
-  ::proto::Element_TypeEnum _internal_type_enum() const;
-  void _internal_set_type_enum(::proto::Element_TypeEnum value);
+  ::proto::TypeEnum _internal_type_enum() const;
+  void _internal_set_type_enum(::proto::TypeEnum value);
   public:
 
   // @@protoc_insertion_point(class_scope:proto.Element)
@@ -1155,7 +1116,7 @@ class Character final :
 
   enum : int {
     kNameFieldNumber = 1,
-    kMaterialFieldNumber = 2,
+    kColorFieldNumber = 2,
     kPhysicFieldNumber = 3,
     kGNormalFieldNumber = 4,
     kGForceFieldNumber = 5,
@@ -1174,19 +1135,23 @@ class Character final :
   std::string* _internal_mutable_name();
   public:
 
-  // string material = 2;
-  void clear_material();
-  const std::string& material() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_material(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_material();
-  PROTOBUF_NODISCARD std::string* release_material();
-  void set_allocated_material(std::string* material);
+  // .proto.Vector3 color = 2;
+  bool has_color() const;
   private:
-  const std::string& _internal_material() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_material(const std::string& value);
-  std::string* _internal_mutable_material();
+  bool _internal_has_color() const;
   public:
+  void clear_color();
+  const ::proto::Vector3& color() const;
+  PROTOBUF_NODISCARD ::proto::Vector3* release_color();
+  ::proto::Vector3* mutable_color();
+  void set_allocated_color(::proto::Vector3* color);
+  private:
+  const ::proto::Vector3& _internal_color() const;
+  ::proto::Vector3* _internal_mutable_color();
+  public:
+  void unsafe_arena_set_allocated_color(
+      ::proto::Vector3* color);
+  ::proto::Vector3* unsafe_arena_release_color();
 
   // .proto.Physic physic = 3;
   bool has_physic() const;
@@ -1242,7 +1207,7 @@ class Character final :
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr material_;
+    ::proto::Vector3* color_;
     ::proto::Physic* physic_;
     ::proto::Vector3* g_normal_;
     double g_force_;
@@ -2298,18 +2263,8 @@ class ReportMovementResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kTimeFieldNumber = 2,
     kReturnEnumFieldNumber = 1,
   };
-  // double time = 2;
-  void clear_time();
-  double time() const;
-  void set_time(double value);
-  private:
-  double _internal_time() const;
-  void _internal_set_time(double value);
-  public:
-
   // .proto.ReturnEnum return_enum = 1;
   void clear_return_enum();
   ::proto::ReturnEnum return_enum() const;
@@ -2327,7 +2282,6 @@ class ReportMovementResponse final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    double time_;
     int return_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -4063,22 +4017,22 @@ inline void Element::set_allocated_physic(::proto::Physic* physic) {
   // @@protoc_insertion_point(field_set_allocated:proto.Element.physic)
 }
 
-// .proto.Element.TypeEnum type_enum = 4;
+// .proto.TypeEnum type_enum = 4;
 inline void Element::clear_type_enum() {
   _impl_.type_enum_ = 0;
 }
-inline ::proto::Element_TypeEnum Element::_internal_type_enum() const {
-  return static_cast< ::proto::Element_TypeEnum >(_impl_.type_enum_);
+inline ::proto::TypeEnum Element::_internal_type_enum() const {
+  return static_cast< ::proto::TypeEnum >(_impl_.type_enum_);
 }
-inline ::proto::Element_TypeEnum Element::type_enum() const {
+inline ::proto::TypeEnum Element::type_enum() const {
   // @@protoc_insertion_point(field_get:proto.Element.type_enum)
   return _internal_type_enum();
 }
-inline void Element::_internal_set_type_enum(::proto::Element_TypeEnum value) {
+inline void Element::_internal_set_type_enum(::proto::TypeEnum value) {
   
   _impl_.type_enum_ = value;
 }
-inline void Element::set_type_enum(::proto::Element_TypeEnum value) {
+inline void Element::set_type_enum(::proto::TypeEnum value) {
   _internal_set_type_enum(value);
   // @@protoc_insertion_point(field_set:proto.Element.type_enum)
 }
@@ -4137,54 +4091,94 @@ inline void Character::set_allocated_name(std::string* name) {
   // @@protoc_insertion_point(field_set_allocated:proto.Character.name)
 }
 
-// string material = 2;
-inline void Character::clear_material() {
-  _impl_.material_.ClearToEmpty();
+// .proto.Vector3 color = 2;
+inline bool Character::_internal_has_color() const {
+  return this != internal_default_instance() && _impl_.color_ != nullptr;
 }
-inline const std::string& Character::material() const {
-  // @@protoc_insertion_point(field_get:proto.Character.material)
-  return _internal_material();
+inline bool Character::has_color() const {
+  return _internal_has_color();
 }
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void Character::set_material(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.material_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.Character.material)
+inline void Character::clear_color() {
+  if (GetArenaForAllocation() == nullptr && _impl_.color_ != nullptr) {
+    delete _impl_.color_;
+  }
+  _impl_.color_ = nullptr;
 }
-inline std::string* Character::mutable_material() {
-  std::string* _s = _internal_mutable_material();
-  // @@protoc_insertion_point(field_mutable:proto.Character.material)
-  return _s;
+inline const ::proto::Vector3& Character::_internal_color() const {
+  const ::proto::Vector3* p = _impl_.color_;
+  return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector3&>(
+      ::proto::_Vector3_default_instance_);
 }
-inline const std::string& Character::_internal_material() const {
-  return _impl_.material_.Get();
+inline const ::proto::Vector3& Character::color() const {
+  // @@protoc_insertion_point(field_get:proto.Character.color)
+  return _internal_color();
 }
-inline void Character::_internal_set_material(const std::string& value) {
-  
-  _impl_.material_.Set(value, GetArenaForAllocation());
-}
-inline std::string* Character::_internal_mutable_material() {
-  
-  return _impl_.material_.Mutable(GetArenaForAllocation());
-}
-inline std::string* Character::release_material() {
-  // @@protoc_insertion_point(field_release:proto.Character.material)
-  return _impl_.material_.Release();
-}
-inline void Character::set_allocated_material(std::string* material) {
-  if (material != nullptr) {
+inline void Character::unsafe_arena_set_allocated_color(
+    ::proto::Vector3* color) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.color_);
+  }
+  _impl_.color_ = color;
+  if (color) {
     
   } else {
     
   }
-  _impl_.material_.SetAllocated(material, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.material_.IsDefault()) {
-    _impl_.material_.Set("", GetArenaForAllocation());
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.Character.color)
+}
+inline ::proto::Vector3* Character::release_color() {
+  
+  ::proto::Vector3* temp = _impl_.color_;
+  _impl_.color_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
   }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.Character.material)
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::proto::Vector3* Character::unsafe_arena_release_color() {
+  // @@protoc_insertion_point(field_release:proto.Character.color)
+  
+  ::proto::Vector3* temp = _impl_.color_;
+  _impl_.color_ = nullptr;
+  return temp;
+}
+inline ::proto::Vector3* Character::_internal_mutable_color() {
+  
+  if (_impl_.color_ == nullptr) {
+    auto* p = CreateMaybeMessage<::proto::Vector3>(GetArenaForAllocation());
+    _impl_.color_ = p;
+  }
+  return _impl_.color_;
+}
+inline ::proto::Vector3* Character::mutable_color() {
+  ::proto::Vector3* _msg = _internal_mutable_color();
+  // @@protoc_insertion_point(field_mutable:proto.Character.color)
+  return _msg;
+}
+inline void Character::set_allocated_color(::proto::Vector3* color) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.color_;
+  }
+  if (color) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(color);
+    if (message_arena != submessage_arena) {
+      color = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, color, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.color_ = color;
+  // @@protoc_insertion_point(field_set_allocated:proto.Character.color)
 }
 
 // .proto.Physic physic = 3;
@@ -5071,26 +5065,6 @@ inline void ReportMovementResponse::set_return_enum(::proto::ReturnEnum value) {
   // @@protoc_insertion_point(field_set:proto.ReportMovementResponse.return_enum)
 }
 
-// double time = 2;
-inline void ReportMovementResponse::clear_time() {
-  _impl_.time_ = 0;
-}
-inline double ReportMovementResponse::_internal_time() const {
-  return _impl_.time_;
-}
-inline double ReportMovementResponse::time() const {
-  // @@protoc_insertion_point(field_get:proto.ReportMovementResponse.time)
-  return _internal_time();
-}
-inline void ReportMovementResponse::_internal_set_time(double value) {
-  
-  _impl_.time_ = value;
-}
-inline void ReportMovementResponse::set_time(double value) {
-  _internal_set_time(value);
-  // @@protoc_insertion_point(field_set:proto.ReportMovementResponse.time)
-}
-
 // -------------------------------------------------------------------
 
 // CreateCharacterRequest
@@ -5557,11 +5531,6 @@ DeathReportResponse::character_reports() const {
 
 PROTOBUF_NAMESPACE_OPEN
 
-template <> struct is_proto_enum< ::proto::Element_TypeEnum> : ::std::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::proto::Element_TypeEnum>() {
-  return ::proto::Element_TypeEnum_descriptor();
-}
 template <> struct is_proto_enum< ::proto::ReturnEnum> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::proto::ReturnEnum>() {
@@ -5571,6 +5540,11 @@ template <> struct is_proto_enum< ::proto::StatusEnum> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::proto::StatusEnum>() {
   return ::proto::StatusEnum_descriptor();
+}
+template <> struct is_proto_enum< ::proto::TypeEnum> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::proto::TypeEnum>() {
+  return ::proto::TypeEnum_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

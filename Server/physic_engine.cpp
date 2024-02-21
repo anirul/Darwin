@@ -71,7 +71,7 @@ namespace darwin {
     }
 
     std::vector<proto::Physic> PhysicEngine::GetElementPhysics(
-        proto::Element::TypeEnum type_enum) const
+        proto::TypeEnum type_enum) const
     {
         std::vector<proto::Physic> physics;
         for (const auto& [_, element_info] : element_infos_) {
@@ -83,7 +83,7 @@ namespace darwin {
     }
 
     std::vector<double> PhysicEngine::GetElementTimes(
-        proto::Element::TypeEnum type_enum) const
+        proto::TypeEnum type_enum) const
     {
         std::vector<double> times;
         for (const auto& [_, element_info] : element_infos_) {
@@ -95,7 +95,7 @@ namespace darwin {
     }
 
     void PhysicEngine::SetElementPhysics(
-        proto::Element::TypeEnum type_enum,
+        proto::TypeEnum type_enum,
         const std::vector<proto::Physic>& physics)
     {
         std::size_t i = 0;
@@ -112,7 +112,7 @@ namespace darwin {
     }
 
     void PhysicEngine::SetElementTimes(
-        proto::Element::TypeEnum type_enum, 
+        proto::TypeEnum type_enum, 
         double time)
     {
         for (auto& p : element_infos_) {
@@ -151,12 +151,12 @@ namespace darwin {
         // Create a list of element that can interact between each other, 
         // things like planets and ground elements.
         std::vector<proto::Physic> ground_physics =
-            GetElementPhysics(proto::Element::GROUND);
-        std::vector<double> times = GetElementTimes(proto::Element::GROUND);
+            GetElementPhysics(proto::TYPE_GROUND);
+        std::vector<double> times = GetElementTimes(proto::TYPE_GROUND);
         // Compute the gravitational force between them.
         ComputeGravitationBetweenGround(times, now, ground_physics);
         // Update the physics.
-        SetElementPhysics(proto::Element::GROUND, ground_physics);
+        SetElementPhysics(proto::TYPE_GROUND, ground_physics);
         ComputeElementInfo(now, ground_physics);
         ComputeCharacterInfo(now, ground_physics);
     }
@@ -166,12 +166,12 @@ namespace darwin {
         const std::vector<proto::Physic>& ground_physics)
     {
         // All expect ground elements.
-        std::vector<proto::Element::TypeEnum> types = {
-            proto::Element::EXPLOSION,
-            proto::Element::UPGRADE,
-            proto::Element::GREEN,
-            proto::Element::BROWN,
-            proto::Element::WATER
+        std::vector<proto::TypeEnum> types = {
+            proto::TYPE_EXPLOSION,
+            proto::TYPE_UPGRADE,
+            proto::TYPE_GREEN,
+            proto::TYPE_BROWN,
+            proto::TYPE_WATER
         };
         for (const auto type : types) {
             std::vector<proto::Physic> physics = GetElementPhysics(type);

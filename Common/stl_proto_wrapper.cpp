@@ -1,5 +1,7 @@
 #include "stl_proto_wrapper.h"
 
+#include <random>
+
 namespace darwin {
 
     bool operator==(
@@ -20,7 +22,7 @@ namespace darwin {
 
     proto::Element CreateBasicElement(
         const std::string& name,
-        proto::Element::TypeEnum type_enum,
+        proto::TypeEnum type_enum,
         proto::Vector3 vector3,
         double mass,
         double radius)
@@ -50,18 +52,6 @@ namespace darwin {
         physic.set_radius(radius);
         *character.mutable_physic() = physic;
         return character;
-    }
-
-    proto::Vector3 CreateBasicVector3(
-        double x,
-        double y,
-        double z)
-    {
-        proto::Vector3 vector3{};
-        vector3.set_x(x);
-        vector3.set_y(y);
-        vector3.set_z(z);
-        return vector3;
     }
 
 } // namespace darwin.

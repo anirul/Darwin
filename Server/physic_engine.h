@@ -34,17 +34,17 @@ namespace darwin {
             double now,
             std::vector<proto::Physic>& physics) const;
         void ComputeGravitation(
-            const std::vector<double>& times, double now,
+            const std::vector<double>& times, 
+            double now,
             std::vector<proto::Physic>& physics,
             const std::vector<proto::Physic>& ground_physics) const;
         std::vector<proto::Physic> GetElementPhysics(
-            proto::Element::TypeEnum type_enum) const;
-        std::vector<double> GetElementTimes(
-            proto::Element::TypeEnum type_enum) const;
+            proto::TypeEnum type_enum) const;
+        std::vector<double> GetElementTimes(proto::TypeEnum type_enum) const;
         void SetElementPhysics(
-            proto::Element::TypeEnum type_enum,
+            proto::TypeEnum type_enum,
             const std::vector<proto::Physic>& physics);
-        void SetElementTimes(proto::Element::TypeEnum type_enum, double time);
+        void SetElementTimes(proto::TypeEnum type_enum, double time);
         bool IsIntersect(const proto::Physic& a, const proto::Physic& b) const;
         void ReactIntersectGtoundDynamic(
             const proto::Physic& a, 

@@ -1,12 +1,17 @@
 #pragma once
 
-#include "Common/darwin_service.grpc.pb.h"
-
 #include <grpc++/grpc++.h>
+
+#include "Common/darwin_service.grpc.pb.h"
+#include "world_state.h"
 
 namespace darwin {
 
     class DarwinServiceImpl final : public proto::DarwinService::Service {
+    public:
+        DarwinServiceImpl(WorldState& world_state) : 
+            world_state_(world_state) {}
+
     public:
         grpc::Status Update(
             grpc::ServerContext* context, 
@@ -34,9 +39,11 @@ namespace darwin {
         std::map<double, proto::Character>& GetTimeCharacters();
         void ClearTimeCharacters();
         std::mutex& GetTimeCharacterMutex();
-
+        void ComputeWorld();
+        
     protected:
         std::map<double, proto::Character> time_characters_;
+        WorldState& world_state_;
         std::list<grpc::ServerWriter<proto::UpdateResponse>*> writers_;
         std::mutex writers_mutex_;
     };

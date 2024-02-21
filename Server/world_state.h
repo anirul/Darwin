@@ -8,7 +8,18 @@ namespace darwin {
 
     class WorldState {
     public:
+        bool CreateCharacter(
+            const std::string& peer,
+            const std::string& name, 
+            const proto::Vector3& color);
+        // This is there for testing purposes don't use in production.
         void AddCharacter(double time, const proto::Character& character);
+        void RemoveCharacter(const std::string& name);
+        std::string RemovePeer(const std::string& peer);
+        bool IsCharacterOwnByPeer(
+            const std::string& name, 
+            const std::string& peer) const;
+        bool HasCharacter(const std::string& name) const;
         void UpdateCharacter(
             double time, 
             const std::string& name, 
@@ -24,9 +35,10 @@ namespace darwin {
         void FillVectorsLocked();
 
     private:
-        std::mutex mutex_info_;
+        mutable std::mutex mutex_info_;
         std::map<std::string, CharacterInfo> character_infos_;
         std::map<std::string, ElementInfo> element_infos_;
+        std::map<std::string, std::string> peer_characters_;
         double last_updated_ = 0.0;
         std::vector<proto::Character> characters_;
         std::vector<proto::Element> elements_;

@@ -4,8 +4,8 @@
       "name": "earth",
       "material": "dirt",
       "physic": {
-        "radius": "6500.0",
-        "mass": "5.0e20",
+        "radius": "500.0",
+        "mass": "1.0e20",
         "position": {
           "x": 0.0,
           "y": 0.0,
@@ -29,7 +29,7 @@
           "w": 1.0
         }
       },
-      "type_enum": "GROUND"
+      "type_enum": "TYPE_GROUND"
     }
   ],
   "characters": [],

@@ -46,12 +46,7 @@ namespace darwin::state {
                             std::make_unique<StateCharacter>(
                                 app_, 
                                 std::move(darwin_client_)));
-                        break;
                     }
-                    state_context.ChangeState(
-                        std::make_unique<StatePlay>(
-                            app_,
-                            std::move(darwin_client_)));
                 }
                     break;
                 case modal::ModalCharacterButton::Cancel:

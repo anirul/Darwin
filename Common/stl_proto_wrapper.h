@@ -88,7 +88,7 @@ namespace darwin {
     // Helper functions.
     proto::Element CreateBasicElement(
         const std::string& name,
-        proto::Element::TypeEnum type_enum,
+        proto::TypeEnum type_enum,
         proto::Vector3 vector3,
         double mass,
         double radius);
@@ -97,6 +97,5 @@ namespace darwin {
         proto::Vector3 vector3,
         double mass,
         double radius);
-    proto::Vector3 CreateBasicVector3(double x, double y, double z);
 
 } // namespace darwin.

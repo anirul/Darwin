@@ -29,7 +29,9 @@ namespace darwin {
         double time = world.time();
         for (const auto& character : world.characters())
         {
-            world_state.AddCharacter(time, character);
+            // This should never happen as there is no character that is not
+            // controled by a human.
+            // world_state.AddCharacter(time, character);
         }
         for (const auto& element : world.elements())
         {
@@ -46,7 +48,9 @@ namespace darwin {
         double time = world.time();
         for (const auto& character : world.characters())
         {
-            world_state.AddCharacter(time, character);
+            // This should not happen as there is no character that is not 
+            // control by a human.
+            // world_state.AddCharacter(time, character);
         }
         for (const auto& element : world.elements())
         {

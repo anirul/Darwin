@@ -6,12 +6,13 @@ namespace darwin::modal {
 
     bool ModalServer::DrawCallback() {
         char server[64] = { '\0' };
-        ImGui::InputText(
+        if (ImGui::InputText(
             "Server", 
             server, 
             64,
-            ImGuiInputTextFlags_CharsNoBlank);
-        params_.server_name = server;
+            ImGuiInputTextFlags_CharsNoBlank)) {
+            params_.server_name = server;
+        }
         if (ImGui::Button("Connect")) {
             params_.button_result = ModalServerButton::Connect;
             end_ = true;

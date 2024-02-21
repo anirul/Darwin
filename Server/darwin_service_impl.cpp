@@ -2,6 +2,9 @@
 
 #include <chrono>
 
+#include "Common/vector.h"
+#include "world_state.h"
+
 namespace darwin {
 
     grpc::Status DarwinServiceImpl::Update(
@@ -11,7 +14,7 @@ namespace darwin {
     {
         // TODO(anirul): Check there is only one name.
 #ifdef _DEBUG
-        std::cout << 
+        std::cout <<
             std::format(
                 "[{}] Added a writer {}\n",
                 context->peer(),
@@ -25,15 +28,25 @@ namespace darwin {
         // detect disconnect or a keep-alive mechanism.
         while (!context->IsCancelled()) {
             std::this_thread::sleep_for(
-                std::chrono::milliseconds(500));  // Just an example
+                std::chrono::milliseconds(100));  // Just an example
         }
 #ifdef _DEBUG
-        std::cout << 
+        std::cout <<
             std::format(
                 "[{}] Removed a writer {}\n",
                 context->peer(),
                 request->name());
 #endif // _DEBUG
+        auto character_name = world_state_.RemovePeer(context->peer());
+        if (!character_name.empty()) {
+#ifdef _DEBUG
+            std::cout <<
+                std::format(
+                    "[{}] Removed character {}\n",
+                    context->peer(),
+                    character_name);
+#endif // _DEBUG
+        }
         {
             std::lock_guard<std::mutex> lock(writers_mutex_);
             writers_.remove(writer);
@@ -53,6 +66,13 @@ namespace darwin {
             request->name());
         {
 #endif // _DEBUG
+            // Check if character is own by this peer.
+            if (!world_state_.IsCharacterOwnByPeer(
+                context->peer(),
+                request->name())) {
+                response->set_return_enum(proto::RETURN_REJECTED);
+                return grpc::Status::CANCELLED;
+            }
             std::lock_guard<std::mutex> lock(writers_mutex_);
             // Delete previous entry.
             proto::Character character;
@@ -71,6 +91,7 @@ namespace darwin {
                 .count();
             time_characters_.insert({ time, character });
         }
+        response->set_return_enum(proto::RETURN_OK);
         return grpc::Status::OK;
     }
 
@@ -86,8 +107,17 @@ namespace darwin {
                 context->peer(),
                 request->name());
 #endif // _DEBUG
-        throw std::runtime_error("Not implemented");
-        return grpc::Status::OK;
+        if (world_state_.CreateCharacter(
+            context->peer(),
+            request->name(),
+            request->color())) {
+            response->set_return_enum(proto::RETURN_OK);
+            return grpc::Status::OK;
+        }
+        else {
+            response->set_return_enum(proto::RETURN_REJECTED);
+            return grpc::Status::CANCELLED;
+        }
     }
 
     grpc::Status DarwinServiceImpl::Ping(
@@ -96,7 +126,7 @@ namespace darwin {
         proto::PingResponse* response)
     {
 #ifdef _DEBUG
-        std::cout << 
+        std::cout <<
             std::format(
                 "[{}] Got a ping request from {}\n",
                 context->peer(),
@@ -118,7 +148,7 @@ namespace darwin {
         proto::DeathReportResponse* response)
     {
 #ifdef _DEBUG
-        std::cout << 
+        std::cout <<
             std::format(
                 "[{}] Got a death report from {}\n",
                 context->peer(),
@@ -129,7 +159,7 @@ namespace darwin {
     }
 
     void DarwinServiceImpl::BroadcastUpdate(
-        const proto::UpdateResponse& response) 
+        const proto::UpdateResponse& response)
     {
         std::lock_guard<std::mutex> lock(writers_mutex_);
         for (auto writer : writers_) {
@@ -150,6 +180,40 @@ namespace darwin {
     std::mutex& DarwinServiceImpl::GetTimeCharacterMutex()
     {
         return writers_mutex_;
+    }
+
+    void DarwinServiceImpl::ComputeWorld() {
+        while (true) {
+            auto now = std::chrono::system_clock::now();
+            double time =
+                std::chrono::duration_cast<std::chrono::duration<double>>(
+                    now.time_since_epoch())
+                .count();
+            // Update the players.
+            {
+                std::lock_guard<std::mutex> lock(GetTimeCharacterMutex());
+                for (const auto& time_player : GetTimeCharacters()) {
+                    world_state_.UpdateCharacter(
+                        time_player.first,
+                        time_player.second.name(),
+                        time_player.second.physic());
+                }
+                ClearTimeCharacters();
+            }
+            // Update the elements in the world.
+            world_state_.Update(time);
+            const auto& elements = world_state_.GetElements();
+            const auto& characters = world_state_.GetCharacters();
+            proto::UpdateResponse response;
+            response.mutable_elements()->CopyFrom(
+                { elements.begin(), elements.end() });
+            response.mutable_characters()->CopyFrom(
+                { characters.begin(), characters.end() });
+            response.set_time(time);
+            BroadcastUpdate(response);
+            std::this_thread::sleep_until(
+            now + std::chrono::milliseconds(100));
+        }
     }
 
 } // End namespace darwin.

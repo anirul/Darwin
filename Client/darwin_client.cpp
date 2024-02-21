@@ -98,6 +98,9 @@ namespace darwin {
             }
         }
 
+        // Ensure you are at the end.
+        end_.store(true);
+
         // Finish the stream
         grpc::Status status = reader->Finish();
         if (!status.ok()) {
@@ -130,7 +133,7 @@ namespace darwin {
     }
 
     bool DarwinClient::IsConnected() const {
-        return stub_ != nullptr;
+        return !end_.load();
     }
 
 } // namespace darwin.

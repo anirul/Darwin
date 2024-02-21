@@ -16,13 +16,14 @@ namespace darwin::modal {
 
     bool ModalCharacter::DrawCallback() {
         char name[64] = { '\0' };
-        ImGui::InputText(
+        if (ImGui::InputText(
             "Name",
             name,
             64,
-            ImGuiInputTextFlags_CharsNoBlank);
-        params_.name = name;
-        static ImVec4 colors[] = {
+            ImGuiInputTextFlags_CharsNoBlank)) {
+            params_.name = name;
+        }
+        const ImVec4 colors[] = {
             ImVec4(1.0f, 0.0f, 0.0f, 1.0f),
             ImVec4(0.0f, 1.0f, 0.0f, 1.0f),
             ImVec4(0.0f, 0.0f, 1.0f, 1.0f),
@@ -30,11 +31,22 @@ namespace darwin::modal {
             ImVec4(1.0f, 0.0f, 1.0f, 1.0f),
             ImVec4(0.0f, 1.0f, 1.0f, 1.0f),
         };
-        static size_t color_size = 6;
-        if (ImGui::BeginCombo("Color", "")) {
+        const std::string color_names[] = {
+            "Red",
+            "Green",
+            "Blue",
+            "Yellow",
+            "Magenta",
+            "Cyan",
+        };
+        const size_t color_size = 6;
+        if (ImGui::BeginCombo(
+            "Colors", 
+            color_names[selected_color_].c_str(), 
+            0)) {
             for (int i = 0; i < color_size; i++) {
                 const bool is_selected = (i == selected_color_);
-                if (ImGui::Selectable("Color", is_selected)) {
+                if (ImGui::Selectable(color_names[i].c_str(), is_selected)) {
                     selected_color_ = i;
                     params_.color.set_x(colors[i].x);
                     params_.color.set_y(colors[i].y);
@@ -46,7 +58,8 @@ namespace darwin::modal {
             }
             ImGui::EndCombo();
         }
-        if (ImGui::Button("Create") && !params_.name.empty()) {
+        if (ImGui::Button("Create")) {
+            if (params_.name.empty()) return true;
             params_.button_result = ModalCharacterButton::Create;
             end_ = true;
         }

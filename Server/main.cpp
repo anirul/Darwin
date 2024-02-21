@@ -1,11 +1,10 @@
 #include <grpc++/grpc++.h>
 
 #include <chrono>
-#include <thread>
+#include <future>
 #include <absl/flags/flag.h>
 #include <absl/flags/parse.h>
 
-#include "Server/compute_world.h"
 #include "Server/darwin_service_impl.h"
 #include "world_state_file.h"
 
@@ -25,12 +24,12 @@ int main(int ac, char** av) try {
     grpc::ServerBuilder builder;
     darwin::WorldState world_state;
     LoadWorldStateFromFile(world_state, absl::GetFlag(FLAGS_world_db));
-    darwin::DarwinServiceImpl service;
+    darwin::DarwinServiceImpl service{ world_state };
 
-    std::thread update_thread(
-        darwin::ComputeWorld, 
-        std::ref(service), 
-        std::ref(world_state));
+    // Create a callback that will compute the next epoch.
+    auto future = std::async(std::launch::async, [&service] {
+        service.ComputeWorld();
+    });
 
     builder.AddListeningPort(
         absl::GetFlag(FLAGS_server_name),
@@ -40,7 +39,8 @@ int main(int ac, char** av) try {
     std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
     server->Wait();
 
-    update_thread.join();
+    // Wait for the future to finish.
+    future.wait();
     return 0;
 } catch (const std::exception& e) {
     std::cerr << "Error: " << e.what() << std::endl;
