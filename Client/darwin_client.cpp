@@ -83,14 +83,27 @@ namespace darwin {
 
         // Read the stream of responses
         while (reader->Read(&response)) {
-            // Process each response
-            logger_->info("Received update for time: {}", response.time());
+
+            auto character_size = world_client.GetCharacters().size();
+            auto element_size = world_client.GetElements().size();
 
             world_client.SetElements(
-                { response.elements().begin(), response.elements().end() });
+                { response.elements().begin(), 
+                  response.elements().end() });
             world_client.SetCharacters(
                 { response.characters().begin(), 
                   response.characters().end() });
+
+            if (character_size != world_client.GetCharacters().size()) {
+                logger_->warn(
+                    "Character changed size to: {}", 
+                    world_client.GetCharacters().size());
+            }
+            if (element_size != world_client.GetElements().size()) {
+                logger_->warn(
+                    "Element changed size to: {}", 
+                    world_client.GetElements().size());
+            }
 
             if (end_.load()) {
                 logger_->warn("Force exiting...");

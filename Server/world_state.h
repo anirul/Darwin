@@ -44,4 +44,4 @@ namespace darwin {
         std::vector<proto::Element> elements_;
     };
 
-}  // namespace darwin
+}  // namespace darwin.

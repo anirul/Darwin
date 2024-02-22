@@ -73,9 +73,9 @@ namespace darwin {
     }
 
     void WorldState::UpdateCharacter(
-        double time, 
-        const std::string& name, 
-        const proto::Physic& physic) 
+        double time,
+        const std::string& name,
+        const proto::Physic& physic)
     {
         std::scoped_lock l(mutex_info_);
         auto it = character_infos_.find(name);
@@ -83,7 +83,9 @@ namespace darwin {
             it->second.time = time;
             *it->second.character.mutable_physic() = physic;
         }
-        std::cerr << "Error updating character: " << name << "\n";
+        else {
+            std::cerr << "Error updating character: " << name << "\n";
+        }
     }
 
     void WorldState::RemoveCharacter(const std::string& name) {
