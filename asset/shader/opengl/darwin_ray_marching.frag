@@ -6,24 +6,26 @@ layout(location = 0) out vec4 frag_color;
 
 uniform float time_s;
 uniform vec2 resolution;
+uniform vec3 camera_pos			= vec3(0.0, 1.0, 0.0);
+uniform vec3 camera_target      = vec3(0.0, 1.0, 6.0);
+uniform vec3 camera_up			= vec3(0.0, 1.0, 0.0);
 uniform int sphere_size;
 uniform vec4 sphere_pos[384];
 uniform vec4 sphere_col[384];
 
-// const vec2 resolution = vec2(1280, 720);
-
+// Ray marching algorithm limits.
 const int max_steps = 200;
 const float min_dist = 0.01;
 const float max_dist = 100.;
 
+// Hit structure.
 struct Hit {
 	vec3 normal;
 	float dist;
 	vec4 color;
 };
 
-// Get the distance and normal to the surface
-// (if the distance is < min_dist in w).
+// Get a Hit from a surface.
 Hit GetDistance(vec3 position)
 {
 	int smallest_id = -1;
@@ -115,11 +117,16 @@ float LightAndShadow(vec3 position, vec3 normal)
 
 void main()
 {
+	// Camera computation.
 	vec2 uv = vert_texcoord - vec2(0.5);
 	uv.x *= resolution.x / resolution.y;
 
-	vec3 ray_origin = vec3(0, 1, 0);
-	vec3 ray_direction = normalize(vec3(uv.x, uv.y, 1));
+	vec3 ray_origin = camera_pos;
+	vec3 forward = normalize(camera_target - camera_pos);
+	vec3 camera_right = normalize(cross(camera_up, forward));
+	// Recalculated to ensure orthogonality.
+	vec3 ray_up = normalize(cross(forward, camera_right)); 
+	vec3 ray_direction = normalize(uv.x * camera_right + uv.y * ray_up + forward);
 
 	Hit result = RayMarching(ray_origin, ray_direction);
 	vec3 position = ray_origin + ray_direction * result.dist;
