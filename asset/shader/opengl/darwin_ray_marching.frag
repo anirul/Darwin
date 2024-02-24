@@ -16,32 +16,66 @@ const int max_steps = 200;
 const float min_dist = 0.01;
 const float max_dist = 100.;
 
+struct Hit {
+	vec3 normal;
+	float dist;
+	vec4 color;
+};
+
 // Get the distance and normal to the surface
 // (if the distance is < min_dist in w).
-vec4 GetDistance(vec3 position)
+Hit GetDistance(vec3 position)
 {
-	float dist_sphere = length(position - sphere_pos[0].xyz) - sphere_pos[0].w;
-	float dist_plane = position.y;
-	if (dist_sphere < dist_plane)
-		return vec4(normalize(position - sphere_pos[0].xyz), dist_sphere);
-	else
-		return vec4(0, 1, 0, dist_plane);
+	int smallest_id = -1;
+	float smallest_dist = max_dist;
+    for (int i = 0; i < sphere_size; ++i) {
+		float dist_sphere = 
+			length(position - sphere_pos[i].xyz) - sphere_pos[i].w;
+		if (dist_sphere < smallest_dist) {
+			smallest_id = i;
+			smallest_dist = dist_sphere;
+		}
+	}
+	if (smallest_id == -1) {
+		Hit hit;
+		hit.normal = vec3(0);
+		hit.dist = max_dist;
+		hit.color = vec4(0);
+		return hit;
+    }
+	Hit hit;
+	hit.normal = normalize(position - sphere_pos[smallest_id].xyz);
+	hit.dist = smallest_dist;
+	hit.color = sphere_col[smallest_id];
+	return hit;
 }
 
 // Get the new distance and the normal to the surface.
 // (if the distance is < min_dist in w).
-vec4 RayMarching(vec3 ray_origin, vec3 ray_direction)
+Hit RayMarching(vec3 ray_origin, vec3 ray_direction)
 {
+	Hit result;
 	float dist0 = 0;
 	for (int i = 0; i < max_steps; ++i)
 	{
 		vec3 p = ray_origin + ray_direction * dist0;
-		vec4 normal_dist = GetDistance(p);
-		dist0 += normal_dist.w;
-		if (normal_dist.w < min_dist || dist0 > max_dist)
-			return vec4(normal_dist.xyz, dist0);
+		Hit hit = GetDistance(p);
+		vec3 normal = hit.normal;
+		dist0 += hit.dist;
+		if (hit.dist < min_dist) {
+			result.normal = normal;
+			result.dist = dist0;
+			result.color = hit.color;
+			return result;
+		}
+		if (dist0 > max_dist) {
+			break;
+		}
 	}
-	return vec4(0, 1, 0, dist0);
+	result.normal = vec3(0, 1, 0);
+	result.dist = dist0;
+	result.color = vec4(0);
+	return result;
 }
 
 // Get the light position at time.
@@ -73,7 +107,7 @@ float LightAndShadow(vec3 position, vec3 normal)
 	vec3 light_position = LightPosition();
 	vec4 light_normal_value = LightNormalValue(position, normal);
 	float dist_light = 
-		RayMarching(position + normal * min_dist * 2, light_normal_value.xyz).w;
+		RayMarching(position + normal * min_dist * 2, light_normal_value.xyz).dist;
 	if (dist_light < length(light_position - position)) 
 		light_normal_value.w *= 0.1;
 	return light_normal_value.w;
@@ -87,18 +121,11 @@ void main()
 	vec3 ray_origin = vec3(0, 1, 0);
 	vec3 ray_direction = normalize(vec3(uv.x, uv.y, 1));
 
-	vec4 result = RayMarching(ray_origin, ray_direction);
-	vec3 position = ray_origin + ray_direction * result.w;
-	float light = LightOnly(position, result.xyz);
-	float light_shadow = LightAndShadow(position, result.xyz);
+	Hit result = RayMarching(ray_origin, ray_direction);
+	vec3 position = ray_origin + ray_direction * result.dist;
+	float light = LightOnly(position, result.normal);
+	float light_shadow = LightAndShadow(position, result.normal);
 
-	// vec3 color = vec3(res / 8, res / 4, res);
-	// vec3 color = vec3(light);
-	vec3 color;
-	if (sphere_size > 0) {
-        color = vec3(sphere_col[0] * light_shadow);
-    } else {
-        color = vec3(light_shadow);
-    }
-	frag_color = vec4(color, 1);
+	vec3 color = vec3(light_shadow * result.color);
+	frag_color = vec4(color, 1.0);
 }
