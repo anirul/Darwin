@@ -5,7 +5,7 @@
 namespace darwin::modal {
 
     bool ModalServer::DrawCallback() {
-        char server[64] = { '\0' };
+        static char server[64] = { '\0' };
         if (ImGui::InputText(
             "Server", 
             server, 

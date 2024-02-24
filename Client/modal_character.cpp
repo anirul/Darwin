@@ -15,7 +15,7 @@ namespace darwin::modal {
     }
 
     bool ModalCharacter::DrawCallback() {
-        char name[64] = { '\0' };
+        static char name[64] = { '\0' };
         if (ImGui::InputText(
             "Name",
             name,

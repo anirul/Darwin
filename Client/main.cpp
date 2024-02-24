@@ -18,6 +18,7 @@
 #include "frame/gui/draw_gui_factory.h"
 #include "frame/gui/window_logger.h"
 #include "frame/logger.h"
+#include "frame/json/parse_level.h"
 #include "world_client.h"
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -73,7 +74,7 @@ int main(int ac, char** av) try
     darwin::state::StateContext state_context(
         std::make_unique<darwin::state::StateTitle>(app));
     // Add a load from file for resolution.
-    app.Run([&state_context] {
+    app.Run([&state_context, &app] {
             state_context.Update();
         });
     return 0;
