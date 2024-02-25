@@ -6,9 +6,10 @@ layout(location = 0) out vec4 frag_color;
 
 uniform float time_s;
 uniform vec2 resolution;
-uniform vec3 camera_pos			= vec3(0.0, 1.0, 0.0);
-uniform vec3 camera_target      = vec3(0.0, 1.0, 6.0);
-uniform vec3 camera_up			= vec3(0.0, 1.0, 0.0);
+uniform vec3 camera_pos;
+uniform vec3 camera_target;
+uniform vec3 camera_up;
+uniform vec3 light_dir;
 uniform int sphere_size;
 uniform vec4 sphere_pos[384];
 uniform vec4 sphere_col[384];
@@ -18,11 +19,23 @@ const int max_steps = 200;
 const float min_dist = 0.01;
 const float max_dist = 100.;
 
+// light constants.
+const float ambiant_treshold = 0.15;
+const float material_shininess = 32.0;
+const vec3 spec_col = vec3(1.0);
+
 // Hit structure.
 struct Hit {
 	vec3 normal;
 	float dist;
 	vec4 color;
+};
+
+struct RayCamera {
+	vec3 position;
+	vec3 forward;
+	vec3 right;
+	vec3 up;
 };
 
 // Get a Hit from a surface.
@@ -80,59 +93,85 @@ Hit RayMarching(vec3 ray_origin, vec3 ray_direction)
 	return result;
 }
 
-// Get the light position at time.
-vec3 LightPosition()
-{
-	vec3 light_position = vec3(0, 5, 6);
-	light_position.xz += vec2(sin(time_s), cos(time_s) * 2);
-	return light_position;
+vec3 DirectionalLightDirection() {
+	float time_slow = time_s * 0.1;
+	vec3 normal_light_dir = normalize(light_dir);
+	return normal_light_dir;
+    return normalize(vec3(
+		0.0, 
+		cos(time_slow), 
+		sin(time_slow)));
 }
 
-// Get the light normal and the light value.
+// Get the light normal and the light value for a directional light.
 vec4 LightNormalValue(vec3 position, vec3 normal)
 {
-	vec3 light_position = LightPosition();
-	vec3 light_normal = normalize(light_position - position);
-	float light_value = dot(normal, light_normal);
-	return vec4(light_normal.xyz, light_value);
+    vec3 light_direction = DirectionalLightDirection();
+    float light_value = dot(normal, light_direction);
+    return vec4(light_direction, light_value);
 }
 
-// Get light without shadow.
-float LightOnly(vec3 position, vec3 normal)
-{
-	return LightNormalValue(position, normal).w;
+// Function to compute the specular component.
+float SpecularLight(vec3 light_dir, vec3 view_dir, vec3 normal, float shininess) {
+	// Reflect the light around the normal.
+    vec3 reflect_dir = reflect(-light_dir, normal); 
+    float spec_angle = max(dot(reflect_dir, view_dir), 0.0);
+	// shininess controls the specular highlight size.
+    return pow(spec_angle, shininess); 
 }
 
-// Calculate the Shadow and light.
+// Calculate the Shadow and light for a directional light.
 float LightAndShadow(vec3 position, vec3 normal)
 {
-	vec3 light_position = LightPosition();
-	vec4 light_normal_value = LightNormalValue(position, normal);
-	float dist_light = 
-		RayMarching(position + normal * min_dist * 2, light_normal_value.xyz).dist;
-	if (dist_light < length(light_position - position)) 
-		light_normal_value.w *= 0.1;
-	return light_normal_value.w;
+    vec3 light_direction = DirectionalLightDirection();
+    vec4 light_normal_value = LightNormalValue(position, normal);
+    // Based on the constant light direction.
+    float dist_light = 
+        RayMarching(
+			position + normal * min_dist * 2, light_normal_value.xyz).dist;
+    // Shadow attenuation can be adjusted as needed.
+	if (dist_light < max_dist) {
+        return ambiant_treshold; // Dimming factor for shadowed areas.
+	}
+	return clamp(light_normal_value.w, ambiant_treshold, 1.0);
+}
+
+RayCamera GetRayCamera()
+{
+    RayCamera camera;
+    camera.position = camera_pos;
+    camera.forward = normalize(camera_target - camera_pos);
+	camera.right = normalize(cross(camera_up, camera.forward));
+    camera.up = normalize(cross(camera.forward, camera.right));
+    return camera;
 }
 
 void main()
 {
-	// Camera computation.
+	// Camera aperture computation.
 	vec2 uv = vert_texcoord - vec2(0.5);
 	uv.x *= resolution.x / resolution.y;
 
-	vec3 ray_origin = camera_pos;
-	vec3 forward = normalize(camera_target - camera_pos);
-	vec3 camera_right = normalize(cross(camera_up, forward));
-	// Recalculated to ensure orthogonality.
-	vec3 ray_up = normalize(cross(forward, camera_right)); 
-	vec3 ray_direction = normalize(uv.x * camera_right + uv.y * ray_up + forward);
+	// Camera computation.
+	RayCamera camera = GetRayCamera();
+	vec3 ray_direction = 
+		normalize(uv.x * camera.right + uv.y * camera.up + camera.forward);
 
-	Hit result = RayMarching(ray_origin, ray_direction);
-	vec3 position = ray_origin + ray_direction * result.dist;
-	float light = LightOnly(position, result.normal);
+	// Ray marching algorithm.
+	Hit result = RayMarching(camera.position, ray_direction);
+	vec3 position = camera.position + ray_direction * result.dist;
+	float spec = 
+		SpecularLight(
+			DirectionalLightDirection(), 
+			-ray_direction, 
+			result.normal, 
+			material_shininess);
+
+	// Light and shadow computation.
 	float light_shadow = LightAndShadow(position, result.normal);
+	vec3 diffuse_col = vec3(light_shadow * result.color);
+	vec3 specular_col = vec3(spec * spec_col);
 
-	vec3 color = vec3(light_shadow * result.color);
-	frag_color = vec4(color, 1.0);
+	// Final color.
+	frag_color = vec4(diffuse_col + specular_col, 1.0);
 }

@@ -38,6 +38,16 @@ namespace darwin {
             vector3.z() * vector3.z());
     }
 
+    double Distance(
+        const proto::Vector3& vector3_left,
+        const proto::Vector3& vector3_right)
+    {
+        return GetLength(CreateBasicVector3(
+            vector3_left.x() - vector3_right.x(),
+            vector3_left.y() - vector3_right.y(),
+            vector3_left.z() - vector3_right.z()));
+    }
+
     double DotProduct(
         const proto::Vector3& vector3_left,
         const proto::Vector3& vector3_right)
@@ -84,6 +94,15 @@ namespace darwin {
         vector3.set_y(dis(gen));
         vector3.set_z(dis(gen));
         return Normalize(vector3);
+    }
+
+    proto::Vector3 Minus(const proto::Vector3& vector3)
+    {
+        proto::Vector3 result{};
+        result.set_x(-vector3.x());
+        result.set_y(-vector3.y());
+        result.set_z(-vector3.z());
+        return result;
     }
 
     proto::Vector3 MultiplyVector3ByScalar(

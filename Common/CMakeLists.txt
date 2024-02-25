@@ -3,8 +3,12 @@ add_library(DarwinCommon
     STATIC
         stl_proto_wrapper.cpp
         stl_proto_wrapper.h
+        world_simulator.cpp
+        world_simulator.h
         vector.cpp
         vector.h
+        physic.cpp
+        physic.h
         darwin_service.proto
 )
 

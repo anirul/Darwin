@@ -80,7 +80,7 @@ message Character {
     Vector3 color = 2;
     // Physic paramters.
     Physic physic = 3;
-    // Local g axis (used for local camera angle).
+    // Local G axis (used for local camera angle).
     Vector3 g_normal = 4;
     // G force (used for local computation).
     double g_force = 5;

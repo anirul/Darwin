@@ -29,10 +29,26 @@ namespace darwin::state {
             // Store the server time to only update in case it has changed.
             static double server_time = 0.0;
             if (server_time != darwin_client_->GetServerTime()) {
-                auto elements = darwin_client_->GetElements();
-                auto characters = darwin_client_->GetCharacters();
-                server_time = darwin_client_->GetServerTime();
+                world_simulator_.UpdateData(
+                    darwin_client_->GetElements(), 
+                    darwin_client_->GetCharacters(), 
+                    darwin_client_->GetServerTime());
             }
+            else {
+                world_simulator_.UpdateTime();
+            }
+            auto uniforms = world_simulator_.GetUniforms();
+            auto& device = app_.GetWindow().GetDevice();
+            auto& level = device.GetLevel();
+            auto id = level.GetIdFromName("RayMarchingProgram");
+            auto& program = level.GetProgramFromId(id);
+            program.Use();
+            program.Uniform(
+                "sphere_size", 
+                static_cast<int>(uniforms.spheres.size()));
+            program.Uniform("sphere_pos", uniforms.spheres);
+            program.Uniform("sphere_col", uniforms.colors);
+            program.UnUse();
         }
     }
 

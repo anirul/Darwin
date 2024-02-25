@@ -14,7 +14,7 @@ namespace darwin::state {
 
     void StateTitle::Enter() {
         logger_->info("Entering title state");
-        start_time_ = std::chrono::system_clock::now();
+        // start_time_ = std::chrono::system_clock::now();
         app_.GetWindow().AddKeyCallback(' ', [this] {
                 logger_->info("Space key pressed");
                 passed_ = true;
@@ -28,11 +28,11 @@ namespace darwin::state {
     }
 
     void StateTitle::Update(StateContext& state_context) {
-        auto duration = std::chrono::system_clock::now() - start_time_;
-        if (duration > std::chrono::seconds(10)) {
-            logger_->info("10 seconds passed");
-            passed_ = true;
-        }
+        // auto duration = std::chrono::system_clock::now() - start_time_;
+        // if (duration > std::chrono::seconds(10)) {
+            // logger_->info("10 seconds passed");
+            // passed_ = true;
+        // }
         if (passed_) {
             state_context.ChangeState(
                 std::make_unique<StateServer>(app_));
