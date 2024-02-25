@@ -38,6 +38,7 @@ namespace darwin::state {
                 world_simulator_.UpdateTime();
             }
             auto uniforms = world_simulator_.GetUniforms();
+            assert(uniforms.spheres.size() == uniforms.colors.size());
             auto& device = app_.GetWindow().GetDevice();
             auto& level = device.GetLevel();
             auto id = level.GetIdFromName("RayMarchingProgram");

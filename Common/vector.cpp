@@ -48,6 +48,17 @@ namespace darwin {
             vector3_left.z() - vector3_right.z()));
     }
 
+    proto::Vector3 Add(
+        const proto::Vector3& vector3_left,
+        const proto::Vector3& vector3_right)
+    {
+        proto::Vector3 vector3{};
+        vector3.set_x(vector3_left.x() + vector3_right.x());
+        vector3.set_y(vector3_left.y() + vector3_right.y());
+        vector3.set_z(vector3_left.z() + vector3_right.z());
+        return vector3;
+    }
+
     double DotProduct(
         const proto::Vector3& vector3_left,
         const proto::Vector3& vector3_right)

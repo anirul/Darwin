@@ -10,6 +10,9 @@ namespace darwin {
     double Distance(
         const proto::Vector3& vector3_left, 
         const proto::Vector3& vector3_right);
+    proto::Vector3 Add(
+        const proto::Vector3& vector3_left,
+        const proto::Vector3& vector3_right);
     double DotProduct(
         const proto::Vector3& vector3_left,
         const proto::Vector3& vector3_right);
