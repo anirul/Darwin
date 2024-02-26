@@ -1,15 +1,17 @@
 #include "world_simulator.h"
 
+#include <format>
+
 #include "vector.h"
 #include "physic.h"
 
 namespace darwin {
 
-    void WorldSimulator::SetName(const std::string& name) {
+    void WorldSimulator::SetUserName(const std::string& name) {
         name_ = name;
     }
 
-    std::string WorldSimulator::GetName() const {
+    std::string WorldSimulator::GetUserName() const {
         return name_;
     }
 
@@ -25,25 +27,20 @@ namespace darwin {
         started_ = true;
     }
 
-    void WorldSimulator::UpdateTime() {
-        if (!started_) return;
-        auto now = std::chrono::system_clock::now();
-        auto elapsed =
-            std::chrono::duration_cast<std::chrono::milliseconds>(
-                now - last_time_);
-        time_ += elapsed.count() / 1000.0;
-        last_time_ = now;
-        std::vector<proto::Element> static_elements;
-        // Get gravity forces.
+    std::vector<proto::Element> WorldSimulator::GetGForceElements() {
+        std::vector<proto::Element> result;
         for (auto& element : elements_) {
-            switch (element.type_enum()) {
-            case proto::TYPE_GROUND:
-                static_elements.push_back(element);
-                break;
-            default:
-                break;
+            if (element.type_enum() == proto::TYPE_GROUND) {
+                result.push_back(element);
             }
         }
+        return result;
+    }
+
+    void WorldSimulator::ApplyGForceToCharacter(
+        const std::vector<proto::Element>& static_elements,
+        double delta_time)
+    {
         // Apply it to characters.
         for (auto& character : characters_) {
             proto::Vector3 force{};
@@ -72,7 +69,7 @@ namespace darwin {
             UpdateObject(
                 *character.mutable_physic(),
                 force,
-                elapsed.count() / 1000.0);
+                delta_time);
             // Correct the surface.
             for (auto& element : static_elements) {
                 CorrectSurface(
@@ -80,6 +77,20 @@ namespace darwin {
                     element);
             }
         }
+    }
+
+    void WorldSimulator::UpdateTime() {
+        if (!started_) return;
+        auto now = std::chrono::system_clock::now();
+        auto elapsed =
+            std::chrono::duration_cast<std::chrono::milliseconds>(
+                now - last_time_);
+        time_ += elapsed.count() / 1000.0;
+        last_time_ = now;
+        // Get gravity forces.
+        std::vector<proto::Element> static_elements = GetGForceElements();
+        // Apply gravity forces to characters.
+        ApplyGForceToCharacter(static_elements, elapsed.count() / 1000.0);
     }
 
     UniformEnum WorldSimulator::GetUniforms() {
@@ -131,6 +142,17 @@ namespace darwin {
                     1.0));
         }
         return uniform_enum;
+    }
+
+    proto::Character WorldSimulator::GetCharacterByName(
+        const std::string& name) const
+    {
+        for (auto character: characters_) {
+            if (character.name() == name) {
+                return character;
+            }
+        }
+        return proto::Character{};
     }
 
 } // End namespace darwin.

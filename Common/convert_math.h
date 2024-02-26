@@ -11,5 +11,6 @@ namespace darwin {
     glm::dquat ProtoVector2Glm(const proto::Vector4& vector4);
     proto::Vector3 Glm2ProtoVector(const glm::dvec3& vector3);
     proto::Vector4 Glm2ProtoVector(const glm::dquat& vector4);
+    glm::vec3 RandomVec3();
 
 } // namespace darwin

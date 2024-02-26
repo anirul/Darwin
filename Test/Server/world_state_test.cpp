@@ -1,6 +1,6 @@
 #include "Test/Server/world_state_test.h"
 
-#include "Server/convert_math.h"
+#include "Common/convert_math.h"
 #include "Common/stl_proto_wrapper.h"
 #include "Common/vector.h"
 

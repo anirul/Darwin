@@ -13,14 +13,21 @@ namespace darwin {
 
     class WorldSimulator {
     public:
-        void SetName(const std::string& name);
-        std::string GetName() const;
+        void SetUserName(const std::string& name);
+        std::string GetUserName() const;
         void UpdateData(
             const std::vector<proto::Element>& elements,
             const std::vector<proto::Character>& characters,
             double time);
         void UpdateTime();
         UniformEnum GetUniforms();
+        proto::Character GetCharacterByName(const std::string& name) const;
+
+    protected:
+        std::vector<proto::Element> GetGForceElements();
+        void ApplyGForceToCharacter(
+            const std::vector<proto::Element>& static_elements,
+            double delta_time);
 
     private:
         std::string name_;

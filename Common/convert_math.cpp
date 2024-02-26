@@ -1,4 +1,6 @@
-#include "Server/convert_math.h"
+#include "Common/convert_math.h"
+
+#include <random>
 
 namespace darwin {
 
@@ -34,6 +36,13 @@ namespace darwin {
         result.set_y(vector4.y);
         result.set_z(vector4.z);
         return result;
+    }
+
+    glm::vec3 RandomVec3() {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<double> dis(-1.0, 1.0);
+        return glm::vec3(dis(gen), dis(gen), dis(gen));
     }
 
 }  // End namespace darwin.

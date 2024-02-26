@@ -170,7 +170,10 @@ void main()
 	// Light and shadow computation.
 	float light_shadow = LightAndShadow(position, result.normal);
 	vec3 diffuse_col = vec3(light_shadow * result.color);
-	vec3 specular_col = vec3(spec * spec_col);
+	vec3 specular_col = vec3(0.0);
+	if (light_shadow > ambiant_treshold) {
+		specular_col = vec3(spec * spec_col);
+    }
 
 	// Final color.
 	frag_color = vec4(diffuse_col + specular_col, 1.0);

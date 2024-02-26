@@ -127,5 +127,4 @@ namespace darwin {
         return result;
     }
 
-
 } // End namespace darwin.

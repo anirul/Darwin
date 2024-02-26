@@ -39,6 +39,7 @@ namespace darwin {
         grpc::Status status = 
             stub_->CreateCharacter(&context, request, &response);
         if (status.ok()) {
+            character_name_ = name;
             logger_->info("Create character: {}", name);
             return true;
         }

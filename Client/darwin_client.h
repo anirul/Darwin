@@ -35,9 +35,13 @@ namespace darwin {
         double GetServerTime() const {
             return server_time_;
         }
+        std::string GetCharacterName() const {
+            return character_name_;
+        }
 
     private:
         std::string name_;
+        std::string character_name_;
         double server_time_ = 0.0;
         std::unique_ptr<proto::DarwinService::Stub> stub_;
         frame::Logger& logger_ = frame::Logger::GetInstance();
