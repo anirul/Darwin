@@ -2,6 +2,7 @@
 
 #include "state_interface.h"
 #include "darwin_client.h"
+#include "input_acquisition.h"
 #include "frame/common/application.h"
 #include "Common/world_simulator.h"
 
@@ -33,11 +34,12 @@ namespace darwin::state {
         frame::Logger& logger_ = frame::Logger::GetInstance();
         WorldSimulator world_simulator_;
         // Camera parameters.
-        float camera_yaw_ = 0.0f;
-        float camera_pitch_ = -20.0f;
+        float camera_yaw_ = 0.0f; // left-right
+        float camera_pitch_ = -20.0f; // up-down
         float camera_distance_ = 5.0f;
-        glm::vec3 forward_ = glm::vec3(0.0f);
-        glm::vec3 center_ = glm::vec3(0.0f);
+        glm::vec3 character_forward_ = glm::vec3(0.0f);
+        float last_mouse_wheel_ = 0.0f;
+        InputAcquisition* input_acquisition_ptr_ = nullptr;
     };
 
 } // namespace darwin::state.

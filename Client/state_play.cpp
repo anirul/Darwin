@@ -1,5 +1,7 @@
 #include "state_play.h"
 
+#include <algorithm>
+
 #include "state_disconnected.h"
 #include "state_context.h"
 #include "Common/convert_math.h"
@@ -14,10 +16,15 @@ namespace darwin::state {
 
     void StatePlay::Enter() {
         logger_->info("Entered play state");
+        auto unique_input = std::make_unique<InputAcquisition>();
+        input_acquisition_ptr_ = unique_input.get();
+        app_.GetWindow().SetInputInterface(std::move(unique_input));
     }
 
     void StatePlay::Exit() {
         logger_->info("Exited play state");
+        app_.GetWindow().SetInputInterface(nullptr);
+        input_acquisition_ptr_ = nullptr;
     }
 
     frame::ProgramInterface& StatePlay::GetProgram() {
@@ -41,29 +48,57 @@ namespace darwin::state {
         frame::ProgramInterface& program,
         const proto::Character& character)
     {
+        // Input values.
         glm::vec3 character_pos = 
             glm::vec3(ProtoVector2Glm(character.physic().position()));
-        glm::vec3 character_up = glm::normalize(character_pos - center_);
-        auto temporary_up = glm::vec3(ProtoVector2Glm(character.g_normal()));
-        if (forward_ == glm::vec3(0.0f)) {
+        glm::vec3 character_up = 
+            glm::vec3(ProtoVector2Glm(character.g_normal()));
+        glm::vec2 mouse_position = input_acquisition_ptr_->GetMousePosition();
+        float mouse_wheel = input_acquisition_ptr_->GetMouseWheel();
+
+        // Get the mouse to values.
+        camera_yaw_ = mouse_position.x * 0.4f;
+        camera_pitch_ = -(mouse_position.y * 0.1f);
+        camera_distance_ += (last_mouse_wheel_ - mouse_wheel) * 1.0f;
+        last_mouse_wheel_ = mouse_wheel;
+        logger_->info("Mouse (x, y, wheel): ({}, {}, {})", 
+                       mouse_position.x, 
+                       mouse_position.y, 
+                       mouse_wheel);
+        // clamp values.
+        camera_distance_ = std::clamp(camera_distance_, 5.0f, 20.0f);
+        camera_pitch_ = std::clamp(camera_pitch_, -80.0f, -5.0f);
+        logger_->info(
+            "Camera (yaw, pitch, distance): ({}, {}, {})", 
+            camera_yaw_, 
+            camera_pitch_, 
+            camera_distance_);
+
+        // Create a forward vector for the character (from random).
+        if (character_forward_ == glm::vec3(0.0f)) {
             do {
-                forward_ = RandomVec3();
-            } while (glm::abs(glm::dot(character_up, forward_)) > 0.999f);
+                character_forward_ = glm::normalize(RandomVec3());
+            }
+            while (glm::dot(character_forward_, character_up) > 0.999f);
         }
-        glm::vec3 right = glm::normalize(glm::cross(character_up, forward_));
-        // Recalculate to ensure orthogonality.
-        forward_ = glm::normalize(glm::cross(right, character_up)); 
+        // Recompute the right and forward vectors.
+        auto character_right = 
+            glm::normalize(glm::cross(character_forward_, character_up));
+        character_forward_ =
+            glm::normalize(glm::cross(character_up, character_right));
 
-        // Apply yaw rotation around the character's up vector
-        glm::mat4 yaw_rot = 
-            glm::rotate(
-                glm::mat4(1.0f), 
-                glm::radians(camera_yaw_), 
-                character_up);
-        forward_ = glm::vec3(yaw_rot * glm::vec4(forward_, 0.0f));
+        // Compute the quaternion for the pitch and yaw.
+        glm::quat yaw_quat = glm::angleAxis(
+            glm::radians(camera_yaw_),
+            character_up);
+        glm::quat pitch_quat = glm::angleAxis(
+            glm::radians(camera_pitch_), 
+            character_right);
 
-        // Caluculate the camera position.
-        glm::vec3 camera_pos = character_pos - camera_distance_ * forward_;
+        auto camera_arm = 
+            glm::normalize(yaw_quat * pitch_quat * character_forward_);
+
+        auto camera_pos = character_pos - camera_arm * camera_distance_;
 
         // Set the uniform values.
         program.Uniform("camera_pos", camera_pos);
@@ -96,9 +131,6 @@ namespace darwin::state {
             auto& program = GetProgram();
             auto character_name = darwin_client_->GetCharacterName();
             auto character = world_simulator_.GetCharacterByName(character_name);
-            if (uniforms.spheres.size()) {
-                center_ = glm::vec3(uniforms.spheres[0]);
-            }
             // Update Uniforms.
             program.Use();
             UpdateUniformSpheres(program, uniforms);

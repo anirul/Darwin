@@ -171,7 +171,9 @@ void main()
 	float light_shadow = LightAndShadow(position, result.normal);
 	vec3 diffuse_col = vec3(light_shadow * result.color);
 	vec3 specular_col = vec3(0.0);
-	if (light_shadow > ambiant_treshold) {
+	if ((light_shadow > ambiant_treshold) && 
+		(diffuse_col != vec3(0, 0, 0))) 
+	{
 		specular_col = vec3(spec * spec_col);
     }
 

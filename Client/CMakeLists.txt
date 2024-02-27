@@ -2,11 +2,11 @@
 
 add_executable(DarwinClient
     WIN32
-        main.cpp
         darwin_client.cpp
         darwin_client.h
-        world_client.cpp
-        world_client.h
+        input_acquisition.cpp
+        input_acquisition.h
+        main.cpp
         modal_character.cpp
         modal_character.h
         modal_disconnected.cpp
@@ -30,6 +30,8 @@ add_executable(DarwinClient
         state_play.h
         state_server.cpp
         state_server.h
+        world_client.cpp
+        world_client.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/json/darwin_client.json
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/shader/opengl/darwin_ray_marching.vert
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/shader/opengl/darwin_ray_marching.frag
