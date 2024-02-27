@@ -12,7 +12,6 @@ namespace darwin {
         const proto::UpdateRequest* request,
         grpc::ServerWriter<proto::UpdateResponse>* writer)
     {
-        // TODO(anirul): Check there is only one name.
 #ifdef _DEBUG
         std::cout <<
             std::format(
@@ -38,19 +37,17 @@ namespace darwin {
                 request->name());
 #endif // _DEBUG
         auto character_name = world_state_.RemovePeer(context->peer());
-        if (!character_name.empty()) {
 #ifdef _DEBUG
+        if (!character_name.empty()) {
             std::cout <<
                 std::format(
                     "[{}] Removed character {}\n",
                     context->peer(),
                     character_name);
+        }
 #endif // _DEBUG
-        }
-        {
-            std::lock_guard<std::mutex> lock(writers_mutex_);
-            writers_.remove(writer);
-        }
+        std::lock_guard<std::mutex> lock(writers_mutex_);
+        writers_.remove(writer);
         return grpc::Status::OK;
     }
 
@@ -64,33 +61,31 @@ namespace darwin {
             "[{}] Got a push request from {}\n",
             context->peer(),
             request->name());
-        {
 #endif // _DEBUG
-            // Check if character is own by this peer.
-            if (!world_state_.IsCharacterOwnByPeer(
-                context->peer(),
-                request->name())) {
-                response->set_return_enum(proto::RETURN_REJECTED);
-                return grpc::Status::CANCELLED;
-            }
-            std::lock_guard<std::mutex> lock(writers_mutex_);
-            // Delete previous entry.
-            proto::Character character;
-            character.set_name(request->name());
-            *character.mutable_physic() = request->physic();
-            for (const auto& time_character : time_characters_) {
-                if (time_character.second.name() == request->name()) {
-                    time_characters_.erase(time_character.first);
-                    break;
-                }
-            }
-            auto now = std::chrono::system_clock::now();
-            double time =
-                std::chrono::duration_cast<std::chrono::duration<double>>(
-                    now.time_since_epoch())
-                .count();
-            time_characters_.insert({ time, character });
+        // Check if character is own by this peer.
+        if (!world_state_.IsCharacterOwnByPeer(
+            context->peer(),
+            request->name())) {
+            response->set_return_enum(proto::RETURN_REJECTED);
+            return grpc::Status::CANCELLED;
         }
+        std::lock_guard<std::mutex> lock(writers_mutex_);
+        // Delete previous entry.
+        proto::Character character;
+        character.set_name(request->name());
+        *character.mutable_physic() = request->physic();
+        for (const auto& time_character : time_characters_) {
+            if (time_character.second.name() == request->name()) {
+                time_characters_.erase(time_character.first);
+                break;
+            }
+        }
+        auto now = std::chrono::system_clock::now();
+        double time =
+            std::chrono::duration_cast<std::chrono::duration<double>>(
+                now.time_since_epoch())
+            .count();
+        time_characters_.insert({ time, character });
         response->set_return_enum(proto::RETURN_OK);
         return grpc::Status::OK;
     }
@@ -110,11 +105,13 @@ namespace darwin {
         if (world_state_.CreateCharacter(
             context->peer(),
             request->name(),
-            request->color())) {
+            request->color()))
+        {
             response->set_return_enum(proto::RETURN_OK);
             return grpc::Status::OK;
         }
-        else {
+        else
+        {
             response->set_return_enum(proto::RETURN_REJECTED);
             return grpc::Status::CANCELLED;
         }
@@ -212,7 +209,7 @@ namespace darwin {
             response.set_time(time);
             BroadcastUpdate(response);
             std::this_thread::sleep_until(
-            now + std::chrono::milliseconds(100));
+                now + std::chrono::milliseconds(100));
         }
     }
 

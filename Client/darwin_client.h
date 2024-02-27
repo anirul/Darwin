@@ -13,6 +13,8 @@
 
 namespace darwin {
 
+    constexpr std::string_view DEFAULT_SERVER = "localhost:45323";
+
     class DarwinClient {
     public:
         DarwinClient(const std::string& name);
@@ -33,7 +35,7 @@ namespace darwin {
             return world_client_.GetCharacters();
         }
         double GetServerTime() const {
-            return server_time_;
+            return server_time_.load();
         }
         std::string GetCharacterName() const {
             return character_name_;
@@ -42,7 +44,7 @@ namespace darwin {
     private:
         std::string name_;
         std::string character_name_;
-        double server_time_ = 0.0;
+        std::atomic<double> server_time_ = 0.0;
         std::unique_ptr<proto::DarwinService::Stub> stub_;
         frame::Logger& logger_ = frame::Logger::GetInstance();
         WorldClient world_client_;

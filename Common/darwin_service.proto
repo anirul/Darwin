@@ -8,11 +8,17 @@ enum ReturnEnum {
     RETURN_REJECTED = 2;    // Rejected by the server.
 }
 
+enum VitalEnum {
+    VITAL_NONE = 0;         // Error status incorrect.
+    VITAL_ALIVE = 1;        // The player is alive and kicking.
+    VITAL_DEAD = 2;         // This player is dead.
+    VITAL_LOADING = 3;      // This player is loading in.
+}
+
 enum StatusEnum {
-    STATUS_NONE = 0;        // Error status incorrect.
-    STATUS_ALIVE = 1;       // The player is alive and kicking.
-    STATUS_DEAD = 2;        // This player is dead.
-    STATUS_LOADING = 3;     // This player is loading in.
+    STATUS_UNKNOWN = 0;     // Unknown this is an error!
+    STATUS_ON_GROUND = 1;   // On the ground.
+    STATUS_JUMPING = 2;     // Jumping.
 }
 
 enum TypeEnum {
@@ -72,7 +78,7 @@ message Element {
 }
 
 // Character it will be represented by a sphere on server.
-// Next: 6
+// Next: 7
 message Character {
     // Character name.
     string name = 1;
@@ -84,6 +90,8 @@ message Character {
     Vector3 g_normal = 4;
     // G force (used for local computation).
     double g_force = 5;
+    // Status of the element.
+    StatusEnum status_enum = 6;
 }
 
 // CharacterReport
@@ -94,7 +102,7 @@ message CharacterReport {
     // Radius (score).
     float radius = 2;
     // Status.
-    StatusEnum status = 3;
+    VitalEnum vital_status = 3;
     // Color.
     Vector3 color = 4;
     // Last seen time.
@@ -142,14 +150,14 @@ message ReportMovementRequest {
 }
 
 // ReportMovementResponse
-// Next: 3
+// Next: 2
 message ReportMovementResponse {
     // Return enum.
     ReturnEnum return_enum = 1;
 }
 
 // CreateCharacterRequest
-// Next: 2
+// Next: 3
 message CreateCharacterRequest {
     // Character name.
     string name = 1;

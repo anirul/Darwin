@@ -145,17 +145,43 @@ inline bool ReturnEnum_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ReturnEnum>(
     ReturnEnum_descriptor(), name, value);
 }
+enum VitalEnum : int {
+  VITAL_NONE = 0,
+  VITAL_ALIVE = 1,
+  VITAL_DEAD = 2,
+  VITAL_LOADING = 3,
+  VitalEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  VitalEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool VitalEnum_IsValid(int value);
+constexpr VitalEnum VitalEnum_MIN = VITAL_NONE;
+constexpr VitalEnum VitalEnum_MAX = VITAL_LOADING;
+constexpr int VitalEnum_ARRAYSIZE = VitalEnum_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* VitalEnum_descriptor();
+template<typename T>
+inline const std::string& VitalEnum_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, VitalEnum>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function VitalEnum_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    VitalEnum_descriptor(), enum_t_value);
+}
+inline bool VitalEnum_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, VitalEnum* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<VitalEnum>(
+    VitalEnum_descriptor(), name, value);
+}
 enum StatusEnum : int {
-  STATUS_NONE = 0,
-  STATUS_ALIVE = 1,
-  STATUS_DEAD = 2,
-  STATUS_LOADING = 3,
+  STATUS_UNKNOWN = 0,
+  STATUS_ON_GROUND = 1,
+  STATUS_JUMPING = 2,
   StatusEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   StatusEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool StatusEnum_IsValid(int value);
-constexpr StatusEnum StatusEnum_MIN = STATUS_NONE;
-constexpr StatusEnum StatusEnum_MAX = STATUS_LOADING;
+constexpr StatusEnum StatusEnum_MIN = STATUS_UNKNOWN;
+constexpr StatusEnum StatusEnum_MAX = STATUS_JUMPING;
 constexpr int StatusEnum_ARRAYSIZE = StatusEnum_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* StatusEnum_descriptor();
@@ -1120,6 +1146,7 @@ class Character final :
     kPhysicFieldNumber = 3,
     kGNormalFieldNumber = 4,
     kGForceFieldNumber = 5,
+    kStatusEnumFieldNumber = 6,
   };
   // string name = 1;
   void clear_name();
@@ -1198,6 +1225,15 @@ class Character final :
   void _internal_set_g_force(double value);
   public:
 
+  // .proto.StatusEnum status_enum = 6;
+  void clear_status_enum();
+  ::proto::StatusEnum status_enum() const;
+  void set_status_enum(::proto::StatusEnum value);
+  private:
+  ::proto::StatusEnum _internal_status_enum() const;
+  void _internal_set_status_enum(::proto::StatusEnum value);
+  public:
+
   // @@protoc_insertion_point(class_scope:proto.Character)
  private:
   class _Internal;
@@ -1211,6 +1247,7 @@ class Character final :
     ::proto::Physic* physic_;
     ::proto::Vector3* g_normal_;
     double g_force_;
+    int status_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1342,7 +1379,7 @@ class CharacterReport final :
     kNameFieldNumber = 1,
     kColorFieldNumber = 4,
     kRadiusFieldNumber = 2,
-    kStatusFieldNumber = 3,
+    kVitalStatusFieldNumber = 3,
     kLastSeenFieldNumber = 5,
   };
   // string name = 1;
@@ -1386,13 +1423,13 @@ class CharacterReport final :
   void _internal_set_radius(float value);
   public:
 
-  // .proto.StatusEnum status = 3;
-  void clear_status();
-  ::proto::StatusEnum status() const;
-  void set_status(::proto::StatusEnum value);
+  // .proto.VitalEnum vital_status = 3;
+  void clear_vital_status();
+  ::proto::VitalEnum vital_status() const;
+  void set_vital_status(::proto::VitalEnum value);
   private:
-  ::proto::StatusEnum _internal_status() const;
-  void _internal_set_status(::proto::StatusEnum value);
+  ::proto::VitalEnum _internal_vital_status() const;
+  void _internal_set_vital_status(::proto::VitalEnum value);
   public:
 
   // double last_seen = 5;
@@ -1415,7 +1452,7 @@ class CharacterReport final :
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
     ::proto::Vector3* color_;
     float radius_;
-    int status_;
+    int vital_status_;
     double last_seen_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -4381,6 +4418,26 @@ inline void Character::set_g_force(double value) {
   // @@protoc_insertion_point(field_set:proto.Character.g_force)
 }
 
+// .proto.StatusEnum status_enum = 6;
+inline void Character::clear_status_enum() {
+  _impl_.status_enum_ = 0;
+}
+inline ::proto::StatusEnum Character::_internal_status_enum() const {
+  return static_cast< ::proto::StatusEnum >(_impl_.status_enum_);
+}
+inline ::proto::StatusEnum Character::status_enum() const {
+  // @@protoc_insertion_point(field_get:proto.Character.status_enum)
+  return _internal_status_enum();
+}
+inline void Character::_internal_set_status_enum(::proto::StatusEnum value) {
+  
+  _impl_.status_enum_ = value;
+}
+inline void Character::set_status_enum(::proto::StatusEnum value) {
+  _internal_set_status_enum(value);
+  // @@protoc_insertion_point(field_set:proto.Character.status_enum)
+}
+
 // -------------------------------------------------------------------
 
 // CharacterReport
@@ -4455,24 +4512,24 @@ inline void CharacterReport::set_radius(float value) {
   // @@protoc_insertion_point(field_set:proto.CharacterReport.radius)
 }
 
-// .proto.StatusEnum status = 3;
-inline void CharacterReport::clear_status() {
-  _impl_.status_ = 0;
+// .proto.VitalEnum vital_status = 3;
+inline void CharacterReport::clear_vital_status() {
+  _impl_.vital_status_ = 0;
 }
-inline ::proto::StatusEnum CharacterReport::_internal_status() const {
-  return static_cast< ::proto::StatusEnum >(_impl_.status_);
+inline ::proto::VitalEnum CharacterReport::_internal_vital_status() const {
+  return static_cast< ::proto::VitalEnum >(_impl_.vital_status_);
 }
-inline ::proto::StatusEnum CharacterReport::status() const {
-  // @@protoc_insertion_point(field_get:proto.CharacterReport.status)
-  return _internal_status();
+inline ::proto::VitalEnum CharacterReport::vital_status() const {
+  // @@protoc_insertion_point(field_get:proto.CharacterReport.vital_status)
+  return _internal_vital_status();
 }
-inline void CharacterReport::_internal_set_status(::proto::StatusEnum value) {
+inline void CharacterReport::_internal_set_vital_status(::proto::VitalEnum value) {
   
-  _impl_.status_ = value;
+  _impl_.vital_status_ = value;
 }
-inline void CharacterReport::set_status(::proto::StatusEnum value) {
-  _internal_set_status(value);
-  // @@protoc_insertion_point(field_set:proto.CharacterReport.status)
+inline void CharacterReport::set_vital_status(::proto::VitalEnum value) {
+  _internal_set_vital_status(value);
+  // @@protoc_insertion_point(field_set:proto.CharacterReport.vital_status)
 }
 
 // .proto.Vector3 color = 4;
@@ -5535,6 +5592,11 @@ template <> struct is_proto_enum< ::proto::ReturnEnum> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::proto::ReturnEnum>() {
   return ::proto::ReturnEnum_descriptor();
+}
+template <> struct is_proto_enum< ::proto::VitalEnum> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::proto::VitalEnum>() {
+  return ::proto::VitalEnum_descriptor();
 }
 template <> struct is_proto_enum< ::proto::StatusEnum> : ::std::true_type {};
 template <>

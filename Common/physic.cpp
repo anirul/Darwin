@@ -46,30 +46,33 @@ namespace darwin {
             physic.position_dt().z() * delta_time);
     }
 
-    void CorrectSurface(
+    proto::StatusEnum CorrectSurface(
         proto::Physic& physic,
         const proto::Element& element)
     {
         if (element.type_enum() == proto::TYPE_GROUND) {
-            auto distance = 
+            auto distance =
                 Distance(physic.position(), element.physic().position());
             if (distance < (physic.radius() + element.physic().radius())) {
                 auto normal = Normalize(
                     CreateBasicVector3(
-                        physic.position().x() - 
+                        physic.position().x() -
                         element.physic().position().x(),
-                        physic.position().y() - 
+                        physic.position().y() -
                         element.physic().position().y(),
-                        physic.position().z() - 
+                        physic.position().z() -
                         element.physic().position().z()));
-                auto new_position_delta = 
+                auto new_position_delta =
                     MultiplyVector3ByScalar(
-                        normal, 
+                        normal,
                         physic.radius() + element.physic().radius());
-                *physic.mutable_position() = 
+                *physic.mutable_position() =
                     Add(element.physic().position(), new_position_delta);
+                return proto::STATUS_ON_GROUND;
             }
+            return proto::STATUS_JUMPING;
         }
+        return proto::STATUS_UNKNOWN;
     }
 
 } // namespace darwin.

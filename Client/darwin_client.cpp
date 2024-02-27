@@ -5,7 +5,7 @@ namespace darwin {
     DarwinClient::DarwinClient(const std::string& name)
         : name_(name) {
         if (name_ == "") {
-            name_ = "localhost:45323";
+            name_ = DEFAULT_SERVER;
         }
         else {
             name_ = name;
@@ -78,22 +78,26 @@ namespace darwin {
         proto::UpdateResponse response;
         grpc::ClientContext context;
 
-        // The response stream
+        // The response stream.
         std::unique_ptr<grpc::ClientReader<proto::UpdateResponse>> reader(
             stub_->Update(&context, request));
 
-        // Read the stream of responses
+        // Read the stream of responses.
         while (reader->Read(&response)) {
 
             auto character_size = world_client.GetCharacters().size();
             auto element_size = world_client.GetElements().size();
 
+            // Update the elements and characters.
             world_client.SetElements(
                 { response.elements().begin(), 
                   response.elements().end() });
             world_client.SetCharacters(
                 { response.characters().begin(), 
                   response.characters().end() });
+
+            // Update the time.
+            server_time_.store(response.time());
 
             if (character_size != world_client.GetCharacters().size()) {
                 logger_->warn(

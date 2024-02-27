@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-#include "Common/darwin_service.grpc.pb.h"
+#include "darwin_service.pb.h"
 
 namespace darwin {
 

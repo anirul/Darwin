@@ -17,8 +17,7 @@ namespace darwin::modal {
 
     class ModalServer : public frame::gui::GuiWindowInterface {
     public:
-        ModalServer(const std::string& name, ModalServerParams& params) :
-            name_(name), params_(params) {}
+        ModalServer(const std::string& name, ModalServerParams& params);
         bool DrawCallback() override;
         bool End() const override;
         std::string GetName() const override;
@@ -28,6 +27,7 @@ namespace darwin::modal {
         std::string name_;
         ModalServerParams& params_;
         bool end_ = false;
+        char server_[64] = { 0 };
     };
 
 } // End namespace frame::modal.

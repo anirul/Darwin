@@ -20,7 +20,7 @@ namespace darwin {
         const proto::Vector3& force, 
         double delta_time);
 
-    void CorrectSurface(
+    proto::StatusEnum CorrectSurface(
         proto::Physic& physic, 
         const proto::Element& element);
 

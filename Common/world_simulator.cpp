@@ -72,9 +72,12 @@ namespace darwin {
                 delta_time);
             // Correct the surface.
             for (auto& element : static_elements) {
-                CorrectSurface(
+                auto status_result = CorrectSurface(
                     *character.mutable_physic(),
                     element);
+                if (status_result != character.status_enum()) {
+                    character.set_status_enum(status_result);
+                }
             }
         }
     }

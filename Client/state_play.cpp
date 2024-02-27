@@ -61,18 +61,10 @@ namespace darwin::state {
         camera_pitch_ = -(mouse_position.y * 0.1f);
         camera_distance_ += (last_mouse_wheel_ - mouse_wheel) * 1.0f;
         last_mouse_wheel_ = mouse_wheel;
-        logger_->info("Mouse (x, y, wheel): ({}, {}, {})", 
-                       mouse_position.x, 
-                       mouse_position.y, 
-                       mouse_wheel);
+        
         // clamp values.
         camera_distance_ = std::clamp(camera_distance_, 5.0f, 20.0f);
         camera_pitch_ = std::clamp(camera_pitch_, -80.0f, -5.0f);
-        logger_->info(
-            "Camera (yaw, pitch, distance): ({}, {}, {})", 
-            camera_yaw_, 
-            camera_pitch_, 
-            camera_distance_);
 
         // Create a forward vector for the character (from random).
         if (character_forward_ == glm::vec3(0.0f)) {
@@ -122,6 +114,7 @@ namespace darwin::state {
                     darwin_client_->GetElements(),
                     darwin_client_->GetCharacters(),
                     darwin_client_->GetServerTime());
+                server_time = darwin_client_->GetServerTime();
             }
             else {
                 world_simulator_.UpdateTime();

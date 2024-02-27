@@ -2,16 +2,28 @@
 
 #include <imgui.h>
 
+#include "darwin_client.h"
+
 namespace darwin::modal {
 
+    ModalServer::ModalServer(
+        const std::string& name, 
+        ModalServerParams& params) :
+        name_(name), 
+        params_(params) 
+    {
+        std::copy(DEFAULT_SERVER.begin(), DEFAULT_SERVER.end(), server_);
+    }
+
+
     bool ModalServer::DrawCallback() {
-        static char server[64] = { '\0' };
         if (ImGui::InputText(
-            "Server", 
-            server, 
+            "Server",
+            server_,
             64,
-            ImGuiInputTextFlags_CharsNoBlank)) {
-            params_.server_name = server;
+            ImGuiInputTextFlags_CharsNoBlank))
+        {
+            params_.server_name = server_;
         }
         if (ImGui::Button("Connect")) {
             params_.button_result = ModalServerButton::Connect;
