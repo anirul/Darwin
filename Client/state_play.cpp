@@ -13,7 +13,10 @@ namespace darwin::state {
         frame::common::Application& app,
         std::unique_ptr<darwin::DarwinClient> darwin_client) :
         app_(app),
-        darwin_client_(std::move(darwin_client)) {}
+        darwin_client_(std::move(darwin_client)),
+        world_simulator_(darwin_client_->GetWorldSimulator())
+    {
+    }
 
     void StatePlay::Enter() {
         logger_->info("Entered play state");

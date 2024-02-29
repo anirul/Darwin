@@ -7,7 +7,7 @@
 
 namespace darwin {
 
-    constexpr int INTERVAL = 500;
+    constexpr int INTERVAL = 1000;
 
     class DarwinServiceImpl final : public proto::DarwinService::Service {
     public:

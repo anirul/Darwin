@@ -19,7 +19,6 @@
 #include "frame/gui/window_logger.h"
 #include "frame/logger.h"
 #include "frame/json/parse_level.h"
-#include "world_client.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 int WINAPI WinMain(

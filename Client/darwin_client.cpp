@@ -17,7 +17,7 @@ namespace darwin {
         stub_ = proto::DarwinService::NewStub(channel);
         // Create a new thread to the update.
         future_ = std::async(std::launch::async, [this] { 
-                Update(world_client_);
+                Update();
             });
     }
 
@@ -74,7 +74,7 @@ namespace darwin {
         }
     }
 
-    void DarwinClient::Update(WorldClient& world_client) {
+    void DarwinClient::Update() {
         proto::UpdateRequest request;
         request.set_name(name_);
 
@@ -82,37 +82,36 @@ namespace darwin {
         grpc::ClientContext context;
 
         // The response stream.
-        std::unique_ptr<grpc::ClientReader<proto::UpdateResponse>> reader(
-            stub_->Update(&context, request));
+        std::unique_ptr<grpc::ClientReader<proto::UpdateResponse>> 
+            reader(stub_->Update(&context, request));
 
         // Read the stream of responses.
         while (reader->Read(&response)) {
 
-            auto character_size = world_client.GetCharacters().size();
-            auto element_size = world_client.GetElements().size();
+            std::vector<proto::Character> characters;
+            for (int i = 0; i < response.characters_size(); ++i) {
+                if ((response.characters(i).name() == character_name_) && 
+                    (world_simulator_.GetCharacterByName(
+                        character_name_).status_enum() !=
+                        proto::STATUS_UNKNOWN))
+                {
+                    characters.push_back(
+                        world_simulator_.GetCharacterByName(character_name_));
+                }
+                else {
+                    characters.push_back(response.characters(i));
+                }
+            }
 
             // Update the elements and characters.
-            world_client.SetElements(
+            world_simulator_.UpdateData(
                 { response.elements().begin(), 
-                  response.elements().end() });
-
-            world_client.SetCharacters(
-                { response.characters().begin(), 
-                  response.characters().end() });
-
+                  response.elements().end() },
+                { characters.begin(), characters.end() },
+                response.time());
+            
             // Update the time.
             server_time_.store(response.time());
-
-            if (character_size != world_client.GetCharacters().size()) {
-                logger_->warn(
-                    "Character changed size to: {}", 
-                    world_client.GetCharacters().size());
-            }
-            if (element_size != world_client.GetElements().size()) {
-                logger_->warn(
-                    "Element changed size to: {}", 
-                    world_client.GetElements().size());
-            }
 
             if (end_.load()) {
                 logger_->warn("Force exiting...");

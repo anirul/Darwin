@@ -30,8 +30,6 @@ add_executable(DarwinClient
         state_play.h
         state_server.cpp
         state_server.h
-        world_client.cpp
-        world_client.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/json/darwin_client.json
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/shader/opengl/darwin_ray_marching.vert
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/shader/opengl/darwin_ray_marching.frag

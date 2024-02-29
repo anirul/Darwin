@@ -24,6 +24,15 @@ namespace darwin {
         proto::Character GetCharacterByName(const std::string& name);
         void SetCharacter(const proto::Character& character);
 
+    public:
+        std::vector<proto::Element> GetElements() const {
+            return elements_;
+        }
+        std::vector<proto::Character> GetCharacters() const {
+            return characters_;
+        }
+
+
     protected:
         std::vector<proto::Element> GetGForceElements();
         void ApplyGForceAndSpeedToCharacter(

@@ -8,7 +8,7 @@
 
 namespace darwin::state {
 
-    constexpr double VERTICAL_SPEED = 100.0;
+    constexpr double VERTICAL_SPEED = 10.0;
     constexpr double HORIZONTAL_SPEED = 10.0;
 
     class StatePlay : public StateInterface {
@@ -36,7 +36,7 @@ namespace darwin::state {
         std::unique_ptr<darwin::DarwinClient> darwin_client_;
         std::string user_name_;
         frame::Logger& logger_ = frame::Logger::GetInstance();
-        WorldSimulator world_simulator_;
+        WorldSimulator& world_simulator_;
         // Camera parameters.
         float camera_yaw_ = 0.0f; // left-right
         float camera_pitch_ = -20.0f; // up-down

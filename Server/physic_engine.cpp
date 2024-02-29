@@ -220,11 +220,12 @@ namespace darwin {
                     F += ComputeGravitationalForce(physic, ground_physic);
                 }
             }
-            // x(t) = x0 + v0t + 0.5at^2
             double delta = now - time;
+            // v(t) = v0 + at
             glm::dvec3 velocity = ProtoVector2Glm(physic.position_dt()) +
                 (F / physic.mass()) * delta;
             physic.mutable_position_dt()->CopyFrom(Glm2ProtoVector(velocity));
+            // x(t) = x0 + v0t + 0.5at^2
             auto position =
                 ProtoVector2Glm(physic.position()) +
                 ProtoVector2Glm(physic.position_dt()) * delta +
