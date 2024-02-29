@@ -21,21 +21,23 @@ namespace darwin {
             double time);
         void UpdateTime();
         UniformEnum GetUniforms();
-        proto::Character GetCharacterByName(const std::string& name) const;
+        proto::Character GetCharacterByName(const std::string& name);
+        void SetCharacter(const proto::Character& character);
 
     protected:
         std::vector<proto::Element> GetGForceElements();
-        void ApplyGForceToCharacter(
+        void ApplyGForceAndSpeedToCharacter(
             const std::vector<proto::Element>& static_elements,
             double delta_time);
 
     private:
         std::string name_;
         bool started_ = false;
+        std::mutex mutex_;
         std::vector<proto::Element> elements_;
         std::vector<proto::Character> characters_;
         double time_;
-        std::chrono::time_point<std::chrono::system_clock> last_time_;
+        std::chrono::time_point<std::chrono::high_resolution_clock> last_time_;
     };
 
 } // End namespace darwin.

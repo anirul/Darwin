@@ -1,0 +1,158 @@
+[2024-02-29 13:46:26.237] [frame] [info] start logging!
+[2024-02-29 13:46:26.409] [frame] [info] Created an SDL2 window.
+[2024-02-29 13:46:26.413] [frame] [info] NVIDIA GeForce RTX 2070 SUPER/PCIe/SSE2
+[2024-02-29 13:46:26.414] [frame] [info] Started SDL OpenGL version 4.5.
+[2024-02-29 13:46:26.419] [frame] [info] Entering title state
+[2024-02-29 13:46:26.431] [frame] [info] Add a new texture billboard, with id [11].
+[2024-02-29 13:46:26.431] [frame] [info] Creating program
+[2024-02-29 13:46:26.436] [frame] [info] Uniform [darwin_ray_marching] count: 8
+[2024-02-29 13:46:26.437] [frame] [info] Uniform: camera_pos, type 35665, size [1].
+[2024-02-29 13:46:26.437] [frame] [info] Uniform: camera_target, type 35665, size [1].
+[2024-02-29 13:46:26.437] [frame] [info] Uniform: camera_up, type 35665, size [1].
+[2024-02-29 13:46:26.437] [frame] [info] Uniform: light_dir, type 35665, size [1].
+[2024-02-29 13:46:26.437] [frame] [info] Uniform: resolution, type 35664, size [1].
+[2024-02-29 13:46:26.437] [frame] [info] Uniform: sphere_col[0], type 35666, size [384].
+[2024-02-29 13:46:26.437] [frame] [info] Uniform: sphere_pos[0], type 35666, size [384].
+[2024-02-29 13:46:26.437] [frame] [info] Uniform: sphere_size, type 5124, size [1].
+[2024-02-29 13:46:26.437] [frame] [info] with pointer := 0x1c61028ac50
+[2024-02-29 13:46:26.437] [frame] [info] GetMemoizeUniformLocation [resolution].
+[2024-02-29 13:46:26.437] [frame] [info] GetMemoizeUniformLocation [camera_pos].
+[2024-02-29 13:46:26.437] [frame] [info] GetMemoizeUniformLocation [camera_target].
+[2024-02-29 13:46:26.437] [frame] [info] GetMemoizeUniformLocation [camera_up].
+[2024-02-29 13:46:26.437] [frame] [info] GetMemoizeUniformLocation [light_dir].
+[2024-02-29 13:46:26.437] [frame] [info] GetMemoizeUniformLocation [sphere_size].
+[2024-02-29 13:46:26.437] [frame] [info] GetMemoizeUniformLocation [sphere_pos].
+[2024-02-29 13:46:26.437] [frame] [info] GetMemoizeUniformLocation [sphere_col].
+[2024-02-29 13:46:26.438] [frame] [info] Creating program
+[2024-02-29 13:46:26.438] [frame] [info] Uniform [display] count: 1
+[2024-02-29 13:46:26.438] [frame] [info] Uniform: Display, type 35678, size [1].
+[2024-02-29 13:46:26.438] [frame] [info] with pointer := 0x1c608d04640
+[2024-02-29 13:46:26.439] [frame] [info] GetMemoizeUniformLocation [Display].
+[2024-02-29 13:46:38.985] [frame] [info] Space key pressed
+[2024-02-29 13:46:38.986] [frame] [info] Exiting title state
+[2024-02-29 13:46:38.986] [frame] [info] Entering server state
+[2024-02-29 13:46:38.986] [frame] [info] 	Plugin: [1950182536672] DrawGuiInterface
+[2024-02-29 13:46:38.986] [frame] [info] 	Plugin: [1950184381952] ApplicationDraw
+[2024-02-29 13:46:40.261] [frame] [info] Exit server state
+[2024-02-29 13:46:40.261] [frame] [info] Entering ping state
+[2024-02-29 13:46:40.261] [frame] [info] 	Plugin: [1950182536672] DrawGuiInterface
+[2024-02-29 13:46:40.261] [frame] [info] 	Plugin: [1950184381952] ApplicationDraw
+[2024-02-29 13:46:40.283] [frame] [info] Ping response server time: 45323
+[2024-02-29 13:46:40.370] [frame] [info] Exiting ping state
+[2024-02-29 13:46:40.370] [frame] [info] Entering character state
+[2024-02-29 13:46:40.370] [frame] [info] 	Plugin: [1950182536672] DrawGuiInterface
+[2024-02-29 13:46:40.370] [frame] [info] 	Plugin: [1950184381952] ApplicationDraw
+[2024-02-29 13:46:40.442] [frame] [warning] Element changed size to: 1
+[2024-02-29 13:46:43.951] [frame] [info] Create character: x
+[2024-02-29 13:46:43.951] [frame] [info] Exit character state
+[2024-02-29 13:46:43.951] [frame] [info] Entered play state
+[2024-02-29 13:46:43.952] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.952] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.953] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.954] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.955] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.956] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.956] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.957] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.959] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.960] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.961] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.962] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.963] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.964] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.965] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.965] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.966] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.967] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.968] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.969] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.970] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.971] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.971] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.972] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.973] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.975] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.976] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.976] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.977] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.978] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.979] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.980] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.981] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.982] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.982] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.983] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.984] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.985] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.986] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.987] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.988] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.989] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.990] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.991] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.992] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.992] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.993] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.995] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.995] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.996] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.997] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.997] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.998] [frame] [warning] Character x not found
+[2024-02-29 13:46:43.999] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.000] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.001] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.002] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.003] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.003] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.004] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.005] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.006] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.007] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.008] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.009] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.011] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.011] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.012] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.013] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.014] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.015] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.015] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.016] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.017] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.018] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.019] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.020] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.020] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.021] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.022] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.023] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.024] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.025] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.026] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.026] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.027] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.028] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.029] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.030] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.030] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.031] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.032] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.033] [frame] [warning] Character x not found
+[2024-02-29 13:46:44.034] [frame] [warning] Character changed size to: 1
+[2024-02-29 13:50:23.338] [frame] [warning] Report movement failed: Stream removed
+[2024-02-29 13:50:23.339] [frame] [warning] Update stream failed: Stream removed
+[2024-02-29 13:50:23.352] [frame] [info] Exited play state
+[2024-02-29 13:50:23.352] [frame] [info] State disconnected entered
+[2024-02-29 13:50:23.352] [frame] [info] 	Plugin: [1950182536672] DrawGuiInterface
+[2024-02-29 13:50:23.352] [frame] [info] 	Plugin: [1950184381952] ApplicationDraw
+[2024-02-29 13:50:27.011] [frame] [info] State disconnected exited
+[2024-02-29 13:50:27.013] [frame] [info] Entering title state
+[2024-02-29 13:50:29.868] [frame] [info] Space key pressed
+[2024-02-29 13:50:29.869] [frame] [info] Exiting title state
+[2024-02-29 13:50:29.869] [frame] [info] Entering server state
+[2024-02-29 13:50:29.869] [frame] [info] 	Plugin: [1950182536672] DrawGuiInterface
+[2024-02-29 13:50:29.869] [frame] [info] 	Plugin: [1950184381952] ApplicationDraw
+[2024-02-29 13:50:32.373] [frame] [info] Exit server state
+[2024-02-29 13:50:32.373] [frame] [info] Entering title state
+[2024-02-29 13:50:34.921] [frame] [info] Exiting title state

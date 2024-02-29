@@ -208,8 +208,18 @@ namespace darwin {
                 { characters.begin(), characters.end() });
             response.set_time(time);
             BroadcastUpdate(response);
+            // Pring a warning if the computation is too slow.
+            if ((now + std::chrono::milliseconds(INTERVAL)) <
+                std::chrono::system_clock::now())
+            {
+                std::cerr << 
+                    std::format(
+                        "ComputeWorld is too slow {} < {} !!!\n",
+                        now + std::chrono::milliseconds(INTERVAL),
+                        std::chrono::system_clock::now());
+            }
             std::this_thread::sleep_until(
-                now + std::chrono::milliseconds(100));
+                now + std::chrono::milliseconds(INTERVAL));
         }
     }
 

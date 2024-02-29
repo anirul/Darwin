@@ -22,7 +22,9 @@ namespace darwin {
         bool CreateCharacter(
             const std::string& name, 
             const proto::Vector3& color);
-        void ReportMovement(const proto::Physic& physic);
+        void ReportMovement(
+            const std::string& name, 
+            const proto::Physic& physic);
         void Update(WorldClient& world_client);
         std::int32_t Ping(std::int32_t val = 45323);
         bool IsConnected() const;

@@ -154,7 +154,8 @@ namespace darwin {
             GetElementPhysics(proto::TYPE_GROUND);
         std::vector<double> times = GetElementTimes(proto::TYPE_GROUND);
         // Compute the gravitational force between them.
-        ComputeGravitationBetweenGround(times, now, ground_physics);
+        // This is not needed as I have only one Gravity well.
+        // ComputeGravitationBetweenGround(times, now, ground_physics);
         // Update the physics.
         SetElementPhysics(proto::TYPE_GROUND, ground_physics);
         ComputeElementInfo(now, ground_physics);
@@ -219,15 +220,17 @@ namespace darwin {
                     F += ComputeGravitationalForce(physic, ground_physic);
                 }
             }
+            // x(t) = x0 + v0t + 0.5at^2
             double delta = now - time;
-            auto velocity = ProtoVector2Glm(physic.position_dt()) +
+            glm::dvec3 velocity = ProtoVector2Glm(physic.position_dt()) +
                 (F / physic.mass()) * delta;
-            *physic.mutable_position_dt() = Glm2ProtoVector(velocity);
+            physic.mutable_position_dt()->CopyFrom(Glm2ProtoVector(velocity));
             auto position =
                 ProtoVector2Glm(physic.position()) +
-                ProtoVector2Glm(physic.position_dt()) * delta;
-            *physic.mutable_position() = Glm2ProtoVector(position);
-            *character_info.second.character.mutable_physic() = physic;
+                ProtoVector2Glm(physic.position_dt()) * delta +
+                (F / physic.mass()) * delta * delta * 0.5;
+            physic.mutable_position()->CopyFrom(Glm2ProtoVector(position));
+            character_info.second.character.mutable_physic()->CopyFrom(physic);
             // Update the time.
             character_info.second.time = now;
         }

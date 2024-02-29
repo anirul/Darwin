@@ -20,7 +20,7 @@ namespace darwin {
         const std::vector<proto::Character>& characters,
         double time)
     {
-        last_time_ = std::chrono::system_clock::now();
+        std::lock_guard l(mutex_);
         elements_ = elements;
         characters_ = characters;
         time_ = time;
@@ -37,7 +37,7 @@ namespace darwin {
         return result;
     }
 
-    void WorldSimulator::ApplyGForceToCharacter(
+    void WorldSimulator::ApplyGForceAndSpeedToCharacter(
         const std::vector<proto::Element>& static_elements,
         double delta_time)
     {
@@ -49,27 +49,23 @@ namespace darwin {
                 auto result = ApplyPhysic(
                     element.physic(),
                     character.physic());
-                force.set_x(
-                    force.x() +
-                    result.force_direction.x() *
-                    result.force_magnitude);
-                force.set_y(
-                    force.y() +
-                    result.force_direction.y() *
-                    result.force_magnitude);
-                force.set_z(
-                    force.z() +
-                    result.force_direction.z() *
-                    result.force_magnitude);
+                force = 
+                    Add(
+                        force,
+                        MultiplyVector3ByScalar(
+                            result.force_direction,
+                            result.force_magnitude));
             }
             // Update the g part of the character.
-            *character.mutable_g_normal() = Minus(Normalize(force));
+            character.mutable_g_normal()->CopyFrom(Minus(Normalize(force)));
             character.set_g_force(GetLength(force));
             // Update the physic part of the character.
-            UpdateObject(
+            float acceleration_length = UpdateObject(
                 *character.mutable_physic(),
                 force,
                 delta_time);
+            // Correct the acceleration.
+            character.set_g_force(acceleration_length);
             // Correct the surface.
             for (auto& element : static_elements) {
                 auto status_result = CorrectSurface(
@@ -83,20 +79,22 @@ namespace darwin {
     }
 
     void WorldSimulator::UpdateTime() {
-        if (!started_) return;
-        auto now = std::chrono::system_clock::now();
-        auto elapsed =
-            std::chrono::duration_cast<std::chrono::milliseconds>(
-                now - last_time_);
-        time_ += elapsed.count() / 1000.0;
+        std::lock_guard l(mutex_);
+        if (!started_) return; 
+        auto now = std::chrono::high_resolution_clock::now();
+        auto elapsed = now - last_time_;
+        double elapsed_seconds = 
+            std::chrono::duration<double>(elapsed).count();
+        time_ += elapsed_seconds;
         last_time_ = now;
         // Get gravity forces.
         std::vector<proto::Element> static_elements = GetGForceElements();
         // Apply gravity forces to characters.
-        ApplyGForceToCharacter(static_elements, elapsed.count() / 1000.0);
+        ApplyGForceAndSpeedToCharacter(static_elements, elapsed_seconds);
     }
 
     UniformEnum WorldSimulator::GetUniforms() {
+        std::lock_guard l(mutex_);
         UniformEnum uniform_enum;
         for (auto& element : elements_) {
             uniform_enum.spheres.push_back(
@@ -148,14 +146,25 @@ namespace darwin {
     }
 
     proto::Character WorldSimulator::GetCharacterByName(
-        const std::string& name) const
+        const std::string& name)
     {
+        std::lock_guard l(mutex_);
         for (auto character: characters_) {
             if (character.name() == name) {
                 return character;
             }
         }
         return proto::Character{};
+    }
+
+    void WorldSimulator::SetCharacter(const proto::Character& character) {
+        std::lock_guard l(mutex_);
+        for (auto& character_ : characters_) {
+            if (character_.name() == character.name()) {
+                character_.CopyFrom(character);
+                return;
+            }
+        }
     }
 
 } // End namespace darwin.

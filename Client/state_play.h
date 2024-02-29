@@ -8,6 +8,9 @@
 
 namespace darwin::state {
 
+    constexpr double VERTICAL_SPEED = 100.0;
+    constexpr double HORIZONTAL_SPEED = 10.0;
+
     class StatePlay : public StateInterface {
     public:
         StatePlay(
@@ -26,6 +29,7 @@ namespace darwin::state {
         void UpdateUniformCamera(
             frame::ProgramInterface& program,
             const proto::Character& character);
+        void UpdateMovement(proto::Character character);
 
     private:
         frame::common::Application& app_;
@@ -37,6 +41,8 @@ namespace darwin::state {
         float camera_yaw_ = 0.0f; // left-right
         float camera_pitch_ = -20.0f; // up-down
         float camera_distance_ = 5.0f;
+        // Saved variables.
+        glm::vec3 character_initial_forward_ = glm::vec3(0.0f);
         glm::vec3 character_forward_ = glm::vec3(0.0f);
         float last_mouse_wheel_ = 0.0f;
         InputAcquisition* input_acquisition_ptr_ = nullptr;

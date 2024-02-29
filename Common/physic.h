@@ -15,10 +15,15 @@ namespace darwin {
         const proto::Physic& physic_source, 
         const proto::Physic& physic_target);
 
-    void UpdateObject(
+    float UpdateObject(
         proto::Physic& physic, 
         const proto::Vector3& force, 
         double delta_time);
+
+    // Function to cancel the vertical component of the velocity vector.
+    proto::Vector3 CancelVerticalComponent(
+        const proto::Vector3& velocity, 
+        const proto::Vector3& character_up);
 
     proto::StatusEnum CorrectSurface(
         proto::Physic& physic, 

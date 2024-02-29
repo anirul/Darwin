@@ -1,5 +1,7 @@
 #pragma once
 
+#include <set>
+
 #include "frame/input_interface.h"
 
 namespace darwin {
@@ -20,10 +22,15 @@ namespace darwin {
     public:
         glm::vec2 GetMousePosition();
         float GetMouseWheel();
+        bool IsJumping() const;
+        bool IsMoving() const;
+        float GetHorizontal() const;
+        float GetVertical() const;
 
     private:
         glm::vec2 mouse_position_;
         float mouse_wheel_;
+        std::set<char> keys_;
     };
 
 } // namespace darwin.

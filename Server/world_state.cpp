@@ -22,7 +22,7 @@ namespace darwin {
             physic.set_radius(1.0);
             physic.set_mass(100.0);
             physic.mutable_position()->CopyFrom(
-                MultiplyVector3ByScalar(vec3, 800.0));
+                MultiplyVector3ByScalar(vec3, 550.0));
             physic.mutable_position_dt()->CopyFrom(
                 CreateBasicVector3(0.0, 0.0, 0.0));
             physic.mutable_orientation()->CopyFrom(
@@ -33,6 +33,7 @@ namespace darwin {
             // WARNING: This suppose the gravity well is at the position 
             // (0, 0, 0).
             character.mutable_g_normal()->CopyFrom(vec3);
+            // This is wrong, and should be set to the real value.
             character.set_g_force(0.0);
             CharacterInfo character_info{ GetLastUpdated(), character};
             character_infos_.emplace(character.name(), character_info);

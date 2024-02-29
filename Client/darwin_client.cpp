@@ -51,10 +51,13 @@ namespace darwin {
         }
     }
 
-    void DarwinClient::ReportMovement(const proto::Physic& physic) {
+    void DarwinClient::ReportMovement(
+        const std::string& name,
+        const proto::Physic& physic) 
+    {
         proto::ReportMovementRequest request;
-        request.set_name(name_);
-        *request.mutable_physic() = physic;
+        request.set_name(name);
+        request.mutable_physic()->CopyFrom(physic);
 
         proto::ReportMovementResponse response;
         grpc::ClientContext context;
@@ -92,6 +95,7 @@ namespace darwin {
             world_client.SetElements(
                 { response.elements().begin(), 
                   response.elements().end() });
+
             world_client.SetCharacters(
                 { response.characters().begin(), 
                   response.characters().end() });

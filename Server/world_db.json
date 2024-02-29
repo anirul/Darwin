@@ -5,7 +5,7 @@
       "material": "dirt",
       "physic": {
         "radius": "500.0",
-        "mass": "1.0e20",
+        "mass": "1.0e16",
         "position": {
           "x": 0.0,
           "y": 0.0,
