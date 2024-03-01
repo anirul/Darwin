@@ -1,6 +1,7 @@
 #include "darwin_service_impl.h"
 
 #include <chrono>
+#include <thread>
 
 #include "Common/vector.h"
 #include "world_state.h"
