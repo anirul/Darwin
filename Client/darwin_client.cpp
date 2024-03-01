@@ -1,5 +1,10 @@
 #include "darwin_client.h"
 
+#include <grpc++/grpc++.h>
+
+#include "async_client_call.h"
+#include "Common/darwin_service.grpc.pb.h"
+
 namespace darwin {
 
     DarwinClient::DarwinClient(const std::string& name)
@@ -7,23 +12,24 @@ namespace darwin {
         if (name_ == "") {
             name_ = DEFAULT_SERVER;
         }
-        else {
-            name_ = name;
-        }
         auto channel = 
             grpc::CreateChannel(
                 name_, 
                 grpc::InsecureChannelCredentials());
         stub_ = proto::DarwinService::NewStub(channel);
         // Create a new thread to the update.
-        future_ = std::async(std::launch::async, [this] { 
-                Update();
+        update_future_ = std::async(std::launch::async, [this] { Update(); });
+        // Create a new thread to the poll.
+        poll_future_ = std::async(std::launch::async, [this] { 
+                PollCompletionQueue(); 
             });
     }
 
     DarwinClient::~DarwinClient() {
         end_.store(true);
-        future_.wait();
+        cq_.Shutdown();
+        update_future_.wait();
+        poll_future_.wait();
     }
 
     bool DarwinClient::CreateCharacter(
@@ -51,27 +57,26 @@ namespace darwin {
         }
     }
 
-    void DarwinClient::ReportMovement(
-        const std::string& name,
-        const proto::Physic& physic) 
-    {
+    void DarwinClient::ReportMovement(const std::string& name, const proto::Physic& physic) {
         proto::ReportMovementRequest request;
         request.set_name(name);
         request.mutable_physic()->CopyFrom(physic);
 
-        proto::ReportMovementResponse response;
-        grpc::ClientContext context;
+        auto promise = std::make_shared<std::promise<proto::ReportMovementResponse>>();
 
-        grpc::Status status = 
-            stub_->ReportMovement(&context, request, &response);
-        if (status.ok()) {
-            logger_->info("Report movement physic: {}", physic.DebugString());
-        }
-        else {
-            logger_->warn(
-                "Report movement failed: {}", 
-                status.error_message());
-        }
+        // This shared state can be used to pass more information to the completion handler.
+        auto* call = new AsyncClientCall;
+        call->response = std::make_shared<proto::ReportMovementResponse>();
+        call->promise = promise;
+
+        // Prepare the asynchronous call
+        call->rpc = stub_->PrepareAsyncReportMovement(&call->context, request, &cq_);
+
+        // Start the call
+        call->rpc->StartCall();
+
+        // Request to receive the response
+        call->rpc->Finish(call->response.get(), &call->status, (void*)call);
     }
 
     void DarwinClient::Update() {
@@ -105,9 +110,14 @@ namespace darwin {
 
             // Update the elements and characters.
             world_simulator_.UpdateData(
-                { response.elements().begin(), 
-                  response.elements().end() },
-                { characters.begin(), characters.end() },
+                {
+                    response.elements().begin(),
+                    response.elements().end()
+                },
+                {
+                    characters.begin(),
+                    characters.end()
+                },
                 response.time());
             
             // Update the time.
@@ -155,6 +165,25 @@ namespace darwin {
 
     bool DarwinClient::IsConnected() const {
         return !end_.load();
+    }
+
+    void DarwinClient::PollCompletionQueue() {
+        void* tag;
+        bool ok;
+        while (cq_.Next(&tag, &ok)) {
+            auto* call = static_cast<AsyncClientCall*>(tag);
+            if (!ok) {
+                // Handle error. You might want to set an exception on the promise.
+                logger_->warn("ReportMovement failed.");
+                call->promise->set_exception(std::make_exception_ptr(std::runtime_error("RPC failed")));
+            }
+            else {
+                // RPC succeeded, set the value on the promise
+                call->promise->set_value(*(call->response));
+            }
+            // Clean up
+            delete call;
+        }
     }
 
 } // namespace darwin.

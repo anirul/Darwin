@@ -5,11 +5,9 @@
 #include "input_acquisition.h"
 #include "frame/common/application.h"
 #include "Common/world_simulator.h"
+#include "darwin_constant.h"
 
 namespace darwin::state {
-
-    constexpr double VERTICAL_SPEED = 10.0;
-    constexpr double HORIZONTAL_SPEED = 10.0;
 
     class StatePlay : public StateInterface {
     public:

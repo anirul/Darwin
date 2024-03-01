@@ -10,10 +10,9 @@
 #include "Common/darwin_service.pb.h"
 #include "Common/darwin_service.grpc.pb.h"
 #include "frame/logger.h"
+#include "darwin_constant.h"
 
 namespace darwin {
-
-    constexpr std::string_view DEFAULT_SERVER = "localhost:45323";
 
     class DarwinClient {
     public:
@@ -46,6 +45,9 @@ namespace darwin {
             return character_name_;
         }
 
+    protected:
+        void PollCompletionQueue();
+
     private:
         std::string name_;
         std::string character_name_;
@@ -53,8 +55,12 @@ namespace darwin {
         std::unique_ptr<proto::DarwinService::Stub> stub_;
         frame::Logger& logger_ = frame::Logger::GetInstance();
         WorldSimulator world_simulator_;
-        std::future<void> future_;
+        std::future<void> update_future_;
+        std::future<void> poll_future_;
         std::atomic<bool> end_{ false };
+        grpc::CompletionQueue cq_;
+        std::shared_ptr<grpc::ClientContext> context_ = 
+            std::make_shared<grpc::ClientContext>();
     };
 
 } // namespace darwin.

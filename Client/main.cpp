@@ -37,7 +37,7 @@ int main(int ac, char** av) try
         { 1280, 720 });
     auto gui_window = frame::gui::CreateDrawGui(
         *win.get(), 
-        frame::file::FindFile("asset/font/axaxax/axaxax_bd.otf"), 
+        frame::file::FindFile("asset/font/axaxax/axaxax_bd.otf"),
         20.0f);
     gui_window->AddWindow(
         std::make_unique<frame::gui::WindowLogger>("Logger"));
