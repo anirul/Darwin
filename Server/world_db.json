@@ -9,7 +9,7 @@
       },
       "physic": {
         "radius": "100.0",
-        "mass": "1.0e17",
+        "mass": "1.0e15",
         "position": {
           "x": 0.0,
           "y": 0.0,

@@ -22,10 +22,10 @@ namespace darwin {
             character.mutable_color()->CopyFrom(color);
             auto vec3 = CreateRandomNormalizedVector3();
             proto::Physic physic{};
-            physic.set_radius(1.0);
-            physic.set_mass(100.0);
+            physic.set_radius(PLAYER_START_RADIUS);
+            physic.set_mass(PLAYER_START_MASS);
             physic.mutable_position()->CopyFrom(
-                MultiplyVector3ByScalar(vec3, PLANET_RADIUS + 10.0));
+                MultiplyVector3ByScalar(vec3, PLANET_RADIUS + PLAYER_DROP_HEIGHT));
             physic.mutable_position_dt()->CopyFrom(
                 CreateBasicVector3(0.0, 0.0, 0.0));
             physic.mutable_orientation()->CopyFrom(
