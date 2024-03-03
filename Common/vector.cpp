@@ -107,6 +107,18 @@ namespace darwin {
         return Normalize(vector3);
     }
 
+    proto::Vector3 CreateRandomNormalizedColor()
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<double> dis(0.0, 1.0);
+        proto::Vector3 vector3{};
+        vector3.set_x(dis(gen));
+        vector3.set_y(dis(gen));
+        vector3.set_z(dis(gen));
+        return Normalize(vector3);
+    }
+
     proto::Vector3 Minus(const proto::Vector3& vector3)
     {
         proto::Vector3 result{};

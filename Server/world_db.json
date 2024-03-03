@@ -2,9 +2,13 @@
   "elements": [
     {
       "name": "earth",
-      "material": "dirt",
+      "color": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
       "physic": {
-        "radius": "500.0",
+        "radius": "100.0",
         "mass": "1.0e17",
         "position": {
           "x": 0.0,

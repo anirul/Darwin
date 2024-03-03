@@ -4,6 +4,7 @@
 
 #include "vector.h"
 #include "physic.h"
+#include "convert_math.h"
 
 namespace darwin {
 
@@ -121,7 +122,10 @@ namespace darwin {
                     glm::vec4(glm::normalize(glm::vec3(0.0, 0.0, 1.0)), 1.0));
                 break;
             case proto::TYPE_UPGRADE:
-                uniform_enum.colors.push_back(glm::vec4(1.0, 1.0, 1.0, 1.0));
+                uniform_enum.colors.push_back(
+                    glm::vec4(
+                        glm::normalize(ProtoVector2Glm(element.color())), 
+                        1.0));
                 break;
             default:
                 uniform_enum.colors.push_back(glm::vec4(0.0, 0.0, 0.0, 1.0));

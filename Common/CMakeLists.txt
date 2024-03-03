@@ -3,6 +3,7 @@ add_library(DarwinCommon
     STATIC
         convert_math.cpp
         convert_math.h
+        darwin_constant.h
         stl_proto_wrapper.cpp
         stl_proto_wrapper.h
         world_simulator.cpp

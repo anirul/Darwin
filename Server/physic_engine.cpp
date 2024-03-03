@@ -157,6 +157,7 @@ namespace darwin {
         // This is not needed as I have only one Gravity well.
         // ComputeGravitationBetweenGround(times, now, ground_physics);
         // Update the physics.
+        return;
         SetElementPhysics(proto::TYPE_GROUND, ground_physics);
         ComputeElementInfo(now, ground_physics);
         ComputeCharacterInfo(now, ground_physics);

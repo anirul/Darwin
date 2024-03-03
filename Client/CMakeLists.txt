@@ -5,7 +5,6 @@ add_executable(DarwinClient
         async_client_call.h
         darwin_client.cpp
         darwin_client.h
-        darwin_constant.h
         input_acquisition.cpp
         input_acquisition.h
         main.cpp

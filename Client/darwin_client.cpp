@@ -57,20 +57,26 @@ namespace darwin {
         }
     }
 
-    void DarwinClient::ReportMovement(const std::string& name, const proto::Physic& physic) {
+    void DarwinClient::ReportMovement(
+        const std::string& name, 
+        const proto::Physic& physic) 
+    {
         proto::ReportMovementRequest request;
         request.set_name(name);
         request.mutable_physic()->CopyFrom(physic);
 
-        auto promise = std::make_shared<std::promise<proto::ReportMovementResponse>>();
+        auto promise = 
+            std::make_shared<std::promise<proto::ReportMovementResponse>>();
 
-        // This shared state can be used to pass more information to the completion handler.
+        // This shared state can be used to pass more information to the
+        // completion handler.
         auto* call = new AsyncClientCall;
         call->response = std::make_shared<proto::ReportMovementResponse>();
         call->promise = promise;
 
         // Prepare the asynchronous call
-        call->rpc = stub_->PrepareAsyncReportMovement(&call->context, request, &cq_);
+        call->rpc = 
+            stub_->PrepareAsyncReportMovement(&call->context, request, &cq_);
 
         // Start the call
         call->rpc->StartCall();
@@ -106,6 +112,14 @@ namespace darwin {
                 else {
                     characters.push_back(response.characters(i));
                 }
+            }
+
+            static std::size_t element_size = 0;
+            if (element_size != response.elements_size()) {
+                logger_->warn(
+                    "Update response elements size: {}", 
+                    response.elements_size());
+                element_size = response.elements_size();
             }
 
             // Update the elements and characters.

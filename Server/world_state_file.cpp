@@ -6,7 +6,9 @@
 
 namespace darwin {
 
-    void SaveWorldStateToString(std::string& json, const WorldState& world_state)
+    void SaveWorldStateToString(
+        std::string& json, 
+        const WorldState& world_state)
     {
         proto::WorldDatabase world;
         world.set_time(world_state.GetLastUpdated());

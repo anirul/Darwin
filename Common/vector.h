@@ -21,6 +21,7 @@ namespace darwin {
         const proto::Vector3& vector3_right);
     proto::Vector3 Normalize(const proto::Vector3& vector3);
     proto::Vector3 CreateRandomNormalizedVector3();
+    proto::Vector3 CreateRandomNormalizedColor();
     proto::Vector3 Minus(const proto::Vector3& vector3);
     proto::Vector3 MultiplyVector3ByScalar(
         const proto::Vector3& vector3, double scalar);

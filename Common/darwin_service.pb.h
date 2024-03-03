@@ -942,7 +942,7 @@ class Element final :
 
   enum : int {
     kNameFieldNumber = 1,
-    kMaterialFieldNumber = 2,
+    kColorFieldNumber = 2,
     kPhysicFieldNumber = 3,
     kTypeEnumFieldNumber = 4,
   };
@@ -960,19 +960,23 @@ class Element final :
   std::string* _internal_mutable_name();
   public:
 
-  // string material = 2;
-  void clear_material();
-  const std::string& material() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_material(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_material();
-  PROTOBUF_NODISCARD std::string* release_material();
-  void set_allocated_material(std::string* material);
+  // .proto.Vector3 color = 2;
+  bool has_color() const;
   private:
-  const std::string& _internal_material() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_material(const std::string& value);
-  std::string* _internal_mutable_material();
+  bool _internal_has_color() const;
   public:
+  void clear_color();
+  const ::proto::Vector3& color() const;
+  PROTOBUF_NODISCARD ::proto::Vector3* release_color();
+  ::proto::Vector3* mutable_color();
+  void set_allocated_color(::proto::Vector3* color);
+  private:
+  const ::proto::Vector3& _internal_color() const;
+  ::proto::Vector3* _internal_mutable_color();
+  public:
+  void unsafe_arena_set_allocated_color(
+      ::proto::Vector3* color);
+  ::proto::Vector3* unsafe_arena_release_color();
 
   // .proto.Physic physic = 3;
   bool has_physic() const;
@@ -1010,7 +1014,7 @@ class Element final :
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr material_;
+    ::proto::Vector3* color_;
     ::proto::Physic* physic_;
     int type_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -3914,54 +3918,94 @@ inline void Element::set_allocated_name(std::string* name) {
   // @@protoc_insertion_point(field_set_allocated:proto.Element.name)
 }
 
-// string material = 2;
-inline void Element::clear_material() {
-  _impl_.material_.ClearToEmpty();
+// .proto.Vector3 color = 2;
+inline bool Element::_internal_has_color() const {
+  return this != internal_default_instance() && _impl_.color_ != nullptr;
 }
-inline const std::string& Element::material() const {
-  // @@protoc_insertion_point(field_get:proto.Element.material)
-  return _internal_material();
+inline bool Element::has_color() const {
+  return _internal_has_color();
 }
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void Element::set_material(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.material_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.Element.material)
+inline void Element::clear_color() {
+  if (GetArenaForAllocation() == nullptr && _impl_.color_ != nullptr) {
+    delete _impl_.color_;
+  }
+  _impl_.color_ = nullptr;
 }
-inline std::string* Element::mutable_material() {
-  std::string* _s = _internal_mutable_material();
-  // @@protoc_insertion_point(field_mutable:proto.Element.material)
-  return _s;
+inline const ::proto::Vector3& Element::_internal_color() const {
+  const ::proto::Vector3* p = _impl_.color_;
+  return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector3&>(
+      ::proto::_Vector3_default_instance_);
 }
-inline const std::string& Element::_internal_material() const {
-  return _impl_.material_.Get();
+inline const ::proto::Vector3& Element::color() const {
+  // @@protoc_insertion_point(field_get:proto.Element.color)
+  return _internal_color();
 }
-inline void Element::_internal_set_material(const std::string& value) {
-  
-  _impl_.material_.Set(value, GetArenaForAllocation());
-}
-inline std::string* Element::_internal_mutable_material() {
-  
-  return _impl_.material_.Mutable(GetArenaForAllocation());
-}
-inline std::string* Element::release_material() {
-  // @@protoc_insertion_point(field_release:proto.Element.material)
-  return _impl_.material_.Release();
-}
-inline void Element::set_allocated_material(std::string* material) {
-  if (material != nullptr) {
+inline void Element::unsafe_arena_set_allocated_color(
+    ::proto::Vector3* color) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.color_);
+  }
+  _impl_.color_ = color;
+  if (color) {
     
   } else {
     
   }
-  _impl_.material_.SetAllocated(material, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.material_.IsDefault()) {
-    _impl_.material_.Set("", GetArenaForAllocation());
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.Element.color)
+}
+inline ::proto::Vector3* Element::release_color() {
+  
+  ::proto::Vector3* temp = _impl_.color_;
+  _impl_.color_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
   }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.Element.material)
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::proto::Vector3* Element::unsafe_arena_release_color() {
+  // @@protoc_insertion_point(field_release:proto.Element.color)
+  
+  ::proto::Vector3* temp = _impl_.color_;
+  _impl_.color_ = nullptr;
+  return temp;
+}
+inline ::proto::Vector3* Element::_internal_mutable_color() {
+  
+  if (_impl_.color_ == nullptr) {
+    auto* p = CreateMaybeMessage<::proto::Vector3>(GetArenaForAllocation());
+    _impl_.color_ = p;
+  }
+  return _impl_.color_;
+}
+inline ::proto::Vector3* Element::mutable_color() {
+  ::proto::Vector3* _msg = _internal_mutable_color();
+  // @@protoc_insertion_point(field_mutable:proto.Element.color)
+  return _msg;
+}
+inline void Element::set_allocated_color(::proto::Vector3* color) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.color_;
+  }
+  if (color) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(color);
+    if (message_arena != submessage_arena) {
+      color = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, color, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.color_ = color;
+  // @@protoc_insertion_point(field_set_allocated:proto.Element.color)
 }
 
 // .proto.Physic physic = 3;

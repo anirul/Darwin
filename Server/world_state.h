@@ -14,6 +14,7 @@ namespace darwin {
             const proto::Vector3& color);
         // This is there for testing purposes don't use in production.
         void AddCharacter(double time, const proto::Character& character);
+        void AddRandomElements(std::uint32_t number);
         void RemoveCharacter(const std::string& name);
         std::string RemovePeer(const std::string& peer);
         bool IsCharacterOwnByPeer(

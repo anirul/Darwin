@@ -3,6 +3,7 @@
 #include <format>
 
 #include "physic_engine.h"
+#include "Common/darwin_constant.h"
 #include "Common/stl_proto_wrapper.h"
 #include "Common/vector.h"
 
@@ -24,7 +25,7 @@ namespace darwin {
             physic.set_radius(1.0);
             physic.set_mass(100.0);
             physic.mutable_position()->CopyFrom(
-                MultiplyVector3ByScalar(vec3, 550.0));
+                MultiplyVector3ByScalar(vec3, PLANET_RADIUS + 10.0));
             physic.mutable_position_dt()->CopyFrom(
                 CreateBasicVector3(0.0, 0.0, 0.0));
             physic.mutable_orientation()->CopyFrom(
@@ -74,6 +75,28 @@ namespace darwin {
         else {
             it->second.time = time;
             it->second.character = character;
+        }
+    }
+
+    void WorldState::AddRandomElements(std::uint32_t number) {
+        std::scoped_lock l(mutex_info_);
+        for (std::uint32_t i = 0; i < number; ++i) {
+            proto::Element element;
+            element.set_name(std::format("element{}", i));
+            element.set_type_enum(proto::TYPE_UPGRADE);
+            element.mutable_color()->CopyFrom(
+                CreateRandomNormalizedColor());
+            auto vec3 = CreateRandomNormalizedVector3();
+            proto::Physic physic{};
+            physic.mutable_position()->CopyFrom(
+                MultiplyVector3ByScalar(vec3, PLANET_RADIUS + 0.5));
+            physic.mutable_position_dt()->CopyFrom(
+                CreateBasicVector3(0.0, 0.0, 0.0));
+            physic.set_radius(0.5);
+            physic.set_mass(1.0);
+            element.mutable_physic()->CopyFrom(physic);
+            ElementInfo element_info{ GetLastUpdated(), element };
+            element_infos_.emplace(element.name(), element_info);
         }
     }
 
@@ -166,6 +189,7 @@ namespace darwin {
         for (const auto& [_, character_info] : character_infos_) {
             characters_.push_back(character_info.character);
         }
+        bool first_loop = true;
         for (const auto& [_, element_info] : element_infos_) {
             elements_.push_back(element_info.element);
         }

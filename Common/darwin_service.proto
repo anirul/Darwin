@@ -70,7 +70,7 @@ message Physic {
 message Element {
     string name = 1;
     // Material string.
-    string material = 2;
+    Vector3 color = 2;
     // Physic, position, speed etc...
     Physic physic = 3;
     // What type of element is it?

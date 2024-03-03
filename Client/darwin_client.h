@@ -7,10 +7,10 @@
 #include <grpcpp/grpcpp.h>
 
 #include "Common/world_simulator.h"
+#include "Common/darwin_constant.h"
 #include "Common/darwin_service.pb.h"
 #include "Common/darwin_service.grpc.pb.h"
 #include "frame/logger.h"
-#include "darwin_constant.h"
 
 namespace darwin {
 
