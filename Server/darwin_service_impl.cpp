@@ -3,6 +3,7 @@
 #include <chrono>
 #include <thread>
 
+#include "Common/darwin_constant.h"
 #include "Common/vector.h"
 #include "world_state.h"
 
@@ -108,13 +109,19 @@ namespace darwin {
             request->name(),
             request->color()))
         {
+            response->mutable_player_parameter()->CopyFrom(
+                world_state_.GetPlayerParameter());
             response->set_return_enum(proto::RETURN_OK);
             return grpc::Status::OK;
         }
         else
         {
+            response->mutable_player_parameter()->CopyFrom(
+                world_state_.GetPlayerParameter());
             response->set_return_enum(proto::RETURN_REJECTED);
-            return grpc::Status::CANCELLED;
+            return grpc::Status(
+                grpc::StatusCode::INVALID_ARGUMENT, 
+                "Name [" + request->name() + "] is already in game.");
         }
     }
 

@@ -26,13 +26,25 @@ namespace darwin {
             const std::string& name, 
             const proto::Physic& character);
         void AddElement(double time, const proto::Element& element);
+        void SetPlayerParameter(const proto::PlayerParameter& parameter);
         void Update(double time);
-        const std::vector<proto::Character>& GetCharacters() const;
-        const std::vector<proto::Element>& GetElements() const;
         double GetLastUpdated() const;
         bool operator==(const WorldState& other) const;
+        proto::Element GetPlanet() const;
+
+    public:
+        proto::PlayerParameter GetPlayerParameter() const {
+            return player_parameter_;
+        }
+        const std::vector<proto::Character>& GetCharacters() const {
+            return characters_;
+        }
+        const std::vector<proto::Element>& GetElements() const {
+            return elements_;
+        }
 
     private:
+        proto::Element GetPlanetLocked() const;
         void FillVectorsLocked();
 
     private:
@@ -43,6 +55,7 @@ namespace darwin {
         double last_updated_ = 0.0;
         std::vector<proto::Character> characters_;
         std::vector<proto::Element> elements_;
+        proto::PlayerParameter player_parameter_;
     };
 
 }  // namespace darwin.

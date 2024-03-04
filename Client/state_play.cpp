@@ -56,7 +56,7 @@ namespace darwin::state {
         glm::vec3 character_pos =
             glm::vec3(ProtoVector2Glm(character.physic().position()));
         glm::vec3 character_up =
-            glm::vec3(ProtoVector2Glm(character.g_normal()));
+            glm::vec3(ProtoVector2Glm(character.normal()));
         glm::vec2 mouse_position = input_acquisition_ptr_->GetMousePosition();
         float mouse_wheel = input_acquisition_ptr_->GetMouseWheel();
 
@@ -116,21 +116,23 @@ namespace darwin::state {
             // Reset position delta time on the ground.
             physic.release_position_dt()->CopyFrom(
                 CreateBasicVector3(0.0, 0.0, 0.0));
+            proto::PlayerParameter player_parameter = 
+                world_simulator_.GetPlayerParameter();
             if (input_acquisition_ptr_->IsJumping()) {
                 modified = true;
                 physic.mutable_position_dt()->CopyFrom(
                     Add(
                         physic.position_dt(),
                         MultiplyVector3ByScalar(
-                            character.g_normal(), 
-                            VERTICAL_SPEED)));
+                            character.normal(), 
+                            player_parameter.vertical_speed())));
                 character.set_status_enum(proto::STATUS_JUMPING);
             }
             if (input_acquisition_ptr_->IsMoving()) {
                 modified = true;
                 auto forward = Normalize(Glm2ProtoVector(character_forward_));
                 auto right = 
-                    Normalize(CrossProduct(character.g_normal(), forward));
+                    Normalize(CrossProduct(character.normal(), forward));
                 auto direction = 
                     Normalize(
                         Add(
@@ -145,7 +147,7 @@ namespace darwin::state {
                         physic.position_dt(),
                         MultiplyVector3ByScalar(
                             direction,
-                            HORIZONTAL_SPEED)));   
+                            player_parameter.vertical_speed())));   
             }
             // Apply the changes.
             if (modified) {
@@ -180,8 +182,9 @@ namespace darwin::state {
         UpdateMovement(character);
         // Update the world simulator.
         world_simulator_.UpdateTime();
-        // Get the uniforms from the world simulator.
-        auto uniforms = world_simulator_.GetUniforms();
+        // Get the close uniforms from the world simulator.
+        auto uniforms = world_simulator_.GetCloseUniforms(
+            Normalize(character.physic().position()));
         assert(uniforms.spheres.size() == uniforms.colors.size());
         auto& program = GetProgram();
         // Update Uniforms.

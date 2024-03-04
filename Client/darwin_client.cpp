@@ -47,6 +47,7 @@ namespace darwin {
         if (status.ok()) {
             character_name_ = name;
             logger_->info("Create character: {}", name);
+            world_simulator_.SetPlayerParameter(response.player_parameter());
             return true;
         }
         else {

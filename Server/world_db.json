@@ -8,8 +8,8 @@
         "z": 1.0
       },
       "physic": {
-        "radius": "100.0",
-        "mass": "1.0e15",
+        "radius": 100.0,
+        "mass": 2.0e15,
         "position": {
           "x": 0.0,
           "y": 0.0,
@@ -37,5 +37,12 @@
     }
   ],
   "characters": [],
-  "time": 0.0
+  "time": 0.0,
+  "player_parameter": {
+    "vertical_speed": 10.0,
+    "horizontal_speed": 10.0,
+    "start_mass": 2.0,
+    "start_radius": 1.0,
+    "drop_height": 10.0
+  }
 }

@@ -86,10 +86,10 @@ message Character {
     Vector3 color = 2;
     // Physic paramters.
     Physic physic = 3;
-    // Local G axis (used for local camera angle).
-    Vector3 g_normal = 4;
-    // G force (used for local computation).
-    double g_force = 5;
+    // G force.
+    Vector3 g_force = 4;
+    // normal used by camera (is normalize(-gforce)).
+    Vector3 normal = 5;
     // Status of the element.
     StatusEnum status_enum = 6;
 }
@@ -109,15 +109,32 @@ message CharacterReport {
     double last_seen = 5;
 }
 
+// PlayerParameter
+// Next: 7
+message PlayerParameter {
+    // Vertical speed (jumping).
+    double vertical_speed = 1;
+    // Horizontal speed (running).
+    double horizontal_speed = 2;
+    // Player start mass.
+    double start_mass = 3;
+    // Player start radius.
+    double start_radius = 4;
+    // Player drop height (start at planet radius and add this value).
+    double drop_height = 5;
+}
+
 // WorldDatabase saved as a file.
-// Next: 4
+// Next: 5
 message WorldDatabase {
     // Elements list.
-    repeated Element elements = 2;
+    repeated Element elements = 1;
     // Characters list.
-    repeated Character characters = 3;
+    repeated Character characters = 2;
     // Present time on the server.
-    double time = 4;
+    double time = 3;
+    // World parameter this will be moved to client at connection.
+    PlayerParameter player_parameter = 4;
 }
 
 // UpdateRequest
@@ -166,9 +183,12 @@ message CreateCharacterRequest {
 }
 
 // CreateCharacterResponse
-// Next: 2
+// Next: 3
 message CreateCharacterResponse {
-    ReturnEnum return_enum = 1;
+    // Player parameter (used to set parameters).
+    PlayerParameter player_parameter = 1;
+    // Return enum.
+    ReturnEnum return_enum = 2;
 }
 
 // PingRequest

@@ -1,29 +1,25 @@
 #pragma once
 
-#include "darwin_service.pb.h"
+#include <glm/glm.hpp>
+
+#include "Common/darwin_service.pb.h"
+#include "Common/darwin_constant.h"
 
 namespace darwin {
 
-    constexpr double GRAVITATIONAL_CONSTANT = 6.67430e-11;
-
-    struct GResult {
-        proto::Vector3 force_direction;
-        double force_magnitude;
-    };
-
-    GResult ApplyPhysic(
+    glm::dvec3 ApplyPhysic(
         const proto::Physic& physic_source, 
         const proto::Physic& physic_target);
 
-    float UpdateObject(
+    double UpdateObject(
         proto::Physic& physic, 
-        const proto::Vector3& force, 
+        glm::dvec3 force, 
         double delta_time);
 
     // Function to cancel the vertical component of the velocity vector.
-    proto::Vector3 CancelVerticalComponent(
-        const proto::Vector3& velocity, 
-        const proto::Vector3& character_up);
+    glm::dvec3 CancelVerticalComponent(
+        glm::dvec3 velocity, 
+        glm::dvec3 character_up);
 
     proto::StatusEnum CorrectSurface(
         proto::Physic& physic, 

@@ -44,29 +44,24 @@ namespace darwin {
     {
         // Apply it to characters.
         for (auto& character : characters_) {
-            proto::Vector3 force{};
+            glm::dvec3 force = glm::dvec3(0.0);
             // Add all gravity forces.
-            for (auto& element : static_elements) {
+            for (const auto& element : static_elements) {
                 auto result = ApplyPhysic(
                     element.physic(),
                     character.physic());
-                force = 
-                    Add(
-                        force,
-                        MultiplyVector3ByScalar(
-                            result.force_direction,
-                            result.force_magnitude));
+                force = force + result;
             }
             // Update the g part of the character.
-            character.mutable_g_normal()->CopyFrom(Minus(Normalize(force)));
-            character.set_g_force(GetLength(force));
+            character.mutable_g_force()->CopyFrom(
+                Glm2ProtoVector(force));
+            character.mutable_normal()->CopyFrom(
+                Glm2ProtoVector(glm::normalize(-force)));
             // Update the physic part of the character.
-            float acceleration_length = UpdateObject(
+            UpdateObject(
                 *character.mutable_physic(),
                 force,
                 delta_time);
-            // Correct the acceleration.
-            character.set_g_force(acceleration_length);
             // Correct the surface.
             for (auto& element : static_elements) {
                 auto status_result = CorrectSurface(
@@ -81,10 +76,10 @@ namespace darwin {
 
     void WorldSimulator::UpdateTime() {
         std::lock_guard l(mutex_);
-        if (!started_) return; 
+        if (!started_) return;
         auto now = std::chrono::high_resolution_clock::now();
         auto elapsed = now - last_time_;
-        double elapsed_seconds = 
+        double elapsed_seconds =
             std::chrono::duration<double>(elapsed).count();
         time_ += elapsed_seconds;
         last_time_ = now;
@@ -94,66 +89,81 @@ namespace darwin {
         ApplyGForceAndSpeedToCharacter(static_elements, elapsed_seconds);
     }
 
-    UniformEnum WorldSimulator::GetUniforms() {
+    UniformEnum WorldSimulator::GetUniforms() const {
         std::lock_guard l(mutex_);
         UniformEnum uniform_enum;
-        for (auto& element : elements_) {
-            uniform_enum.spheres.push_back(
-                glm::vec4(
-                    element.physic().position().x(),
-                    element.physic().position().y(),
-                    element.physic().position().z(),
-                    element.physic().radius()));
-            switch (element.type_enum()) {
-            case proto::TYPE_GROUND:
-                uniform_enum.colors.push_back(
-                    glm::vec4(glm::normalize(glm::vec3(1.0, 1.0, 1.0)), 1.0));
-                break;
-            case proto::TYPE_EXPLOSION:
-                uniform_enum.colors.push_back(
-                    glm::vec4(glm::normalize(glm::vec3(1.0, 0.0, 0.0)), 1.0));
-                break;
-            case proto::TYPE_GREEN:
-                uniform_enum.colors.push_back(
-                    glm::vec4(glm::normalize(glm::vec3(0.0, 1.0, 0.0)), 1.0));
-                break;
-            case proto::TYPE_WATER:
-                uniform_enum.colors.push_back(
-                    glm::vec4(glm::normalize(glm::vec3(0.0, 0.0, 1.0)), 1.0));
-                break;
-            case proto::TYPE_UPGRADE:
-                uniform_enum.colors.push_back(
-                    glm::vec4(
-                        glm::normalize(ProtoVector2Glm(element.color())), 
-                        1.0));
-                break;
-            default:
-                uniform_enum.colors.push_back(glm::vec4(0.0, 0.0, 0.0, 1.0));
-                break;
-            }
+        for (const auto& element : elements_) {
+            uniform_enum.spheres.push_back(GetSphere(element.physic()));
+            uniform_enum.colors.push_back(GetColor(element));
         }
-        for (auto& character : characters_) {
-            uniform_enum.spheres.push_back(
-                glm::vec4(
-                    character.physic().position().x(),
-                    character.physic().position().y(),
-                    character.physic().position().z(),
-                    character.physic().radius()));
-            uniform_enum.colors.push_back(
-                glm::vec4(
-                    character.color().x(),
-                    character.color().y(),
-                    character.color().z(),
-                    1.0));
+        for (const auto& character : characters_) {
+            uniform_enum.spheres.push_back(GetSphere(character.physic()));
+            uniform_enum.colors.push_back(GetColor(character));
         }
         return uniform_enum;
+    }
+
+    bool WorldSimulator::IsClose(
+        const proto::Vector3& normal,
+        const proto::Vector3& position) const
+    {
+        return DotProduct(normal, position) > 0.8;
+    }
+
+    UniformEnum WorldSimulator::GetCloseUniforms(
+        const proto::Vector3& normal) const
+    {
+        std::lock_guard l(mutex_);
+        UniformEnum uniform_enum;
+        for (const auto& element : elements_) {
+            // Check if this is the planet (should have a radius > 50.0) or
+            // if it is close enough to the normal.
+            if ((element.physic().radius() > 50.0) || 
+                (IsClose(normal, Normalize(element.physic().position())))) {
+                uniform_enum.spheres.push_back(GetSphere(element.physic()));
+                uniform_enum.colors.push_back(GetColor(element));
+            }
+        }
+        for (const auto& character : characters_) {
+            if (IsClose(normal, Normalize(character.physic().position()))) {
+                uniform_enum.spheres.push_back(GetSphere(character.physic()));
+                uniform_enum.colors.push_back(GetColor(character));
+            }
+        }
+        return uniform_enum;
+    }
+
+    glm::vec4 WorldSimulator::GetSphere(const proto::Physic& physic) const {
+        return glm::vec4(
+            physic.position().x(),
+            physic.position().y(),
+            physic.position().z(),
+            physic.radius());
+    }
+
+    glm::vec4 WorldSimulator::GetColor(const proto::Element& element) const {
+        return glm::vec4(
+            element.color().x(),
+            element.color().y(),
+            element.color().z(),
+            1.0);
+    }
+
+    glm::vec4 WorldSimulator::GetColor(
+        const proto::Character& character) const
+    {
+        return glm::vec4(
+            character.color().x(),
+            character.color().y(),
+            character.color().z(),
+            1.0);
     }
 
     proto::Character WorldSimulator::GetCharacterByName(
         const std::string& name)
     {
         std::lock_guard l(mutex_);
-        for (auto character: characters_) {
+        for (auto character : characters_) {
             if (character.name() == name) {
                 return character;
             }

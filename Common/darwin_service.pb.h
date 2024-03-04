@@ -76,6 +76,9 @@ extern PingRequestDefaultTypeInternal _PingRequest_default_instance_;
 class PingResponse;
 struct PingResponseDefaultTypeInternal;
 extern PingResponseDefaultTypeInternal _PingResponse_default_instance_;
+class PlayerParameter;
+struct PlayerParameterDefaultTypeInternal;
+extern PlayerParameterDefaultTypeInternal _PlayerParameter_default_instance_;
 class ReportMovementRequest;
 struct ReportMovementRequestDefaultTypeInternal;
 extern ReportMovementRequestDefaultTypeInternal _ReportMovementRequest_default_instance_;
@@ -109,6 +112,7 @@ template<> ::proto::Element* Arena::CreateMaybeMessage<::proto::Element>(Arena*)
 template<> ::proto::Physic* Arena::CreateMaybeMessage<::proto::Physic>(Arena*);
 template<> ::proto::PingRequest* Arena::CreateMaybeMessage<::proto::PingRequest>(Arena*);
 template<> ::proto::PingResponse* Arena::CreateMaybeMessage<::proto::PingResponse>(Arena*);
+template<> ::proto::PlayerParameter* Arena::CreateMaybeMessage<::proto::PlayerParameter>(Arena*);
 template<> ::proto::ReportMovementRequest* Arena::CreateMaybeMessage<::proto::ReportMovementRequest>(Arena*);
 template<> ::proto::ReportMovementResponse* Arena::CreateMaybeMessage<::proto::ReportMovementResponse>(Arena*);
 template<> ::proto::UpdateRequest* Arena::CreateMaybeMessage<::proto::UpdateRequest>(Arena*);
@@ -1148,8 +1152,8 @@ class Character final :
     kNameFieldNumber = 1,
     kColorFieldNumber = 2,
     kPhysicFieldNumber = 3,
-    kGNormalFieldNumber = 4,
-    kGForceFieldNumber = 5,
+    kGForceFieldNumber = 4,
+    kNormalFieldNumber = 5,
     kStatusEnumFieldNumber = 6,
   };
   // string name = 1;
@@ -1202,32 +1206,41 @@ class Character final :
       ::proto::Physic* physic);
   ::proto::Physic* unsafe_arena_release_physic();
 
-  // .proto.Vector3 g_normal = 4;
-  bool has_g_normal() const;
+  // .proto.Vector3 g_force = 4;
+  bool has_g_force() const;
   private:
-  bool _internal_has_g_normal() const;
+  bool _internal_has_g_force() const;
   public:
-  void clear_g_normal();
-  const ::proto::Vector3& g_normal() const;
-  PROTOBUF_NODISCARD ::proto::Vector3* release_g_normal();
-  ::proto::Vector3* mutable_g_normal();
-  void set_allocated_g_normal(::proto::Vector3* g_normal);
-  private:
-  const ::proto::Vector3& _internal_g_normal() const;
-  ::proto::Vector3* _internal_mutable_g_normal();
-  public:
-  void unsafe_arena_set_allocated_g_normal(
-      ::proto::Vector3* g_normal);
-  ::proto::Vector3* unsafe_arena_release_g_normal();
-
-  // double g_force = 5;
   void clear_g_force();
-  double g_force() const;
-  void set_g_force(double value);
+  const ::proto::Vector3& g_force() const;
+  PROTOBUF_NODISCARD ::proto::Vector3* release_g_force();
+  ::proto::Vector3* mutable_g_force();
+  void set_allocated_g_force(::proto::Vector3* g_force);
   private:
-  double _internal_g_force() const;
-  void _internal_set_g_force(double value);
+  const ::proto::Vector3& _internal_g_force() const;
+  ::proto::Vector3* _internal_mutable_g_force();
   public:
+  void unsafe_arena_set_allocated_g_force(
+      ::proto::Vector3* g_force);
+  ::proto::Vector3* unsafe_arena_release_g_force();
+
+  // .proto.Vector3 normal = 5;
+  bool has_normal() const;
+  private:
+  bool _internal_has_normal() const;
+  public:
+  void clear_normal();
+  const ::proto::Vector3& normal() const;
+  PROTOBUF_NODISCARD ::proto::Vector3* release_normal();
+  ::proto::Vector3* mutable_normal();
+  void set_allocated_normal(::proto::Vector3* normal);
+  private:
+  const ::proto::Vector3& _internal_normal() const;
+  ::proto::Vector3* _internal_mutable_normal();
+  public:
+  void unsafe_arena_set_allocated_normal(
+      ::proto::Vector3* normal);
+  ::proto::Vector3* unsafe_arena_release_normal();
 
   // .proto.StatusEnum status_enum = 6;
   void clear_status_enum();
@@ -1249,8 +1262,8 @@ class Character final :
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
     ::proto::Vector3* color_;
     ::proto::Physic* physic_;
-    ::proto::Vector3* g_normal_;
-    double g_force_;
+    ::proto::Vector3* g_force_;
+    ::proto::Vector3* normal_;
     int status_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -1465,6 +1478,198 @@ class CharacterReport final :
 };
 // -------------------------------------------------------------------
 
+class PlayerParameter final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.PlayerParameter) */ {
+ public:
+  inline PlayerParameter() : PlayerParameter(nullptr) {}
+  ~PlayerParameter() override;
+  explicit PROTOBUF_CONSTEXPR PlayerParameter(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PlayerParameter(const PlayerParameter& from);
+  PlayerParameter(PlayerParameter&& from) noexcept
+    : PlayerParameter() {
+    *this = ::std::move(from);
+  }
+
+  inline PlayerParameter& operator=(const PlayerParameter& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PlayerParameter& operator=(PlayerParameter&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PlayerParameter& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PlayerParameter* internal_default_instance() {
+    return reinterpret_cast<const PlayerParameter*>(
+               &_PlayerParameter_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    6;
+
+  friend void swap(PlayerParameter& a, PlayerParameter& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PlayerParameter* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PlayerParameter* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PlayerParameter* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PlayerParameter>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PlayerParameter& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PlayerParameter& from) {
+    PlayerParameter::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PlayerParameter* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "proto.PlayerParameter";
+  }
+  protected:
+  explicit PlayerParameter(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kVerticalSpeedFieldNumber = 1,
+    kHorizontalSpeedFieldNumber = 2,
+    kStartMassFieldNumber = 3,
+    kStartRadiusFieldNumber = 4,
+    kDropHeightFieldNumber = 5,
+  };
+  // double vertical_speed = 1;
+  void clear_vertical_speed();
+  double vertical_speed() const;
+  void set_vertical_speed(double value);
+  private:
+  double _internal_vertical_speed() const;
+  void _internal_set_vertical_speed(double value);
+  public:
+
+  // double horizontal_speed = 2;
+  void clear_horizontal_speed();
+  double horizontal_speed() const;
+  void set_horizontal_speed(double value);
+  private:
+  double _internal_horizontal_speed() const;
+  void _internal_set_horizontal_speed(double value);
+  public:
+
+  // double start_mass = 3;
+  void clear_start_mass();
+  double start_mass() const;
+  void set_start_mass(double value);
+  private:
+  double _internal_start_mass() const;
+  void _internal_set_start_mass(double value);
+  public:
+
+  // double start_radius = 4;
+  void clear_start_radius();
+  double start_radius() const;
+  void set_start_radius(double value);
+  private:
+  double _internal_start_radius() const;
+  void _internal_set_start_radius(double value);
+  public:
+
+  // double drop_height = 5;
+  void clear_drop_height();
+  double drop_height() const;
+  void set_drop_height(double value);
+  private:
+  double _internal_drop_height() const;
+  void _internal_set_drop_height(double value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:proto.PlayerParameter)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    double vertical_speed_;
+    double horizontal_speed_;
+    double start_mass_;
+    double start_radius_;
+    double drop_height_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_darwin_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
 class WorldDatabase final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.WorldDatabase) */ {
  public:
@@ -1513,7 +1718,7 @@ class WorldDatabase final :
                &_WorldDatabase_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(WorldDatabase& a, WorldDatabase& b) {
     a.Swap(&b);
@@ -1586,11 +1791,12 @@ class WorldDatabase final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kElementsFieldNumber = 2,
-    kCharactersFieldNumber = 3,
-    kTimeFieldNumber = 4,
+    kElementsFieldNumber = 1,
+    kCharactersFieldNumber = 2,
+    kPlayerParameterFieldNumber = 4,
+    kTimeFieldNumber = 3,
   };
-  // repeated .proto.Element elements = 2;
+  // repeated .proto.Element elements = 1;
   int elements_size() const;
   private:
   int _internal_elements_size() const;
@@ -1608,7 +1814,7 @@ class WorldDatabase final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::Element >&
       elements() const;
 
-  // repeated .proto.Character characters = 3;
+  // repeated .proto.Character characters = 2;
   int characters_size() const;
   private:
   int _internal_characters_size() const;
@@ -1626,7 +1832,25 @@ class WorldDatabase final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::Character >&
       characters() const;
 
-  // double time = 4;
+  // .proto.PlayerParameter player_parameter = 4;
+  bool has_player_parameter() const;
+  private:
+  bool _internal_has_player_parameter() const;
+  public:
+  void clear_player_parameter();
+  const ::proto::PlayerParameter& player_parameter() const;
+  PROTOBUF_NODISCARD ::proto::PlayerParameter* release_player_parameter();
+  ::proto::PlayerParameter* mutable_player_parameter();
+  void set_allocated_player_parameter(::proto::PlayerParameter* player_parameter);
+  private:
+  const ::proto::PlayerParameter& _internal_player_parameter() const;
+  ::proto::PlayerParameter* _internal_mutable_player_parameter();
+  public:
+  void unsafe_arena_set_allocated_player_parameter(
+      ::proto::PlayerParameter* player_parameter);
+  ::proto::PlayerParameter* unsafe_arena_release_player_parameter();
+
+  // double time = 3;
   void clear_time();
   double time() const;
   void set_time(double value);
@@ -1645,6 +1869,7 @@ class WorldDatabase final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::Element > elements_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::Character > characters_;
+    ::proto::PlayerParameter* player_parameter_;
     double time_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -1701,7 +1926,7 @@ class UpdateRequest final :
                &_UpdateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   friend void swap(UpdateRequest& a, UpdateRequest& b) {
     a.Swap(&b);
@@ -1854,7 +2079,7 @@ class UpdateResponse final :
                &_UpdateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   friend void swap(UpdateResponse& a, UpdateResponse& b) {
     a.Swap(&b);
@@ -2042,7 +2267,7 @@ class ReportMovementRequest final :
                &_ReportMovementRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   friend void swap(ReportMovementRequest& a, ReportMovementRequest& b) {
     a.Swap(&b);
@@ -2231,7 +2456,7 @@ class ReportMovementResponse final :
                &_ReportMovementResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   friend void swap(ReportMovementResponse& a, ReportMovementResponse& b) {
     a.Swap(&b);
@@ -2379,7 +2604,7 @@ class CreateCharacterRequest final :
                &_CreateCharacterRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   friend void swap(CreateCharacterRequest& a, CreateCharacterRequest& b) {
     a.Swap(&b);
@@ -2552,7 +2777,7 @@ class CreateCharacterResponse final :
                &_CreateCharacterResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    13;
 
   friend void swap(CreateCharacterResponse& a, CreateCharacterResponse& b) {
     a.Swap(&b);
@@ -2625,9 +2850,28 @@ class CreateCharacterResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kReturnEnumFieldNumber = 1,
+    kPlayerParameterFieldNumber = 1,
+    kReturnEnumFieldNumber = 2,
   };
-  // .proto.ReturnEnum return_enum = 1;
+  // .proto.PlayerParameter player_parameter = 1;
+  bool has_player_parameter() const;
+  private:
+  bool _internal_has_player_parameter() const;
+  public:
+  void clear_player_parameter();
+  const ::proto::PlayerParameter& player_parameter() const;
+  PROTOBUF_NODISCARD ::proto::PlayerParameter* release_player_parameter();
+  ::proto::PlayerParameter* mutable_player_parameter();
+  void set_allocated_player_parameter(::proto::PlayerParameter* player_parameter);
+  private:
+  const ::proto::PlayerParameter& _internal_player_parameter() const;
+  ::proto::PlayerParameter* _internal_mutable_player_parameter();
+  public:
+  void unsafe_arena_set_allocated_player_parameter(
+      ::proto::PlayerParameter* player_parameter);
+  ::proto::PlayerParameter* unsafe_arena_release_player_parameter();
+
+  // .proto.ReturnEnum return_enum = 2;
   void clear_return_enum();
   ::proto::ReturnEnum return_enum() const;
   void set_return_enum(::proto::ReturnEnum value);
@@ -2644,6 +2888,7 @@ class CreateCharacterResponse final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::proto::PlayerParameter* player_parameter_;
     int return_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -2700,7 +2945,7 @@ class PingRequest final :
                &_PingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    14;
 
   friend void swap(PingRequest& a, PingRequest& b) {
     a.Swap(&b);
@@ -2848,7 +3093,7 @@ class PingResponse final :
                &_PingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    15;
 
   friend void swap(PingResponse& a, PingResponse& b) {
     a.Swap(&b);
@@ -3007,7 +3252,7 @@ class DeathReportRequest final :
                &_DeathReportRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    16;
 
   friend void swap(DeathReportRequest& a, DeathReportRequest& b) {
     a.Swap(&b);
@@ -3176,7 +3421,7 @@ class DeathReportResponse final :
                &_DeathReportResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    17;
 
   friend void swap(DeathReportResponse& a, DeathReportResponse& b) {
     a.Swap(&b);
@@ -4352,45 +4597,45 @@ inline void Character::set_allocated_physic(::proto::Physic* physic) {
   // @@protoc_insertion_point(field_set_allocated:proto.Character.physic)
 }
 
-// .proto.Vector3 g_normal = 4;
-inline bool Character::_internal_has_g_normal() const {
-  return this != internal_default_instance() && _impl_.g_normal_ != nullptr;
+// .proto.Vector3 g_force = 4;
+inline bool Character::_internal_has_g_force() const {
+  return this != internal_default_instance() && _impl_.g_force_ != nullptr;
 }
-inline bool Character::has_g_normal() const {
-  return _internal_has_g_normal();
+inline bool Character::has_g_force() const {
+  return _internal_has_g_force();
 }
-inline void Character::clear_g_normal() {
-  if (GetArenaForAllocation() == nullptr && _impl_.g_normal_ != nullptr) {
-    delete _impl_.g_normal_;
+inline void Character::clear_g_force() {
+  if (GetArenaForAllocation() == nullptr && _impl_.g_force_ != nullptr) {
+    delete _impl_.g_force_;
   }
-  _impl_.g_normal_ = nullptr;
+  _impl_.g_force_ = nullptr;
 }
-inline const ::proto::Vector3& Character::_internal_g_normal() const {
-  const ::proto::Vector3* p = _impl_.g_normal_;
+inline const ::proto::Vector3& Character::_internal_g_force() const {
+  const ::proto::Vector3* p = _impl_.g_force_;
   return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector3&>(
       ::proto::_Vector3_default_instance_);
 }
-inline const ::proto::Vector3& Character::g_normal() const {
-  // @@protoc_insertion_point(field_get:proto.Character.g_normal)
-  return _internal_g_normal();
+inline const ::proto::Vector3& Character::g_force() const {
+  // @@protoc_insertion_point(field_get:proto.Character.g_force)
+  return _internal_g_force();
 }
-inline void Character::unsafe_arena_set_allocated_g_normal(
-    ::proto::Vector3* g_normal) {
+inline void Character::unsafe_arena_set_allocated_g_force(
+    ::proto::Vector3* g_force) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.g_normal_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.g_force_);
   }
-  _impl_.g_normal_ = g_normal;
-  if (g_normal) {
+  _impl_.g_force_ = g_force;
+  if (g_force) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.Character.g_normal)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.Character.g_force)
 }
-inline ::proto::Vector3* Character::release_g_normal() {
+inline ::proto::Vector3* Character::release_g_force() {
   
-  ::proto::Vector3* temp = _impl_.g_normal_;
-  _impl_.g_normal_ = nullptr;
+  ::proto::Vector3* temp = _impl_.g_force_;
+  _impl_.g_force_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -4402,64 +4647,134 @@ inline ::proto::Vector3* Character::release_g_normal() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::proto::Vector3* Character::unsafe_arena_release_g_normal() {
-  // @@protoc_insertion_point(field_release:proto.Character.g_normal)
+inline ::proto::Vector3* Character::unsafe_arena_release_g_force() {
+  // @@protoc_insertion_point(field_release:proto.Character.g_force)
   
-  ::proto::Vector3* temp = _impl_.g_normal_;
-  _impl_.g_normal_ = nullptr;
+  ::proto::Vector3* temp = _impl_.g_force_;
+  _impl_.g_force_ = nullptr;
   return temp;
 }
-inline ::proto::Vector3* Character::_internal_mutable_g_normal() {
+inline ::proto::Vector3* Character::_internal_mutable_g_force() {
   
-  if (_impl_.g_normal_ == nullptr) {
+  if (_impl_.g_force_ == nullptr) {
     auto* p = CreateMaybeMessage<::proto::Vector3>(GetArenaForAllocation());
-    _impl_.g_normal_ = p;
+    _impl_.g_force_ = p;
   }
-  return _impl_.g_normal_;
+  return _impl_.g_force_;
 }
-inline ::proto::Vector3* Character::mutable_g_normal() {
-  ::proto::Vector3* _msg = _internal_mutable_g_normal();
-  // @@protoc_insertion_point(field_mutable:proto.Character.g_normal)
+inline ::proto::Vector3* Character::mutable_g_force() {
+  ::proto::Vector3* _msg = _internal_mutable_g_force();
+  // @@protoc_insertion_point(field_mutable:proto.Character.g_force)
   return _msg;
 }
-inline void Character::set_allocated_g_normal(::proto::Vector3* g_normal) {
+inline void Character::set_allocated_g_force(::proto::Vector3* g_force) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.g_normal_;
+    delete _impl_.g_force_;
   }
-  if (g_normal) {
+  if (g_force) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(g_normal);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(g_force);
     if (message_arena != submessage_arena) {
-      g_normal = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, g_normal, submessage_arena);
+      g_force = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, g_force, submessage_arena);
     }
     
   } else {
     
   }
-  _impl_.g_normal_ = g_normal;
-  // @@protoc_insertion_point(field_set_allocated:proto.Character.g_normal)
+  _impl_.g_force_ = g_force;
+  // @@protoc_insertion_point(field_set_allocated:proto.Character.g_force)
 }
 
-// double g_force = 5;
-inline void Character::clear_g_force() {
-  _impl_.g_force_ = 0;
+// .proto.Vector3 normal = 5;
+inline bool Character::_internal_has_normal() const {
+  return this != internal_default_instance() && _impl_.normal_ != nullptr;
 }
-inline double Character::_internal_g_force() const {
-  return _impl_.g_force_;
+inline bool Character::has_normal() const {
+  return _internal_has_normal();
 }
-inline double Character::g_force() const {
-  // @@protoc_insertion_point(field_get:proto.Character.g_force)
-  return _internal_g_force();
+inline void Character::clear_normal() {
+  if (GetArenaForAllocation() == nullptr && _impl_.normal_ != nullptr) {
+    delete _impl_.normal_;
+  }
+  _impl_.normal_ = nullptr;
 }
-inline void Character::_internal_set_g_force(double value) {
+inline const ::proto::Vector3& Character::_internal_normal() const {
+  const ::proto::Vector3* p = _impl_.normal_;
+  return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector3&>(
+      ::proto::_Vector3_default_instance_);
+}
+inline const ::proto::Vector3& Character::normal() const {
+  // @@protoc_insertion_point(field_get:proto.Character.normal)
+  return _internal_normal();
+}
+inline void Character::unsafe_arena_set_allocated_normal(
+    ::proto::Vector3* normal) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.normal_);
+  }
+  _impl_.normal_ = normal;
+  if (normal) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.Character.normal)
+}
+inline ::proto::Vector3* Character::release_normal() {
   
-  _impl_.g_force_ = value;
+  ::proto::Vector3* temp = _impl_.normal_;
+  _impl_.normal_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
 }
-inline void Character::set_g_force(double value) {
-  _internal_set_g_force(value);
-  // @@protoc_insertion_point(field_set:proto.Character.g_force)
+inline ::proto::Vector3* Character::unsafe_arena_release_normal() {
+  // @@protoc_insertion_point(field_release:proto.Character.normal)
+  
+  ::proto::Vector3* temp = _impl_.normal_;
+  _impl_.normal_ = nullptr;
+  return temp;
+}
+inline ::proto::Vector3* Character::_internal_mutable_normal() {
+  
+  if (_impl_.normal_ == nullptr) {
+    auto* p = CreateMaybeMessage<::proto::Vector3>(GetArenaForAllocation());
+    _impl_.normal_ = p;
+  }
+  return _impl_.normal_;
+}
+inline ::proto::Vector3* Character::mutable_normal() {
+  ::proto::Vector3* _msg = _internal_mutable_normal();
+  // @@protoc_insertion_point(field_mutable:proto.Character.normal)
+  return _msg;
+}
+inline void Character::set_allocated_normal(::proto::Vector3* normal) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.normal_;
+  }
+  if (normal) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(normal);
+    if (message_arena != submessage_arena) {
+      normal = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, normal, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.normal_ = normal;
+  // @@protoc_insertion_point(field_set_allocated:proto.Character.normal)
 }
 
 // .proto.StatusEnum status_enum = 6;
@@ -4688,9 +5003,113 @@ inline void CharacterReport::set_last_seen(double value) {
 
 // -------------------------------------------------------------------
 
+// PlayerParameter
+
+// double vertical_speed = 1;
+inline void PlayerParameter::clear_vertical_speed() {
+  _impl_.vertical_speed_ = 0;
+}
+inline double PlayerParameter::_internal_vertical_speed() const {
+  return _impl_.vertical_speed_;
+}
+inline double PlayerParameter::vertical_speed() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.vertical_speed)
+  return _internal_vertical_speed();
+}
+inline void PlayerParameter::_internal_set_vertical_speed(double value) {
+  
+  _impl_.vertical_speed_ = value;
+}
+inline void PlayerParameter::set_vertical_speed(double value) {
+  _internal_set_vertical_speed(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.vertical_speed)
+}
+
+// double horizontal_speed = 2;
+inline void PlayerParameter::clear_horizontal_speed() {
+  _impl_.horizontal_speed_ = 0;
+}
+inline double PlayerParameter::_internal_horizontal_speed() const {
+  return _impl_.horizontal_speed_;
+}
+inline double PlayerParameter::horizontal_speed() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.horizontal_speed)
+  return _internal_horizontal_speed();
+}
+inline void PlayerParameter::_internal_set_horizontal_speed(double value) {
+  
+  _impl_.horizontal_speed_ = value;
+}
+inline void PlayerParameter::set_horizontal_speed(double value) {
+  _internal_set_horizontal_speed(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.horizontal_speed)
+}
+
+// double start_mass = 3;
+inline void PlayerParameter::clear_start_mass() {
+  _impl_.start_mass_ = 0;
+}
+inline double PlayerParameter::_internal_start_mass() const {
+  return _impl_.start_mass_;
+}
+inline double PlayerParameter::start_mass() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.start_mass)
+  return _internal_start_mass();
+}
+inline void PlayerParameter::_internal_set_start_mass(double value) {
+  
+  _impl_.start_mass_ = value;
+}
+inline void PlayerParameter::set_start_mass(double value) {
+  _internal_set_start_mass(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.start_mass)
+}
+
+// double start_radius = 4;
+inline void PlayerParameter::clear_start_radius() {
+  _impl_.start_radius_ = 0;
+}
+inline double PlayerParameter::_internal_start_radius() const {
+  return _impl_.start_radius_;
+}
+inline double PlayerParameter::start_radius() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.start_radius)
+  return _internal_start_radius();
+}
+inline void PlayerParameter::_internal_set_start_radius(double value) {
+  
+  _impl_.start_radius_ = value;
+}
+inline void PlayerParameter::set_start_radius(double value) {
+  _internal_set_start_radius(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.start_radius)
+}
+
+// double drop_height = 5;
+inline void PlayerParameter::clear_drop_height() {
+  _impl_.drop_height_ = 0;
+}
+inline double PlayerParameter::_internal_drop_height() const {
+  return _impl_.drop_height_;
+}
+inline double PlayerParameter::drop_height() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.drop_height)
+  return _internal_drop_height();
+}
+inline void PlayerParameter::_internal_set_drop_height(double value) {
+  
+  _impl_.drop_height_ = value;
+}
+inline void PlayerParameter::set_drop_height(double value) {
+  _internal_set_drop_height(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.drop_height)
+}
+
+// -------------------------------------------------------------------
+
 // WorldDatabase
 
-// repeated .proto.Element elements = 2;
+// repeated .proto.Element elements = 1;
 inline int WorldDatabase::_internal_elements_size() const {
   return _impl_.elements_.size();
 }
@@ -4730,7 +5149,7 @@ WorldDatabase::elements() const {
   return _impl_.elements_;
 }
 
-// repeated .proto.Character characters = 3;
+// repeated .proto.Character characters = 2;
 inline int WorldDatabase::_internal_characters_size() const {
   return _impl_.characters_.size();
 }
@@ -4770,7 +5189,7 @@ WorldDatabase::characters() const {
   return _impl_.characters_;
 }
 
-// double time = 4;
+// double time = 3;
 inline void WorldDatabase::clear_time() {
   _impl_.time_ = 0;
 }
@@ -4788,6 +5207,96 @@ inline void WorldDatabase::_internal_set_time(double value) {
 inline void WorldDatabase::set_time(double value) {
   _internal_set_time(value);
   // @@protoc_insertion_point(field_set:proto.WorldDatabase.time)
+}
+
+// .proto.PlayerParameter player_parameter = 4;
+inline bool WorldDatabase::_internal_has_player_parameter() const {
+  return this != internal_default_instance() && _impl_.player_parameter_ != nullptr;
+}
+inline bool WorldDatabase::has_player_parameter() const {
+  return _internal_has_player_parameter();
+}
+inline void WorldDatabase::clear_player_parameter() {
+  if (GetArenaForAllocation() == nullptr && _impl_.player_parameter_ != nullptr) {
+    delete _impl_.player_parameter_;
+  }
+  _impl_.player_parameter_ = nullptr;
+}
+inline const ::proto::PlayerParameter& WorldDatabase::_internal_player_parameter() const {
+  const ::proto::PlayerParameter* p = _impl_.player_parameter_;
+  return p != nullptr ? *p : reinterpret_cast<const ::proto::PlayerParameter&>(
+      ::proto::_PlayerParameter_default_instance_);
+}
+inline const ::proto::PlayerParameter& WorldDatabase::player_parameter() const {
+  // @@protoc_insertion_point(field_get:proto.WorldDatabase.player_parameter)
+  return _internal_player_parameter();
+}
+inline void WorldDatabase::unsafe_arena_set_allocated_player_parameter(
+    ::proto::PlayerParameter* player_parameter) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.player_parameter_);
+  }
+  _impl_.player_parameter_ = player_parameter;
+  if (player_parameter) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.WorldDatabase.player_parameter)
+}
+inline ::proto::PlayerParameter* WorldDatabase::release_player_parameter() {
+  
+  ::proto::PlayerParameter* temp = _impl_.player_parameter_;
+  _impl_.player_parameter_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::proto::PlayerParameter* WorldDatabase::unsafe_arena_release_player_parameter() {
+  // @@protoc_insertion_point(field_release:proto.WorldDatabase.player_parameter)
+  
+  ::proto::PlayerParameter* temp = _impl_.player_parameter_;
+  _impl_.player_parameter_ = nullptr;
+  return temp;
+}
+inline ::proto::PlayerParameter* WorldDatabase::_internal_mutable_player_parameter() {
+  
+  if (_impl_.player_parameter_ == nullptr) {
+    auto* p = CreateMaybeMessage<::proto::PlayerParameter>(GetArenaForAllocation());
+    _impl_.player_parameter_ = p;
+  }
+  return _impl_.player_parameter_;
+}
+inline ::proto::PlayerParameter* WorldDatabase::mutable_player_parameter() {
+  ::proto::PlayerParameter* _msg = _internal_mutable_player_parameter();
+  // @@protoc_insertion_point(field_mutable:proto.WorldDatabase.player_parameter)
+  return _msg;
+}
+inline void WorldDatabase::set_allocated_player_parameter(::proto::PlayerParameter* player_parameter) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.player_parameter_;
+  }
+  if (player_parameter) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(player_parameter);
+    if (message_arena != submessage_arena) {
+      player_parameter = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, player_parameter, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.player_parameter_ = player_parameter;
+  // @@protoc_insertion_point(field_set_allocated:proto.WorldDatabase.player_parameter)
 }
 
 // -------------------------------------------------------------------
@@ -5314,7 +5823,97 @@ inline void CreateCharacterRequest::set_allocated_color(::proto::Vector3* color)
 
 // CreateCharacterResponse
 
-// .proto.ReturnEnum return_enum = 1;
+// .proto.PlayerParameter player_parameter = 1;
+inline bool CreateCharacterResponse::_internal_has_player_parameter() const {
+  return this != internal_default_instance() && _impl_.player_parameter_ != nullptr;
+}
+inline bool CreateCharacterResponse::has_player_parameter() const {
+  return _internal_has_player_parameter();
+}
+inline void CreateCharacterResponse::clear_player_parameter() {
+  if (GetArenaForAllocation() == nullptr && _impl_.player_parameter_ != nullptr) {
+    delete _impl_.player_parameter_;
+  }
+  _impl_.player_parameter_ = nullptr;
+}
+inline const ::proto::PlayerParameter& CreateCharacterResponse::_internal_player_parameter() const {
+  const ::proto::PlayerParameter* p = _impl_.player_parameter_;
+  return p != nullptr ? *p : reinterpret_cast<const ::proto::PlayerParameter&>(
+      ::proto::_PlayerParameter_default_instance_);
+}
+inline const ::proto::PlayerParameter& CreateCharacterResponse::player_parameter() const {
+  // @@protoc_insertion_point(field_get:proto.CreateCharacterResponse.player_parameter)
+  return _internal_player_parameter();
+}
+inline void CreateCharacterResponse::unsafe_arena_set_allocated_player_parameter(
+    ::proto::PlayerParameter* player_parameter) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.player_parameter_);
+  }
+  _impl_.player_parameter_ = player_parameter;
+  if (player_parameter) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.CreateCharacterResponse.player_parameter)
+}
+inline ::proto::PlayerParameter* CreateCharacterResponse::release_player_parameter() {
+  
+  ::proto::PlayerParameter* temp = _impl_.player_parameter_;
+  _impl_.player_parameter_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::proto::PlayerParameter* CreateCharacterResponse::unsafe_arena_release_player_parameter() {
+  // @@protoc_insertion_point(field_release:proto.CreateCharacterResponse.player_parameter)
+  
+  ::proto::PlayerParameter* temp = _impl_.player_parameter_;
+  _impl_.player_parameter_ = nullptr;
+  return temp;
+}
+inline ::proto::PlayerParameter* CreateCharacterResponse::_internal_mutable_player_parameter() {
+  
+  if (_impl_.player_parameter_ == nullptr) {
+    auto* p = CreateMaybeMessage<::proto::PlayerParameter>(GetArenaForAllocation());
+    _impl_.player_parameter_ = p;
+  }
+  return _impl_.player_parameter_;
+}
+inline ::proto::PlayerParameter* CreateCharacterResponse::mutable_player_parameter() {
+  ::proto::PlayerParameter* _msg = _internal_mutable_player_parameter();
+  // @@protoc_insertion_point(field_mutable:proto.CreateCharacterResponse.player_parameter)
+  return _msg;
+}
+inline void CreateCharacterResponse::set_allocated_player_parameter(::proto::PlayerParameter* player_parameter) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.player_parameter_;
+  }
+  if (player_parameter) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(player_parameter);
+    if (message_arena != submessage_arena) {
+      player_parameter = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, player_parameter, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.player_parameter_ = player_parameter;
+  // @@protoc_insertion_point(field_set_allocated:proto.CreateCharacterResponse.player_parameter)
+}
+
+// .proto.ReturnEnum return_enum = 2;
 inline void CreateCharacterResponse::clear_return_enum() {
   _impl_.return_enum_ = 0;
 }
@@ -5593,6 +6192,8 @@ DeathReportResponse::character_reports() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -20,6 +20,8 @@ namespace darwin {
         {
             *world.add_elements() = element;
         }
+        world.mutable_player_parameter()->CopyFrom(
+            world_state.GetPlayerParameter());
         json = SaveProtoToJson(world);
     }
 
@@ -39,6 +41,7 @@ namespace darwin {
         {
             world_state.AddElement(time, element);
         }
+        world_state.SetPlayerParameter(world.player_parameter());
         world_state.Update(time);
     }
 
@@ -58,6 +61,7 @@ namespace darwin {
         {
             world_state.AddElement(time, element);
         }
+        world_state.SetPlayerParameter(world.player_parameter());
         world_state.Update(time);
     }
 
@@ -75,6 +79,8 @@ namespace darwin {
         {
             *world.add_elements() = element;
         }
+        world.mutable_player_parameter()->CopyFrom(
+            world_state.GetPlayerParameter());
         SaveProtoToJsonFile(world, filename);
     }
 

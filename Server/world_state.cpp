@@ -22,10 +22,13 @@ namespace darwin {
             character.mutable_color()->CopyFrom(color);
             auto vec3 = CreateRandomNormalizedVector3();
             proto::Physic physic{};
-            physic.set_radius(PLAYER_START_RADIUS);
-            physic.set_mass(PLAYER_START_MASS);
+            physic.set_radius(player_parameter_.start_radius());
+            physic.set_mass(player_parameter_.start_mass());
             physic.mutable_position()->CopyFrom(
-                MultiplyVector3ByScalar(vec3, PLANET_RADIUS + PLAYER_DROP_HEIGHT));
+                MultiplyVector3ByScalar(
+                    vec3, 
+                    GetPlanetLocked().physic().radius() + 
+                    player_parameter_.drop_height()));
             physic.mutable_position_dt()->CopyFrom(
                 CreateBasicVector3(0.0, 0.0, 0.0));
             physic.mutable_orientation()->CopyFrom(
@@ -35,9 +38,10 @@ namespace darwin {
             character.mutable_physic()->CopyFrom(physic);
             // WARNING: This suppose the gravity well is at the position 
             // (0, 0, 0).
-            character.mutable_g_normal()->CopyFrom(vec3);
+            character.mutable_normal()->CopyFrom(vec3);
             // This is wrong, and should be set to the real value.
-            character.set_g_force(0.0);
+            character.mutable_g_force()->CopyFrom(
+                CreateBasicVector3(0.0, 0.0, 0.0));
             CharacterInfo character_info{ GetLastUpdated(), character};
             character_infos_.emplace(character.name(), character_info);
             peer_characters_.emplace(peer, name);
@@ -78,6 +82,20 @@ namespace darwin {
         }
     }
 
+    proto::Element WorldState::GetPlanet() const {
+        std::scoped_lock l(mutex_info_);
+        return GetPlanetLocked();
+    }
+
+    proto::Element WorldState::GetPlanetLocked() const {
+        for (const auto& [name, element_info] : element_infos_) {
+            if (element_info.element.type_enum() == proto::TYPE_GROUND) {
+                return element_info.element;
+            }
+        }
+        throw std::runtime_error("No planet found.");
+    }
+
     void WorldState::AddRandomElements(std::uint32_t number) {
         std::scoped_lock l(mutex_info_);
         for (std::uint32_t i = 0; i < number; ++i) {
@@ -89,7 +107,9 @@ namespace darwin {
             auto vec3 = CreateRandomNormalizedVector3();
             proto::Physic physic{};
             physic.mutable_position()->CopyFrom(
-                MultiplyVector3ByScalar(vec3, PLANET_RADIUS + 0.5));
+                MultiplyVector3ByScalar(
+                    vec3, 
+                    GetPlanetLocked().physic().radius() + 0.5));
             physic.mutable_position_dt()->CopyFrom(
                 CreateBasicVector3(0.0, 0.0, 0.0));
             physic.set_radius(0.5);
@@ -161,6 +181,13 @@ namespace darwin {
         }
     }
 
+    void WorldState::SetPlayerParameter(
+        const proto::PlayerParameter& parameter)
+    {
+        std::scoped_lock l(mutex_info_);
+        player_parameter_ = parameter;
+    }
+
     void WorldState::Update(double time) {
         std::scoped_lock l(mutex_info_);
         if (time != last_updated_) {
@@ -169,14 +196,6 @@ namespace darwin {
             physic_engine.ComputeAllInfo(time);
         }
         FillVectorsLocked();
-    }
-
-    const std::vector<proto::Character>& WorldState::GetCharacters() const {
-        return characters_;
-    }
-
-    const std::vector<proto::Element>& WorldState::GetElements() const {
-        return elements_;
     }
 
     double WorldState::GetLastUpdated() const {

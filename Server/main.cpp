@@ -23,20 +23,24 @@ int main(int ac, char** av) try {
     absl::ParseCommandLine(ac, av);
     grpc::ServerBuilder builder;
     darwin::WorldState world_state;
+    std::cout 
+        << "loading world state from file: "<< absl::GetFlag(FLAGS_world_db) 
+        << "\n";
     LoadWorldStateFromFile(world_state, absl::GetFlag(FLAGS_world_db));
-    world_state.AddRandomElements(100);
+    world_state.AddRandomElements(400);
     darwin::DarwinServiceImpl service{ world_state };
 
+    std::cout << "starting world simulation\n";
     // Create a callback that will compute the next epoch.
     auto future = std::async(std::launch::async, [&service] {
         service.ComputeWorld();
     });
 
+    std::cout << "listening on: " << absl::GetFlag(FLAGS_server_name) << "\n";
     builder.AddListeningPort(
         absl::GetFlag(FLAGS_server_name),
         grpc::InsecureServerCredentials());
     builder.RegisterService(&service);
-
     std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
     server->Wait();
 

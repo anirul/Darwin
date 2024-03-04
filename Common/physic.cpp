@@ -1,72 +1,66 @@
-#include "physic.h"
-#include "vector.h"
+#include "Common/physic.h"
+
+#include "Common/vector.h"
+#include "Common/convert_math.h"
 
 namespace darwin {
 
-    GResult ApplyPhysic(
+    glm::dvec3 ApplyPhysic(
         const proto::Physic& physic_source,
         const proto::Physic& physic_target) 
     {
-        proto::Vector3 distance_vector = 
-            Add(
-                physic_source.position(),
-                Minus(physic_target.position()));
-        double distance = Distance(
-            physic_source.position(),
-            physic_target.position());
+        glm::dvec3 distance_vector = 
+            ProtoVector2Glm(physic_source.position()) - 
+            ProtoVector2Glm(physic_target.position());
+        double distance = glm::distance(
+            ProtoVector2Glm(physic_source.position()),
+            ProtoVector2Glm(physic_target.position()));
         double force_magnitude = 
             GRAVITATIONAL_CONSTANT * 
             (physic_source.mass() * physic_target.mass()) /
             (distance * distance);
-        proto::Vector3 force_direction = Normalize(distance_vector);
-        return GResult{ force_direction, force_magnitude };
+        glm::dvec3 force_direction = glm::normalize(distance_vector);
+        return force_direction * force_magnitude;
     }
 
-    float UpdateObject(
+    double UpdateObject(
         proto::Physic& physic,
-        const proto::Vector3& force,
+        glm::dvec3 force,
         double delta_time)
     {
         // Compute the acceleration vector.
         // a = F / m
-        proto::Vector3 acceleration = 
-            MultiplyVector3ByScalar(force, 1.0 / physic.mass());
+        glm::dvec3 acceleration = force / physic.mass();
         // Update the speed.
         // v(t) = v0 + at
         auto updated_speed = 
-            Add(
-                physic.position_dt(),
-                MultiplyVector3ByScalar(acceleration, delta_time));
+            ProtoVector2Glm(physic.position_dt()) + acceleration * delta_time;
         // Update the position.
         // x(t) = x0 + v0t + 0.5at^2
-        auto updated_position =
-            Add(
-                MultiplyVector3ByScalar(physic.position_dt(), delta_time),
-                MultiplyVector3ByScalar(
-                    acceleration, 
-                    delta_time * delta_time * 0.5));
+        auto updated_position = 
+            ProtoVector2Glm(physic.position_dt()) * delta_time +
+            acceleration * (delta_time * delta_time * 0.5);
         // Update the speed.
-        physic.mutable_position_dt()->CopyFrom(updated_speed);
+        physic.mutable_position_dt()->CopyFrom(Glm2ProtoVector(updated_speed));
         // Update the position.
         physic.mutable_position()->CopyFrom(
-            Add(physic.position(), updated_position));
-        return GetLength(acceleration);
+            Add(physic.position(), Glm2ProtoVector(updated_position)));
+        return acceleration.length();
     }
 
-    proto::Vector3 CancelVerticalComponent(
-        const proto::Vector3& velocity, 
-        const proto::Vector3& character_up) 
+    glm::dvec3 CancelVerticalComponent(
+        glm::dvec3 velocity, 
+        glm::dvec3 character_up) 
     {
         // Project velocity on character_up.
-        float projectionLength = 
-            DotProduct(velocity, character_up) / 
-            DotProduct(character_up, character_up);
-        proto::Vector3 projection = 
-            MultiplyVector3ByScalar(character_up, projectionLength);
+        double projectionLength = 
+            glm::dot(velocity, character_up) / 
+            glm::dot(character_up, character_up);
+        glm::dvec3 projection = character_up * projectionLength;
 
         // Subtract the projection from the original velocity to remove the 
         // vertical component.
-        return Add(velocity, Minus(projection));
+        return velocity - projection;
     }
 
     proto::StatusEnum CorrectSurface(
@@ -75,27 +69,22 @@ namespace darwin {
     {
         if (element.type_enum() == proto::TYPE_GROUND) {
             auto distance =
-                Distance(physic.position(), element.physic().position());
+                glm::distance(
+                    ProtoVector2Glm(physic.position()), 
+                    ProtoVector2Glm(element.physic().position()));
             if (distance < (physic.radius() + element.physic().radius())) {
                 auto normal = 
-                    Normalize(
-                        Add(
-                            physic.position(), 
-                            Minus(element.physic().position())));
-                auto new_position_delta =
-                    MultiplyVector3ByScalar(
-                        normal,
-                        physic.radius() + element.physic().radius());
+                    glm::normalize(
+                        ProtoVector2Glm(physic.position()) - 
+                        ProtoVector2Glm(element.physic().position()));
+                auto new_position = 
+                    normal * (physic.radius() + element.physic().radius());
                 physic.mutable_position()->CopyFrom(
-                    Add(element.physic().position(), new_position_delta));
+                    Glm2ProtoVector(new_position));
                 // Cancel the vertical component of the velocity.
                 physic.mutable_position_dt()->CopyFrom(
-                    CancelVerticalComponent(
-                        physic.position_dt(),
-                        Normalize(
-                            Add(
-                                physic.position(),
-                                Minus(element.physic().position())))));
+                    Glm2ProtoVector(CancelVerticalComponent(
+                        ProtoVector2Glm(physic.position_dt()), normal)));
                 return proto::STATUS_ON_GROUND;
             }
             return proto::STATUS_JUMPING;

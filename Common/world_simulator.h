@@ -20,20 +20,32 @@ namespace darwin {
             const std::vector<proto::Character>& characters,
             double time);
         void UpdateTime();
-        UniformEnum GetUniforms();
+        UniformEnum GetUniforms() const;
+        UniformEnum GetCloseUniforms(const proto::Vector3& normal) const;
         proto::Character GetCharacterByName(const std::string& name);
         void SetCharacter(const proto::Character& character);
 
     public:
+        void SetPlayerParameter(const proto::PlayerParameter& parameter) {
+            player_parameter_ = parameter;
+        }
         std::vector<proto::Element> GetElements() const {
             return elements_;
         }
         std::vector<proto::Character> GetCharacters() const {
             return characters_;
         }
-
+        proto::PlayerParameter GetPlayerParameter() const {
+            return player_parameter_;
+        }
 
     protected:
+        bool IsClose(
+            const proto::Vector3& normal, 
+            const proto::Vector3& position) const;
+        glm::vec4 GetSphere(const proto::Physic& physic) const;
+        glm::vec4 GetColor(const proto::Element& element) const;
+        glm::vec4 GetColor(const proto::Character& character) const;
         std::vector<proto::Element> GetGForceElements();
         void ApplyGForceAndSpeedToCharacter(
             const std::vector<proto::Element>& static_elements,
@@ -42,11 +54,12 @@ namespace darwin {
     private:
         std::string name_;
         bool started_ = false;
-        std::mutex mutex_;
+        mutable std::mutex mutex_;
         std::vector<proto::Element> elements_;
         std::vector<proto::Character> characters_;
         double time_;
         std::chrono::time_point<std::chrono::high_resolution_clock> last_time_;
+        proto::PlayerParameter player_parameter_;
     };
 
 } // End namespace darwin.
