@@ -111,7 +111,7 @@ message CharacterReport {
 }
 
 // PlayerParameter
-// Next: 5
+// Next: 7
 message PlayerParameter {
     // Vertical speed (jumping).
     double vertical_speed = 1;
@@ -121,6 +121,10 @@ message PlayerParameter {
     double start_mass = 3;
     // Player drop height (start at planet radius and add this value).
     double drop_height = 4;
+    // Penalty for eating too similar to player color.
+    double penalty = 5;
+    // Dot product limit for penalty.
+    double dot_penalty = 6;
 }
 
 // WorldDatabase saved as a file.

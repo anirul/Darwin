@@ -223,32 +223,26 @@ namespace darwin {
                 continue;
             }
             if (IsIntersecting(physic_from, physic_to)) {
+                FromTo from_to{ 
+                    name,           target, 
+                    physic_from,    physic_to, 
+                    color_from,     color_to
+                };
                 // Check if color are compatible.
-                if (DotProduct(color_from, color_to) > 0.9) {
-
-                } else {
-                    FromTo from_to{
-                        name,
-                        target,
-                        physic_from,
-                        physic_to,
-                        color_from,
-                        color_to
-                    };
-                    if (DotProduct(color_from, color_to) > 0.95) 
-                    {
-                        if (type_enum == proto::TYPE_UPGRADE) {
-                            LostSourceElementLocked(from_to);
-                        }
-                        if (type_enum == proto::TYPE_CHARACTER) {
-                            LostSourceCharacterLocked(from_to);
-                        }
+                if (DotProduct(color_from, color_to) > 
+                    GetPlayerParameter().dot_penalty())
+                {
+                    if (type_enum == proto::TYPE_UPGRADE) {
+                        LostSourceElementLocked(from_to);
                     }
-                    else
-                    {
-                        ChangeSourceEatLocked(from_to);
-                        to_remove.push_back(target);
+                    if (type_enum == proto::TYPE_CHARACTER) {
+                        LostSourceCharacterLocked(from_to);
                     }
+                }
+                else
+                {
+                    ChangeSourceEatLocked(from_to);
+                    to_remove.push_back(target);
                 }
             }
         }
@@ -290,8 +284,9 @@ namespace darwin {
 
     void WorldState::LostSourceElementLocked(const FromTo& from_to) {
         proto::Physic physic{ from_to.physic_from };
-
-        physic.set_mass(from_to.physic_from.mass() - 0.2);
+        physic.set_mass(
+            from_to.physic_from.mass() + GetPlayerParameter().penalty());
+        physic.set_radius(GetRadiusFromVolume(physic.mass()));
         character_infos_.at(
             from_to.name_from).character.mutable_physic()->CopyFrom(physic);
     }
@@ -302,6 +297,7 @@ namespace darwin {
         {
             proto::Physic physic{ from_to.physic_from };
             physic.set_mass(new_mass);
+            physic.set_radius(GetRadiusFromVolume(physic.mass()));
             character_infos_.at(
                 from_to.name_from).character.mutable_physic()->CopyFrom(
                     physic);
@@ -309,6 +305,7 @@ namespace darwin {
         {
             proto::Physic physic{ from_to.physic_to };
             physic.set_mass(new_mass);
+            physic.set_radius(GetRadiusFromVolume(physic.mass()));
             character_infos_.at(
                 from_to.name_to).character.mutable_physic()->CopyFrom(physic);
         }

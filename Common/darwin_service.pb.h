@@ -1604,6 +1604,8 @@ class PlayerParameter final :
     kHorizontalSpeedFieldNumber = 2,
     kStartMassFieldNumber = 3,
     kDropHeightFieldNumber = 4,
+    kPenaltyFieldNumber = 5,
+    kDotPenaltyFieldNumber = 6,
   };
   // double vertical_speed = 1;
   void clear_vertical_speed();
@@ -1641,6 +1643,24 @@ class PlayerParameter final :
   void _internal_set_drop_height(double value);
   public:
 
+  // double penalty = 5;
+  void clear_penalty();
+  double penalty() const;
+  void set_penalty(double value);
+  private:
+  double _internal_penalty() const;
+  void _internal_set_penalty(double value);
+  public:
+
+  // double dot_penalty = 6;
+  void clear_dot_penalty();
+  double dot_penalty() const;
+  void set_dot_penalty(double value);
+  private:
+  double _internal_dot_penalty() const;
+  void _internal_set_dot_penalty(double value);
+  public:
+
   // @@protoc_insertion_point(class_scope:proto.PlayerParameter)
  private:
   class _Internal;
@@ -1653,6 +1673,8 @@ class PlayerParameter final :
     double horizontal_speed_;
     double start_mass_;
     double drop_height_;
+    double penalty_;
+    double dot_penalty_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -5073,6 +5095,46 @@ inline void PlayerParameter::_internal_set_drop_height(double value) {
 inline void PlayerParameter::set_drop_height(double value) {
   _internal_set_drop_height(value);
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.drop_height)
+}
+
+// double penalty = 5;
+inline void PlayerParameter::clear_penalty() {
+  _impl_.penalty_ = 0;
+}
+inline double PlayerParameter::_internal_penalty() const {
+  return _impl_.penalty_;
+}
+inline double PlayerParameter::penalty() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.penalty)
+  return _internal_penalty();
+}
+inline void PlayerParameter::_internal_set_penalty(double value) {
+  
+  _impl_.penalty_ = value;
+}
+inline void PlayerParameter::set_penalty(double value) {
+  _internal_set_penalty(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.penalty)
+}
+
+// double dot_penalty = 6;
+inline void PlayerParameter::clear_dot_penalty() {
+  _impl_.dot_penalty_ = 0;
+}
+inline double PlayerParameter::_internal_dot_penalty() const {
+  return _impl_.dot_penalty_;
+}
+inline double PlayerParameter::dot_penalty() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.dot_penalty)
+  return _internal_dot_penalty();
+}
+inline void PlayerParameter::_internal_set_dot_penalty(double value) {
+  
+  _impl_.dot_penalty_ = value;
+}
+inline void PlayerParameter::set_dot_penalty(double value) {
+  _internal_set_dot_penalty(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.dot_penalty)
 }
 
 // -------------------------------------------------------------------
