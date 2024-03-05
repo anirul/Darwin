@@ -49,6 +49,17 @@ namespace darwin {
         proto::Element GetPlanetLocked() const;
         void FillVectorsLocked();
         void CheckIntersectPlayerLocked();
+        struct FromTo {
+            std::string name_from;
+            std::string name_to;
+            proto::Physic physic_from;
+            proto::Physic physic_to;
+            proto::Vector3 color_from;
+            proto::Vector3 color_to;
+        };
+        void ChangeSourceEatLocked(const FromTo& from_to);
+        void LostSourceElementLocked(const FromTo& from_to);
+        void LostSourceCharacterLocked(const FromTo& from_to);
 
     private:
         mutable std::mutex mutex_info_;

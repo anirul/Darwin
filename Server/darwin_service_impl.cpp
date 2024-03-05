@@ -245,6 +245,7 @@ namespace darwin {
                         now + std::chrono::milliseconds(INTERVAL),
                         std::chrono::system_clock::now());
             }
+            // Wait for the next computation.
             std::this_thread::sleep_until(
                 now + std::chrono::milliseconds(INTERVAL));
         }

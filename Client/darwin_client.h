@@ -28,6 +28,7 @@ namespace darwin {
         void Update();
         std::int32_t Ping(std::int32_t val = 45323);
         bool IsConnected() const;
+        proto::Character MergeCharacter(proto::Character new_characters);
 
     public:
         WorldSimulator& GetWorldSimulator() {

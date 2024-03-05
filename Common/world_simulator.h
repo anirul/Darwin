@@ -25,18 +25,23 @@ namespace darwin {
         proto::Character GetCharacterByName(const std::string& name);
         void SetCharacter(const proto::Character& character);
         std::string GetPotentialHit(const proto::Character& character) const;
+        proto::Physic GetPlanet() const;
 
     public:
         void SetPlayerParameter(const proto::PlayerParameter& parameter) {
+            std::lock_guard l(mutex_);
             player_parameter_ = parameter;
         }
         std::vector<proto::Element> GetElements() const {
+            std::lock_guard l(mutex_);
             return elements_;
         }
         std::vector<proto::Character> GetCharacters() const {
+            std::lock_guard l(mutex_);
             return characters_;
         }
         proto::PlayerParameter GetPlayerParameter() const {
+            std::lock_guard l(mutex_);
             return player_parameter_;
         }
 
@@ -47,8 +52,8 @@ namespace darwin {
         glm::vec4 GetSphere(const proto::Physic& physic) const;
         glm::vec4 GetColor(const proto::Element& element) const;
         glm::vec4 GetColor(const proto::Character& character) const;
-        std::vector<proto::Element> GetGForceElements();
-        void ApplyGForceAndSpeedToCharacter(
+        std::vector<proto::Element> GetGForceElementsLocked();
+        void ApplyGForceAndSpeedToCharacterLocked(
             const std::vector<proto::Element>& static_elements,
             double delta_time);
 

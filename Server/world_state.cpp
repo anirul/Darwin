@@ -198,31 +198,58 @@ namespace darwin {
         for (const auto& [name, target] : potential_hits_) {
             proto::Physic physic_from = 
                 character_infos_.at(name).character.physic();
+            proto::Vector3 color_from = 
+                character_infos_.at(name).character.color();
             proto::Physic physic_to;
+            proto::Vector3 color_to;
             if (element_infos_.contains(target)) {
                 physic_to = element_infos_.at(target).element.physic();
+                color_to = element_infos_.at(target).element.color();
                 type_enum = proto::TYPE_UPGRADE;
             }
             if (character_infos_.contains(target)) {
                 physic_to = character_infos_.at(target).character.physic();
+                color_to = character_infos_.at(target).character.color();
                 type_enum = proto::TYPE_CHARACTER;
             }
-            if (physic_from.mass() < physic_to.mass()) {
+            // Check if you can eat the target.
+            if (physic_from.mass() <= physic_to.mass()) {
 #ifdef _DEBUG
                 std::cerr 
                     << "[" << name 
-                    << "].mass() < [" << target 
+                    << "].mass() <= [" << target 
                     << "].mass() ?\n";
 #endif // _DEBUG
                 continue;
             }
             if (IsIntersecting(physic_from, physic_to)) {
-                physic_from.set_mass(physic_from.mass() + physic_to.mass());
-                physic_from.set_radius(
-                    GetRadiusFromVolume(physic_from.mass()));
-                to_remove.push_back(target);
-                character_infos_.at(
-                    name).character.mutable_physic()->CopyFrom(physic_from);
+                // Check if color are compatible.
+                if (DotProduct(color_from, color_to) > 0.9) {
+
+                } else {
+                    FromTo from_to{
+                        name,
+                        target,
+                        physic_from,
+                        physic_to,
+                        color_from,
+                        color_to
+                    };
+                    if (DotProduct(color_from, color_to) > 0.95) 
+                    {
+                        if (type_enum == proto::TYPE_UPGRADE) {
+                            LostSourceElementLocked(from_to);
+                        }
+                        if (type_enum == proto::TYPE_CHARACTER) {
+                            LostSourceCharacterLocked(from_to);
+                        }
+                    }
+                    else
+                    {
+                        ChangeSourceEatLocked(from_to);
+                        to_remove.push_back(target);
+                    }
+                }
             }
         }
         for (const auto& name : to_remove) {
@@ -237,6 +264,53 @@ namespace darwin {
                 std::cerr << "[" << name << "]: unknown type.\n";
             }
 #endif // _DEBUG
+        }
+    }
+
+    void WorldState::ChangeSourceEatLocked(const FromTo& from_to) {
+        proto::Physic physic{ from_to.physic_from };
+        physic.set_mass(
+            from_to.physic_from.mass() + from_to.physic_to.mass());
+        physic.set_radius(GetRadiusFromVolume(physic.mass()));
+        character_infos_.at(
+            from_to.name_from).character.mutable_physic()->CopyFrom(physic);
+        auto final_color =
+            Normalize(
+                Add(
+                    MultiplyVector3ByScalar(
+                        from_to.color_from,
+                        from_to.physic_from.mass()),
+                    MultiplyVector3ByScalar(
+                        from_to.color_to,
+                        from_to.physic_to.mass())));
+        character_infos_.at(
+            from_to.name_from).character.mutable_color()->CopyFrom(
+                final_color);
+    }
+
+    void WorldState::LostSourceElementLocked(const FromTo& from_to) {
+        proto::Physic physic{ from_to.physic_from };
+
+        physic.set_mass(from_to.physic_from.mass() - 0.2);
+        character_infos_.at(
+            from_to.name_from).character.mutable_physic()->CopyFrom(physic);
+    }
+
+    void WorldState::LostSourceCharacterLocked(const FromTo& from_to) {
+        double new_mass = 
+            (from_to.physic_from.mass() + from_to.physic_to.mass()) * 0.5;
+        {
+            proto::Physic physic{ from_to.physic_from };
+            physic.set_mass(new_mass);
+            character_infos_.at(
+                from_to.name_from).character.mutable_physic()->CopyFrom(
+                    physic);
+        }
+        {
+            proto::Physic physic{ from_to.physic_to };
+            physic.set_mass(new_mass);
+            character_infos_.at(
+                from_to.name_to).character.mutable_physic()->CopyFrom(physic);
         }
     }
 

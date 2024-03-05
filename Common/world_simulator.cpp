@@ -28,7 +28,7 @@ namespace darwin {
         started_ = true;
     }
 
-    std::vector<proto::Element> WorldSimulator::GetGForceElements() {
+    std::vector<proto::Element> WorldSimulator::GetGForceElementsLocked() {
         std::vector<proto::Element> result;
         for (auto& element : elements_) {
             if (element.type_enum() == proto::TYPE_GROUND) {
@@ -38,7 +38,7 @@ namespace darwin {
         return result;
     }
 
-    void WorldSimulator::ApplyGForceAndSpeedToCharacter(
+    void WorldSimulator::ApplyGForceAndSpeedToCharacterLocked(
         const std::vector<proto::Element>& static_elements,
         double delta_time)
     {
@@ -84,9 +84,10 @@ namespace darwin {
         time_ += elapsed_seconds;
         last_time_ = now;
         // Get gravity forces.
-        std::vector<proto::Element> static_elements = GetGForceElements();
+        std::vector<proto::Element> static_elements = 
+            GetGForceElementsLocked();
         // Apply gravity forces to characters.
-        ApplyGForceAndSpeedToCharacter(static_elements, elapsed_seconds);
+        ApplyGForceAndSpeedToCharacterLocked(static_elements, elapsed_seconds);
     }
 
     UniformEnum WorldSimulator::GetUniforms() const {
@@ -198,6 +199,15 @@ namespace darwin {
             }
         }
         return "";
+    }
+
+    proto::Physic WorldSimulator::GetPlanet() const {
+        for (const auto& element : elements_) {
+            if (element.type_enum() == proto::TYPE_GROUND) {
+                return element.physic();
+            }
+        }
+        throw std::runtime_error("No planet found.");
     }
 
 } // End namespace darwin.

@@ -4,6 +4,7 @@
 
 #include "async_client_call.h"
 #include "Common/darwin_service.grpc.pb.h"
+#include "Common/vector.h"
 
 namespace darwin {
 
@@ -103,18 +104,8 @@ namespace darwin {
         while (reader->Read(&response)) {
 
             std::vector<proto::Character> characters;
-            for (int i = 0; i < response.characters_size(); ++i) {
-                if ((response.characters(i).name() == character_name_) && 
-                    (world_simulator_.GetCharacterByName(
-                        character_name_).status_enum() !=
-                        proto::STATUS_UNKNOWN))
-                {
-                    characters.push_back(
-                        world_simulator_.GetCharacterByName(character_name_));
-                }
-                else {
-                    characters.push_back(response.characters(i));
-                }
+            for (const auto& character : response.characters()) {
+                characters.push_back(MergeCharacter(character));
             }
 
             static std::size_t element_size = 0;
@@ -182,6 +173,30 @@ namespace darwin {
 
     bool DarwinClient::IsConnected() const {
         return !end_.load();
+    }
+
+    proto::Character DarwinClient::MergeCharacter(
+        proto::Character new_character)
+    {
+        if (new_character.name() == character_name_) {
+            proto::Character character =
+                world_simulator_.GetCharacterByName(character_name_);
+            double length = GetLength(character.physic().position());
+            static auto planet_physic = world_simulator_.GetPlanet();
+            if (length >= planet_physic.radius() &&
+                length <= planet_physic.radius() +
+                world_simulator_.GetPlayerParameter().drop_height())
+            {
+                character.mutable_physic()->set_mass(
+                    new_character.physic().mass());
+                character.mutable_physic()->set_radius(
+                    new_character.physic().radius());
+                new_character.mutable_normal()->CopyFrom(
+                    character.normal());
+                new_character.mutable_physic()->CopyFrom(character.physic());
+            }
+        }
+        return new_character;
     }
 
     void DarwinClient::PollCompletionQueue() {
