@@ -60,11 +60,13 @@ namespace darwin {
 
     void DarwinClient::ReportMovement(
         const std::string& name, 
-        const proto::Physic& physic) 
+        const proto::Physic& physic,
+        const std::string& potential_hit) 
     {
         proto::ReportMovementRequest request;
         request.set_name(name);
         request.mutable_physic()->CopyFrom(physic);
+        request.set_potential_hit(potential_hit);
 
         auto promise = 
             std::make_shared<std::promise<proto::ReportMovementResponse>>();

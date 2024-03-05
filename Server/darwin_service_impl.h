@@ -40,9 +40,14 @@ namespace darwin {
         void ClearTimeCharacters();
         std::mutex& GetTimeCharacterMutex();
         void ComputeWorld();
+        // Returns the name of character against the potential hits this will
+        // empty the list after the call.
+        std::map<std::string, std::string> GetPotentialHits();
         
     protected:
         std::map<double, proto::Character> time_characters_;
+        // Name of the character against name of potential hits.
+        std::map<std::string, std::string> character_potential_hits_;
         WorldState& world_state_;
         std::list<grpc::ServerWriter<proto::UpdateResponse>*> writers_;
         std::mutex writers_mutex_;

@@ -1,8 +1,6 @@
 # Darwin Server Test
 
 add_executable(DarwinServerTest
-    ${CMAKE_SOURCE_DIR}/Server/physic_engine.cpp
-    ${CMAKE_SOURCE_DIR}/Server/physic_engine.h
     ${CMAKE_SOURCE_DIR}/Server/world_state.cpp
     ${CMAKE_SOURCE_DIR}/Server/world_state.h
     ${CMAKE_SOURCE_DIR}/Server/world_state_file.cpp

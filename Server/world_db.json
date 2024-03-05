@@ -3,8 +3,8 @@
     {
       "name": "earth",
       "color": {
-        "x": 0.0,
-        "y": 0.0,
+        "x": 1.0,
+        "y": 1.0,
         "z": 1.0
       },
       "physic": {
@@ -41,8 +41,7 @@
   "player_parameter": {
     "vertical_speed": 10.0,
     "horizontal_speed": 10.0,
-    "start_mass": 2.0,
-    "start_radius": 1.0,
+    "start_mass": 4.0,
     "drop_height": 10.0
   }
 }

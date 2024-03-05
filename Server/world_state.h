@@ -31,6 +31,8 @@ namespace darwin {
         double GetLastUpdated() const;
         bool operator==(const WorldState& other) const;
         proto::Element GetPlanet() const;
+        void SetPotentialHits(
+            const std::map<std::string, std::string>& potential_hits);
 
     public:
         proto::PlayerParameter GetPlayerParameter() const {
@@ -46,6 +48,7 @@ namespace darwin {
     private:
         proto::Element GetPlanetLocked() const;
         void FillVectorsLocked();
+        void CheckIntersectPlayerLocked();
 
     private:
         mutable std::mutex mutex_info_;
@@ -56,6 +59,7 @@ namespace darwin {
         std::vector<proto::Character> characters_;
         std::vector<proto::Element> elements_;
         proto::PlayerParameter player_parameter_;
+        std::map<std::string, std::string> potential_hits_;
     };
 
 }  // namespace darwin.

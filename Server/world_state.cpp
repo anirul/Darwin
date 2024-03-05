@@ -1,11 +1,12 @@
 #include "world_state.h"
 
 #include <format>
+#include <cmath>
 
-#include "physic_engine.h"
 #include "Common/darwin_constant.h"
 #include "Common/stl_proto_wrapper.h"
 #include "Common/vector.h"
+#include "Common/convert_math.h"
 
 namespace darwin {
 
@@ -22,7 +23,9 @@ namespace darwin {
             character.mutable_color()->CopyFrom(color);
             auto vec3 = CreateRandomNormalizedVector3();
             proto::Physic physic{};
-            physic.set_radius(player_parameter_.start_radius());
+            double radius = 
+                GetRadiusFromVolume(player_parameter_.start_mass());
+            physic.set_radius(radius);
             physic.set_mass(player_parameter_.start_mass());
             physic.mutable_position()->CopyFrom(
                 MultiplyVector3ByScalar(
@@ -106,13 +109,14 @@ namespace darwin {
                 CreateRandomNormalizedColor());
             auto vec3 = CreateRandomNormalizedVector3();
             proto::Physic physic{};
+            double radius = GetRadiusFromVolume(1.0);
             physic.mutable_position()->CopyFrom(
                 MultiplyVector3ByScalar(
                     vec3, 
-                    GetPlanetLocked().physic().radius() + 0.5));
+                    GetPlanetLocked().physic().radius() + radius));
             physic.mutable_position_dt()->CopyFrom(
                 CreateBasicVector3(0.0, 0.0, 0.0));
-            physic.set_radius(0.5);
+            physic.set_radius(radius);
             physic.set_mass(1.0);
             element.mutable_physic()->CopyFrom(physic);
             ElementInfo element_info{ GetLastUpdated(), element };
@@ -188,12 +192,59 @@ namespace darwin {
         player_parameter_ = parameter;
     }
 
+    void WorldState::CheckIntersectPlayerLocked() {
+        std::vector<std::string> to_remove;
+        proto::TypeEnum type_enum = proto::TYPE_UNKNOWN;
+        for (const auto& [name, target] : potential_hits_) {
+            proto::Physic physic_from = 
+                character_infos_.at(name).character.physic();
+            proto::Physic physic_to;
+            if (element_infos_.contains(target)) {
+                physic_to = element_infos_.at(target).element.physic();
+                type_enum = proto::TYPE_UPGRADE;
+            }
+            if (character_infos_.contains(target)) {
+                physic_to = character_infos_.at(target).character.physic();
+                type_enum = proto::TYPE_CHARACTER;
+            }
+            if (physic_from.mass() < physic_to.mass()) {
+#ifdef _DEBUG
+                std::cerr 
+                    << "[" << name 
+                    << "].mass() < [" << target 
+                    << "].mass() ?\n";
+#endif // _DEBUG
+                continue;
+            }
+            if (IsIntersecting(physic_from, physic_to)) {
+                physic_from.set_mass(physic_from.mass() + physic_to.mass());
+                physic_from.set_radius(
+                    GetRadiusFromVolume(physic_from.mass()));
+                to_remove.push_back(target);
+                character_infos_.at(
+                    name).character.mutable_physic()->CopyFrom(physic_from);
+            }
+        }
+        for (const auto& name : to_remove) {
+            if (type_enum == proto::TYPE_UPGRADE) {
+                element_infos_.erase(name);
+            }
+            if (type_enum == proto::TYPE_CHARACTER) {
+                character_infos_.erase(name);
+            }
+#ifdef _DEBUG
+            if (type_enum == proto::TYPE_UNKNOWN) {
+                std::cerr << "[" << name << "]: unknown type.\n";
+            }
+#endif // _DEBUG
+        }
+    }
+
     void WorldState::Update(double time) {
         std::scoped_lock l(mutex_info_);
         if (time != last_updated_) {
+            CheckIntersectPlayerLocked();
             last_updated_ = time;
-            PhysicEngine physic_engine(element_infos_, character_infos_);
-            physic_engine.ComputeAllInfo(time);
         }
         FillVectorsLocked();
     }
@@ -235,6 +286,14 @@ namespace darwin {
             }
         }
         return true;
+    }
+
+    void WorldState::SetPotentialHits(
+        const std::map<std::string, std::string>& potential_hits)
+    {
+        std::scoped_lock l(mutex_info_);
+        potential_hits_.clear();
+        potential_hits_ = potential_hits;
     }
 
 }  // End namespace darwin.

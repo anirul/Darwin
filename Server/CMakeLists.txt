@@ -5,8 +5,6 @@ add_executable(DarwinServer
     darwin_service_impl.h
     element_info.h
     main.cpp
-    physic_engine.cpp
-    physic_engine.h
     character_info.h
     world_state.cpp
     world_state.h

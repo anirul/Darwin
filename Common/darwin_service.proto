@@ -22,13 +22,14 @@ enum StatusEnum {
 }
 
 enum TypeEnum {
-    TYPE_UKNOWN = 0;        // Unknown this is an error!
+    TYPE_UNKNOWN = 0;        // Unknown this is an error!
     TYPE_GROUND = 1;        // From where the gravity is generated.
     TYPE_EXPLOSION = 2;     // Explosion that push stuff around.
     TYPE_UPGRADE = 3;       // Upgrade to upgrade character.
     TYPE_GREEN = 4;         // Greenery (no effect on anything).
     TYPE_BROWN = 5;         // Tree bark and non destructible elements.
     TYPE_WATER = 6;         // Water.
+    TYPE_CHARACTER = 7;     // Player character.
 }
 
 // Vector 3 this store position or other 3 float values.
@@ -110,7 +111,7 @@ message CharacterReport {
 }
 
 // PlayerParameter
-// Next: 7
+// Next: 5
 message PlayerParameter {
     // Vertical speed (jumping).
     double vertical_speed = 1;
@@ -118,10 +119,8 @@ message PlayerParameter {
     double horizontal_speed = 2;
     // Player start mass.
     double start_mass = 3;
-    // Player start radius.
-    double start_radius = 4;
     // Player drop height (start at planet radius and add this value).
-    double drop_height = 5;
+    double drop_height = 4;
 }
 
 // WorldDatabase saved as a file.
@@ -162,8 +161,8 @@ message ReportMovementRequest {
     string name = 1;
     // New physic.
     Physic physic = 2;
-    // Tocken.
-    string session_tocken = 3;
+    // Name of potential hit.
+    string potential_hit = 3;
 }
 
 // ReportMovementResponse

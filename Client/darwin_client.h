@@ -23,7 +23,8 @@ namespace darwin {
             const proto::Vector3& color);
         void ReportMovement(
             const std::string& name, 
-            const proto::Physic& physic);
+            const proto::Physic& physic,
+            const std::string& potential_hit);
         void Update();
         std::int32_t Ping(std::int32_t val = 45323);
         bool IsConnected() const;

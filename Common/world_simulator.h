@@ -24,6 +24,7 @@ namespace darwin {
         UniformEnum GetCloseUniforms(const proto::Vector3& normal) const;
         proto::Character GetCharacterByName(const std::string& name);
         void SetCharacter(const proto::Character& character);
+        std::string GetPotentialHit(const proto::Character& character) const;
 
     public:
         void SetPlayerParameter(const proto::PlayerParameter& parameter) {

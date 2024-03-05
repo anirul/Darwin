@@ -63,6 +63,12 @@ namespace darwin {
             "[{}] Got a push request from {}\n",
             context->peer(),
             request->name());
+        if (!request->potential_hit().empty()) {
+            std::cout << std::format(
+                "[{}] Got a potential hit from {}\n",
+                context->peer(),
+                request->potential_hit());
+        }
 #endif // _DEBUG
         // Check if character is own by this peer.
         if (!world_state_.IsCharacterOwnByPeer(
@@ -88,8 +94,19 @@ namespace darwin {
                 now.time_since_epoch())
             .count();
         time_characters_.insert({ time, character });
+        if (!request->potential_hit().empty()) {
+            character_potential_hits_.insert(
+                { request->name(), request->potential_hit() });
+        }
         response->set_return_enum(proto::RETURN_OK);
         return grpc::Status::OK;
+    }
+
+    std::map<std::string, std::string> DarwinServiceImpl::GetPotentialHits() {
+        std::lock_guard<std::mutex> lock(writers_mutex_);
+        auto map = character_potential_hits_;
+        character_potential_hits_.clear();
+        return map;
     }
 
     grpc::Status DarwinServiceImpl::CreateCharacter(
@@ -205,6 +222,8 @@ namespace darwin {
                 }
                 ClearTimeCharacters();
             }
+            // Update the list of potential hits.
+            world_state_.SetPotentialHits(GetPotentialHits());
             // Update the elements in the world.
             world_state_.Update(time);
             const auto& elements = world_state_.GetElements();

@@ -1,6 +1,10 @@
 #include "Common/convert_math.h"
 
 #include <random>
+#include <cmath>
+
+#include "Common/darwin_constant.h"
+#include "Common/vector.h"
 
 namespace darwin {
 
@@ -43,6 +47,20 @@ namespace darwin {
         std::mt19937 gen(rd());
         std::uniform_real_distribution<double> dis(-1.0, 1.0);
         return glm::vec3(dis(gen), dis(gen), dis(gen));
+    }
+
+    double GetRadiusFromVolume(double volume) {
+        return std::cbrt((3.0 * volume) / (4.0 * PI));
+    }
+
+    bool IsIntersecting(
+        const proto::Physic& character,
+        const proto::Physic& element)
+    {
+        double distance =
+            Distance(character.position(), element.position());
+        double radius_sum = character.radius() + element.radius();
+        return distance < radius_sum;
     }
 
 }  // End namespace darwin.

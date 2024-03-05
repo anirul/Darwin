@@ -12,5 +12,9 @@ namespace darwin {
     proto::Vector3 Glm2ProtoVector(const glm::dvec3& vector3);
     proto::Vector4 Glm2ProtoVector(const glm::dquat& vector4);
     glm::vec3 RandomVec3();
+    double GetRadiusFromVolume(double volume);
+    bool IsIntersecting(
+        const proto::Physic& character,
+        const proto::Physic& element);
 
 } // namespace darwin

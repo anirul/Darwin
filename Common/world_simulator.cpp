@@ -181,4 +181,23 @@ namespace darwin {
         }
     }
 
+    std::string WorldSimulator::GetPotentialHit(
+        const proto::Character& me) const
+    {
+        std::lock_guard l(mutex_);
+        for (const auto& element : elements_) {
+            if (IsIntersecting(me.physic(), element.physic())) {
+                return element.name();
+            }
+        }
+        for (const auto& character : characters_) {
+            if (me.name() == character.name()) continue;
+            if (me.physic().mass() < character.physic().mass()) continue;
+            if (IsIntersecting(me.physic(), character.physic())) {
+                return character.name();
+            }
+        }
+        return "";
+    }
+
 } // End namespace darwin.

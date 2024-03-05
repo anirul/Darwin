@@ -203,19 +203,20 @@ inline bool StatusEnum_Parse(
     StatusEnum_descriptor(), name, value);
 }
 enum TypeEnum : int {
-  TYPE_UKNOWN = 0,
+  TYPE_UNKNOWN = 0,
   TYPE_GROUND = 1,
   TYPE_EXPLOSION = 2,
   TYPE_UPGRADE = 3,
   TYPE_GREEN = 4,
   TYPE_BROWN = 5,
   TYPE_WATER = 6,
+  TYPE_CHARACTER = 7,
   TypeEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   TypeEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool TypeEnum_IsValid(int value);
-constexpr TypeEnum TypeEnum_MIN = TYPE_UKNOWN;
-constexpr TypeEnum TypeEnum_MAX = TYPE_WATER;
+constexpr TypeEnum TypeEnum_MIN = TYPE_UNKNOWN;
+constexpr TypeEnum TypeEnum_MAX = TYPE_CHARACTER;
 constexpr int TypeEnum_ARRAYSIZE = TypeEnum_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* TypeEnum_descriptor();
@@ -1602,8 +1603,7 @@ class PlayerParameter final :
     kVerticalSpeedFieldNumber = 1,
     kHorizontalSpeedFieldNumber = 2,
     kStartMassFieldNumber = 3,
-    kStartRadiusFieldNumber = 4,
-    kDropHeightFieldNumber = 5,
+    kDropHeightFieldNumber = 4,
   };
   // double vertical_speed = 1;
   void clear_vertical_speed();
@@ -1632,16 +1632,7 @@ class PlayerParameter final :
   void _internal_set_start_mass(double value);
   public:
 
-  // double start_radius = 4;
-  void clear_start_radius();
-  double start_radius() const;
-  void set_start_radius(double value);
-  private:
-  double _internal_start_radius() const;
-  void _internal_set_start_radius(double value);
-  public:
-
-  // double drop_height = 5;
+  // double drop_height = 4;
   void clear_drop_height();
   double drop_height() const;
   void set_drop_height(double value);
@@ -1661,7 +1652,6 @@ class PlayerParameter final :
     double vertical_speed_;
     double horizontal_speed_;
     double start_mass_;
-    double start_radius_;
     double drop_height_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -2341,7 +2331,7 @@ class ReportMovementRequest final :
 
   enum : int {
     kNameFieldNumber = 1,
-    kSessionTockenFieldNumber = 3,
+    kPotentialHitFieldNumber = 3,
     kPhysicFieldNumber = 2,
   };
   // string name = 1;
@@ -2358,18 +2348,18 @@ class ReportMovementRequest final :
   std::string* _internal_mutable_name();
   public:
 
-  // string session_tocken = 3;
-  void clear_session_tocken();
-  const std::string& session_tocken() const;
+  // string potential_hit = 3;
+  void clear_potential_hit();
+  const std::string& potential_hit() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_session_tocken(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_session_tocken();
-  PROTOBUF_NODISCARD std::string* release_session_tocken();
-  void set_allocated_session_tocken(std::string* session_tocken);
+  void set_potential_hit(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_potential_hit();
+  PROTOBUF_NODISCARD std::string* release_potential_hit();
+  void set_allocated_potential_hit(std::string* potential_hit);
   private:
-  const std::string& _internal_session_tocken() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_session_tocken(const std::string& value);
-  std::string* _internal_mutable_session_tocken();
+  const std::string& _internal_potential_hit() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_potential_hit(const std::string& value);
+  std::string* _internal_mutable_potential_hit();
   public:
 
   // .proto.Physic physic = 2;
@@ -2399,7 +2389,7 @@ class ReportMovementRequest final :
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr session_tocken_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr potential_hit_;
     ::proto::Physic* physic_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -5065,27 +5055,7 @@ inline void PlayerParameter::set_start_mass(double value) {
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.start_mass)
 }
 
-// double start_radius = 4;
-inline void PlayerParameter::clear_start_radius() {
-  _impl_.start_radius_ = 0;
-}
-inline double PlayerParameter::_internal_start_radius() const {
-  return _impl_.start_radius_;
-}
-inline double PlayerParameter::start_radius() const {
-  // @@protoc_insertion_point(field_get:proto.PlayerParameter.start_radius)
-  return _internal_start_radius();
-}
-inline void PlayerParameter::_internal_set_start_radius(double value) {
-  
-  _impl_.start_radius_ = value;
-}
-inline void PlayerParameter::set_start_radius(double value) {
-  _internal_set_start_radius(value);
-  // @@protoc_insertion_point(field_set:proto.PlayerParameter.start_radius)
-}
-
-// double drop_height = 5;
+// double drop_height = 4;
 inline void PlayerParameter::clear_drop_height() {
   _impl_.drop_height_ = 0;
 }
@@ -5601,54 +5571,54 @@ inline void ReportMovementRequest::set_allocated_physic(::proto::Physic* physic)
   // @@protoc_insertion_point(field_set_allocated:proto.ReportMovementRequest.physic)
 }
 
-// string session_tocken = 3;
-inline void ReportMovementRequest::clear_session_tocken() {
-  _impl_.session_tocken_.ClearToEmpty();
+// string potential_hit = 3;
+inline void ReportMovementRequest::clear_potential_hit() {
+  _impl_.potential_hit_.ClearToEmpty();
 }
-inline const std::string& ReportMovementRequest::session_tocken() const {
-  // @@protoc_insertion_point(field_get:proto.ReportMovementRequest.session_tocken)
-  return _internal_session_tocken();
+inline const std::string& ReportMovementRequest::potential_hit() const {
+  // @@protoc_insertion_point(field_get:proto.ReportMovementRequest.potential_hit)
+  return _internal_potential_hit();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void ReportMovementRequest::set_session_tocken(ArgT0&& arg0, ArgT... args) {
+void ReportMovementRequest::set_potential_hit(ArgT0&& arg0, ArgT... args) {
  
- _impl_.session_tocken_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.ReportMovementRequest.session_tocken)
+ _impl_.potential_hit_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:proto.ReportMovementRequest.potential_hit)
 }
-inline std::string* ReportMovementRequest::mutable_session_tocken() {
-  std::string* _s = _internal_mutable_session_tocken();
-  // @@protoc_insertion_point(field_mutable:proto.ReportMovementRequest.session_tocken)
+inline std::string* ReportMovementRequest::mutable_potential_hit() {
+  std::string* _s = _internal_mutable_potential_hit();
+  // @@protoc_insertion_point(field_mutable:proto.ReportMovementRequest.potential_hit)
   return _s;
 }
-inline const std::string& ReportMovementRequest::_internal_session_tocken() const {
-  return _impl_.session_tocken_.Get();
+inline const std::string& ReportMovementRequest::_internal_potential_hit() const {
+  return _impl_.potential_hit_.Get();
 }
-inline void ReportMovementRequest::_internal_set_session_tocken(const std::string& value) {
+inline void ReportMovementRequest::_internal_set_potential_hit(const std::string& value) {
   
-  _impl_.session_tocken_.Set(value, GetArenaForAllocation());
+  _impl_.potential_hit_.Set(value, GetArenaForAllocation());
 }
-inline std::string* ReportMovementRequest::_internal_mutable_session_tocken() {
+inline std::string* ReportMovementRequest::_internal_mutable_potential_hit() {
   
-  return _impl_.session_tocken_.Mutable(GetArenaForAllocation());
+  return _impl_.potential_hit_.Mutable(GetArenaForAllocation());
 }
-inline std::string* ReportMovementRequest::release_session_tocken() {
-  // @@protoc_insertion_point(field_release:proto.ReportMovementRequest.session_tocken)
-  return _impl_.session_tocken_.Release();
+inline std::string* ReportMovementRequest::release_potential_hit() {
+  // @@protoc_insertion_point(field_release:proto.ReportMovementRequest.potential_hit)
+  return _impl_.potential_hit_.Release();
 }
-inline void ReportMovementRequest::set_allocated_session_tocken(std::string* session_tocken) {
-  if (session_tocken != nullptr) {
+inline void ReportMovementRequest::set_allocated_potential_hit(std::string* potential_hit) {
+  if (potential_hit != nullptr) {
     
   } else {
     
   }
-  _impl_.session_tocken_.SetAllocated(session_tocken, GetArenaForAllocation());
+  _impl_.potential_hit_.SetAllocated(potential_hit, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.session_tocken_.IsDefault()) {
-    _impl_.session_tocken_.Set("", GetArenaForAllocation());
+  if (_impl_.potential_hit_.IsDefault()) {
+    _impl_.potential_hit_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.ReportMovementRequest.session_tocken)
+  // @@protoc_insertion_point(field_set_allocated:proto.ReportMovementRequest.potential_hit)
 }
 
 // -------------------------------------------------------------------

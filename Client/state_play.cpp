@@ -116,7 +116,7 @@ namespace darwin::state {
             // Reset position delta time on the ground.
             physic.release_position_dt()->CopyFrom(
                 CreateBasicVector3(0.0, 0.0, 0.0));
-            proto::PlayerParameter player_parameter = 
+            proto::PlayerParameter player_parameter =
                 world_simulator_.GetPlayerParameter();
             if (input_acquisition_ptr_->IsJumping()) {
                 modified = true;
@@ -124,36 +124,36 @@ namespace darwin::state {
                     Add(
                         physic.position_dt(),
                         MultiplyVector3ByScalar(
-                            character.normal(), 
+                            character.normal(),
                             player_parameter.vertical_speed())));
                 character.set_status_enum(proto::STATUS_JUMPING);
             }
             if (input_acquisition_ptr_->IsMoving()) {
                 modified = true;
                 auto forward = Normalize(Glm2ProtoVector(character_forward_));
-                auto right = 
+                auto right =
                     Normalize(CrossProduct(character.normal(), forward));
-                auto direction = 
+                auto direction =
                     Normalize(
                         Add(
                             MultiplyVector3ByScalar(
-                                right, 
-                                input_acquisition_ptr_->GetHorizontal()), 
+                                right,
+                                input_acquisition_ptr_->GetHorizontal()),
                             MultiplyVector3ByScalar(
-                                forward, 
+                                forward,
                                 input_acquisition_ptr_->GetVertical())));
                 physic.mutable_position_dt()->CopyFrom(
                     Add(
                         physic.position_dt(),
                         MultiplyVector3ByScalar(
                             direction,
-                            player_parameter.vertical_speed())));   
+                            player_parameter.vertical_speed())));
             }
             // Apply the changes.
             if (modified) {
                 *character.mutable_physic() = physic;
                 world_simulator_.SetCharacter(character);
-                darwin_client_->ReportMovement(character.name(), physic);
+                darwin_client_->ReportMovement(character.name(), physic, "");
             }
         }
     }
@@ -182,6 +182,15 @@ namespace darwin::state {
         UpdateMovement(character);
         // Update the world simulator.
         world_simulator_.UpdateTime();
+        // Get the list of potential hit.
+        auto name = world_simulator_.GetPotentialHit(character);
+        // In case this is valid (not empty and not earth).
+        if ((name != "") && (name != "earth")) {
+            logger_->info("Hit {}", name);
+            // Send a report movement to the server.
+            darwin_client_->ReportMovement(
+                character_name, character.physic(), name);
+        }
         // Get the close uniforms from the world simulator.
         auto uniforms = world_simulator_.GetCloseUniforms(
             Normalize(character.physic().position()));
