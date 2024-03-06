@@ -36,9 +36,17 @@ namespace darwin {
             std::lock_guard l(mutex_);
             return elements_;
         }
+        std::size_t GetElementsSize() const {
+            std::lock_guard l(mutex_);
+            return elements_.size();
+        }
         std::vector<proto::Character> GetCharacters() const {
             std::lock_guard l(mutex_);
             return characters_;
+        }
+        std::size_t GetCharactersSize() const {
+            std::lock_guard l(mutex_);
+            return characters_.size();
         }
         proto::PlayerParameter GetPlayerParameter() const {
             std::lock_guard l(mutex_);

@@ -25,6 +25,7 @@ namespace darwin {
             const std::string& name, 
             const proto::Physic& physic,
             const std::string& potential_hit);
+        void SendReportMovement();
         void Update();
         std::int32_t Ping(std::int32_t val = 45323);
         bool IsConnected() const;
@@ -49,8 +50,12 @@ namespace darwin {
 
     protected:
         void PollCompletionQueue();
+        proto::Character CorrectCharacter(
+            const proto::Character& server_character,
+            const proto::Character& client_character) const;
 
     private:
+        proto::ReportMovementRequest report_movement_request_;
         std::string name_;
         std::string character_name_;
         std::atomic<double> server_time_ = 0.0;

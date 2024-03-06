@@ -1,10 +1,12 @@
 #include "darwin_client.h"
 
+#include <glm/glm.hpp>
 #include <grpc++/grpc++.h>
 
 #include "async_client_call.h"
 #include "Common/darwin_service.grpc.pb.h"
 #include "Common/vector.h"
+#include "Common/convert_math.h"
 
 namespace darwin {
 
@@ -60,27 +62,32 @@ namespace darwin {
     }
 
     void DarwinClient::ReportMovement(
-        const std::string& name, 
+        const std::string& name,
         const proto::Physic& physic,
         const std::string& potential_hit) 
     {
-        proto::ReportMovementRequest request;
-        request.set_name(name);
-        request.mutable_physic()->CopyFrom(physic);
-        request.set_potential_hit(potential_hit);
+        report_movement_request_.set_name(name);
+        report_movement_request_.mutable_physic()->CopyFrom(physic);
+        report_movement_request_.set_potential_hit(potential_hit);
+    }
 
+    void DarwinClient::SendReportMovement() {
         auto promise = 
             std::make_shared<std::promise<proto::ReportMovementResponse>>();
 
         // This shared state can be used to pass more information to the
         // completion handler.
         auto* call = new AsyncClientCall;
+        call->request = report_movement_request_;
         call->response = std::make_shared<proto::ReportMovementResponse>();
         call->promise = promise;
 
         // Prepare the asynchronous call
         call->rpc = 
-            stub_->PrepareAsyncReportMovement(&call->context, request, &cq_);
+            stub_->PrepareAsyncReportMovement(
+                &call->context, 
+                call->request, 
+                &cq_);
 
         // Start the call
         call->rpc->StartCall();
@@ -102,6 +109,11 @@ namespace darwin {
 
         // Read the stream of responses.
         while (reader->Read(&response)) {
+
+            if (report_movement_request_.name() != "") {
+                SendReportMovement();
+                report_movement_request_.set_name("");
+            }
 
             std::vector<proto::Character> characters;
             for (const auto& character : response.characters()) {
@@ -178,25 +190,62 @@ namespace darwin {
     proto::Character DarwinClient::MergeCharacter(
         proto::Character new_character)
     {
+        if (world_simulator_.GetCharactersSize() == 0) {
+            return new_character;
+        }
         if (new_character.name() == character_name_) {
-            proto::Character character =
-                world_simulator_.GetCharacterByName(character_name_);
-            double length = GetLength(character.physic().position());
-            static auto planet_physic = world_simulator_.GetPlanet();
-            if (length >= planet_physic.radius() &&
-                length <= planet_physic.radius() +
-                world_simulator_.GetPlayerParameter().drop_height())
-            {
-                character.mutable_physic()->set_mass(
-                    new_character.physic().mass());
-                character.mutable_physic()->set_radius(
-                    new_character.physic().radius());
-                new_character.mutable_normal()->CopyFrom(
-                    character.normal());
-                new_character.mutable_physic()->CopyFrom(character.physic());
-            }
+            new_character = CorrectCharacter(
+                new_character,
+                world_simulator_.GetCharacterByName(character_name_));
         }
         return new_character;
+    }
+
+    proto::Character DarwinClient::CorrectCharacter(
+        const proto::Character& server_character,
+        const proto::Character& client_character) const
+    {
+        static auto planet_physic = world_simulator_.GetPlanet();
+        proto::Character character = client_character;
+        if (glm::any(glm::isnan(
+            ProtoVector2Glm(client_character.physic().position())))) 
+        {
+            logger_->error(
+                "Character [{}].position() is not a number.",
+                character_name_);
+            character.mutable_physic()->mutable_position()->CopyFrom(
+                server_character.physic().position());
+        }
+        if (glm::any(glm::isnan(
+            ProtoVector2Glm(client_character.physic().position_dt())))) 
+        {
+            logger_->error(
+                "Character [{}].position_dt() is not a number.",
+                character_name_);
+            character.mutable_physic()->mutable_position_dt()->CopyFrom(
+                Normalize(server_character.physic().position()));
+        }
+        if (glm::any(glm::isnan(ProtoVector2Glm(client_character.normal()))))
+        {
+            logger_->error(
+                "Character [{}].normal() is not a number.",
+                character_name_);
+            character.mutable_normal()->CopyFrom(
+                Normalize(server_character.normal()));
+        }
+        if (glm::any(glm::isnan(ProtoVector2Glm(client_character.g_force()))))
+        {
+            logger_->error(
+                "Character [{}].g_force() is not a number.",
+                character_name_);
+            character.mutable_g_force()->CopyFrom(
+                server_character.g_force());
+        }
+        character.mutable_physic()->set_mass(
+            server_character.physic().mass());
+        character.mutable_physic()->set_radius(
+            server_character.physic().radius());
+        return character;
     }
 
     void DarwinClient::PollCompletionQueue() {

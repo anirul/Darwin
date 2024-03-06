@@ -233,6 +233,33 @@ inline bool TypeEnum_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<TypeEnum>(
     TypeEnum_descriptor(), name, value);
 }
+enum ColorEnum : int {
+  COLOR_ERROR = 0,
+  COLOR_NO = 1,
+  COLOR_YES = 2,
+  COLOR_CIRCLE = 3,
+  ColorEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  ColorEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool ColorEnum_IsValid(int value);
+constexpr ColorEnum ColorEnum_MIN = COLOR_ERROR;
+constexpr ColorEnum ColorEnum_MAX = COLOR_CIRCLE;
+constexpr int ColorEnum_ARRAYSIZE = ColorEnum_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ColorEnum_descriptor();
+template<typename T>
+inline const std::string& ColorEnum_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, ColorEnum>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function ColorEnum_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    ColorEnum_descriptor(), enum_t_value);
+}
+inline bool ColorEnum_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ColorEnum* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ColorEnum>(
+    ColorEnum_descriptor(), name, value);
+}
 // ===================================================================
 
 class Vector3 final :
@@ -1606,6 +1633,7 @@ class PlayerParameter final :
     kDropHeightFieldNumber = 4,
     kPenaltyFieldNumber = 5,
     kDotPenaltyFieldNumber = 6,
+    kChangeColorFieldNumber = 7,
   };
   // double vertical_speed = 1;
   void clear_vertical_speed();
@@ -1661,6 +1689,15 @@ class PlayerParameter final :
   void _internal_set_dot_penalty(double value);
   public:
 
+  // .proto.ColorEnum change_color = 7;
+  void clear_change_color();
+  ::proto::ColorEnum change_color() const;
+  void set_change_color(::proto::ColorEnum value);
+  private:
+  ::proto::ColorEnum _internal_change_color() const;
+  void _internal_set_change_color(::proto::ColorEnum value);
+  public:
+
   // @@protoc_insertion_point(class_scope:proto.PlayerParameter)
  private:
   class _Internal;
@@ -1675,6 +1712,7 @@ class PlayerParameter final :
     double drop_height_;
     double penalty_;
     double dot_penalty_;
+    int change_color_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -5137,6 +5175,26 @@ inline void PlayerParameter::set_dot_penalty(double value) {
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.dot_penalty)
 }
 
+// .proto.ColorEnum change_color = 7;
+inline void PlayerParameter::clear_change_color() {
+  _impl_.change_color_ = 0;
+}
+inline ::proto::ColorEnum PlayerParameter::_internal_change_color() const {
+  return static_cast< ::proto::ColorEnum >(_impl_.change_color_);
+}
+inline ::proto::ColorEnum PlayerParameter::change_color() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.change_color)
+  return _internal_change_color();
+}
+inline void PlayerParameter::_internal_set_change_color(::proto::ColorEnum value) {
+  
+  _impl_.change_color_ = value;
+}
+inline void PlayerParameter::set_change_color(::proto::ColorEnum value) {
+  _internal_set_change_color(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.change_color)
+}
+
 // -------------------------------------------------------------------
 
 // WorldDatabase
@@ -6284,6 +6342,11 @@ template <> struct is_proto_enum< ::proto::TypeEnum> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::proto::TypeEnum>() {
   return ::proto::TypeEnum_descriptor();
+}
+template <> struct is_proto_enum< ::proto::ColorEnum> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::proto::ColorEnum>() {
+  return ::proto::ColorEnum_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

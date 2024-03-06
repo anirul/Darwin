@@ -202,6 +202,7 @@ namespace darwin {
     }
 
     proto::Physic WorldSimulator::GetPlanet() const {
+        std::lock_guard l(mutex_);
         for (const auto& element : elements_) {
             if (element.type_enum() == proto::TYPE_GROUND) {
                 return element.physic();

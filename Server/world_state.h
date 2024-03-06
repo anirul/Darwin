@@ -20,6 +20,9 @@ namespace darwin {
         bool IsCharacterOwnByPeer(
             const std::string& name, 
             const std::string& peer) const;
+        std::optional<proto::Character> GetCharacterOwnedByPeer(
+            const std::string& peer,
+            const std::string& character_name) const;
         bool HasCharacter(const std::string& name) const;
         void UpdateCharacter(
             double time, 

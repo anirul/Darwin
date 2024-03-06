@@ -9,6 +9,7 @@ namespace darwin {
     struct AsyncClientCall {
         grpc::ClientContext context;
         grpc::Status status;
+        proto::ReportMovementRequest request;
         std::shared_ptr<proto::ReportMovementResponse> response;
         std::shared_ptr<std::promise<proto::ReportMovementResponse>> promise;
         std::unique_ptr<

@@ -71,7 +71,9 @@ namespace darwin::state {
         camera_pitch_ = std::clamp(camera_pitch_, -80.0f, -5.0f);
 
         // Create a forward vector for the character (from random).
-        if (character_initial_forward_ == glm::vec3(0.0f)) {
+        if (character_initial_forward_ == glm::vec3(0.0f) || 
+            glm::any(glm::isnan(character_initial_forward_))) 
+        {
             do {
                 character_initial_forward_ = glm::normalize(RandomVec3());
             } while (
@@ -147,7 +149,7 @@ namespace darwin::state {
                         physic.position_dt(),
                         MultiplyVector3ByScalar(
                             direction,
-                            player_parameter.vertical_speed())));
+                            player_parameter.horizontal_speed())));
             }
             // Apply the changes.
             if (modified) {
@@ -177,7 +179,8 @@ namespace darwin::state {
             server_time = darwin_client_->GetServerTime();
         }
         auto character_name = darwin_client_->GetCharacterName();
-        auto character = world_simulator_.GetCharacterByName(character_name);
+        auto character = 
+            world_simulator_.GetCharacterByName(character_name);
         // Update the input acquisition.
         UpdateMovement(character);
         // Update the world simulator.
@@ -186,7 +189,6 @@ namespace darwin::state {
         auto name = world_simulator_.GetPotentialHit(character);
         // In case this is valid (not empty and not earth).
         if ((name != "") && (name != "earth")) {
-            logger_->info("Hit {}", name);
             // Send a report movement to the server.
             darwin_client_->ReportMovement(
                 character_name, character.physic(), name);

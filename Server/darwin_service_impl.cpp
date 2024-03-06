@@ -2,9 +2,11 @@
 
 #include <chrono>
 #include <thread>
+#include <glm/glm.hpp>
 
 #include "Common/darwin_constant.h"
 #include "Common/vector.h"
+#include "Common/convert_math.h"
 #include "world_state.h"
 
 namespace darwin {
@@ -59,10 +61,6 @@ namespace darwin {
         proto::ReportMovementResponse* response)
     {
 #ifdef _DEBUG
-        std::cout << std::format(
-            "[{}] Got a push request from {}\n",
-            context->peer(),
-            request->name());
         if (!request->potential_hit().empty()) {
             std::cout << std::format(
                 "[{}] Got a potential hit from {}\n",
@@ -71,17 +69,21 @@ namespace darwin {
         }
 #endif // _DEBUG
         // Check if character is own by this peer.
-        if (!world_state_.IsCharacterOwnByPeer(
-            context->peer(),
-            request->name())) {
+        std::optional<proto::Character> maybe_character =
+            world_state_.GetCharacterOwnedByPeer(
+                context->peer(), 
+                request->name());
+        if (!maybe_character) {
             response->set_return_enum(proto::RETURN_REJECTED);
             return grpc::Status::CANCELLED;
         }
         std::lock_guard<std::mutex> lock(writers_mutex_);
+        // Update the physic.
+        proto::Physic physic = UpdatePhysic(
+            maybe_character.value().physic(),
+            request->physic());
+        maybe_character.value().mutable_physic()->CopyFrom(physic);
         // Delete previous entry.
-        proto::Character character;
-        character.set_name(request->name());
-        *character.mutable_physic() = request->physic();
         for (const auto& time_character : time_characters_) {
             if (time_character.second.name() == request->name()) {
                 time_characters_.erase(time_character.first);
@@ -93,7 +95,7 @@ namespace darwin {
             std::chrono::duration_cast<std::chrono::duration<double>>(
                 now.time_since_epoch())
             .count();
-        time_characters_.insert({ time, character });
+        time_characters_.insert({ time, maybe_character.value() });
         if (!request->potential_hit().empty()) {
             character_potential_hits_.insert(
                 { request->name(), request->potential_hit() });
@@ -249,6 +251,34 @@ namespace darwin {
             std::this_thread::sleep_until(
                 now + std::chrono::milliseconds(INTERVAL));
         }
+    }
+
+    proto::Physic DarwinServiceImpl::UpdatePhysic(
+        const proto::Physic& server_physic,
+        const proto::Physic& client_physic) const
+    {
+        proto::Physic result = server_physic;
+        if (glm::any(glm::isnan(
+            ProtoVector2Glm(client_physic.position()))))
+        {
+            std::cerr << "Received a NaN position?\n";
+        }
+        else
+        {
+            result.mutable_position()->CopyFrom(
+                client_physic.position());
+        }
+        if (glm::any(glm::isnan(
+            ProtoVector2Glm(client_physic.position_dt()))))
+        {
+            std::cerr << "Received a NaN position_dt?\n";
+        }
+        else
+        {
+            result.mutable_position_dt()->CopyFrom(
+                client_physic.position_dt());
+        }
+        return result;
     }
 
 } // End namespace darwin.

@@ -43,6 +43,11 @@ namespace darwin {
         // Returns the name of character against the potential hits this will
         // empty the list after the call.
         std::map<std::string, std::string> GetPotentialHits();
+
+    protected:
+        proto::Physic UpdatePhysic(
+            const proto::Physic& server_physic, 
+            const proto::Physic& client_physic) const;
         
     protected:
         std::map<double, proto::Character> time_characters_;

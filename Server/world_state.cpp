@@ -161,6 +161,17 @@ namespace darwin {
         return "";
     }
 
+    std::optional<proto::Character> WorldState::GetCharacterOwnedByPeer(
+        const std::string& peer,
+        const std::string& character_name) const
+    {
+        std::scoped_lock l(mutex_info_);
+        if (peer_characters_.contains(peer)) {
+            return character_infos_.at(peer_characters_.at(peer)).character;
+        }
+        return std::nullopt;
+    }
+
     bool WorldState::IsCharacterOwnByPeer(
         const std::string& peer,
         const std::string& character_name) const
@@ -268,18 +279,20 @@ namespace darwin {
         physic.set_radius(GetRadiusFromVolume(physic.mass()));
         character_infos_.at(
             from_to.name_from).character.mutable_physic()->CopyFrom(physic);
-        auto final_color =
-            Normalize(
-                Add(
-                    MultiplyVector3ByScalar(
-                        from_to.color_from,
-                        from_to.physic_from.mass()),
-                    MultiplyVector3ByScalar(
-                        from_to.color_to,
-                        from_to.physic_to.mass())));
-        character_infos_.at(
-            from_to.name_from).character.mutable_color()->CopyFrom(
-                final_color);
+        if (GetPlayerParameter().change_color() == proto::COLOR_YES) {
+            auto final_color =
+                Normalize(
+                    Add(
+                        MultiplyVector3ByScalar(
+                            from_to.color_from,
+                            from_to.physic_from.mass()),
+                        MultiplyVector3ByScalar(
+                            from_to.color_to,
+                            from_to.physic_to.mass())));
+            character_infos_.at(
+                from_to.name_from).character.mutable_color()->CopyFrom(
+                    final_color);
+        }
     }
 
     void WorldState::LostSourceElementLocked(const FromTo& from_to) {

@@ -32,6 +32,13 @@ enum TypeEnum {
     TYPE_CHARACTER = 7;     // Player character.
 }
 
+enum ColorEnum {
+    COLOR_ERROR = 0;        // Error in the function?
+    COLOR_NO = 1;           // No change of color.
+    COLOR_YES = 2;          // Change of color.
+    COLOR_CIRCLE = 3;       // Change of color in a circle.
+}
+
 // Vector 3 this store position or other 3 float values.
 // Next: 4
 message Vector3 {
@@ -111,7 +118,7 @@ message CharacterReport {
 }
 
 // PlayerParameter
-// Next: 7
+// Next: 8
 message PlayerParameter {
     // Vertical speed (jumping).
     double vertical_speed = 1;
@@ -125,6 +132,8 @@ message PlayerParameter {
     double penalty = 5;
     // Dot product limit for penalty.
     double dot_penalty = 6;
+    // Change color when you eat.
+    ColorEnum change_color = 7;
 }
 
 // WorldDatabase saved as a file.
