@@ -90,16 +90,21 @@ namespace darwin {
                 break;
             }
         }
+        if (!request->potential_hit().empty()) {
+            character_potential_hits_.insert(
+                { request->name(), request->potential_hit() });
+        }
+        else {
+            maybe_character.value().mutable_physic()->set_mass(
+                maybe_character.value().physic().mass() - 
+                world_state_.GetPlayerParameter().move_cost());
+        }
         auto now = std::chrono::system_clock::now();
         double time =
             std::chrono::duration_cast<std::chrono::duration<double>>(
                 now.time_since_epoch())
             .count();
         time_characters_.insert({ time, maybe_character.value() });
-        if (!request->potential_hit().empty()) {
-            character_potential_hits_.insert(
-                { request->name(), request->potential_hit() });
-        }
         response->set_return_enum(proto::RETURN_OK);
         return grpc::Status::OK;
     }

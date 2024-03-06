@@ -39,11 +39,12 @@
   "characters": [],
   "time": 0.0,
   "player_parameter": {
-    "vertical_speed": 10.0,
-    "horizontal_speed": 10.0,
+    "vertical_speed": 15.0,
+    "horizontal_speed": 15.0,
     "start_mass": 4.0,
     "drop_height": 10.0,
-    "penalty": -0.2,
+    "move_cost": 0.1,
+    "penalty": -0.3,
     "dot_penalty": 0.95,
     "change_color": "COLOR_NO"
   }

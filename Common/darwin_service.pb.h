@@ -1633,6 +1633,7 @@ class PlayerParameter final :
     kDropHeightFieldNumber = 4,
     kPenaltyFieldNumber = 5,
     kDotPenaltyFieldNumber = 6,
+    kMoveCostFieldNumber = 8,
     kChangeColorFieldNumber = 7,
   };
   // double vertical_speed = 1;
@@ -1689,6 +1690,15 @@ class PlayerParameter final :
   void _internal_set_dot_penalty(double value);
   public:
 
+  // double move_cost = 8;
+  void clear_move_cost();
+  double move_cost() const;
+  void set_move_cost(double value);
+  private:
+  double _internal_move_cost() const;
+  void _internal_set_move_cost(double value);
+  public:
+
   // .proto.ColorEnum change_color = 7;
   void clear_change_color();
   ::proto::ColorEnum change_color() const;
@@ -1712,6 +1722,7 @@ class PlayerParameter final :
     double drop_height_;
     double penalty_;
     double dot_penalty_;
+    double move_cost_;
     int change_color_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -5193,6 +5204,26 @@ inline void PlayerParameter::_internal_set_change_color(::proto::ColorEnum value
 inline void PlayerParameter::set_change_color(::proto::ColorEnum value) {
   _internal_set_change_color(value);
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.change_color)
+}
+
+// double move_cost = 8;
+inline void PlayerParameter::clear_move_cost() {
+  _impl_.move_cost_ = 0;
+}
+inline double PlayerParameter::_internal_move_cost() const {
+  return _impl_.move_cost_;
+}
+inline double PlayerParameter::move_cost() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.move_cost)
+  return _internal_move_cost();
+}
+inline void PlayerParameter::_internal_set_move_cost(double value) {
+  
+  _impl_.move_cost_ = value;
+}
+inline void PlayerParameter::set_move_cost(double value) {
+  _internal_set_move_cost(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.move_cost)
 }
 
 // -------------------------------------------------------------------

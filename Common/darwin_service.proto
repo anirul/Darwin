@@ -118,7 +118,7 @@ message CharacterReport {
 }
 
 // PlayerParameter
-// Next: 8
+// Next: 9
 message PlayerParameter {
     // Vertical speed (jumping).
     double vertical_speed = 1;
@@ -134,6 +134,8 @@ message PlayerParameter {
     double dot_penalty = 6;
     // Change color when you eat.
     ColorEnum change_color = 7;
+    // Move cost in mass value.
+    double move_cost = 8;
 }
 
 // WorldDatabase saved as a file.
