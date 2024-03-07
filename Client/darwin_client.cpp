@@ -37,10 +37,12 @@ namespace darwin {
 
     bool DarwinClient::CreateCharacter(
         const std::string& name, 
-        const proto::Vector3& color) {
+        const proto::Vector3& color) 
+    {
         proto::CreateCharacterRequest request;
         request.set_name(name);
         request.mutable_color()->CopyFrom(color);
+        Clear();
 
         proto::CreateCharacterResponse response;
         grpc::ClientContext context;
@@ -61,6 +63,12 @@ namespace darwin {
         }
     }
 
+    void DarwinClient::Clear() {
+        report_movement_request_.set_name("");
+        world_simulator_.Clear();
+        character_name_ = "";
+    }
+
     void DarwinClient::ReportMovement(
         const std::string& name,
         const proto::Physic& physic,
@@ -78,10 +86,11 @@ namespace darwin {
         // This shared state can be used to pass more information to the
         // completion handler.
         auto* call = new AsyncClientCall;
+        std::scoped_lock l(call->mutex);
         call->request = report_movement_request_;
         call->response = std::make_shared<proto::ReportMovementResponse>();
         call->promise = promise;
-
+        
         // Prepare the asynchronous call
         call->rpc = 
             stub_->PrepareAsyncReportMovement(
@@ -190,7 +199,7 @@ namespace darwin {
     proto::Character DarwinClient::MergeCharacter(
         proto::Character new_character)
     {
-        if (world_simulator_.GetCharactersSize() == 0) {
+        if (!world_simulator_.HasCharacter(new_character.name())) {
             return new_character;
         }
         if (new_character.name() == character_name_) {

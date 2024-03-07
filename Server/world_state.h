@@ -49,6 +49,8 @@ namespace darwin {
         }
 
     private:
+        void CheckGroundCharactersLocked();
+        void CheckDeathCharactersLocked();
         proto::Element GetPlanetLocked() const;
         void FillVectorsLocked();
         void CheckIntersectPlayerLocked();

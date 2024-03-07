@@ -31,6 +31,7 @@ namespace darwin::modal {
         void SetName(const std::string& name) override;
 
     private:
+        char name_buffer_[64] = { 0 };
         std::string name_;
         ModalCharacterParams& params_;
         bool end_ = false;

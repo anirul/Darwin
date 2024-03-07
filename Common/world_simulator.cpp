@@ -104,6 +104,16 @@ namespace darwin {
         return uniform_enum;
     }
 
+    bool WorldSimulator::HasCharacter(const std::string& name) const {
+        std::lock_guard l(mutex_);
+        for (const auto& character : characters_) {
+            if (character.name() == name) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     bool WorldSimulator::IsClose(
         const proto::Vector3& normal,
         const proto::Vector3& position) const

@@ -53,6 +53,7 @@ namespace darwin {
         proto::Character CorrectCharacter(
             const proto::Character& server_character,
             const proto::Character& client_character) const;
+        void Clear();
 
     private:
         proto::ReportMovementRequest report_movement_request_;

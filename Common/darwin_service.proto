@@ -19,6 +19,8 @@ enum StatusEnum {
     STATUS_UNKNOWN = 0;     // Unknown this is an error!
     STATUS_ON_GROUND = 1;   // On the ground.
     STATUS_JUMPING = 2;     // Jumping.
+    STATUS_LOADING = 3;     // Loading in the game.
+    STATUS_DEAD = 4;        // Dead.
 }
 
 enum TypeEnum {

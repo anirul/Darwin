@@ -17,6 +17,13 @@ namespace darwin {
     {
         std::scoped_lock l(mutex_info_);
         auto it = character_infos_.find(name);
+        if (it != character_infos_.end()) {
+            const auto& character = it->second.character;
+            if (character.status_enum() == proto::STATUS_DEAD) {
+                character_infos_.erase(name);
+                it = character_infos_.end();
+            }
+        }
         if (it == character_infos_.end()) {
             proto::Character character;
             character.set_name(name);
@@ -327,10 +334,40 @@ namespace darwin {
     void WorldState::Update(double time) {
         std::scoped_lock l(mutex_info_);
         if (time != last_updated_) {
+            CheckGroundCharactersLocked();
+            CheckDeathCharactersLocked();
             CheckIntersectPlayerLocked();
             last_updated_ = time;
         }
         FillVectorsLocked();
+    }
+
+
+
+    void WorldState::CheckGroundCharactersLocked() {
+        auto ground = GetPlanetLocked();
+        for (auto& [_, character_info] : character_infos_) {
+            if (character_info.character.status_enum() == 
+                proto::STATUS_ON_GROUND) 
+            {
+                character_info.character.mutable_physic()->
+                    mutable_position()->
+                    CopyFrom(
+                        MultiplyVector3ByScalar(
+                            character_info.character.normal(),
+                            ground.physic().radius() + 
+                            character_info.character.physic().radius()));
+            }
+        }
+    }
+
+    void WorldState::CheckDeathCharactersLocked() {
+        for (auto& [_, character_info] : character_infos_) {
+            if (character_info.character.physic().mass() < 1.0) {
+                character_info.character.set_status_enum(
+                    proto::STATUS_DEAD);
+            }
+        }
     }
 
     double WorldState::GetLastUpdated() const {

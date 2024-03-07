@@ -26,6 +26,7 @@ namespace darwin {
         void SetCharacter(const proto::Character& character);
         std::string GetPotentialHit(const proto::Character& character) const;
         proto::Physic GetPlanet() const;
+        bool HasCharacter(const std::string& name) const;
 
     public:
         void SetPlayerParameter(const proto::PlayerParameter& parameter) {
@@ -51,6 +52,11 @@ namespace darwin {
         proto::PlayerParameter GetPlayerParameter() const {
             std::lock_guard l(mutex_);
             return player_parameter_;
+        }
+        void Clear() {
+            std::lock_guard l(mutex_);
+            elements_.clear();
+            characters_.clear();
         }
 
     protected:

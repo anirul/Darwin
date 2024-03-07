@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "state_disconnected.h"
+#include "state_death.h"
 #include "state_context.h"
 #include "Common/convert_math.h"
 #include "Common/vector.h"
@@ -198,6 +199,7 @@ namespace darwin::state {
             Normalize(character.physic().position()));
         assert(uniforms.spheres.size() == uniforms.colors.size());
         auto& program = GetProgram();
+        bool is_character_valid = false;
         // Update Uniforms.
         program.Use();
         UpdateUniformSpheres(program, uniforms);
@@ -205,9 +207,18 @@ namespace darwin::state {
             logger_->warn("Character {} not found", character_name);
         }
         else {
+            is_character_valid = true;
             UpdateUniformCamera(program, character);
         }
         program.UnUse();
+        if (is_character_valid) {
+            if (character.physic().mass() <= 1.0) {
+                state_context.ChangeState(
+                    std::make_unique<StateDeath>(
+                        app_,
+                        std::move(darwin_client_)));
+            }
+        }
     }
 
 } // namespace darwin::state.

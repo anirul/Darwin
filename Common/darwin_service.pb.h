@@ -180,12 +180,14 @@ enum StatusEnum : int {
   STATUS_UNKNOWN = 0,
   STATUS_ON_GROUND = 1,
   STATUS_JUMPING = 2,
+  STATUS_LOADING = 3,
+  STATUS_DEAD = 4,
   StatusEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   StatusEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool StatusEnum_IsValid(int value);
 constexpr StatusEnum StatusEnum_MIN = STATUS_UNKNOWN;
-constexpr StatusEnum StatusEnum_MAX = STATUS_JUMPING;
+constexpr StatusEnum StatusEnum_MAX = STATUS_DEAD;
 constexpr int StatusEnum_ARRAYSIZE = StatusEnum_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* StatusEnum_descriptor();

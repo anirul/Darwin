@@ -15,13 +15,12 @@ namespace darwin::modal {
     }
 
     bool ModalCharacter::DrawCallback() {
-        static char name[64] = { '\0' };
         if (ImGui::InputText(
             "Name",
-            name,
+            name_buffer_,
             64,
             ImGuiInputTextFlags_CharsNoBlank)) {
-            params_.name = name;
+            params_.name = name_buffer_;
         }
         const ImVec4 colors[] = {
             ImVec4(1.0f, 0.0f, 0.0f, 1.0f),

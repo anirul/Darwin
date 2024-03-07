@@ -10,6 +10,8 @@ add_executable(DarwinClient
         main.cpp
         modal_character.cpp
         modal_character.h
+        modal_death.cpp
+        modal_death.h
         modal_disconnected.cpp
         modal_disconnected.h
         modal_ping.cpp
@@ -21,6 +23,8 @@ add_executable(DarwinClient
         state_character.h
         state_context.cpp
         state_context.h
+        state_death.cpp
+        state_death.h
         state_disconnected.cpp
         state_disconnected.h
         state_title.cpp
