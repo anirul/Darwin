@@ -1,11 +1,15 @@
 # Darwin client.
 
 add_executable(DarwinServer
+    character_info.h
     darwin_service_impl.cpp
     darwin_service_impl.h
     element_info.h
     main.cpp
-    character_info.h
+    update_responder.cpp
+    update_responder.h
+    update_responder_container.cpp
+    update_responder_container.h
     world_state.cpp
     world_state.h
     world_state_file.cpp

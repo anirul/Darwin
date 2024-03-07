@@ -22,13 +22,17 @@ ABSL_FLAG(
 int main(int ac, char** av) try {
     absl::ParseCommandLine(ac, av);
     grpc::ServerBuilder builder;
+    builder.AddListeningPort(
+        absl::GetFlag(FLAGS_server_name),
+        grpc::InsecureServerCredentials());
+    auto cq = builder.AddCompletionQueue();
     darwin::WorldState world_state;
     std::cout 
         << "loading world state from file: "<< absl::GetFlag(FLAGS_world_db) 
         << "\n";
     LoadWorldStateFromFile(world_state, absl::GetFlag(FLAGS_world_db));
     world_state.AddRandomElements(400);
-    darwin::DarwinServiceImpl service{ world_state };
+    darwin::DarwinServiceImpl service{ cq.get(), world_state };
 
     std::cout << "starting world simulation\n";
     // Create a callback that will compute the next epoch.
@@ -36,14 +40,18 @@ int main(int ac, char** av) try {
         service.ComputeWorld();
     });
 
-    std::cout << "listening on: " << absl::GetFlag(FLAGS_server_name) << "\n";
-    builder.AddListeningPort(
-        absl::GetFlag(FLAGS_server_name),
-        grpc::InsecureServerCredentials());
     builder.RegisterService(&service);
     std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
-    server->Wait();
+    std::cout << "listening on: " << absl::GetFlag(FLAGS_server_name) << "\n";
 
+    // Uniquelly identify a request.
+    void* tag;
+    bool ok;
+    while (true) {
+        cq->Next(&tag, &ok);
+        static_cast<darwin::DarwinServiceImpl*>(tag)->ListenForUpdates();
+    }
+    server->Shutdown();
     // Wait for the future to finish.
     future.wait();
     return 0;

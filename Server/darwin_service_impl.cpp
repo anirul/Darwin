@@ -23,10 +23,6 @@ namespace darwin {
                 context->peer(),
                 request->name());
 #endif
-        {
-            std::lock_guard<std::mutex> lock(writers_mutex_);
-            writers_.push_back(writer);
-        }
         // This will block the connection, you can use a condition variable to
         // detect disconnect or a keep-alive mechanism.
         while (!context->IsCancelled()) {
@@ -50,8 +46,6 @@ namespace darwin {
                     character_name);
         }
 #endif // _DEBUG
-        std::lock_guard<std::mutex> lock(writers_mutex_);
-        writers_.remove(writer);
         return grpc::Status::OK;
     }
 
@@ -77,7 +71,7 @@ namespace darwin {
             response->set_return_enum(proto::RETURN_REJECTED);
             return grpc::Status::CANCELLED;
         }
-        std::lock_guard<std::mutex> lock(writers_mutex_);
+        std::lock_guard<std::mutex> lock(mutex_);
         // Update the physic.
         proto::Physic physic = UpdatePhysic(
             maybe_character.value().physic(),
@@ -110,7 +104,7 @@ namespace darwin {
     }
 
     std::map<std::string, std::string> DarwinServiceImpl::GetPotentialHits() {
-        std::lock_guard<std::mutex> lock(writers_mutex_);
+        std::lock_guard<std::mutex> lock(mutex_);
         auto map = character_potential_hits_;
         character_potential_hits_.clear();
         return map;
@@ -187,15 +181,6 @@ namespace darwin {
         return grpc::Status::OK;
     }
 
-    void DarwinServiceImpl::BroadcastUpdate(
-        const proto::UpdateResponse& response)
-    {
-        std::lock_guard<std::mutex> lock(writers_mutex_);
-        for (auto writer : writers_) {
-            writer->Write(response);
-        }
-    }
-
     std::map<double, proto::Character>& DarwinServiceImpl::GetTimeCharacters()
     {
         return time_characters_;
@@ -204,11 +189,6 @@ namespace darwin {
     void DarwinServiceImpl::ClearTimeCharacters()
     {
         time_characters_.clear();
-    }
-
-    std::mutex& DarwinServiceImpl::GetTimeCharacterMutex()
-    {
-        return writers_mutex_;
     }
 
     void DarwinServiceImpl::ComputeWorld() {
@@ -220,7 +200,7 @@ namespace darwin {
                 .count();
             // Update the players.
             {
-                std::lock_guard<std::mutex> lock(GetTimeCharacterMutex());
+                std::lock_guard<std::mutex> lock(mutex_);
                 for (const auto& time_player : GetTimeCharacters()) {
                     world_state_.UpdateCharacter(
                         time_player.first,
@@ -241,7 +221,7 @@ namespace darwin {
             response.mutable_characters()->CopyFrom(
                 { characters.begin(), characters.end() });
             response.set_time(time);
-            BroadcastUpdate(response);
+            update_responders_.BroadcastUpdate(response);
             // Pring a warning if the computation is too slow.
             if ((now + std::chrono::milliseconds(INTERVAL)) <
                 std::chrono::system_clock::now())

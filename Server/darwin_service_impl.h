@@ -1,16 +1,35 @@
 #pragma once
 
 #include <grpc++/grpc++.h>
+#include <memory>
 
 #include "Common/darwin_service.grpc.pb.h"
 #include "world_state.h"
+#include "update_responder.h"
+#include "update_responder_container.h"
 
 namespace darwin {
 
-    class DarwinServiceImpl final : public proto::DarwinService::Service {
+    class DarwinServiceImpl final : public proto::DarwinService::AsyncService 
+    {
     public:
-        DarwinServiceImpl(WorldState& world_state) : 
-            world_state_(world_state) {}
+        explicit DarwinServiceImpl(
+            grpc::ServerCompletionQueue* cq,
+            WorldState& world_state) : 
+            cq_(cq), world_state_(world_state)
+        {
+            ListenForUpdates();
+        }
+        ~DarwinServiceImpl() {
+            cq_->Shutdown();
+        }
+        void ListenForUpdates() {
+            update_responders_.AddResponder(
+                std::make_unique<UpdateResponder>(
+                    this, 
+                    update_responders_, 
+                    cq_));
+        }
 
     public:
         grpc::Status Update(
@@ -35,10 +54,8 @@ namespace darwin {
             proto::DeathReportResponse* response) override;
 
     public:
-        void BroadcastUpdate(const proto::UpdateResponse& response);
         std::map<double, proto::Character>& GetTimeCharacters();
         void ClearTimeCharacters();
-        std::mutex& GetTimeCharacterMutex();
         void ComputeWorld();
         // Returns the name of character against the potential hits this will
         // empty the list after the call.
@@ -50,12 +67,13 @@ namespace darwin {
             const proto::Physic& client_physic) const;
         
     protected:
+        UpdateResponderContainer update_responders_;
+        grpc::ServerCompletionQueue* cq_;
         std::map<double, proto::Character> time_characters_;
         // Name of the character against name of potential hits.
+        std::mutex mutex_;
         std::map<std::string, std::string> character_potential_hits_;
         WorldState& world_state_;
-        std::list<grpc::ServerWriter<proto::UpdateResponse>*> writers_;
-        std::mutex writers_mutex_;
     };
 
 }  // namespace darwin.
