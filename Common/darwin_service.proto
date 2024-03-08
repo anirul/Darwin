@@ -120,7 +120,7 @@ message CharacterReport {
 }
 
 // PlayerParameter
-// Next: 10
+// Next: 11
 message PlayerParameter {
     // Vertical speed (jumping).
     double vertical_speed = 1;
@@ -140,6 +140,8 @@ message PlayerParameter {
     double move_cost = 8;
     // Friction (this will stop the move at a certain point).
     double friction = 9;
+    // Victory size (in volume).
+    double victory_size = 10;
 }
 
 // WorldDatabase saved as a file.

@@ -341,6 +341,7 @@ namespace darwin {
         if (time != last_updated_) {
             CheckGroundCharactersLocked();
             CheckDeathCharactersLocked();
+            CheckVictoryCharactersLocked();
             CheckIntersectPlayerLocked();
             last_updated_ = time;
         }
@@ -369,6 +370,23 @@ namespace darwin {
     void WorldState::CheckDeathCharactersLocked() {
         for (auto& [_, character_info] : character_infos_) {
             if (character_info.character.physic().mass() < 1.0) {
+                character_info.character.set_status_enum(
+                    proto::STATUS_DEAD);
+                for (const auto& [peer, character] : peer_characters_) {
+                    if (character == character_info.character.name()) {
+                        peer_characters_.erase(peer);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    void WorldState::CheckVictoryCharactersLocked() {
+        for (auto& [_, character_info] : character_infos_) {
+            if (character_info.character.physic().mass() >=
+                player_parameter_.victory_size()) 
+            {
                 character_info.character.set_status_enum(
                     proto::STATUS_DEAD);
                 for (const auto& [peer, character] : peer_characters_) {

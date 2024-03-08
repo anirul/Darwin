@@ -1637,6 +1637,7 @@ class PlayerParameter final :
     kDotPenaltyFieldNumber = 6,
     kMoveCostFieldNumber = 8,
     kFrictionFieldNumber = 9,
+    kVictorySizeFieldNumber = 10,
     kChangeColorFieldNumber = 7,
   };
   // double vertical_speed = 1;
@@ -1711,6 +1712,15 @@ class PlayerParameter final :
   void _internal_set_friction(double value);
   public:
 
+  // double victory_size = 10;
+  void clear_victory_size();
+  double victory_size() const;
+  void set_victory_size(double value);
+  private:
+  double _internal_victory_size() const;
+  void _internal_set_victory_size(double value);
+  public:
+
   // .proto.ColorEnum change_color = 7;
   void clear_change_color();
   ::proto::ColorEnum change_color() const;
@@ -1736,6 +1746,7 @@ class PlayerParameter final :
     double dot_penalty_;
     double move_cost_;
     double friction_;
+    double victory_size_;
     int change_color_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -5257,6 +5268,26 @@ inline void PlayerParameter::_internal_set_friction(double value) {
 inline void PlayerParameter::set_friction(double value) {
   _internal_set_friction(value);
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.friction)
+}
+
+// double victory_size = 10;
+inline void PlayerParameter::clear_victory_size() {
+  _impl_.victory_size_ = 0;
+}
+inline double PlayerParameter::_internal_victory_size() const {
+  return _impl_.victory_size_;
+}
+inline double PlayerParameter::victory_size() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.victory_size)
+  return _internal_victory_size();
+}
+inline void PlayerParameter::_internal_set_victory_size(double value) {
+  
+  _impl_.victory_size_ = value;
+}
+inline void PlayerParameter::set_victory_size(double value) {
+  _internal_set_victory_size(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.victory_size)
 }
 
 // -------------------------------------------------------------------

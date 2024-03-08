@@ -45,8 +45,9 @@
     "drop_height": 10.0,
     "move_cost": 0.01,
     "penalty": -0.3,
-    "dot_penalty": 0.99,
+    "dot_penalty": 0.95,
     "change_color": "COLOR_NO",
-    "friction": 0.1
+    "friction": 0.1,
+    "victory_size": 100.0
   }
 }

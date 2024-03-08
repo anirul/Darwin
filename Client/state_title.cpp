@@ -18,6 +18,7 @@ namespace darwin::state {
                 passed_ = true;
                 return true;
             });
+        start_time_ = std::chrono::system_clock::now();
     }
 
     void StateTitle::Exit() {
@@ -26,11 +27,11 @@ namespace darwin::state {
     }
 
     void StateTitle::Update(StateContext& state_context) {
-        // auto duration = std::chrono::system_clock::now() - start_time_;
-        // if (duration > std::chrono::seconds(10)) {
-            // logger_->info("10 seconds passed");
-            // passed_ = true;
-        // }
+        auto duration = std::chrono::system_clock::now() - start_time_;
+        if (duration > std::chrono::seconds(10)) {
+            logger_->info("10 seconds passed");
+            passed_ = true;
+        }
         if (passed_) {
             state_context.ChangeState(
                 std::make_unique<StateServer>(app_));

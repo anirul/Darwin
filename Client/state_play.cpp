@@ -2,9 +2,10 @@
 
 #include <algorithm>
 
+#include "state_context.h"
 #include "state_disconnected.h"
 #include "state_death.h"
-#include "state_context.h"
+#include "state_victory.h"
 #include "Common/convert_math.h"
 #include "Common/vector.h"
 
@@ -216,6 +217,14 @@ namespace darwin::state {
             if (character.physic().mass() <= 1.0) {
                 state_context.ChangeState(
                     std::make_unique<StateDeath>(
+                        app_,
+                        std::move(darwin_client_)));
+            }
+            if (character.physic().mass() >=
+                world_simulator_.GetPlayerParameter().victory_size()) 
+            {
+                state_context.ChangeState(
+                    std::make_unique<StateVictory>(
                         app_,
                         std::move(darwin_client_)));
             }
