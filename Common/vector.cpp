@@ -1,6 +1,7 @@
 #include "vector.h"
 
 #include <random>
+#include <array>
 
 namespace darwin {
 
@@ -59,6 +60,17 @@ namespace darwin {
         return vector3;
     }
 
+    proto::Vector3 Subtract(
+        const proto::Vector3& vector3_left,
+        const proto::Vector3& vector3_right)
+    {
+        proto::Vector3 vector3{};
+        vector3.set_x(vector3_left.x() - vector3_right.x());
+        vector3.set_y(vector3_left.y() - vector3_right.y());
+        vector3.set_z(vector3_left.z() - vector3_right.z());
+        return vector3;
+    }
+
     double DotProduct(
         const proto::Vector3& vector3_left,
         const proto::Vector3& vector3_right)
@@ -107,16 +119,22 @@ namespace darwin {
         return Normalize(vector3);
     }
 
+    std::array<proto::Vector3, 6> color_standard =
+    {
+        CreateBasicVector3(1.0, 0.0, 0.0),
+        CreateBasicVector3(0.0, 1.0, 0.0),
+        CreateBasicVector3(0.0, 0.0, 1.0),
+        CreateBasicVector3(1.0, 1.0, 0.0),
+        CreateBasicVector3(0.0, 1.0, 1.0),
+        CreateBasicVector3(1.0, 0.0, 1.0)
+    };
+
     proto::Vector3 CreateRandomNormalizedColor()
     {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_real_distribution<double> dis(0.0, 1.0);
-        proto::Vector3 vector3{};
-        vector3.set_x(dis(gen));
-        vector3.set_y(dis(gen));
-        vector3.set_z(dis(gen));
-        return Normalize(vector3);
+        std::uniform_int_distribution<int> dis(0, color_standard.size() - 1);
+        return Normalize(color_standard[dis(gen)]);
     }
 
     proto::Vector3 Minus(const proto::Vector3& vector3)

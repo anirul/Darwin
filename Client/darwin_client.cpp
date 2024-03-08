@@ -22,17 +22,11 @@ namespace darwin {
         stub_ = proto::DarwinService::NewStub(channel);
         // Create a new thread to the update.
         update_future_ = std::async(std::launch::async, [this] { Update(); });
-        // Create a new thread to the poll.
-        poll_future_ = std::async(std::launch::async, [this] { 
-                PollCompletionQueue(); 
-            });
     }
 
     DarwinClient::~DarwinClient() {
         end_.store(true);
-        cq_.Shutdown();
         update_future_.wait();
-        poll_future_.wait();
     }
 
     bool DarwinClient::CreateCharacter(
@@ -74,35 +68,25 @@ namespace darwin {
         const proto::Physic& physic,
         const std::string& potential_hit) 
     {
+        std::scoped_lock l(mutex_);
         report_movement_request_.set_name(name);
         report_movement_request_.mutable_physic()->CopyFrom(physic);
         report_movement_request_.set_potential_hit(potential_hit);
     }
 
     void DarwinClient::SendReportMovement() {
-        auto promise = 
-            std::make_shared<std::promise<proto::ReportMovementResponse>>();
+        SendReportMovementSync();
+    }
 
-        // This shared state can be used to pass more information to the
-        // completion handler.
-        auto* call = new AsyncClientCall;
-        std::scoped_lock l(call->mutex);
-        call->request = report_movement_request_;
-        call->response = std::make_shared<proto::ReportMovementResponse>();
-        call->promise = promise;
-        
-        // Prepare the asynchronous call
-        call->rpc = 
-            stub_->PrepareAsyncReportMovement(
-                &call->context, 
-                call->request, 
-                &cq_);
-
-        // Start the call
-        call->rpc->StartCall();
-
-        // Request to receive the response
-        call->rpc->Finish(call->response.get(), &call->status, (void*)call);
+    void DarwinClient::SendReportMovementSync() {
+        std::scoped_lock l(mutex_);
+        proto::ReportMovementResponse response;
+        grpc::ClientContext context;
+        grpc::Status status = 
+            stub_->ReportMovement(&context, report_movement_request_, &response);
+        if (!status.ok()) {
+            logger_->warn("ReportMovement failed.");
+        }
     }
 
     void DarwinClient::Update() {
@@ -255,25 +239,6 @@ namespace darwin {
         character.mutable_physic()->set_radius(
             server_character.physic().radius());
         return character;
-    }
-
-    void DarwinClient::PollCompletionQueue() {
-        void* tag;
-        bool ok;
-        while (cq_.Next(&tag, &ok)) {
-            auto* call = static_cast<AsyncClientCall*>(tag);
-            if (!ok) {
-                // Handle error. You might want to set an exception on the promise.
-                logger_->warn("ReportMovement failed.");
-                call->promise->set_exception(std::make_exception_ptr(std::runtime_error("RPC failed")));
-            }
-            else {
-                // RPC succeeded, set the value on the promise
-                call->promise->set_value(*(call->response));
-            }
-            // Clean up
-            delete call;
-        }
     }
 
 } // namespace darwin.

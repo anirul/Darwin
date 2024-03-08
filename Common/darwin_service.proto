@@ -120,7 +120,7 @@ message CharacterReport {
 }
 
 // PlayerParameter
-// Next: 9
+// Next: 10
 message PlayerParameter {
     // Vertical speed (jumping).
     double vertical_speed = 1;
@@ -138,6 +138,8 @@ message PlayerParameter {
     ColorEnum change_color = 7;
     // Move cost in mass value.
     double move_cost = 8;
+    // Friction (this will stop the move at a certain point).
+    double friction = 9;
 }
 
 // WorldDatabase saved as a file.

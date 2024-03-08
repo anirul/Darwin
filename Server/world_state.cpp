@@ -27,7 +27,7 @@ namespace darwin {
         if (it == character_infos_.end()) {
             proto::Character character;
             character.set_name(name);
-            character.mutable_color()->CopyFrom(color);
+            character.mutable_color()->CopyFrom(Normalize(color));
             auto vec3 = CreateRandomNormalizedVector3();
             proto::Physic physic{};
             double radius = 
@@ -52,6 +52,7 @@ namespace darwin {
             // This is wrong, and should be set to the real value.
             character.mutable_g_force()->CopyFrom(
                 CreateBasicVector3(0.0, 0.0, 0.0));
+            character.set_status_enum(proto::STATUS_LOADING);
             CharacterInfo character_info{ GetLastUpdated(), character};
             character_infos_.emplace(character.name(), character_info);
             peer_characters_.emplace(peer, name);
@@ -159,6 +160,10 @@ namespace darwin {
 
     std::string WorldState::RemovePeer(const std::string& peer) {
         std::scoped_lock l(mutex_info_);
+        return RemovePeerLocked(peer);
+    }
+
+    std::string WorldState::RemovePeerLocked(const std::string& peer) {
         if (peer_characters_.contains(peer)) {
             auto character_name = peer_characters_.at(peer);
             peer_characters_.erase(peer);
@@ -366,6 +371,12 @@ namespace darwin {
             if (character_info.character.physic().mass() < 1.0) {
                 character_info.character.set_status_enum(
                     proto::STATUS_DEAD);
+                for (const auto& [peer, character] : peer_characters_) {
+                    if (character == character_info.character.name()) {
+                        peer_characters_.erase(peer);
+                        break;
+                    }
+                }
             }
         }
     }

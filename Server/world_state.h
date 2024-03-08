@@ -49,6 +49,7 @@ namespace darwin {
         }
 
     private:
+        std::string RemovePeerLocked(const std::string& peer);
         void CheckGroundCharactersLocked();
         void CheckDeathCharactersLocked();
         proto::Element GetPlanetLocked() const;

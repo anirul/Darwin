@@ -116,6 +116,7 @@ namespace darwin::state {
         if (character.status_enum() == proto::STATUS_ON_GROUND) {
             bool modified = false;
             proto::Physic physic = character.physic();
+            auto planet = world_simulator_.GetPlanet();
             // Reset position delta time on the ground.
             physic.release_position_dt()->CopyFrom(
                 CreateBasicVector3(0.0, 0.0, 0.0));
@@ -154,7 +155,7 @@ namespace darwin::state {
             }
             // Apply the changes.
             if (modified) {
-                *character.mutable_physic() = physic;
+                character.mutable_physic()->CopyFrom(physic);
                 world_simulator_.SetCharacter(character);
                 darwin_client_->ReportMovement(character.name(), physic, "");
             }

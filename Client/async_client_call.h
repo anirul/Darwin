@@ -7,7 +7,6 @@
 namespace darwin {
 
     struct AsyncClientCall {
-        std::mutex mutex;
         grpc::ClientContext context;
         grpc::Status status;
         proto::ReportMovementRequest request;

@@ -136,6 +136,7 @@ namespace darwin {
             }
         }
         for (const auto& character : characters_) {
+            if (character.status_enum() == proto::STATUS_DEAD) continue;
             if (IsClose(normal, Normalize(character.physic().position()))) {
                 uniform_enum.spheres.push_back(GetSphere(character.physic()));
                 uniform_enum.colors.push_back(GetColor(character));

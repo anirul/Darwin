@@ -1636,6 +1636,7 @@ class PlayerParameter final :
     kPenaltyFieldNumber = 5,
     kDotPenaltyFieldNumber = 6,
     kMoveCostFieldNumber = 8,
+    kFrictionFieldNumber = 9,
     kChangeColorFieldNumber = 7,
   };
   // double vertical_speed = 1;
@@ -1701,6 +1702,15 @@ class PlayerParameter final :
   void _internal_set_move_cost(double value);
   public:
 
+  // double friction = 9;
+  void clear_friction();
+  double friction() const;
+  void set_friction(double value);
+  private:
+  double _internal_friction() const;
+  void _internal_set_friction(double value);
+  public:
+
   // .proto.ColorEnum change_color = 7;
   void clear_change_color();
   ::proto::ColorEnum change_color() const;
@@ -1725,6 +1735,7 @@ class PlayerParameter final :
     double penalty_;
     double dot_penalty_;
     double move_cost_;
+    double friction_;
     int change_color_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -5226,6 +5237,26 @@ inline void PlayerParameter::_internal_set_move_cost(double value) {
 inline void PlayerParameter::set_move_cost(double value) {
   _internal_set_move_cost(value);
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.move_cost)
+}
+
+// double friction = 9;
+inline void PlayerParameter::clear_friction() {
+  _impl_.friction_ = 0;
+}
+inline double PlayerParameter::_internal_friction() const {
+  return _impl_.friction_;
+}
+inline double PlayerParameter::friction() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.friction)
+  return _internal_friction();
+}
+inline void PlayerParameter::_internal_set_friction(double value) {
+  
+  _impl_.friction_ = value;
+}
+inline void PlayerParameter::set_friction(double value) {
+  _internal_set_friction(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.friction)
 }
 
 // -------------------------------------------------------------------
