@@ -42,6 +42,7 @@ namespace darwin {
         const std::vector<proto::Element>& static_elements,
         double delta_time)
     {
+        if ((delta_time < 0.0001) || (delta_time > 1.0)) return;
         // Apply it to characters.
         for (auto& character : characters_) {
             glm::dvec3 force = glm::dvec3(0.0);

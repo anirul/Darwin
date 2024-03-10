@@ -34,7 +34,6 @@ namespace darwin {
         void BroadcastUpdate(const proto::UpdateResponse& response);
         std::map<double, proto::Character>& GetTimeCharacters();
         void ClearTimeCharacters();
-        std::mutex& GetTimeCharacterMutex();
         void ComputeWorld();
         // Returns the name of character against the potential hits this will
         // empty the list after the call.

@@ -34,5 +34,8 @@ namespace darwin {
     proto::Vector3 Minus(const proto::Vector3& vector3);
     proto::Vector3 MultiplyVector3ByScalar(
         const proto::Vector3& vector3, double scalar);
+    proto::Vector3 ProjectOnPlane(
+        const proto::Vector3& vector3, 
+        const proto::Vector3& plane_normal);
 
 } // End namespace darwin.

@@ -140,13 +140,15 @@ namespace darwin {
     void WorldState::UpdateCharacter(
         double time,
         const std::string& name,
+        proto::StatusEnum status,
         const proto::Physic& physic)
     {
         std::scoped_lock l(mutex_info_);
         auto it = character_infos_.find(name);
         if (character_infos_.contains(name)) {
             it->second.time = time;
-            *it->second.character.mutable_physic() = physic;
+            it->second.character.mutable_physic()->CopyFrom(physic);
+            it->second.character.set_status_enum(status);
         }
         else {
             std::cerr << "Error updating character: " << name << "\n";

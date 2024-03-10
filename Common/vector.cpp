@@ -164,4 +164,20 @@ namespace darwin {
         return result;
     }
 
+    proto::Vector3 ProjectOnPlane(
+        const proto::Vector3& vector3,
+        const proto::Vector3& plane_normal)
+    {
+        double dot_VN = DotProduct(vector3, plane_normal);
+        double normal_squared = DotProduct(plane_normal, plane_normal);
+        proto::Vector3 proj_V_on_N = 
+            MultiplyVector3ByScalar(
+                plane_normal,
+                dot_VN / normal_squared);
+        proto::Vector3 v_plane = Subtract(vector3, proj_V_on_N);
+        return MultiplyVector3ByScalar(
+            Normalize(v_plane), 
+            GetLength(vector3));
+    }
+
 } // End namespace darwin.

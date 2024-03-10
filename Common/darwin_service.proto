@@ -188,6 +188,8 @@ message ReportInGameRequest {
     string potential_hit = 3;
     // Report type.
     ReportEnum report_enum = 4;
+    // Character status.
+    StatusEnum status_enum = 5;
 }
 
 // ReportInGameResponse

@@ -36,7 +36,7 @@ namespace darwin {
 #ifdef _DEBUG
         std::cout <<
             std::format(
-                "[{}] Removed a writer {}\n",
+                "[{}] Removed a writer {}\n", 
                 context->peer(),
                 request->name());
 #endif // _DEBUG
@@ -93,6 +93,8 @@ namespace darwin {
             maybe_character.value().physic(),
             request->physic());
         maybe_character.value().mutable_physic()->CopyFrom(physic);
+        auto status = request->status_enum();
+        maybe_character.value().set_status_enum(status);
         // Delete previous entry.
         for (const auto& time_character : time_characters_) {
             if (time_character.second.name() == request->name()) {
@@ -199,11 +201,6 @@ namespace darwin {
         time_characters_.clear();
     }
 
-    std::mutex& DarwinServiceImpl::GetTimeCharacterMutex()
-    {
-        return writers_mutex_;
-    }
-
     void DarwinServiceImpl::ComputeWorld() {
         while (true) {
             auto now = std::chrono::system_clock::now();
@@ -213,11 +210,12 @@ namespace darwin {
                 .count();
             // Update the players.
             {
-                std::lock_guard<std::mutex> lock(GetTimeCharacterMutex());
+                std::lock_guard<std::mutex> lock(writers_mutex_);
                 for (const auto& time_player : GetTimeCharacters()) {
                     world_state_.UpdateCharacter(
                         time_player.first,
                         time_player.second.name(),
+                        time_player.second.status_enum(),
                         time_player.second.physic());
                 }
                 ClearTimeCharacters();

@@ -26,8 +26,9 @@ namespace darwin {
         bool HasCharacter(const std::string& name) const;
         void UpdateCharacter(
             double time, 
-            const std::string& name, 
-            const proto::Physic& character);
+            const std::string& name,
+            proto::StatusEnum status,
+            const proto::Physic& physic);
         void AddElement(double time, const proto::Element& element);
         void SetPlayerParameter(const proto::PlayerParameter& parameter);
         void Update(double time);

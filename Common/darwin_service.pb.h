@@ -2434,6 +2434,7 @@ class ReportInGameRequest final :
     kPotentialHitFieldNumber = 3,
     kPhysicFieldNumber = 2,
     kReportEnumFieldNumber = 4,
+    kStatusEnumFieldNumber = 5,
   };
   // string name = 1;
   void clear_name();
@@ -2490,6 +2491,15 @@ class ReportInGameRequest final :
   void _internal_set_report_enum(::proto::ReportEnum value);
   public:
 
+  // .proto.StatusEnum status_enum = 5;
+  void clear_status_enum();
+  ::proto::StatusEnum status_enum() const;
+  void set_status_enum(::proto::StatusEnum value);
+  private:
+  ::proto::StatusEnum _internal_status_enum() const;
+  void _internal_set_status_enum(::proto::StatusEnum value);
+  public:
+
   // @@protoc_insertion_point(class_scope:proto.ReportInGameRequest)
  private:
   class _Internal;
@@ -2502,6 +2512,7 @@ class ReportInGameRequest final :
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr potential_hit_;
     ::proto::Physic* physic_;
     int report_enum_;
+    int status_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -5502,6 +5513,26 @@ inline void ReportInGameRequest::_internal_set_report_enum(::proto::ReportEnum v
 inline void ReportInGameRequest::set_report_enum(::proto::ReportEnum value) {
   _internal_set_report_enum(value);
   // @@protoc_insertion_point(field_set:proto.ReportInGameRequest.report_enum)
+}
+
+// .proto.StatusEnum status_enum = 5;
+inline void ReportInGameRequest::clear_status_enum() {
+  _impl_.status_enum_ = 0;
+}
+inline ::proto::StatusEnum ReportInGameRequest::_internal_status_enum() const {
+  return static_cast< ::proto::StatusEnum >(_impl_.status_enum_);
+}
+inline ::proto::StatusEnum ReportInGameRequest::status_enum() const {
+  // @@protoc_insertion_point(field_get:proto.ReportInGameRequest.status_enum)
+  return _internal_status_enum();
+}
+inline void ReportInGameRequest::_internal_set_status_enum(::proto::StatusEnum value) {
+  
+  _impl_.status_enum_ = value;
+}
+inline void ReportInGameRequest::set_status_enum(::proto::StatusEnum value) {
+  _internal_set_status_enum(value);
+  // @@protoc_insertion_point(field_set:proto.ReportInGameRequest.status_enum)
 }
 
 // -------------------------------------------------------------------

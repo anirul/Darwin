@@ -23,13 +23,20 @@ namespace darwin {
             const proto::Vector3& color);
         void ReportMovement(
             const proto::Physic& physic,
-            const std::string& potential_hit);
+            proto::StatusEnum status,
+            const std::string& potential_hit = "");
         void ReportPing();
         void SendReportInGame();
         void Update();
         std::int32_t Ping(std::int32_t val = 45323);
         bool IsConnected() const;
-        proto::Character MergeCharacter(proto::Character new_characters);
+        proto::Character MergeCharacter(
+            proto::Character new_characters, 
+            double delta_time);
+        proto::Character InterpolateCharacter(
+            const proto::Character& old_character,
+            const proto::Character& new_character,
+            double delta_time);
         std::vector<proto::ColorParameter> GetColorParameters() const;
 
     public:

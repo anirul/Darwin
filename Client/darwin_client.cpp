@@ -65,6 +65,7 @@ namespace darwin {
 
     void DarwinClient::ReportMovement(
         const proto::Physic& physic,
+        proto::StatusEnum status,
         const std::string& potential_hit) 
     {
         std::scoped_lock l(mutex_);
@@ -72,6 +73,7 @@ namespace darwin {
         report_request_.mutable_physic()->CopyFrom(physic);
         report_request_.set_potential_hit(potential_hit);
         report_request_.set_report_enum(proto::REPORT_MOVEMENT_OR_HIT);
+        report_request_.set_status_enum(status);
     }
 
     void DarwinClient::ReportPing() {
@@ -106,12 +108,25 @@ namespace darwin {
         std::unique_ptr<grpc::ClientReader<proto::UpdateResponse>> 
             reader(stub_->Update(&context, request));
 
+        double start_timer = 0.0;
+        double delta_time = 0.1;
+        bool first = true;
+
         // Read the stream of responses.
         while (reader->Read(&response)) {
             
+            if (first) {
+                first = false;
+                start_timer = response.time();
+            }
+            else {
+                delta_time = response.time() - start_timer;
+                start_timer = response.time();
+            }
+
             std::vector<proto::Character> characters;
             for (const auto& character : response.characters()) {
-                characters.push_back(MergeCharacter(character));
+                characters.push_back(MergeCharacter(character, delta_time));
             }
 
             static std::size_t element_size = 0;
@@ -187,17 +202,80 @@ namespace darwin {
     }
 
     proto::Character DarwinClient::MergeCharacter(
-        proto::Character new_character)
+        proto::Character new_character,
+        double delta_time)
     {
+        // This does not exist in the world simulator.
         if (!world_simulator_.HasCharacter(new_character.name())) {
             return new_character;
         }
+        // This is the character from this client.
         if (new_character.name() == character_name_) {
             new_character = CorrectCharacter(
                 new_character,
                 world_simulator_.GetCharacterByName(character_name_));
+            return new_character;
         }
-        return new_character;
+        // Not from this client interpolate.
+        auto old_character = 
+            world_simulator_.GetCharacterByName(new_character.name());
+        return InterpolateCharacter(old_character, new_character, delta_time);
+    }
+
+    proto::Character DarwinClient::InterpolateCharacter(
+        const proto::Character& old_character,
+        const proto::Character& new_character,
+        double delta_time) 
+    {
+        auto status = new_character.status_enum();
+        if ((status != proto::STATUS_ON_GROUND) && 
+            (status != proto::STATUS_JUMPING))
+        {
+            return new_character;
+        }
+        // Get the planet (will need the radius from it).
+        const auto planet = world_simulator_.GetPlanet();
+        // Update the position to the current position.
+        proto::Vector3 updated_position = 
+            Add(
+                old_character.physic().position(),
+                MultiplyVector3ByScalar(
+                    old_character.physic().position_dt(),
+                    delta_time));
+        // Compute the future position from new_character.
+        proto::Vector3 future_position =
+            Add(
+                new_character.physic().position(),
+                MultiplyVector3ByScalar(
+                    new_character.physic().position_dt(),
+                    delta_time));
+        // Create a new position_dt to update the position to the future.
+        proto::Vector3 updated_position_dt =
+            MultiplyVector3ByScalar(
+                Subtract(
+                    future_position,
+                    updated_position),
+                delta_time);
+        proto::Character result = new_character;
+        // On the ground.
+        if (new_character.status_enum() == proto::STATUS_ON_GROUND) {
+            // Get a normal to the position.
+            auto normal = Normalize(updated_position);
+            // Project the updated position_dt to the planet.
+            updated_position_dt = ProjectOnPlane(updated_position_dt, normal);
+            // Update the position to the planet.
+            updated_position = 
+                MultiplyVector3ByScalar(
+                    normal, 
+                    planet.radius() + new_character.physic().radius());
+        }
+        // Jumping.
+        // Update the result.
+        result.mutable_physic()->mutable_position()->CopyFrom(
+            updated_position);
+        result.mutable_physic()->mutable_position_dt()->CopyFrom(
+            updated_position_dt);
+        return result;
     }
 
     std::vector<proto::ColorParameter> 
