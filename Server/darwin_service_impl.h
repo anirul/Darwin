@@ -17,10 +17,10 @@ namespace darwin {
             grpc::ServerContext* context, 
             const proto::UpdateRequest* request,
             grpc::ServerWriter<proto::UpdateResponse>* writer) override;
-        grpc::Status ReportMovement(
+        grpc::Status ReportInGame(
             grpc::ServerContext* context, 
-            const proto::ReportMovementRequest* request,
-            proto::ReportMovementResponse* response) override;
+            const proto::ReportInGameRequest* request,
+            proto::ReportInGameResponse* response) override;
         grpc::Status CreateCharacter(
             grpc::ServerContext* context, 
             const proto::CreateCharacterRequest* request,
@@ -29,10 +29,6 @@ namespace darwin {
             grpc::ServerContext* context, 
             const proto::PingRequest* request,
             proto::PingResponse* response) override;
-        grpc::Status DeathReport(
-            grpc::ServerContext* context, 
-            const proto::DeathReportRequest* request,
-            proto::DeathReportResponse* response) override;
 
     public:
         void BroadcastUpdate(const proto::UpdateResponse& response);

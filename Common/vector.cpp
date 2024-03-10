@@ -119,22 +119,29 @@ namespace darwin {
         return Normalize(vector3);
     }
 
-    std::array<proto::Vector3, 6> color_standard =
-    {
-        CreateBasicVector3(1.0, 0.0, 0.0),
-        CreateBasicVector3(0.0, 1.0, 0.0),
-        CreateBasicVector3(0.0, 0.0, 1.0),
-        CreateBasicVector3(1.0, 1.0, 0.0),
-        CreateBasicVector3(0.0, 1.0, 1.0),
-        CreateBasicVector3(1.0, 0.0, 1.0)
-    };
-
-    proto::Vector3 CreateRandomNormalizedColor()
+    proto::Vector3 CreateRandomNormalizedColor(
+        std::vector<proto::Vector3>::const_iterator color_begin,
+        std::vector<proto::Vector3>::const_iterator color_end)
     {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<int> dis(0, color_standard.size() - 1);
-        return Normalize(color_standard[dis(gen)]);
+        auto distance = std::distance(color_begin, color_end);
+        std::uniform_int_distribution<int> dis(0, distance - 1);
+        return Normalize(*(color_begin + dis(gen)));
+    }
+
+    bool IsInColorRange(
+        const proto::Vector3& color,
+        std::vector<proto::Vector3>::const_iterator color_begin,
+        std::vector<proto::Vector3>::const_iterator color_end)
+    {
+        const auto normalized_color = Normalize(color);
+        for (auto it = color_begin; it != color_end; ++it) {
+            if (DotProduct(normalized_color, *it) > 0.999f) {
+                return true;
+            }
+        }
+        return false;
     }
 
     proto::Vector3 Minus(const proto::Vector3& vector3)

@@ -55,11 +55,12 @@ namespace darwin {
         return grpc::Status::OK;
     }
 
-    grpc::Status DarwinServiceImpl::ReportMovement(
+    grpc::Status DarwinServiceImpl::ReportInGame(
         grpc::ServerContext* context,
-        const proto::ReportMovementRequest* request,
-        proto::ReportMovementResponse* response)
+        const proto::ReportInGameRequest* request,
+        proto::ReportInGameResponse* response)
     {
+        std::lock_guard<std::mutex> lock(writers_mutex_);
 #ifdef _DEBUG
         if (!request->potential_hit().empty()) {
             std::cout << std::format(
@@ -77,7 +78,16 @@ namespace darwin {
             response->set_return_enum(proto::RETURN_REJECTED);
             return grpc::Status::CANCELLED;
         }
-        std::lock_guard<std::mutex> lock(writers_mutex_);
+        if (request->report_enum() == proto::REPORT_UNKNOWN) {
+            response->set_return_enum(proto::RETURN_REJECTED);
+            return grpc::Status::CANCELLED;
+        }
+        if (request->report_enum() == proto::REPORT_PING) {
+            world_state_.UpdatePing(request->name());
+            response->set_return_enum(proto::RETURN_OK);
+            return grpc::Status::OK;
+        }
+        assert(request->report_enum() == proto::REPORT_MOVEMENT_OR_HIT);
         // Update the physic.
         proto::Physic physic = UpdatePhysic(
             maybe_character.value().physic(),
@@ -106,6 +116,7 @@ namespace darwin {
             .count();
         time_characters_.insert({ time, maybe_character.value() });
         response->set_return_enum(proto::RETURN_OK);
+        world_state_.UpdatePing(request->name());
         return grpc::Status::OK;
     }
 
@@ -133,15 +144,11 @@ namespace darwin {
             request->name(),
             request->color()))
         {
-            response->mutable_player_parameter()->CopyFrom(
-                world_state_.GetPlayerParameter());
             response->set_return_enum(proto::RETURN_OK);
             return grpc::Status::OK;
         }
         else
         {
-            response->mutable_player_parameter()->CopyFrom(
-                world_state_.GetPlayerParameter());
             response->set_return_enum(proto::RETURN_REJECTED);
             return grpc::Status(
                 grpc::StatusCode::INVALID_ARGUMENT, 
@@ -167,23 +174,9 @@ namespace darwin {
             std::chrono::duration_cast<std::chrono::duration<double>>(
                 now.time_since_epoch())
             .count();
+        response->mutable_player_parameter()->CopyFrom(
+            world_state_.GetPlayerParameter());
         response->set_time(time);
-        return grpc::Status::OK;
-    }
-
-    grpc::Status DarwinServiceImpl::DeathReport(
-        grpc::ServerContext* context,
-        const proto::DeathReportRequest* request,
-        proto::DeathReportResponse* response)
-    {
-#ifdef _DEBUG
-        std::cout <<
-            std::format(
-                "[{}] Got a death report from {}\n",
-                context->peer(),
-                request->name());
-#endif // _DEBUG
-        throw std::runtime_error("Not implemented");
         return grpc::Status::OK;
     }
 

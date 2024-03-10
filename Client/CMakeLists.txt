@@ -2,7 +2,6 @@
 
 add_executable(DarwinClient
     WIN32
-        async_client_call.h
         darwin_client.cpp
         darwin_client.h
         input_acquisition.cpp

@@ -49,21 +49,15 @@ namespace proto {
 class Character;
 struct CharacterDefaultTypeInternal;
 extern CharacterDefaultTypeInternal _Character_default_instance_;
-class CharacterReport;
-struct CharacterReportDefaultTypeInternal;
-extern CharacterReportDefaultTypeInternal _CharacterReport_default_instance_;
+class ColorParameter;
+struct ColorParameterDefaultTypeInternal;
+extern ColorParameterDefaultTypeInternal _ColorParameter_default_instance_;
 class CreateCharacterRequest;
 struct CreateCharacterRequestDefaultTypeInternal;
 extern CreateCharacterRequestDefaultTypeInternal _CreateCharacterRequest_default_instance_;
 class CreateCharacterResponse;
 struct CreateCharacterResponseDefaultTypeInternal;
 extern CreateCharacterResponseDefaultTypeInternal _CreateCharacterResponse_default_instance_;
-class DeathReportRequest;
-struct DeathReportRequestDefaultTypeInternal;
-extern DeathReportRequestDefaultTypeInternal _DeathReportRequest_default_instance_;
-class DeathReportResponse;
-struct DeathReportResponseDefaultTypeInternal;
-extern DeathReportResponseDefaultTypeInternal _DeathReportResponse_default_instance_;
 class Element;
 struct ElementDefaultTypeInternal;
 extern ElementDefaultTypeInternal _Element_default_instance_;
@@ -79,12 +73,12 @@ extern PingResponseDefaultTypeInternal _PingResponse_default_instance_;
 class PlayerParameter;
 struct PlayerParameterDefaultTypeInternal;
 extern PlayerParameterDefaultTypeInternal _PlayerParameter_default_instance_;
-class ReportMovementRequest;
-struct ReportMovementRequestDefaultTypeInternal;
-extern ReportMovementRequestDefaultTypeInternal _ReportMovementRequest_default_instance_;
-class ReportMovementResponse;
-struct ReportMovementResponseDefaultTypeInternal;
-extern ReportMovementResponseDefaultTypeInternal _ReportMovementResponse_default_instance_;
+class ReportInGameRequest;
+struct ReportInGameRequestDefaultTypeInternal;
+extern ReportInGameRequestDefaultTypeInternal _ReportInGameRequest_default_instance_;
+class ReportInGameResponse;
+struct ReportInGameResponseDefaultTypeInternal;
+extern ReportInGameResponseDefaultTypeInternal _ReportInGameResponse_default_instance_;
 class UpdateRequest;
 struct UpdateRequestDefaultTypeInternal;
 extern UpdateRequestDefaultTypeInternal _UpdateRequest_default_instance_;
@@ -103,18 +97,16 @@ extern WorldDatabaseDefaultTypeInternal _WorldDatabase_default_instance_;
 }  // namespace proto
 PROTOBUF_NAMESPACE_OPEN
 template<> ::proto::Character* Arena::CreateMaybeMessage<::proto::Character>(Arena*);
-template<> ::proto::CharacterReport* Arena::CreateMaybeMessage<::proto::CharacterReport>(Arena*);
+template<> ::proto::ColorParameter* Arena::CreateMaybeMessage<::proto::ColorParameter>(Arena*);
 template<> ::proto::CreateCharacterRequest* Arena::CreateMaybeMessage<::proto::CreateCharacterRequest>(Arena*);
 template<> ::proto::CreateCharacterResponse* Arena::CreateMaybeMessage<::proto::CreateCharacterResponse>(Arena*);
-template<> ::proto::DeathReportRequest* Arena::CreateMaybeMessage<::proto::DeathReportRequest>(Arena*);
-template<> ::proto::DeathReportResponse* Arena::CreateMaybeMessage<::proto::DeathReportResponse>(Arena*);
 template<> ::proto::Element* Arena::CreateMaybeMessage<::proto::Element>(Arena*);
 template<> ::proto::Physic* Arena::CreateMaybeMessage<::proto::Physic>(Arena*);
 template<> ::proto::PingRequest* Arena::CreateMaybeMessage<::proto::PingRequest>(Arena*);
 template<> ::proto::PingResponse* Arena::CreateMaybeMessage<::proto::PingResponse>(Arena*);
 template<> ::proto::PlayerParameter* Arena::CreateMaybeMessage<::proto::PlayerParameter>(Arena*);
-template<> ::proto::ReportMovementRequest* Arena::CreateMaybeMessage<::proto::ReportMovementRequest>(Arena*);
-template<> ::proto::ReportMovementResponse* Arena::CreateMaybeMessage<::proto::ReportMovementResponse>(Arena*);
+template<> ::proto::ReportInGameRequest* Arena::CreateMaybeMessage<::proto::ReportInGameRequest>(Arena*);
+template<> ::proto::ReportInGameResponse* Arena::CreateMaybeMessage<::proto::ReportInGameResponse>(Arena*);
 template<> ::proto::UpdateRequest* Arena::CreateMaybeMessage<::proto::UpdateRequest>(Arena*);
 template<> ::proto::UpdateResponse* Arena::CreateMaybeMessage<::proto::UpdateResponse>(Arena*);
 template<> ::proto::Vector3* Arena::CreateMaybeMessage<::proto::Vector3>(Arena*);
@@ -261,6 +253,32 @@ inline bool ColorEnum_Parse(
     ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ColorEnum* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ColorEnum>(
     ColorEnum_descriptor(), name, value);
+}
+enum ReportEnum : int {
+  REPORT_UNKNOWN = 0,
+  REPORT_PING = 1,
+  REPORT_MOVEMENT_OR_HIT = 2,
+  ReportEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  ReportEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool ReportEnum_IsValid(int value);
+constexpr ReportEnum ReportEnum_MIN = REPORT_UNKNOWN;
+constexpr ReportEnum ReportEnum_MAX = REPORT_MOVEMENT_OR_HIT;
+constexpr int ReportEnum_ARRAYSIZE = ReportEnum_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ReportEnum_descriptor();
+template<typename T>
+inline const std::string& ReportEnum_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, ReportEnum>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function ReportEnum_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    ReportEnum_descriptor(), enum_t_value);
+}
+inline bool ReportEnum_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ReportEnum* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ReportEnum>(
+    ReportEnum_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -1302,24 +1320,24 @@ class Character final :
 };
 // -------------------------------------------------------------------
 
-class CharacterReport final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.CharacterReport) */ {
+class ColorParameter final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.ColorParameter) */ {
  public:
-  inline CharacterReport() : CharacterReport(nullptr) {}
-  ~CharacterReport() override;
-  explicit PROTOBUF_CONSTEXPR CharacterReport(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline ColorParameter() : ColorParameter(nullptr) {}
+  ~ColorParameter() override;
+  explicit PROTOBUF_CONSTEXPR ColorParameter(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  CharacterReport(const CharacterReport& from);
-  CharacterReport(CharacterReport&& from) noexcept
-    : CharacterReport() {
+  ColorParameter(const ColorParameter& from);
+  ColorParameter(ColorParameter&& from) noexcept
+    : ColorParameter() {
     *this = ::std::move(from);
   }
 
-  inline CharacterReport& operator=(const CharacterReport& from) {
+  inline ColorParameter& operator=(const ColorParameter& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CharacterReport& operator=(CharacterReport&& from) noexcept {
+  inline ColorParameter& operator=(ColorParameter&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -1342,20 +1360,20 @@ class CharacterReport final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CharacterReport& default_instance() {
+  static const ColorParameter& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CharacterReport* internal_default_instance() {
-    return reinterpret_cast<const CharacterReport*>(
-               &_CharacterReport_default_instance_);
+  static inline const ColorParameter* internal_default_instance() {
+    return reinterpret_cast<const ColorParameter*>(
+               &_ColorParameter_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     5;
 
-  friend void swap(CharacterReport& a, CharacterReport& b) {
+  friend void swap(ColorParameter& a, ColorParameter& b) {
     a.Swap(&b);
   }
-  inline void Swap(CharacterReport* other) {
+  inline void Swap(ColorParameter* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -1368,7 +1386,7 @@ class CharacterReport final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CharacterReport* other) {
+  void UnsafeArenaSwap(ColorParameter* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -1376,14 +1394,14 @@ class CharacterReport final :
 
   // implements Message ----------------------------------------------
 
-  CharacterReport* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CharacterReport>(arena);
+  ColorParameter* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ColorParameter>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const CharacterReport& from);
+  void CopyFrom(const ColorParameter& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const CharacterReport& from) {
-    CharacterReport::MergeImpl(*this, from);
+  void MergeFrom( const ColorParameter& from) {
+    ColorParameter::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -1401,15 +1419,15 @@ class CharacterReport final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(CharacterReport* other);
+  void InternalSwap(ColorParameter* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proto.CharacterReport";
+    return "proto.ColorParameter";
   }
   protected:
-  explicit CharacterReport(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit ColorParameter(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -1424,10 +1442,7 @@ class CharacterReport final :
 
   enum : int {
     kNameFieldNumber = 1,
-    kColorFieldNumber = 4,
-    kRadiusFieldNumber = 2,
-    kVitalStatusFieldNumber = 3,
-    kLastSeenFieldNumber = 5,
+    kColorFieldNumber = 2,
   };
   // string name = 1;
   void clear_name();
@@ -1443,7 +1458,7 @@ class CharacterReport final :
   std::string* _internal_mutable_name();
   public:
 
-  // .proto.Vector3 color = 4;
+  // .proto.Vector3 color = 2;
   bool has_color() const;
   private:
   bool _internal_has_color() const;
@@ -1461,34 +1476,7 @@ class CharacterReport final :
       ::proto::Vector3* color);
   ::proto::Vector3* unsafe_arena_release_color();
 
-  // float radius = 2;
-  void clear_radius();
-  float radius() const;
-  void set_radius(float value);
-  private:
-  float _internal_radius() const;
-  void _internal_set_radius(float value);
-  public:
-
-  // .proto.VitalEnum vital_status = 3;
-  void clear_vital_status();
-  ::proto::VitalEnum vital_status() const;
-  void set_vital_status(::proto::VitalEnum value);
-  private:
-  ::proto::VitalEnum _internal_vital_status() const;
-  void _internal_set_vital_status(::proto::VitalEnum value);
-  public:
-
-  // double last_seen = 5;
-  void clear_last_seen();
-  double last_seen() const;
-  void set_last_seen(double value);
-  private:
-  double _internal_last_seen() const;
-  void _internal_set_last_seen(double value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:proto.CharacterReport)
+  // @@protoc_insertion_point(class_scope:proto.ColorParameter)
  private:
   class _Internal;
 
@@ -1498,9 +1486,6 @@ class CharacterReport final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
     ::proto::Vector3* color_;
-    float radius_;
-    int vital_status_;
-    double last_seen_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1629,17 +1614,36 @@ class PlayerParameter final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kColorsFieldNumber = 11,
     kVerticalSpeedFieldNumber = 1,
     kHorizontalSpeedFieldNumber = 2,
     kStartMassFieldNumber = 3,
     kDropHeightFieldNumber = 4,
     kPenaltyFieldNumber = 5,
-    kDotPenaltyFieldNumber = 6,
-    kMoveCostFieldNumber = 8,
-    kFrictionFieldNumber = 9,
-    kVictorySizeFieldNumber = 10,
-    kChangeColorFieldNumber = 7,
+    kMoveCostFieldNumber = 7,
+    kFrictionFieldNumber = 8,
+    kVictorySizeFieldNumber = 9,
+    kDisconnectionTimeoutFieldNumber = 10,
+    kChangeColorFieldNumber = 6,
   };
+  // repeated .proto.ColorParameter colors = 11;
+  int colors_size() const;
+  private:
+  int _internal_colors_size() const;
+  public:
+  void clear_colors();
+  ::proto::ColorParameter* mutable_colors(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::ColorParameter >*
+      mutable_colors();
+  private:
+  const ::proto::ColorParameter& _internal_colors(int index) const;
+  ::proto::ColorParameter* _internal_add_colors();
+  public:
+  const ::proto::ColorParameter& colors(int index) const;
+  ::proto::ColorParameter* add_colors();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::ColorParameter >&
+      colors() const;
+
   // double vertical_speed = 1;
   void clear_vertical_speed();
   double vertical_speed() const;
@@ -1685,16 +1689,7 @@ class PlayerParameter final :
   void _internal_set_penalty(double value);
   public:
 
-  // double dot_penalty = 6;
-  void clear_dot_penalty();
-  double dot_penalty() const;
-  void set_dot_penalty(double value);
-  private:
-  double _internal_dot_penalty() const;
-  void _internal_set_dot_penalty(double value);
-  public:
-
-  // double move_cost = 8;
+  // double move_cost = 7;
   void clear_move_cost();
   double move_cost() const;
   void set_move_cost(double value);
@@ -1703,7 +1698,7 @@ class PlayerParameter final :
   void _internal_set_move_cost(double value);
   public:
 
-  // double friction = 9;
+  // double friction = 8;
   void clear_friction();
   double friction() const;
   void set_friction(double value);
@@ -1712,7 +1707,7 @@ class PlayerParameter final :
   void _internal_set_friction(double value);
   public:
 
-  // double victory_size = 10;
+  // double victory_size = 9;
   void clear_victory_size();
   double victory_size() const;
   void set_victory_size(double value);
@@ -1721,7 +1716,16 @@ class PlayerParameter final :
   void _internal_set_victory_size(double value);
   public:
 
-  // .proto.ColorEnum change_color = 7;
+  // double disconnection_timeout = 10;
+  void clear_disconnection_timeout();
+  double disconnection_timeout() const;
+  void set_disconnection_timeout(double value);
+  private:
+  double _internal_disconnection_timeout() const;
+  void _internal_set_disconnection_timeout(double value);
+  public:
+
+  // .proto.ColorEnum change_color = 6;
   void clear_change_color();
   ::proto::ColorEnum change_color() const;
   void set_change_color(::proto::ColorEnum value);
@@ -1738,15 +1742,16 @@ class PlayerParameter final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::ColorParameter > colors_;
     double vertical_speed_;
     double horizontal_speed_;
     double start_mass_;
     double drop_height_;
     double penalty_;
-    double dot_penalty_;
     double move_cost_;
     double friction_;
     double victory_size_;
+    double disconnection_timeout_;
     int change_color_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -2304,24 +2309,24 @@ class UpdateResponse final :
 };
 // -------------------------------------------------------------------
 
-class ReportMovementRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.ReportMovementRequest) */ {
+class ReportInGameRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.ReportInGameRequest) */ {
  public:
-  inline ReportMovementRequest() : ReportMovementRequest(nullptr) {}
-  ~ReportMovementRequest() override;
-  explicit PROTOBUF_CONSTEXPR ReportMovementRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline ReportInGameRequest() : ReportInGameRequest(nullptr) {}
+  ~ReportInGameRequest() override;
+  explicit PROTOBUF_CONSTEXPR ReportInGameRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  ReportMovementRequest(const ReportMovementRequest& from);
-  ReportMovementRequest(ReportMovementRequest&& from) noexcept
-    : ReportMovementRequest() {
+  ReportInGameRequest(const ReportInGameRequest& from);
+  ReportInGameRequest(ReportInGameRequest&& from) noexcept
+    : ReportInGameRequest() {
     *this = ::std::move(from);
   }
 
-  inline ReportMovementRequest& operator=(const ReportMovementRequest& from) {
+  inline ReportInGameRequest& operator=(const ReportInGameRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline ReportMovementRequest& operator=(ReportMovementRequest&& from) noexcept {
+  inline ReportInGameRequest& operator=(ReportInGameRequest&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -2344,20 +2349,20 @@ class ReportMovementRequest final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const ReportMovementRequest& default_instance() {
+  static const ReportInGameRequest& default_instance() {
     return *internal_default_instance();
   }
-  static inline const ReportMovementRequest* internal_default_instance() {
-    return reinterpret_cast<const ReportMovementRequest*>(
-               &_ReportMovementRequest_default_instance_);
+  static inline const ReportInGameRequest* internal_default_instance() {
+    return reinterpret_cast<const ReportInGameRequest*>(
+               &_ReportInGameRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     10;
 
-  friend void swap(ReportMovementRequest& a, ReportMovementRequest& b) {
+  friend void swap(ReportInGameRequest& a, ReportInGameRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(ReportMovementRequest* other) {
+  inline void Swap(ReportInGameRequest* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -2370,7 +2375,7 @@ class ReportMovementRequest final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(ReportMovementRequest* other) {
+  void UnsafeArenaSwap(ReportInGameRequest* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -2378,14 +2383,14 @@ class ReportMovementRequest final :
 
   // implements Message ----------------------------------------------
 
-  ReportMovementRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<ReportMovementRequest>(arena);
+  ReportInGameRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ReportInGameRequest>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const ReportMovementRequest& from);
+  void CopyFrom(const ReportInGameRequest& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const ReportMovementRequest& from) {
-    ReportMovementRequest::MergeImpl(*this, from);
+  void MergeFrom( const ReportInGameRequest& from) {
+    ReportInGameRequest::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -2403,15 +2408,15 @@ class ReportMovementRequest final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(ReportMovementRequest* other);
+  void InternalSwap(ReportInGameRequest* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proto.ReportMovementRequest";
+    return "proto.ReportInGameRequest";
   }
   protected:
-  explicit ReportMovementRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit ReportInGameRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -2428,6 +2433,7 @@ class ReportMovementRequest final :
     kNameFieldNumber = 1,
     kPotentialHitFieldNumber = 3,
     kPhysicFieldNumber = 2,
+    kReportEnumFieldNumber = 4,
   };
   // string name = 1;
   void clear_name();
@@ -2475,7 +2481,16 @@ class ReportMovementRequest final :
       ::proto::Physic* physic);
   ::proto::Physic* unsafe_arena_release_physic();
 
-  // @@protoc_insertion_point(class_scope:proto.ReportMovementRequest)
+  // .proto.ReportEnum report_enum = 4;
+  void clear_report_enum();
+  ::proto::ReportEnum report_enum() const;
+  void set_report_enum(::proto::ReportEnum value);
+  private:
+  ::proto::ReportEnum _internal_report_enum() const;
+  void _internal_set_report_enum(::proto::ReportEnum value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:proto.ReportInGameRequest)
  private:
   class _Internal;
 
@@ -2486,6 +2501,7 @@ class ReportMovementRequest final :
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr potential_hit_;
     ::proto::Physic* physic_;
+    int report_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -2493,24 +2509,24 @@ class ReportMovementRequest final :
 };
 // -------------------------------------------------------------------
 
-class ReportMovementResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.ReportMovementResponse) */ {
+class ReportInGameResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.ReportInGameResponse) */ {
  public:
-  inline ReportMovementResponse() : ReportMovementResponse(nullptr) {}
-  ~ReportMovementResponse() override;
-  explicit PROTOBUF_CONSTEXPR ReportMovementResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline ReportInGameResponse() : ReportInGameResponse(nullptr) {}
+  ~ReportInGameResponse() override;
+  explicit PROTOBUF_CONSTEXPR ReportInGameResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  ReportMovementResponse(const ReportMovementResponse& from);
-  ReportMovementResponse(ReportMovementResponse&& from) noexcept
-    : ReportMovementResponse() {
+  ReportInGameResponse(const ReportInGameResponse& from);
+  ReportInGameResponse(ReportInGameResponse&& from) noexcept
+    : ReportInGameResponse() {
     *this = ::std::move(from);
   }
 
-  inline ReportMovementResponse& operator=(const ReportMovementResponse& from) {
+  inline ReportInGameResponse& operator=(const ReportInGameResponse& from) {
     CopyFrom(from);
     return *this;
   }
-  inline ReportMovementResponse& operator=(ReportMovementResponse&& from) noexcept {
+  inline ReportInGameResponse& operator=(ReportInGameResponse&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -2533,20 +2549,20 @@ class ReportMovementResponse final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const ReportMovementResponse& default_instance() {
+  static const ReportInGameResponse& default_instance() {
     return *internal_default_instance();
   }
-  static inline const ReportMovementResponse* internal_default_instance() {
-    return reinterpret_cast<const ReportMovementResponse*>(
-               &_ReportMovementResponse_default_instance_);
+  static inline const ReportInGameResponse* internal_default_instance() {
+    return reinterpret_cast<const ReportInGameResponse*>(
+               &_ReportInGameResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     11;
 
-  friend void swap(ReportMovementResponse& a, ReportMovementResponse& b) {
+  friend void swap(ReportInGameResponse& a, ReportInGameResponse& b) {
     a.Swap(&b);
   }
-  inline void Swap(ReportMovementResponse* other) {
+  inline void Swap(ReportInGameResponse* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -2559,7 +2575,7 @@ class ReportMovementResponse final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(ReportMovementResponse* other) {
+  void UnsafeArenaSwap(ReportInGameResponse* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -2567,14 +2583,14 @@ class ReportMovementResponse final :
 
   // implements Message ----------------------------------------------
 
-  ReportMovementResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<ReportMovementResponse>(arena);
+  ReportInGameResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ReportInGameResponse>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const ReportMovementResponse& from);
+  void CopyFrom(const ReportInGameResponse& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const ReportMovementResponse& from) {
-    ReportMovementResponse::MergeImpl(*this, from);
+  void MergeFrom( const ReportInGameResponse& from) {
+    ReportInGameResponse::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -2592,15 +2608,15 @@ class ReportMovementResponse final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(ReportMovementResponse* other);
+  void InternalSwap(ReportInGameResponse* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proto.ReportMovementResponse";
+    return "proto.ReportInGameResponse";
   }
   protected:
-  explicit ReportMovementResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit ReportInGameResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -2625,7 +2641,7 @@ class ReportMovementResponse final :
   void _internal_set_return_enum(::proto::ReturnEnum value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proto.ReportMovementResponse)
+  // @@protoc_insertion_point(class_scope:proto.ReportInGameResponse)
  private:
   class _Internal;
 
@@ -2935,28 +2951,9 @@ class CreateCharacterResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPlayerParameterFieldNumber = 1,
-    kReturnEnumFieldNumber = 2,
+    kReturnEnumFieldNumber = 1,
   };
-  // .proto.PlayerParameter player_parameter = 1;
-  bool has_player_parameter() const;
-  private:
-  bool _internal_has_player_parameter() const;
-  public:
-  void clear_player_parameter();
-  const ::proto::PlayerParameter& player_parameter() const;
-  PROTOBUF_NODISCARD ::proto::PlayerParameter* release_player_parameter();
-  ::proto::PlayerParameter* mutable_player_parameter();
-  void set_allocated_player_parameter(::proto::PlayerParameter* player_parameter);
-  private:
-  const ::proto::PlayerParameter& _internal_player_parameter() const;
-  ::proto::PlayerParameter* _internal_mutable_player_parameter();
-  public:
-  void unsafe_arena_set_allocated_player_parameter(
-      ::proto::PlayerParameter* player_parameter);
-  ::proto::PlayerParameter* unsafe_arena_release_player_parameter();
-
-  // .proto.ReturnEnum return_enum = 2;
+  // .proto.ReturnEnum return_enum = 1;
   void clear_return_enum();
   ::proto::ReturnEnum return_enum() const;
   void set_return_enum(::proto::ReturnEnum value);
@@ -2973,7 +2970,6 @@ class CreateCharacterResponse final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::proto::PlayerParameter* player_parameter_;
     int return_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -3251,9 +3247,28 @@ class PingResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kPlayerParameterFieldNumber = 3,
     kTimeFieldNumber = 2,
     kValueFieldNumber = 1,
   };
+  // .proto.PlayerParameter player_parameter = 3;
+  bool has_player_parameter() const;
+  private:
+  bool _internal_has_player_parameter() const;
+  public:
+  void clear_player_parameter();
+  const ::proto::PlayerParameter& player_parameter() const;
+  PROTOBUF_NODISCARD ::proto::PlayerParameter* release_player_parameter();
+  ::proto::PlayerParameter* mutable_player_parameter();
+  void set_allocated_player_parameter(::proto::PlayerParameter* player_parameter);
+  private:
+  const ::proto::PlayerParameter& _internal_player_parameter() const;
+  ::proto::PlayerParameter* _internal_mutable_player_parameter();
+  public:
+  void unsafe_arena_set_allocated_player_parameter(
+      ::proto::PlayerParameter* player_parameter);
+  ::proto::PlayerParameter* unsafe_arena_release_player_parameter();
+
   // double time = 2;
   void clear_time();
   double time() const;
@@ -3280,356 +3295,9 @@ class PingResponse final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::proto::PlayerParameter* player_parameter_;
     double time_;
     int32_t value_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_darwin_5fservice_2eproto;
-};
-// -------------------------------------------------------------------
-
-class DeathReportRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.DeathReportRequest) */ {
- public:
-  inline DeathReportRequest() : DeathReportRequest(nullptr) {}
-  ~DeathReportRequest() override;
-  explicit PROTOBUF_CONSTEXPR DeathReportRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  DeathReportRequest(const DeathReportRequest& from);
-  DeathReportRequest(DeathReportRequest&& from) noexcept
-    : DeathReportRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline DeathReportRequest& operator=(const DeathReportRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline DeathReportRequest& operator=(DeathReportRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const DeathReportRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const DeathReportRequest* internal_default_instance() {
-    return reinterpret_cast<const DeathReportRequest*>(
-               &_DeathReportRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    16;
-
-  friend void swap(DeathReportRequest& a, DeathReportRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(DeathReportRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(DeathReportRequest* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  DeathReportRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<DeathReportRequest>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const DeathReportRequest& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const DeathReportRequest& from) {
-    DeathReportRequest::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(DeathReportRequest* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proto.DeathReportRequest";
-  }
-  protected:
-  explicit DeathReportRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kNameFieldNumber = 1,
-    kSessionTockenFieldNumber = 2,
-  };
-  // string name = 1;
-  void clear_name();
-  const std::string& name() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_name(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_name();
-  PROTOBUF_NODISCARD std::string* release_name();
-  void set_allocated_name(std::string* name);
-  private:
-  const std::string& _internal_name() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
-  std::string* _internal_mutable_name();
-  public:
-
-  // string session_tocken = 2;
-  void clear_session_tocken();
-  const std::string& session_tocken() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_session_tocken(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_session_tocken();
-  PROTOBUF_NODISCARD std::string* release_session_tocken();
-  void set_allocated_session_tocken(std::string* session_tocken);
-  private:
-  const std::string& _internal_session_tocken() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_session_tocken(const std::string& value);
-  std::string* _internal_mutable_session_tocken();
-  public:
-
-  // @@protoc_insertion_point(class_scope:proto.DeathReportRequest)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr session_tocken_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_darwin_5fservice_2eproto;
-};
-// -------------------------------------------------------------------
-
-class DeathReportResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.DeathReportResponse) */ {
- public:
-  inline DeathReportResponse() : DeathReportResponse(nullptr) {}
-  ~DeathReportResponse() override;
-  explicit PROTOBUF_CONSTEXPR DeathReportResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  DeathReportResponse(const DeathReportResponse& from);
-  DeathReportResponse(DeathReportResponse&& from) noexcept
-    : DeathReportResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline DeathReportResponse& operator=(const DeathReportResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline DeathReportResponse& operator=(DeathReportResponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const DeathReportResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const DeathReportResponse* internal_default_instance() {
-    return reinterpret_cast<const DeathReportResponse*>(
-               &_DeathReportResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    17;
-
-  friend void swap(DeathReportResponse& a, DeathReportResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(DeathReportResponse* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(DeathReportResponse* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  DeathReportResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<DeathReportResponse>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const DeathReportResponse& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const DeathReportResponse& from) {
-    DeathReportResponse::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(DeathReportResponse* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proto.DeathReportResponse";
-  }
-  protected:
-  explicit DeathReportResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kCharacterReportsFieldNumber = 3,
-    kTimeFieldNumber = 2,
-    kReturnEnumFieldNumber = 1,
-  };
-  // repeated .proto.CharacterReport character_reports = 3;
-  int character_reports_size() const;
-  private:
-  int _internal_character_reports_size() const;
-  public:
-  void clear_character_reports();
-  ::proto::CharacterReport* mutable_character_reports(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::CharacterReport >*
-      mutable_character_reports();
-  private:
-  const ::proto::CharacterReport& _internal_character_reports(int index) const;
-  ::proto::CharacterReport* _internal_add_character_reports();
-  public:
-  const ::proto::CharacterReport& character_reports(int index) const;
-  ::proto::CharacterReport* add_character_reports();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::CharacterReport >&
-      character_reports() const;
-
-  // double time = 2;
-  void clear_time();
-  double time() const;
-  void set_time(double value);
-  private:
-  double _internal_time() const;
-  void _internal_set_time(double value);
-  public:
-
-  // .proto.ReturnEnum return_enum = 1;
-  void clear_return_enum();
-  ::proto::ReturnEnum return_enum() const;
-  void set_return_enum(::proto::ReturnEnum value);
-  private:
-  ::proto::ReturnEnum _internal_return_enum() const;
-  void _internal_set_return_enum(::proto::ReturnEnum value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:proto.DeathReportResponse)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::CharacterReport > character_reports_;
-    double time_;
-    int return_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -4884,44 +4552,44 @@ inline void Character::set_status_enum(::proto::StatusEnum value) {
 
 // -------------------------------------------------------------------
 
-// CharacterReport
+// ColorParameter
 
 // string name = 1;
-inline void CharacterReport::clear_name() {
+inline void ColorParameter::clear_name() {
   _impl_.name_.ClearToEmpty();
 }
-inline const std::string& CharacterReport::name() const {
-  // @@protoc_insertion_point(field_get:proto.CharacterReport.name)
+inline const std::string& ColorParameter::name() const {
+  // @@protoc_insertion_point(field_get:proto.ColorParameter.name)
   return _internal_name();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void CharacterReport::set_name(ArgT0&& arg0, ArgT... args) {
+void ColorParameter::set_name(ArgT0&& arg0, ArgT... args) {
  
  _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.CharacterReport.name)
+  // @@protoc_insertion_point(field_set:proto.ColorParameter.name)
 }
-inline std::string* CharacterReport::mutable_name() {
+inline std::string* ColorParameter::mutable_name() {
   std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:proto.CharacterReport.name)
+  // @@protoc_insertion_point(field_mutable:proto.ColorParameter.name)
   return _s;
 }
-inline const std::string& CharacterReport::_internal_name() const {
+inline const std::string& ColorParameter::_internal_name() const {
   return _impl_.name_.Get();
 }
-inline void CharacterReport::_internal_set_name(const std::string& value) {
+inline void ColorParameter::_internal_set_name(const std::string& value) {
   
   _impl_.name_.Set(value, GetArenaForAllocation());
 }
-inline std::string* CharacterReport::_internal_mutable_name() {
+inline std::string* ColorParameter::_internal_mutable_name() {
   
   return _impl_.name_.Mutable(GetArenaForAllocation());
 }
-inline std::string* CharacterReport::release_name() {
-  // @@protoc_insertion_point(field_release:proto.CharacterReport.name)
+inline std::string* ColorParameter::release_name() {
+  // @@protoc_insertion_point(field_release:proto.ColorParameter.name)
   return _impl_.name_.Release();
 }
-inline void CharacterReport::set_allocated_name(std::string* name) {
+inline void ColorParameter::set_allocated_name(std::string* name) {
   if (name != nullptr) {
     
   } else {
@@ -4933,72 +4601,32 @@ inline void CharacterReport::set_allocated_name(std::string* name) {
     _impl_.name_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.CharacterReport.name)
+  // @@protoc_insertion_point(field_set_allocated:proto.ColorParameter.name)
 }
 
-// float radius = 2;
-inline void CharacterReport::clear_radius() {
-  _impl_.radius_ = 0;
-}
-inline float CharacterReport::_internal_radius() const {
-  return _impl_.radius_;
-}
-inline float CharacterReport::radius() const {
-  // @@protoc_insertion_point(field_get:proto.CharacterReport.radius)
-  return _internal_radius();
-}
-inline void CharacterReport::_internal_set_radius(float value) {
-  
-  _impl_.radius_ = value;
-}
-inline void CharacterReport::set_radius(float value) {
-  _internal_set_radius(value);
-  // @@protoc_insertion_point(field_set:proto.CharacterReport.radius)
-}
-
-// .proto.VitalEnum vital_status = 3;
-inline void CharacterReport::clear_vital_status() {
-  _impl_.vital_status_ = 0;
-}
-inline ::proto::VitalEnum CharacterReport::_internal_vital_status() const {
-  return static_cast< ::proto::VitalEnum >(_impl_.vital_status_);
-}
-inline ::proto::VitalEnum CharacterReport::vital_status() const {
-  // @@protoc_insertion_point(field_get:proto.CharacterReport.vital_status)
-  return _internal_vital_status();
-}
-inline void CharacterReport::_internal_set_vital_status(::proto::VitalEnum value) {
-  
-  _impl_.vital_status_ = value;
-}
-inline void CharacterReport::set_vital_status(::proto::VitalEnum value) {
-  _internal_set_vital_status(value);
-  // @@protoc_insertion_point(field_set:proto.CharacterReport.vital_status)
-}
-
-// .proto.Vector3 color = 4;
-inline bool CharacterReport::_internal_has_color() const {
+// .proto.Vector3 color = 2;
+inline bool ColorParameter::_internal_has_color() const {
   return this != internal_default_instance() && _impl_.color_ != nullptr;
 }
-inline bool CharacterReport::has_color() const {
+inline bool ColorParameter::has_color() const {
   return _internal_has_color();
 }
-inline void CharacterReport::clear_color() {
+inline void ColorParameter::clear_color() {
   if (GetArenaForAllocation() == nullptr && _impl_.color_ != nullptr) {
     delete _impl_.color_;
   }
   _impl_.color_ = nullptr;
 }
-inline const ::proto::Vector3& CharacterReport::_internal_color() const {
+inline const ::proto::Vector3& ColorParameter::_internal_color() const {
   const ::proto::Vector3* p = _impl_.color_;
   return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector3&>(
       ::proto::_Vector3_default_instance_);
 }
-inline const ::proto::Vector3& CharacterReport::color() const {
-  // @@protoc_insertion_point(field_get:proto.CharacterReport.color)
+inline const ::proto::Vector3& ColorParameter::color() const {
+  // @@protoc_insertion_point(field_get:proto.ColorParameter.color)
   return _internal_color();
 }
-inline void CharacterReport::unsafe_arena_set_allocated_color(
+inline void ColorParameter::unsafe_arena_set_allocated_color(
     ::proto::Vector3* color) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.color_);
@@ -5009,9 +4637,9 @@ inline void CharacterReport::unsafe_arena_set_allocated_color(
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.CharacterReport.color)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.ColorParameter.color)
 }
-inline ::proto::Vector3* CharacterReport::release_color() {
+inline ::proto::Vector3* ColorParameter::release_color() {
   
   ::proto::Vector3* temp = _impl_.color_;
   _impl_.color_ = nullptr;
@@ -5026,14 +4654,14 @@ inline ::proto::Vector3* CharacterReport::release_color() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::proto::Vector3* CharacterReport::unsafe_arena_release_color() {
-  // @@protoc_insertion_point(field_release:proto.CharacterReport.color)
+inline ::proto::Vector3* ColorParameter::unsafe_arena_release_color() {
+  // @@protoc_insertion_point(field_release:proto.ColorParameter.color)
   
   ::proto::Vector3* temp = _impl_.color_;
   _impl_.color_ = nullptr;
   return temp;
 }
-inline ::proto::Vector3* CharacterReport::_internal_mutable_color() {
+inline ::proto::Vector3* ColorParameter::_internal_mutable_color() {
   
   if (_impl_.color_ == nullptr) {
     auto* p = CreateMaybeMessage<::proto::Vector3>(GetArenaForAllocation());
@@ -5041,12 +4669,12 @@ inline ::proto::Vector3* CharacterReport::_internal_mutable_color() {
   }
   return _impl_.color_;
 }
-inline ::proto::Vector3* CharacterReport::mutable_color() {
+inline ::proto::Vector3* ColorParameter::mutable_color() {
   ::proto::Vector3* _msg = _internal_mutable_color();
-  // @@protoc_insertion_point(field_mutable:proto.CharacterReport.color)
+  // @@protoc_insertion_point(field_mutable:proto.ColorParameter.color)
   return _msg;
 }
-inline void CharacterReport::set_allocated_color(::proto::Vector3* color) {
+inline void ColorParameter::set_allocated_color(::proto::Vector3* color) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete _impl_.color_;
@@ -5063,27 +4691,7 @@ inline void CharacterReport::set_allocated_color(::proto::Vector3* color) {
     
   }
   _impl_.color_ = color;
-  // @@protoc_insertion_point(field_set_allocated:proto.CharacterReport.color)
-}
-
-// double last_seen = 5;
-inline void CharacterReport::clear_last_seen() {
-  _impl_.last_seen_ = 0;
-}
-inline double CharacterReport::_internal_last_seen() const {
-  return _impl_.last_seen_;
-}
-inline double CharacterReport::last_seen() const {
-  // @@protoc_insertion_point(field_get:proto.CharacterReport.last_seen)
-  return _internal_last_seen();
-}
-inline void CharacterReport::_internal_set_last_seen(double value) {
-  
-  _impl_.last_seen_ = value;
-}
-inline void CharacterReport::set_last_seen(double value) {
-  _internal_set_last_seen(value);
-  // @@protoc_insertion_point(field_set:proto.CharacterReport.last_seen)
+  // @@protoc_insertion_point(field_set_allocated:proto.ColorParameter.color)
 }
 
 // -------------------------------------------------------------------
@@ -5190,27 +4798,7 @@ inline void PlayerParameter::set_penalty(double value) {
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.penalty)
 }
 
-// double dot_penalty = 6;
-inline void PlayerParameter::clear_dot_penalty() {
-  _impl_.dot_penalty_ = 0;
-}
-inline double PlayerParameter::_internal_dot_penalty() const {
-  return _impl_.dot_penalty_;
-}
-inline double PlayerParameter::dot_penalty() const {
-  // @@protoc_insertion_point(field_get:proto.PlayerParameter.dot_penalty)
-  return _internal_dot_penalty();
-}
-inline void PlayerParameter::_internal_set_dot_penalty(double value) {
-  
-  _impl_.dot_penalty_ = value;
-}
-inline void PlayerParameter::set_dot_penalty(double value) {
-  _internal_set_dot_penalty(value);
-  // @@protoc_insertion_point(field_set:proto.PlayerParameter.dot_penalty)
-}
-
-// .proto.ColorEnum change_color = 7;
+// .proto.ColorEnum change_color = 6;
 inline void PlayerParameter::clear_change_color() {
   _impl_.change_color_ = 0;
 }
@@ -5230,7 +4818,7 @@ inline void PlayerParameter::set_change_color(::proto::ColorEnum value) {
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.change_color)
 }
 
-// double move_cost = 8;
+// double move_cost = 7;
 inline void PlayerParameter::clear_move_cost() {
   _impl_.move_cost_ = 0;
 }
@@ -5250,7 +4838,7 @@ inline void PlayerParameter::set_move_cost(double value) {
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.move_cost)
 }
 
-// double friction = 9;
+// double friction = 8;
 inline void PlayerParameter::clear_friction() {
   _impl_.friction_ = 0;
 }
@@ -5270,7 +4858,7 @@ inline void PlayerParameter::set_friction(double value) {
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.friction)
 }
 
-// double victory_size = 10;
+// double victory_size = 9;
 inline void PlayerParameter::clear_victory_size() {
   _impl_.victory_size_ = 0;
 }
@@ -5288,6 +4876,66 @@ inline void PlayerParameter::_internal_set_victory_size(double value) {
 inline void PlayerParameter::set_victory_size(double value) {
   _internal_set_victory_size(value);
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.victory_size)
+}
+
+// double disconnection_timeout = 10;
+inline void PlayerParameter::clear_disconnection_timeout() {
+  _impl_.disconnection_timeout_ = 0;
+}
+inline double PlayerParameter::_internal_disconnection_timeout() const {
+  return _impl_.disconnection_timeout_;
+}
+inline double PlayerParameter::disconnection_timeout() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.disconnection_timeout)
+  return _internal_disconnection_timeout();
+}
+inline void PlayerParameter::_internal_set_disconnection_timeout(double value) {
+  
+  _impl_.disconnection_timeout_ = value;
+}
+inline void PlayerParameter::set_disconnection_timeout(double value) {
+  _internal_set_disconnection_timeout(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.disconnection_timeout)
+}
+
+// repeated .proto.ColorParameter colors = 11;
+inline int PlayerParameter::_internal_colors_size() const {
+  return _impl_.colors_.size();
+}
+inline int PlayerParameter::colors_size() const {
+  return _internal_colors_size();
+}
+inline void PlayerParameter::clear_colors() {
+  _impl_.colors_.Clear();
+}
+inline ::proto::ColorParameter* PlayerParameter::mutable_colors(int index) {
+  // @@protoc_insertion_point(field_mutable:proto.PlayerParameter.colors)
+  return _impl_.colors_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::ColorParameter >*
+PlayerParameter::mutable_colors() {
+  // @@protoc_insertion_point(field_mutable_list:proto.PlayerParameter.colors)
+  return &_impl_.colors_;
+}
+inline const ::proto::ColorParameter& PlayerParameter::_internal_colors(int index) const {
+  return _impl_.colors_.Get(index);
+}
+inline const ::proto::ColorParameter& PlayerParameter::colors(int index) const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.colors)
+  return _internal_colors(index);
+}
+inline ::proto::ColorParameter* PlayerParameter::_internal_add_colors() {
+  return _impl_.colors_.Add();
+}
+inline ::proto::ColorParameter* PlayerParameter::add_colors() {
+  ::proto::ColorParameter* _add = _internal_add_colors();
+  // @@protoc_insertion_point(field_add:proto.PlayerParameter.colors)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::ColorParameter >&
+PlayerParameter::colors() const {
+  // @@protoc_insertion_point(field_list:proto.PlayerParameter.colors)
+  return _impl_.colors_;
 }
 
 // -------------------------------------------------------------------
@@ -5644,44 +5292,44 @@ inline void UpdateResponse::set_time(double value) {
 
 // -------------------------------------------------------------------
 
-// ReportMovementRequest
+// ReportInGameRequest
 
 // string name = 1;
-inline void ReportMovementRequest::clear_name() {
+inline void ReportInGameRequest::clear_name() {
   _impl_.name_.ClearToEmpty();
 }
-inline const std::string& ReportMovementRequest::name() const {
-  // @@protoc_insertion_point(field_get:proto.ReportMovementRequest.name)
+inline const std::string& ReportInGameRequest::name() const {
+  // @@protoc_insertion_point(field_get:proto.ReportInGameRequest.name)
   return _internal_name();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void ReportMovementRequest::set_name(ArgT0&& arg0, ArgT... args) {
+void ReportInGameRequest::set_name(ArgT0&& arg0, ArgT... args) {
  
  _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.ReportMovementRequest.name)
+  // @@protoc_insertion_point(field_set:proto.ReportInGameRequest.name)
 }
-inline std::string* ReportMovementRequest::mutable_name() {
+inline std::string* ReportInGameRequest::mutable_name() {
   std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:proto.ReportMovementRequest.name)
+  // @@protoc_insertion_point(field_mutable:proto.ReportInGameRequest.name)
   return _s;
 }
-inline const std::string& ReportMovementRequest::_internal_name() const {
+inline const std::string& ReportInGameRequest::_internal_name() const {
   return _impl_.name_.Get();
 }
-inline void ReportMovementRequest::_internal_set_name(const std::string& value) {
+inline void ReportInGameRequest::_internal_set_name(const std::string& value) {
   
   _impl_.name_.Set(value, GetArenaForAllocation());
 }
-inline std::string* ReportMovementRequest::_internal_mutable_name() {
+inline std::string* ReportInGameRequest::_internal_mutable_name() {
   
   return _impl_.name_.Mutable(GetArenaForAllocation());
 }
-inline std::string* ReportMovementRequest::release_name() {
-  // @@protoc_insertion_point(field_release:proto.ReportMovementRequest.name)
+inline std::string* ReportInGameRequest::release_name() {
+  // @@protoc_insertion_point(field_release:proto.ReportInGameRequest.name)
   return _impl_.name_.Release();
 }
-inline void ReportMovementRequest::set_allocated_name(std::string* name) {
+inline void ReportInGameRequest::set_allocated_name(std::string* name) {
   if (name != nullptr) {
     
   } else {
@@ -5693,32 +5341,32 @@ inline void ReportMovementRequest::set_allocated_name(std::string* name) {
     _impl_.name_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.ReportMovementRequest.name)
+  // @@protoc_insertion_point(field_set_allocated:proto.ReportInGameRequest.name)
 }
 
 // .proto.Physic physic = 2;
-inline bool ReportMovementRequest::_internal_has_physic() const {
+inline bool ReportInGameRequest::_internal_has_physic() const {
   return this != internal_default_instance() && _impl_.physic_ != nullptr;
 }
-inline bool ReportMovementRequest::has_physic() const {
+inline bool ReportInGameRequest::has_physic() const {
   return _internal_has_physic();
 }
-inline void ReportMovementRequest::clear_physic() {
+inline void ReportInGameRequest::clear_physic() {
   if (GetArenaForAllocation() == nullptr && _impl_.physic_ != nullptr) {
     delete _impl_.physic_;
   }
   _impl_.physic_ = nullptr;
 }
-inline const ::proto::Physic& ReportMovementRequest::_internal_physic() const {
+inline const ::proto::Physic& ReportInGameRequest::_internal_physic() const {
   const ::proto::Physic* p = _impl_.physic_;
   return p != nullptr ? *p : reinterpret_cast<const ::proto::Physic&>(
       ::proto::_Physic_default_instance_);
 }
-inline const ::proto::Physic& ReportMovementRequest::physic() const {
-  // @@protoc_insertion_point(field_get:proto.ReportMovementRequest.physic)
+inline const ::proto::Physic& ReportInGameRequest::physic() const {
+  // @@protoc_insertion_point(field_get:proto.ReportInGameRequest.physic)
   return _internal_physic();
 }
-inline void ReportMovementRequest::unsafe_arena_set_allocated_physic(
+inline void ReportInGameRequest::unsafe_arena_set_allocated_physic(
     ::proto::Physic* physic) {
   if (GetArenaForAllocation() == nullptr) {
     delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.physic_);
@@ -5729,9 +5377,9 @@ inline void ReportMovementRequest::unsafe_arena_set_allocated_physic(
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.ReportMovementRequest.physic)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.ReportInGameRequest.physic)
 }
-inline ::proto::Physic* ReportMovementRequest::release_physic() {
+inline ::proto::Physic* ReportInGameRequest::release_physic() {
   
   ::proto::Physic* temp = _impl_.physic_;
   _impl_.physic_ = nullptr;
@@ -5746,14 +5394,14 @@ inline ::proto::Physic* ReportMovementRequest::release_physic() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::proto::Physic* ReportMovementRequest::unsafe_arena_release_physic() {
-  // @@protoc_insertion_point(field_release:proto.ReportMovementRequest.physic)
+inline ::proto::Physic* ReportInGameRequest::unsafe_arena_release_physic() {
+  // @@protoc_insertion_point(field_release:proto.ReportInGameRequest.physic)
   
   ::proto::Physic* temp = _impl_.physic_;
   _impl_.physic_ = nullptr;
   return temp;
 }
-inline ::proto::Physic* ReportMovementRequest::_internal_mutable_physic() {
+inline ::proto::Physic* ReportInGameRequest::_internal_mutable_physic() {
   
   if (_impl_.physic_ == nullptr) {
     auto* p = CreateMaybeMessage<::proto::Physic>(GetArenaForAllocation());
@@ -5761,12 +5409,12 @@ inline ::proto::Physic* ReportMovementRequest::_internal_mutable_physic() {
   }
   return _impl_.physic_;
 }
-inline ::proto::Physic* ReportMovementRequest::mutable_physic() {
+inline ::proto::Physic* ReportInGameRequest::mutable_physic() {
   ::proto::Physic* _msg = _internal_mutable_physic();
-  // @@protoc_insertion_point(field_mutable:proto.ReportMovementRequest.physic)
+  // @@protoc_insertion_point(field_mutable:proto.ReportInGameRequest.physic)
   return _msg;
 }
-inline void ReportMovementRequest::set_allocated_physic(::proto::Physic* physic) {
+inline void ReportInGameRequest::set_allocated_physic(::proto::Physic* physic) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
     delete _impl_.physic_;
@@ -5783,45 +5431,45 @@ inline void ReportMovementRequest::set_allocated_physic(::proto::Physic* physic)
     
   }
   _impl_.physic_ = physic;
-  // @@protoc_insertion_point(field_set_allocated:proto.ReportMovementRequest.physic)
+  // @@protoc_insertion_point(field_set_allocated:proto.ReportInGameRequest.physic)
 }
 
 // string potential_hit = 3;
-inline void ReportMovementRequest::clear_potential_hit() {
+inline void ReportInGameRequest::clear_potential_hit() {
   _impl_.potential_hit_.ClearToEmpty();
 }
-inline const std::string& ReportMovementRequest::potential_hit() const {
-  // @@protoc_insertion_point(field_get:proto.ReportMovementRequest.potential_hit)
+inline const std::string& ReportInGameRequest::potential_hit() const {
+  // @@protoc_insertion_point(field_get:proto.ReportInGameRequest.potential_hit)
   return _internal_potential_hit();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void ReportMovementRequest::set_potential_hit(ArgT0&& arg0, ArgT... args) {
+void ReportInGameRequest::set_potential_hit(ArgT0&& arg0, ArgT... args) {
  
  _impl_.potential_hit_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.ReportMovementRequest.potential_hit)
+  // @@protoc_insertion_point(field_set:proto.ReportInGameRequest.potential_hit)
 }
-inline std::string* ReportMovementRequest::mutable_potential_hit() {
+inline std::string* ReportInGameRequest::mutable_potential_hit() {
   std::string* _s = _internal_mutable_potential_hit();
-  // @@protoc_insertion_point(field_mutable:proto.ReportMovementRequest.potential_hit)
+  // @@protoc_insertion_point(field_mutable:proto.ReportInGameRequest.potential_hit)
   return _s;
 }
-inline const std::string& ReportMovementRequest::_internal_potential_hit() const {
+inline const std::string& ReportInGameRequest::_internal_potential_hit() const {
   return _impl_.potential_hit_.Get();
 }
-inline void ReportMovementRequest::_internal_set_potential_hit(const std::string& value) {
+inline void ReportInGameRequest::_internal_set_potential_hit(const std::string& value) {
   
   _impl_.potential_hit_.Set(value, GetArenaForAllocation());
 }
-inline std::string* ReportMovementRequest::_internal_mutable_potential_hit() {
+inline std::string* ReportInGameRequest::_internal_mutable_potential_hit() {
   
   return _impl_.potential_hit_.Mutable(GetArenaForAllocation());
 }
-inline std::string* ReportMovementRequest::release_potential_hit() {
-  // @@protoc_insertion_point(field_release:proto.ReportMovementRequest.potential_hit)
+inline std::string* ReportInGameRequest::release_potential_hit() {
+  // @@protoc_insertion_point(field_release:proto.ReportInGameRequest.potential_hit)
   return _impl_.potential_hit_.Release();
 }
-inline void ReportMovementRequest::set_allocated_potential_hit(std::string* potential_hit) {
+inline void ReportInGameRequest::set_allocated_potential_hit(std::string* potential_hit) {
   if (potential_hit != nullptr) {
     
   } else {
@@ -5833,31 +5481,51 @@ inline void ReportMovementRequest::set_allocated_potential_hit(std::string* pote
     _impl_.potential_hit_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.ReportMovementRequest.potential_hit)
+  // @@protoc_insertion_point(field_set_allocated:proto.ReportInGameRequest.potential_hit)
+}
+
+// .proto.ReportEnum report_enum = 4;
+inline void ReportInGameRequest::clear_report_enum() {
+  _impl_.report_enum_ = 0;
+}
+inline ::proto::ReportEnum ReportInGameRequest::_internal_report_enum() const {
+  return static_cast< ::proto::ReportEnum >(_impl_.report_enum_);
+}
+inline ::proto::ReportEnum ReportInGameRequest::report_enum() const {
+  // @@protoc_insertion_point(field_get:proto.ReportInGameRequest.report_enum)
+  return _internal_report_enum();
+}
+inline void ReportInGameRequest::_internal_set_report_enum(::proto::ReportEnum value) {
+  
+  _impl_.report_enum_ = value;
+}
+inline void ReportInGameRequest::set_report_enum(::proto::ReportEnum value) {
+  _internal_set_report_enum(value);
+  // @@protoc_insertion_point(field_set:proto.ReportInGameRequest.report_enum)
 }
 
 // -------------------------------------------------------------------
 
-// ReportMovementResponse
+// ReportInGameResponse
 
 // .proto.ReturnEnum return_enum = 1;
-inline void ReportMovementResponse::clear_return_enum() {
+inline void ReportInGameResponse::clear_return_enum() {
   _impl_.return_enum_ = 0;
 }
-inline ::proto::ReturnEnum ReportMovementResponse::_internal_return_enum() const {
+inline ::proto::ReturnEnum ReportInGameResponse::_internal_return_enum() const {
   return static_cast< ::proto::ReturnEnum >(_impl_.return_enum_);
 }
-inline ::proto::ReturnEnum ReportMovementResponse::return_enum() const {
-  // @@protoc_insertion_point(field_get:proto.ReportMovementResponse.return_enum)
+inline ::proto::ReturnEnum ReportInGameResponse::return_enum() const {
+  // @@protoc_insertion_point(field_get:proto.ReportInGameResponse.return_enum)
   return _internal_return_enum();
 }
-inline void ReportMovementResponse::_internal_set_return_enum(::proto::ReturnEnum value) {
+inline void ReportInGameResponse::_internal_set_return_enum(::proto::ReturnEnum value) {
   
   _impl_.return_enum_ = value;
 }
-inline void ReportMovementResponse::set_return_enum(::proto::ReturnEnum value) {
+inline void ReportInGameResponse::set_return_enum(::proto::ReturnEnum value) {
   _internal_set_return_enum(value);
-  // @@protoc_insertion_point(field_set:proto.ReportMovementResponse.return_enum)
+  // @@protoc_insertion_point(field_set:proto.ReportInGameResponse.return_enum)
 }
 
 // -------------------------------------------------------------------
@@ -6008,97 +5676,7 @@ inline void CreateCharacterRequest::set_allocated_color(::proto::Vector3* color)
 
 // CreateCharacterResponse
 
-// .proto.PlayerParameter player_parameter = 1;
-inline bool CreateCharacterResponse::_internal_has_player_parameter() const {
-  return this != internal_default_instance() && _impl_.player_parameter_ != nullptr;
-}
-inline bool CreateCharacterResponse::has_player_parameter() const {
-  return _internal_has_player_parameter();
-}
-inline void CreateCharacterResponse::clear_player_parameter() {
-  if (GetArenaForAllocation() == nullptr && _impl_.player_parameter_ != nullptr) {
-    delete _impl_.player_parameter_;
-  }
-  _impl_.player_parameter_ = nullptr;
-}
-inline const ::proto::PlayerParameter& CreateCharacterResponse::_internal_player_parameter() const {
-  const ::proto::PlayerParameter* p = _impl_.player_parameter_;
-  return p != nullptr ? *p : reinterpret_cast<const ::proto::PlayerParameter&>(
-      ::proto::_PlayerParameter_default_instance_);
-}
-inline const ::proto::PlayerParameter& CreateCharacterResponse::player_parameter() const {
-  // @@protoc_insertion_point(field_get:proto.CreateCharacterResponse.player_parameter)
-  return _internal_player_parameter();
-}
-inline void CreateCharacterResponse::unsafe_arena_set_allocated_player_parameter(
-    ::proto::PlayerParameter* player_parameter) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.player_parameter_);
-  }
-  _impl_.player_parameter_ = player_parameter;
-  if (player_parameter) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.CreateCharacterResponse.player_parameter)
-}
-inline ::proto::PlayerParameter* CreateCharacterResponse::release_player_parameter() {
-  
-  ::proto::PlayerParameter* temp = _impl_.player_parameter_;
-  _impl_.player_parameter_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::proto::PlayerParameter* CreateCharacterResponse::unsafe_arena_release_player_parameter() {
-  // @@protoc_insertion_point(field_release:proto.CreateCharacterResponse.player_parameter)
-  
-  ::proto::PlayerParameter* temp = _impl_.player_parameter_;
-  _impl_.player_parameter_ = nullptr;
-  return temp;
-}
-inline ::proto::PlayerParameter* CreateCharacterResponse::_internal_mutable_player_parameter() {
-  
-  if (_impl_.player_parameter_ == nullptr) {
-    auto* p = CreateMaybeMessage<::proto::PlayerParameter>(GetArenaForAllocation());
-    _impl_.player_parameter_ = p;
-  }
-  return _impl_.player_parameter_;
-}
-inline ::proto::PlayerParameter* CreateCharacterResponse::mutable_player_parameter() {
-  ::proto::PlayerParameter* _msg = _internal_mutable_player_parameter();
-  // @@protoc_insertion_point(field_mutable:proto.CreateCharacterResponse.player_parameter)
-  return _msg;
-}
-inline void CreateCharacterResponse::set_allocated_player_parameter(::proto::PlayerParameter* player_parameter) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete _impl_.player_parameter_;
-  }
-  if (player_parameter) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(player_parameter);
-    if (message_arena != submessage_arena) {
-      player_parameter = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, player_parameter, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  _impl_.player_parameter_ = player_parameter;
-  // @@protoc_insertion_point(field_set_allocated:proto.CreateCharacterResponse.player_parameter)
-}
-
-// .proto.ReturnEnum return_enum = 2;
+// .proto.ReturnEnum return_enum = 1;
 inline void CreateCharacterResponse::clear_return_enum() {
   _impl_.return_enum_ = 0;
 }
@@ -6186,201 +5764,99 @@ inline void PingResponse::set_time(double value) {
   // @@protoc_insertion_point(field_set:proto.PingResponse.time)
 }
 
-// -------------------------------------------------------------------
-
-// DeathReportRequest
-
-// string name = 1;
-inline void DeathReportRequest::clear_name() {
-  _impl_.name_.ClearToEmpty();
+// .proto.PlayerParameter player_parameter = 3;
+inline bool PingResponse::_internal_has_player_parameter() const {
+  return this != internal_default_instance() && _impl_.player_parameter_ != nullptr;
 }
-inline const std::string& DeathReportRequest::name() const {
-  // @@protoc_insertion_point(field_get:proto.DeathReportRequest.name)
-  return _internal_name();
+inline bool PingResponse::has_player_parameter() const {
+  return _internal_has_player_parameter();
 }
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void DeathReportRequest::set_name(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.DeathReportRequest.name)
+inline void PingResponse::clear_player_parameter() {
+  if (GetArenaForAllocation() == nullptr && _impl_.player_parameter_ != nullptr) {
+    delete _impl_.player_parameter_;
+  }
+  _impl_.player_parameter_ = nullptr;
 }
-inline std::string* DeathReportRequest::mutable_name() {
-  std::string* _s = _internal_mutable_name();
-  // @@protoc_insertion_point(field_mutable:proto.DeathReportRequest.name)
-  return _s;
+inline const ::proto::PlayerParameter& PingResponse::_internal_player_parameter() const {
+  const ::proto::PlayerParameter* p = _impl_.player_parameter_;
+  return p != nullptr ? *p : reinterpret_cast<const ::proto::PlayerParameter&>(
+      ::proto::_PlayerParameter_default_instance_);
 }
-inline const std::string& DeathReportRequest::_internal_name() const {
-  return _impl_.name_.Get();
+inline const ::proto::PlayerParameter& PingResponse::player_parameter() const {
+  // @@protoc_insertion_point(field_get:proto.PingResponse.player_parameter)
+  return _internal_player_parameter();
 }
-inline void DeathReportRequest::_internal_set_name(const std::string& value) {
-  
-  _impl_.name_.Set(value, GetArenaForAllocation());
-}
-inline std::string* DeathReportRequest::_internal_mutable_name() {
-  
-  return _impl_.name_.Mutable(GetArenaForAllocation());
-}
-inline std::string* DeathReportRequest::release_name() {
-  // @@protoc_insertion_point(field_release:proto.DeathReportRequest.name)
-  return _impl_.name_.Release();
-}
-inline void DeathReportRequest::set_allocated_name(std::string* name) {
-  if (name != nullptr) {
+inline void PingResponse::unsafe_arena_set_allocated_player_parameter(
+    ::proto::PlayerParameter* player_parameter) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.player_parameter_);
+  }
+  _impl_.player_parameter_ = player_parameter;
+  if (player_parameter) {
     
   } else {
     
   }
-  _impl_.name_.SetAllocated(name, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.name_.IsDefault()) {
-    _impl_.name_.Set("", GetArenaForAllocation());
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PingResponse.player_parameter)
+}
+inline ::proto::PlayerParameter* PingResponse::release_player_parameter() {
+  
+  ::proto::PlayerParameter* temp = _impl_.player_parameter_;
+  _impl_.player_parameter_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
   }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.DeathReportRequest.name)
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
 }
-
-// string session_tocken = 2;
-inline void DeathReportRequest::clear_session_tocken() {
-  _impl_.session_tocken_.ClearToEmpty();
-}
-inline const std::string& DeathReportRequest::session_tocken() const {
-  // @@protoc_insertion_point(field_get:proto.DeathReportRequest.session_tocken)
-  return _internal_session_tocken();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void DeathReportRequest::set_session_tocken(ArgT0&& arg0, ArgT... args) {
- 
- _impl_.session_tocken_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.DeathReportRequest.session_tocken)
-}
-inline std::string* DeathReportRequest::mutable_session_tocken() {
-  std::string* _s = _internal_mutable_session_tocken();
-  // @@protoc_insertion_point(field_mutable:proto.DeathReportRequest.session_tocken)
-  return _s;
-}
-inline const std::string& DeathReportRequest::_internal_session_tocken() const {
-  return _impl_.session_tocken_.Get();
-}
-inline void DeathReportRequest::_internal_set_session_tocken(const std::string& value) {
+inline ::proto::PlayerParameter* PingResponse::unsafe_arena_release_player_parameter() {
+  // @@protoc_insertion_point(field_release:proto.PingResponse.player_parameter)
   
-  _impl_.session_tocken_.Set(value, GetArenaForAllocation());
+  ::proto::PlayerParameter* temp = _impl_.player_parameter_;
+  _impl_.player_parameter_ = nullptr;
+  return temp;
 }
-inline std::string* DeathReportRequest::_internal_mutable_session_tocken() {
+inline ::proto::PlayerParameter* PingResponse::_internal_mutable_player_parameter() {
   
-  return _impl_.session_tocken_.Mutable(GetArenaForAllocation());
+  if (_impl_.player_parameter_ == nullptr) {
+    auto* p = CreateMaybeMessage<::proto::PlayerParameter>(GetArenaForAllocation());
+    _impl_.player_parameter_ = p;
+  }
+  return _impl_.player_parameter_;
 }
-inline std::string* DeathReportRequest::release_session_tocken() {
-  // @@protoc_insertion_point(field_release:proto.DeathReportRequest.session_tocken)
-  return _impl_.session_tocken_.Release();
+inline ::proto::PlayerParameter* PingResponse::mutable_player_parameter() {
+  ::proto::PlayerParameter* _msg = _internal_mutable_player_parameter();
+  // @@protoc_insertion_point(field_mutable:proto.PingResponse.player_parameter)
+  return _msg;
 }
-inline void DeathReportRequest::set_allocated_session_tocken(std::string* session_tocken) {
-  if (session_tocken != nullptr) {
+inline void PingResponse::set_allocated_player_parameter(::proto::PlayerParameter* player_parameter) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.player_parameter_;
+  }
+  if (player_parameter) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(player_parameter);
+    if (message_arena != submessage_arena) {
+      player_parameter = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, player_parameter, submessage_arena);
+    }
     
   } else {
     
   }
-  _impl_.session_tocken_.SetAllocated(session_tocken, GetArenaForAllocation());
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.session_tocken_.IsDefault()) {
-    _impl_.session_tocken_.Set("", GetArenaForAllocation());
-  }
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.DeathReportRequest.session_tocken)
-}
-
-// -------------------------------------------------------------------
-
-// DeathReportResponse
-
-// .proto.ReturnEnum return_enum = 1;
-inline void DeathReportResponse::clear_return_enum() {
-  _impl_.return_enum_ = 0;
-}
-inline ::proto::ReturnEnum DeathReportResponse::_internal_return_enum() const {
-  return static_cast< ::proto::ReturnEnum >(_impl_.return_enum_);
-}
-inline ::proto::ReturnEnum DeathReportResponse::return_enum() const {
-  // @@protoc_insertion_point(field_get:proto.DeathReportResponse.return_enum)
-  return _internal_return_enum();
-}
-inline void DeathReportResponse::_internal_set_return_enum(::proto::ReturnEnum value) {
-  
-  _impl_.return_enum_ = value;
-}
-inline void DeathReportResponse::set_return_enum(::proto::ReturnEnum value) {
-  _internal_set_return_enum(value);
-  // @@protoc_insertion_point(field_set:proto.DeathReportResponse.return_enum)
-}
-
-// double time = 2;
-inline void DeathReportResponse::clear_time() {
-  _impl_.time_ = 0;
-}
-inline double DeathReportResponse::_internal_time() const {
-  return _impl_.time_;
-}
-inline double DeathReportResponse::time() const {
-  // @@protoc_insertion_point(field_get:proto.DeathReportResponse.time)
-  return _internal_time();
-}
-inline void DeathReportResponse::_internal_set_time(double value) {
-  
-  _impl_.time_ = value;
-}
-inline void DeathReportResponse::set_time(double value) {
-  _internal_set_time(value);
-  // @@protoc_insertion_point(field_set:proto.DeathReportResponse.time)
-}
-
-// repeated .proto.CharacterReport character_reports = 3;
-inline int DeathReportResponse::_internal_character_reports_size() const {
-  return _impl_.character_reports_.size();
-}
-inline int DeathReportResponse::character_reports_size() const {
-  return _internal_character_reports_size();
-}
-inline void DeathReportResponse::clear_character_reports() {
-  _impl_.character_reports_.Clear();
-}
-inline ::proto::CharacterReport* DeathReportResponse::mutable_character_reports(int index) {
-  // @@protoc_insertion_point(field_mutable:proto.DeathReportResponse.character_reports)
-  return _impl_.character_reports_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::CharacterReport >*
-DeathReportResponse::mutable_character_reports() {
-  // @@protoc_insertion_point(field_mutable_list:proto.DeathReportResponse.character_reports)
-  return &_impl_.character_reports_;
-}
-inline const ::proto::CharacterReport& DeathReportResponse::_internal_character_reports(int index) const {
-  return _impl_.character_reports_.Get(index);
-}
-inline const ::proto::CharacterReport& DeathReportResponse::character_reports(int index) const {
-  // @@protoc_insertion_point(field_get:proto.DeathReportResponse.character_reports)
-  return _internal_character_reports(index);
-}
-inline ::proto::CharacterReport* DeathReportResponse::_internal_add_character_reports() {
-  return _impl_.character_reports_.Add();
-}
-inline ::proto::CharacterReport* DeathReportResponse::add_character_reports() {
-  ::proto::CharacterReport* _add = _internal_add_character_reports();
-  // @@protoc_insertion_point(field_add:proto.DeathReportResponse.character_reports)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::CharacterReport >&
-DeathReportResponse::character_reports() const {
-  // @@protoc_insertion_point(field_list:proto.DeathReportResponse.character_reports)
-  return _impl_.character_reports_;
+  _impl_.player_parameter_ = player_parameter;
+  // @@protoc_insertion_point(field_set_allocated:proto.PingResponse.player_parameter)
 }
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -6442,6 +5918,11 @@ template <> struct is_proto_enum< ::proto::ColorEnum> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::proto::ColorEnum>() {
   return ::proto::ColorEnum_descriptor();
+}
+template <> struct is_proto_enum< ::proto::ReportEnum> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::proto::ReportEnum>() {
+  return ::proto::ReportEnum_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

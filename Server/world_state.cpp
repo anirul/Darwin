@@ -46,8 +46,8 @@ namespace darwin {
             physic.mutable_orientation_dt()->CopyFrom(
                 CreateBasicVector4(0.0, 0.0, 0.0, 1.0));
             character.mutable_physic()->CopyFrom(physic);
-            // WARNING: This suppose the gravity well is at the position 
-            // (0, 0, 0).
+            // WARNING: This suppose the gravity well is at the 
+            // position(0, 0, 0).
             character.mutable_normal()->CopyFrom(vec3);
             // This is wrong, and should be set to the real value.
             character.mutable_g_force()->CopyFrom(
@@ -58,7 +58,8 @@ namespace darwin {
             peer_characters_.emplace(peer, name);
             return true;
         }
-        else {
+        else
+        {
             std::cerr 
                 << std::format(
                     "[{}] Has already a character with name {}.\n",
@@ -113,8 +114,12 @@ namespace darwin {
             proto::Element element;
             element.set_name(std::format("element{}", i));
             element.set_type_enum(proto::TYPE_UPGRADE);
+            std::vector<proto::Vector3> colors;
+            for (const auto& color : player_parameter_.colors()) {
+                colors.push_back(color.color());
+            }
             element.mutable_color()->CopyFrom(
-                CreateRandomNormalizedColor());
+                CreateRandomNormalizedColor(colors.begin(), colors.end()));
             auto vec3 = CreateRandomNormalizedVector3();
             proto::Physic physic{};
             double radius = GetRadiusFromVolume(1.0);
@@ -252,9 +257,7 @@ namespace darwin {
                     color_from,     color_to
                 };
                 // Check if color are compatible.
-                if (DotProduct(color_from, color_to) > 
-                    GetPlayerParameter().dot_penalty())
-                {
+                if (DotProduct(color_from, color_to) > 0.99) {
                     if (type_enum == proto::TYPE_UPGRADE) {
                         LostSourceElementLocked(from_to);
                     }
@@ -339,6 +342,7 @@ namespace darwin {
     void WorldState::Update(double time) {
         std::scoped_lock l(mutex_info_);
         if (time != last_updated_) {
+            CheckStillInUseCharactersLocked();
             CheckGroundCharactersLocked();
             CheckDeathCharactersLocked();
             CheckVictoryCharactersLocked();
@@ -348,7 +352,25 @@ namespace darwin {
         FillVectorsLocked();
     }
 
+    void WorldState::UpdatePing(const std::string& name) {
+        std::scoped_lock l(mutex_info_);
+        last_seen_[name] = last_updated_;
+    }
 
+    void WorldState::CheckStillInUseCharactersLocked() {
+        for (const auto& [name, time] : last_seen_) {
+            if (time + player_parameter_.disconnection_timeout() < 
+                last_updated_) 
+            {
+                std::cout << std::format(
+                    "Character {} has been disconnected.\n", 
+                    name);
+                character_infos_.erase(name);
+                last_seen_.erase(name);
+                break;
+            }
+        }
+    }
 
     void WorldState::CheckGroundCharactersLocked() {
         auto ground = GetPlanetLocked();

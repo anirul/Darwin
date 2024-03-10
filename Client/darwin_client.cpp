@@ -3,7 +3,6 @@
 #include <glm/glm.hpp>
 #include <grpc++/grpc++.h>
 
-#include "async_client_call.h"
 #include "Common/darwin_service.grpc.pb.h"
 #include "Common/vector.h"
 #include "Common/convert_math.h"
@@ -46,7 +45,6 @@ namespace darwin {
         if (status.ok()) {
             character_name_ = name;
             logger_->info("Create character: {}", name);
-            world_simulator_.SetPlayerParameter(response.player_parameter());
             return true;
         }
         else {
@@ -58,34 +56,42 @@ namespace darwin {
     }
 
     void DarwinClient::Clear() {
-        report_movement_request_.set_name("");
+        std::scoped_lock l(mutex_);
+        report_request_.set_name(character_name_);
+        report_request_.set_report_enum(proto::REPORT_PING);
         world_simulator_.Clear();
         character_name_ = "";
     }
 
     void DarwinClient::ReportMovement(
-        const std::string& name,
         const proto::Physic& physic,
         const std::string& potential_hit) 
     {
         std::scoped_lock l(mutex_);
-        report_movement_request_.set_name(name);
-        report_movement_request_.mutable_physic()->CopyFrom(physic);
-        report_movement_request_.set_potential_hit(potential_hit);
+        report_request_.set_name(character_name_);
+        report_request_.mutable_physic()->CopyFrom(physic);
+        report_request_.set_potential_hit(potential_hit);
+        report_request_.set_report_enum(proto::REPORT_MOVEMENT_OR_HIT);
     }
 
-    void DarwinClient::SendReportMovement() {
-        SendReportMovementSync();
-    }
-
-    void DarwinClient::SendReportMovementSync() {
+    void DarwinClient::ReportPing() {
         std::scoped_lock l(mutex_);
-        proto::ReportMovementResponse response;
+        report_request_.set_name(character_name_);
+        report_request_.set_report_enum(proto::REPORT_PING);
+    }
+
+    void DarwinClient::SendReportInGame() {
+        SendReportInGameSync();
+    }
+
+    void DarwinClient::SendReportInGameSync() {
+        std::scoped_lock l(mutex_);
+        proto::ReportInGameResponse response;
         grpc::ClientContext context;
         grpc::Status status = 
-            stub_->ReportMovement(&context, report_movement_request_, &response);
+            stub_->ReportInGame(&context, report_request_, &response);
         if (!status.ok()) {
-            logger_->warn("ReportMovement failed.");
+            logger_->warn("ReportInGame failed.");
         }
     }
 
@@ -102,12 +108,7 @@ namespace darwin {
 
         // Read the stream of responses.
         while (reader->Read(&response)) {
-
-            if (report_movement_request_.name() != "") {
-                SendReportMovement();
-                report_movement_request_.set_name("");
-            }
-
+            
             std::vector<proto::Character> characters;
             for (const auto& character : response.characters()) {
                 characters.push_back(MergeCharacter(character));
@@ -136,6 +137,10 @@ namespace darwin {
             // Update the time.
             server_time_.store(response.time());
 
+            // Send the report in game.
+            SendReportInGame();
+
+            // Check if the end is requested.
             if (end_.load()) {
                 logger_->warn("Force exiting...");
                 return;
@@ -167,6 +172,7 @@ namespace darwin {
                 "Ping response server time: {}", 
                 response.value(), 
                 response.time());
+            world_simulator_.SetPlayerParameter(response.player_parameter());
             server_time_ = response.time();
             return response.value();
         }
@@ -192,6 +198,18 @@ namespace darwin {
                 world_simulator_.GetCharacterByName(character_name_));
         }
         return new_character;
+    }
+
+    std::vector<proto::ColorParameter> 
+        DarwinClient::GetColorParameters() const 
+    {
+        std::vector<proto::ColorParameter> color_parameters;
+        const proto::PlayerParameter player_parameter = 
+            world_simulator_.GetPlayerParameter();
+        for (const auto& color_parameter : player_parameter.colors()) {
+            color_parameters.push_back(color_parameter);
+        }
+        return color_parameters;
     }
 
     proto::Character DarwinClient::CorrectCharacter(

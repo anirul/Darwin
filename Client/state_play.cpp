@@ -158,7 +158,10 @@ namespace darwin::state {
             if (modified) {
                 character.mutable_physic()->CopyFrom(physic);
                 world_simulator_.SetCharacter(character);
-                darwin_client_->ReportMovement(character.name(), physic, "");
+                darwin_client_->ReportMovement(physic, "");
+            }
+            else {
+                darwin_client_->ReportPing();
             }
         }
     }
@@ -193,8 +196,7 @@ namespace darwin::state {
         // In case this is valid (not empty and not earth).
         if ((name != "") && (name != "earth")) {
             // Send a report movement to the server.
-            darwin_client_->ReportMovement(
-                character_name, character.physic(), name);
+            darwin_client_->ReportMovement(character.physic(), name);
         }
         // Get the close uniforms from the world simulator.
         auto uniforms = world_simulator_.GetCloseUniforms(

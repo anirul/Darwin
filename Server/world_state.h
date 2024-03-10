@@ -36,6 +36,7 @@ namespace darwin {
         proto::Element GetPlanet() const;
         void SetPotentialHits(
             const std::map<std::string, std::string>& potential_hits);
+        void UpdatePing(const std::string& name);
 
     public:
         proto::PlayerParameter GetPlayerParameter() const {
@@ -50,6 +51,7 @@ namespace darwin {
 
     private:
         std::string RemovePeerLocked(const std::string& peer);
+        void CheckStillInUseCharactersLocked();
         void CheckGroundCharactersLocked();
         void CheckDeathCharactersLocked();
         void CheckVictoryCharactersLocked();
@@ -71,6 +73,7 @@ namespace darwin {
     private:
         mutable std::mutex mutex_info_;
         std::map<std::string, CharacterInfo> character_infos_;
+        std::map<std::string, double> last_seen_;
         std::map<std::string, ElementInfo> element_infos_;
         std::map<std::string, std::string> peer_characters_;
         double last_updated_ = 0.0;

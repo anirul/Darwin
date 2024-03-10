@@ -24,7 +24,13 @@ namespace darwin {
         const proto::Vector3& vector3_right);
     proto::Vector3 Normalize(const proto::Vector3& vector3);
     proto::Vector3 CreateRandomNormalizedVector3();
-    proto::Vector3 CreateRandomNormalizedColor();
+    proto::Vector3 CreateRandomNormalizedColor(
+        std::vector<proto::Vector3>::const_iterator color_begin,
+        std::vector<proto::Vector3>::const_iterator color_end);
+    bool IsInColorRange(
+        const proto::Vector3& color, 
+        std::vector<proto::Vector3>::const_iterator color_begin,
+        std::vector<proto::Vector3>::const_iterator color_end);
     proto::Vector3 Minus(const proto::Vector3& vector3);
     proto::Vector3 MultiplyVector3ByScalar(
         const proto::Vector3& vector3, double scalar);

@@ -22,14 +22,15 @@ namespace darwin {
             const std::string& name, 
             const proto::Vector3& color);
         void ReportMovement(
-            const std::string& name, 
             const proto::Physic& physic,
             const std::string& potential_hit);
-        void SendReportMovement();
+        void ReportPing();
+        void SendReportInGame();
         void Update();
         std::int32_t Ping(std::int32_t val = 45323);
         bool IsConnected() const;
         proto::Character MergeCharacter(proto::Character new_characters);
+        std::vector<proto::ColorParameter> GetColorParameters() const;
 
     public:
         WorldSimulator& GetWorldSimulator() {
@@ -49,7 +50,7 @@ namespace darwin {
         }
 
     protected:
-        void SendReportMovementSync();
+        void SendReportInGameSync();
         proto::Character CorrectCharacter(
             const proto::Character& server_character,
             const proto::Character& client_character) const;
@@ -57,7 +58,7 @@ namespace darwin {
 
     private:
         mutable std::mutex mutex_;
-        proto::ReportMovementRequest report_movement_request_;
+        proto::ReportInGameRequest report_request_;
         std::string name_;
         std::string character_name_;
         std::atomic<double> server_time_ = 0.0;
