@@ -5,7 +5,7 @@
 
 namespace darwin {
 
-    proto::Vector3 CreateBasicVector3(
+    proto::Vector3 CreateVector3(
         double x,
         double y,
         double z)
@@ -17,7 +17,7 @@ namespace darwin {
         return vector3;
     }
 
-    proto::Vector4 CreateBasicVector4(
+    proto::Vector4 CreateVector4(
         double x,
         double y,
         double z,
@@ -31,25 +31,19 @@ namespace darwin {
         return vector4;
     }
 
-    double GetLength(const proto::Vector3& vector3)
+    double Length(const proto::Vector3& vector3)
     {
-        return std::sqrt(
-            vector3.x() * vector3.x() +
-            vector3.y() * vector3.y() +
-            vector3.z() * vector3.z());
+        return std::sqrt(Dot(vector3, vector3));
     }
 
     double Distance(
         const proto::Vector3& vector3_left,
         const proto::Vector3& vector3_right)
     {
-        return GetLength(CreateBasicVector3(
-            vector3_left.x() - vector3_right.x(),
-            vector3_left.y() - vector3_right.y(),
-            vector3_left.z() - vector3_right.z()));
+        return Length(vector3_left - vector3_right);
     }
 
-    proto::Vector3 Add(
+    proto::Vector3 operator+(
         const proto::Vector3& vector3_left,
         const proto::Vector3& vector3_right)
     {
@@ -60,7 +54,7 @@ namespace darwin {
         return vector3;
     }
 
-    proto::Vector3 Subtract(
+    proto::Vector3 operator-(
         const proto::Vector3& vector3_left,
         const proto::Vector3& vector3_right)
     {
@@ -71,16 +65,17 @@ namespace darwin {
         return vector3;
     }
 
-    double DotProduct(
+    double Dot(
         const proto::Vector3& vector3_left,
         const proto::Vector3& vector3_right)
     {
-        return vector3_left.x() * vector3_right.x() +
+        return 
+            vector3_left.x() * vector3_right.x() +
             vector3_left.y() * vector3_right.y() +
             vector3_left.z() * vector3_right.z();
     }
 
-    proto::Vector3 CrossProduct(
+    proto::Vector3 Cross(
         const proto::Vector3& vector3_left,
         const proto::Vector3& vector3_right)
     {
@@ -99,7 +94,7 @@ namespace darwin {
 
     proto::Vector3 Normalize(const proto::Vector3& vector3)
     {
-        double length = GetLength(vector3);
+        double length = Length(vector3);
         proto::Vector3 normalized_vector3{};
         normalized_vector3.set_x(vector3.x() / length);
         normalized_vector3.set_y(vector3.y() / length);
@@ -137,14 +132,14 @@ namespace darwin {
     {
         const auto normalized_color = Normalize(color);
         for (auto it = color_begin; it != color_end; ++it) {
-            if (DotProduct(normalized_color, *it) > 0.999f) {
+            if (Dot(normalized_color, *it) > 0.999f) {
                 return true;
             }
         }
         return false;
     }
 
-    proto::Vector3 Minus(const proto::Vector3& vector3)
+    proto::Vector3 operator-(const proto::Vector3& vector3)
     {
         proto::Vector3 result{};
         result.set_x(-vector3.x());
@@ -153,7 +148,7 @@ namespace darwin {
         return result;
     }
 
-    proto::Vector3 MultiplyVector3ByScalar(
+    proto::Vector3 operator*(
         const proto::Vector3& vector3,
         double scalar)
     {
@@ -168,16 +163,11 @@ namespace darwin {
         const proto::Vector3& vector3,
         const proto::Vector3& plane_normal)
     {
-        double dot_VN = DotProduct(vector3, plane_normal);
-        double normal_squared = DotProduct(plane_normal, plane_normal);
-        proto::Vector3 proj_V_on_N = 
-            MultiplyVector3ByScalar(
-                plane_normal,
-                dot_VN / normal_squared);
-        proto::Vector3 v_plane = Subtract(vector3, proj_V_on_N);
-        return MultiplyVector3ByScalar(
-            Normalize(v_plane), 
-            GetLength(vector3));
+        double dot_VN = Dot(vector3, plane_normal);
+        double normal_squared = Dot(plane_normal, plane_normal);
+        proto::Vector3 proj_V_on_N = plane_normal * (dot_VN / normal_squared);
+        proto::Vector3 v_plane = vector3 - proj_V_on_N;
+        return Normalize(v_plane) * Length(vector3);
     }
 
 } // End namespace darwin.

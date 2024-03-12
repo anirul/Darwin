@@ -44,7 +44,7 @@ namespace darwin {
         physic.mutable_position_dt()->CopyFrom(Glm2ProtoVector(updated_speed));
         // Update the position.
         physic.mutable_position()->CopyFrom(
-            Add(physic.position(), Glm2ProtoVector(updated_position)));
+            physic.position() + Glm2ProtoVector(updated_position));
         return acceleration.length();
     }
 

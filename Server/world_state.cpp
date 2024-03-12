@@ -35,23 +35,21 @@ namespace darwin {
             physic.set_radius(radius);
             physic.set_mass(player_parameter_.start_mass());
             physic.mutable_position()->CopyFrom(
-                MultiplyVector3ByScalar(
-                    vec3, 
-                    GetPlanetLocked().physic().radius() + 
+                vec3 * (GetPlanetLocked().physic().radius() + 
                     player_parameter_.drop_height()));
             physic.mutable_position_dt()->CopyFrom(
-                CreateBasicVector3(0.0, 0.0, 0.0));
+                CreateVector3(0.0, 0.0, 0.0));
             physic.mutable_orientation()->CopyFrom(
-                CreateBasicVector4(0.0, 0.0, 0.0, 1.0));
+                CreateVector4(0.0, 0.0, 0.0, 1.0));
             physic.mutable_orientation_dt()->CopyFrom(
-                CreateBasicVector4(0.0, 0.0, 0.0, 1.0));
+                CreateVector4(0.0, 0.0, 0.0, 1.0));
             character.mutable_physic()->CopyFrom(physic);
             // WARNING: This suppose the gravity well is at the 
             // position(0, 0, 0).
             character.mutable_normal()->CopyFrom(vec3);
             // This is wrong, and should be set to the real value.
             character.mutable_g_force()->CopyFrom(
-                CreateBasicVector3(0.0, 0.0, 0.0));
+                CreateVector3(0.0, 0.0, 0.0));
             character.set_status_enum(proto::STATUS_LOADING);
             CharacterInfo character_info{ GetLastUpdated(), character};
             character_infos_.emplace(character.name(), character_info);
@@ -124,11 +122,9 @@ namespace darwin {
             proto::Physic physic{};
             double radius = GetRadiusFromVolume(1.0);
             physic.mutable_position()->CopyFrom(
-                MultiplyVector3ByScalar(
-                    vec3, 
-                    GetPlanetLocked().physic().radius() + radius));
+                vec3 * (GetPlanetLocked().physic().radius() + radius));
             physic.mutable_position_dt()->CopyFrom(
-                CreateBasicVector3(0.0, 0.0, 0.0));
+                CreateVector3(0.0, 0.0, 0.0));
             physic.set_radius(radius);
             physic.set_mass(1.0);
             element.mutable_physic()->CopyFrom(physic);
@@ -256,7 +252,7 @@ namespace darwin {
                 "Character {} is trying to eating {} ({}).\n",
                 character.name(),
                 target_name,
-                DotProduct(
+                Dot(
                     Normalize(physic_to.position()), 
                     Normalize(physic_from.position())));
 #endif // _DEBUG
@@ -267,7 +263,7 @@ namespace darwin {
                     color_from,         color_to
                 };
                 // Check if color are compatible.
-                if (DotProduct(color_from, color_to) > 0.99) {
+                if (Dot(color_from, color_to) > 0.99) {
                     if (type_enum == proto::TYPE_UPGRADE) {
                         LostSourceElementLocked(from_to);
                     }
@@ -307,13 +303,8 @@ namespace darwin {
         if (GetPlayerParameter().change_color() == proto::COLOR_YES) {
             auto final_color =
                 Normalize(
-                    Add(
-                        MultiplyVector3ByScalar(
-                            from_to.color_from,
-                            from_to.physic_from.mass()),
-                        MultiplyVector3ByScalar(
-                            from_to.color_to,
-                            from_to.physic_to.mass())));
+                    from_to.color_from * from_to.physic_from.mass() +
+                    from_to.color_to * from_to.physic_to.mass());
             character_infos_.at(
                 from_to.name_from).character.mutable_color()->CopyFrom(
                     final_color);
@@ -391,10 +382,9 @@ namespace darwin {
                 character_info.character.mutable_physic()->
                     mutable_position()->
                     CopyFrom(
-                        MultiplyVector3ByScalar(
-                            character_info.character.normal(),
-                            ground.physic().radius() + 
-                            character_info.character.physic().radius()));
+                        character_info.character.normal() * 
+                        (ground.physic().radius() + 
+                         character_info.character.physic().radius()));
             }
         }
     }

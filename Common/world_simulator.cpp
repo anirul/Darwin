@@ -119,7 +119,7 @@ namespace darwin {
         const proto::Vector3& normal,
         const proto::Vector3& position) const
     {
-        return DotProduct(normal, position) > 0.8;
+        return Dot(normal, position) > 0.8;
     }
 
     UniformEnum WorldSimulator::GetCloseUniforms(

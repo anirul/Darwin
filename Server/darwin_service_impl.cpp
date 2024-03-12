@@ -252,7 +252,7 @@ namespace darwin {
             std::cerr << "Received a NaN position keep server value!\n";
             return result;
         }
-        else if (GetLength(client_physic.position()) < 0.1f)
+        else if (Length(client_physic.position()) < 0.1f)
         {
             std::cerr << "Received a too small position keep server value!\n";
             return result;

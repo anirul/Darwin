@@ -232,25 +232,16 @@ namespace darwin {
         const auto planet = world_simulator_.GetPlanet();
         // Update the position to the current position.
         proto::Vector3 updated_position = 
-            Add(
-                old_character.physic().position(),
-                MultiplyVector3ByScalar(
-                    old_character.physic().position_dt(),
-                    delta_time));
-        // Compute the future position from new_character.
-        proto::Vector3 future_position =
-            Add(
-                new_character.physic().position(),
-                MultiplyVector3ByScalar(
-                    new_character.physic().position_dt(),
-                    delta_time));
+            old_character.physic().position() +
+                (old_character.physic().position_dt() * delta_time) +
+                ((new_character.physic().position() - 
+                    old_character.physic().position()) *
+                        delta_time);
         // Create a new position_dt to update the position to the future.
         proto::Vector3 updated_position_dt =
-            MultiplyVector3ByScalar(
-                Subtract(
-                    future_position,
-                    updated_position),
-                delta_time);
+            old_character.physic().position_dt() +
+            ((new_character.physic().position_dt() -
+                old_character.physic().position_dt()) * delta_time);
         proto::Character result = new_character;
         // On the ground.
         if (new_character.status_enum() == proto::STATUS_ON_GROUND) {
@@ -260,9 +251,7 @@ namespace darwin {
             updated_position_dt = ProjectOnPlane(updated_position_dt, normal);
             // Update the position to the planet.
             updated_position = 
-                MultiplyVector3ByScalar(
-                    normal, 
-                    planet.radius() + new_character.physic().radius());
+                normal * (planet.radius() + new_character.physic().radius());
         }
         // Jumping.
         // Update the result.

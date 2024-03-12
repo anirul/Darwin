@@ -4,22 +4,22 @@
 
 namespace darwin {
 
-    proto::Vector3 CreateBasicVector3(double x, double y, double z);
-    proto::Vector4 CreateBasicVector4(double x, double y, double z, double w);
-    double GetLength(const proto::Vector3& vector3);
+    proto::Vector3 CreateVector3(double x, double y, double z);
+    proto::Vector4 CreateVector4(double x, double y, double z, double w);
+    double Length(const proto::Vector3& vector3);
     double Distance(
         const proto::Vector3& vector3_left, 
         const proto::Vector3& vector3_right);
-    proto::Vector3 Add(
+    proto::Vector3 operator+(
         const proto::Vector3& vector3_left,
         const proto::Vector3& vector3_right);
-    proto::Vector3 Subtract(
+    proto::Vector3 operator-(
         const proto::Vector3& vector3_left,
         const proto::Vector3& vector3_right);
-    double DotProduct(
+    double Dot(
         const proto::Vector3& vector3_left,
         const proto::Vector3& vector3_right);
-    proto::Vector3 CrossProduct(
+    proto::Vector3 Cross(
         const proto::Vector3& vector3_left,
         const proto::Vector3& vector3_right);
     proto::Vector3 Normalize(const proto::Vector3& vector3);
@@ -31,8 +31,8 @@ namespace darwin {
         const proto::Vector3& color, 
         std::vector<proto::Vector3>::const_iterator color_begin,
         std::vector<proto::Vector3>::const_iterator color_end);
-    proto::Vector3 Minus(const proto::Vector3& vector3);
-    proto::Vector3 MultiplyVector3ByScalar(
+    proto::Vector3 operator-(const proto::Vector3& vector3);
+    proto::Vector3 operator*(
         const proto::Vector3& vector3, double scalar);
     proto::Vector3 ProjectOnPlane(
         const proto::Vector3& vector3, 

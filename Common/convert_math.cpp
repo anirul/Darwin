@@ -69,7 +69,7 @@ namespace darwin {
         const proto::Physic& element)
     {
         auto dot = 
-            DotProduct(
+            Dot(
                 Normalize(character.position()), 
                 Normalize(element.position()));
         return dot > ALMOST_INTERSECT;

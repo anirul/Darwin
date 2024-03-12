@@ -149,39 +149,28 @@ namespace darwin::state {
             auto planet = world_simulator_.GetPlanet();
             // Reset position delta time on the ground.
             physic.release_position_dt()->CopyFrom(
-                CreateBasicVector3(0.0, 0.0, 0.0));
+                CreateVector3(0.0, 0.0, 0.0));
             proto::PlayerParameter player_parameter =
                 world_simulator_.GetPlayerParameter();
             if (input_acquisition_ptr_->IsJumping()) {
                 modified = true;
                 physic.mutable_position_dt()->CopyFrom(
-                    Add(
-                        physic.position_dt(),
-                        MultiplyVector3ByScalar(
-                            character.normal(),
-                            player_parameter.vertical_speed())));
+                    physic.position_dt() +
+                    (character.normal() * player_parameter.vertical_speed()));
                 character.set_status_enum(proto::STATUS_JUMPING);
             }
             if (input_acquisition_ptr_->IsMoving()) {
                 modified = true;
                 auto forward = Normalize(Glm2ProtoVector(character_forward_));
                 auto right =
-                    Normalize(CrossProduct(character.normal(), forward));
+                    Normalize(Cross(character.normal(), forward));
                 auto direction =
                     Normalize(
-                        Add(
-                            MultiplyVector3ByScalar(
-                                right,
-                                input_acquisition_ptr_->GetHorizontal()),
-                            MultiplyVector3ByScalar(
-                                forward,
-                                input_acquisition_ptr_->GetVertical())));
+                        right * input_acquisition_ptr_->GetHorizontal() +
+                        forward * input_acquisition_ptr_->GetVertical());
                 physic.mutable_position_dt()->CopyFrom(
-                    Add(
-                        physic.position_dt(),
-                        MultiplyVector3ByScalar(
-                            direction,
-                            player_parameter.horizontal_speed())));
+                    physic.position_dt() + 
+                    (direction * player_parameter.horizontal_speed()));
             }
             // Apply the changes.
             if (modified) {

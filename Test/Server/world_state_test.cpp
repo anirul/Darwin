@@ -21,7 +21,7 @@ namespace test {
             darwin::CreateBasicElement(
                 "ground",
                 proto::TYPE_GROUND,
-                darwin::CreateBasicVector3(1.0, 1.0, 1.0),
+                darwin::CreateVector3(1.0, 1.0, 1.0),
                 1.0,
                 1.0));
         world_state_->Update(0.1);
@@ -38,7 +38,7 @@ namespace test {
             darwin::CreateBasicElement(
                 "ground",
                 proto::TYPE_GROUND,
-                darwin::CreateBasicVector3(1.0, 1.0, 1.0),
+                darwin::CreateVector3(1.0, 1.0, 1.0),
                 1.0,
                 1.0));
         world_state_->Update(10.0);
@@ -59,7 +59,7 @@ namespace test {
             darwin::CreateBasicElement(
                 "ground1",
                 proto::TYPE_GROUND,
-                darwin::CreateBasicVector3(-2.0, 0.0, 0.0),
+                darwin::CreateVector3(-2.0, 0.0, 0.0),
                 1'000'000.0,
                 1.0));
         world_state_->AddElement(
@@ -67,7 +67,7 @@ namespace test {
             darwin::CreateBasicElement(
                 "ground2",
                 proto::TYPE_GROUND,
-                darwin::CreateBasicVector3(2.0, 0.0, 0.0),
+                darwin::CreateVector3(2.0, 0.0, 0.0),
                 1'000'000.0,
                 1.0));
         world_state_->Update(10.0);
@@ -90,7 +90,7 @@ namespace test {
             darwin::CreateBasicElement(
                 "ground",
                 proto::TYPE_GROUND,
-                darwin::CreateBasicVector3(-10.0, 20.0, -30.0),
+                darwin::CreateVector3(-10.0, 20.0, -30.0),
                 1'000'000'000.0,
                 10.0));
         // Tiny spec in space!
@@ -99,7 +99,7 @@ namespace test {
             darwin::CreateBasicElement(
                 "elem",
                 proto::TYPE_BROWN,
-                darwin::CreateBasicVector3(0, 0, 0),
+                darwin::CreateVector3(0, 0, 0),
                 1.0,
                 0.1));
         double height = std::numeric_limits<double>::max();
@@ -128,7 +128,7 @@ namespace test {
             darwin::CreateBasicElement(
                 "ground",
                 proto::TYPE_GROUND,
-                darwin::CreateBasicVector3(-10.0, 20.0, -30.0),
+                darwin::CreateVector3(-10.0, 20.0, -30.0),
                 1'000'000'000.0,
                 10.0));
         // a character with a mass of 80'000.0g (80kg) and a radius of 1.0.
@@ -136,7 +136,7 @@ namespace test {
             0.0, 
             darwin::CreateBasicCharacter(
                 "character",
-                darwin::CreateBasicVector3(1.0, -4.0, 2.0),
+                darwin::CreateVector3(1.0, -4.0, 2.0),
                 80'000.0,
                 1.0));
         double height = std::numeric_limits<double>::max();
