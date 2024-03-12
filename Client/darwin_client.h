@@ -21,11 +21,7 @@ namespace darwin {
         bool CreateCharacter(
             const std::string& name, 
             const proto::Vector3& color);
-        void ReportMovement(
-            const proto::Physic& physic,
-            proto::StatusEnum status,
-            const std::string& potential_hit = "");
-        void ReportPing();
+        void ReportHit(const std::string& potential_hit);
         void SendReportInGame();
         void Update();
         std::int32_t Ping(std::int32_t val = 45323);
@@ -74,8 +70,6 @@ namespace darwin {
         WorldSimulator world_simulator_;
         std::future<void> update_future_;
         std::atomic<bool> end_{ false };
-        std::shared_ptr<grpc::ClientContext> context_ = 
-            std::make_shared<grpc::ClientContext>();
     };
 
 } // namespace darwin.

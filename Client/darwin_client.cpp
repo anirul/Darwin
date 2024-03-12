@@ -58,28 +58,13 @@ namespace darwin {
     void DarwinClient::Clear() {
         std::scoped_lock l(mutex_);
         report_request_.set_name(character_name_);
-        report_request_.set_report_enum(proto::REPORT_PING);
         world_simulator_.Clear();
         character_name_ = "";
     }
 
-    void DarwinClient::ReportMovement(
-        const proto::Physic& physic,
-        proto::StatusEnum status,
-        const std::string& potential_hit) 
-    {
+    void DarwinClient::ReportHit(const std::string& potential_hit) {
         std::scoped_lock l(mutex_);
-        report_request_.set_name(character_name_);
-        report_request_.mutable_physic()->CopyFrom(physic);
         report_request_.set_potential_hit(potential_hit);
-        report_request_.set_report_enum(proto::REPORT_MOVEMENT_OR_HIT);
-        report_request_.set_status_enum(status);
-    }
-
-    void DarwinClient::ReportPing() {
-        std::scoped_lock l(mutex_);
-        report_request_.set_name(character_name_);
-        report_request_.set_report_enum(proto::REPORT_PING);
     }
 
     void DarwinClient::SendReportInGame() {
@@ -88,13 +73,18 @@ namespace darwin {
 
     void DarwinClient::SendReportInGameSync() {
         std::scoped_lock l(mutex_);
+        auto character = world_simulator_.GetCharacterByName(character_name_);
+        report_request_.set_name(character_name_);
+        report_request_.mutable_physic()->CopyFrom(character.physic());
+        report_request_.set_status_enum(character.status_enum());
         proto::ReportInGameResponse response;
         grpc::ClientContext context;
         grpc::Status status = 
             stub_->ReportInGame(&context, report_request_, &response);
         if (!status.ok()) {
-            logger_->warn("ReportInGame failed.");
+            logger_->warn("ReportInGame failed: {}.", status.error_message());
         }
+        report_request_.set_potential_hit("");
     }
 
     void DarwinClient::Update() {
@@ -103,6 +93,11 @@ namespace darwin {
 
         proto::UpdateResponse response;
         grpc::ClientContext context;
+
+        // 5 seconds from now.
+        std::chrono::system_clock::time_point deadline =
+            std::chrono::system_clock::now() + std::chrono::seconds(10);
+        // context.set_deadline(deadline);
 
         // The response stream.
         std::unique_ptr<grpc::ClientReader<proto::UpdateResponse>> 

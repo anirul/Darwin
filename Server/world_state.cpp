@@ -15,7 +15,7 @@ namespace darwin {
         const std::string& name,
         const proto::Vector3& color)
     {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         auto it = character_infos_.find(name);
         if (it != character_infos_.end()) {
             const auto& character = it->second.character;
@@ -73,7 +73,7 @@ namespace darwin {
         double time, 
         const proto::Character& character) 
     {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         if (character_infos_.contains(character.name())) {
             std::cerr 
                 << "(test) Error adding character: " 
@@ -95,7 +95,7 @@ namespace darwin {
     }
 
     proto::Element WorldState::GetPlanet() const {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         return GetPlanetLocked();
     }
 
@@ -109,7 +109,7 @@ namespace darwin {
     }
 
     void WorldState::AddRandomElements(std::uint32_t number) {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         for (std::uint32_t i = 0; i < number; ++i) {
             proto::Element element;
             element.set_name(std::format("element{}", i));
@@ -143,7 +143,7 @@ namespace darwin {
         proto::StatusEnum status,
         const proto::Physic& physic)
     {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         auto it = character_infos_.find(name);
         if (character_infos_.contains(name)) {
             it->second.time = time;
@@ -156,17 +156,17 @@ namespace darwin {
     }
 
     void WorldState::RemoveCharacter(const std::string& name) {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         character_infos_.erase(name);
     }
 
     bool WorldState::HasCharacter(const std::string& name) const {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         return character_infos_.contains(name);
     }
 
     std::string WorldState::RemovePeer(const std::string& peer) {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         return RemovePeerLocked(peer);
     }
 
@@ -184,7 +184,7 @@ namespace darwin {
         const std::string& peer,
         const std::string& character_name) const
     {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         if (peer_characters_.contains(peer)) {
             return character_infos_.at(peer_characters_.at(peer)).character;
         }
@@ -195,7 +195,7 @@ namespace darwin {
         const std::string& peer,
         const std::string& character_name) const
     {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         if (peer_characters_.contains(peer)) {
             return peer_characters_.at(peer) == character_name;
         }
@@ -203,7 +203,7 @@ namespace darwin {
     }
 
     void WorldState::AddElement(double time, const proto::Element& element) {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         auto it = element_infos_.find(element.name());
         if (it == element_infos_.end()) {
             ElementInfo element_info{ time, element };
@@ -218,45 +218,53 @@ namespace darwin {
     void WorldState::SetPlayerParameter(
         const proto::PlayerParameter& parameter)
     {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         player_parameter_ = parameter;
     }
 
     void WorldState::CheckIntersectPlayerLocked() {
-        std::vector<std::string> to_remove;
-        proto::TypeEnum type_enum = proto::TYPE_UNKNOWN;
-        for (const auto& [name, target] : potential_hits_) {
-            proto::Physic physic_from = 
-                character_infos_.at(name).character.physic();
-            proto::Vector3 color_from = 
-                character_infos_.at(name).character.color();
+        std::map<std::string, proto::TypeEnum> to_remove_type;
+        for (const auto& [character, target_name] : character_hits_) {
+            proto::TypeEnum type_enum = proto::TYPE_UNKNOWN;
+            proto::Physic physic_from = character.physic();
+            proto::Vector3 color_from = character.color();
             proto::Physic physic_to;
             proto::Vector3 color_to;
-            if (element_infos_.contains(target)) {
-                physic_to = element_infos_.at(target).element.physic();
-                color_to = element_infos_.at(target).element.color();
+            if (element_infos_.contains(target_name)) {
+                physic_to = element_infos_.at(target_name).element.physic();
+                color_to = element_infos_.at(target_name).element.color();
                 type_enum = proto::TYPE_UPGRADE;
             }
-            if (character_infos_.contains(target)) {
-                physic_to = character_infos_.at(target).character.physic();
-                color_to = character_infos_.at(target).character.color();
+            if (character_infos_.contains(target_name)) {
+                physic_to = character_infos_.at(
+                    target_name).character.physic();
+                color_to = character_infos_.at(target_name).character.color();
                 type_enum = proto::TYPE_CHARACTER;
             }
             // Check if you can eat the target.
             if (physic_from.mass() <= physic_to.mass()) {
 #ifdef _DEBUG
                 std::cerr 
-                    << "[" << name 
-                    << "].mass() <= [" << target 
+                    << "[" << character.name()
+                    << "].mass() <= [" << target_name
                     << "].mass() ?\n";
 #endif // _DEBUG
                 continue;
             }
-            if (IsIntersecting(physic_from, physic_to)) {
+#ifdef _DEBUG
+            std::cout << std::format(
+                "Character {} is trying to eating {} ({}).\n",
+                character.name(),
+                target_name,
+                DotProduct(
+                    Normalize(physic_to.position()), 
+                    Normalize(physic_from.position())));
+#endif // _DEBUG
+            if (IsAlmostIntersecting(physic_from, physic_to)) {
                 FromTo from_to{ 
-                    name,           target, 
-                    physic_from,    physic_to, 
-                    color_from,     color_to
+                    character.name(),   target_name,
+                    physic_from,        physic_to, 
+                    color_from,         color_to
                 };
                 // Check if color are compatible.
                 if (DotProduct(color_from, color_to) > 0.99) {
@@ -270,19 +278,19 @@ namespace darwin {
                 else
                 {
                     ChangeSourceEatLocked(from_to);
-                    to_remove.push_back(target);
+                    to_remove_type.insert({ target_name, type_enum });
                 }
             }
         }
-        for (const auto& name : to_remove) {
-            if (type_enum == proto::TYPE_UPGRADE) {
+        for (const auto& [name, type] : to_remove_type) {
+            if (type == proto::TYPE_UPGRADE) {
                 element_infos_.erase(name);
             }
-            if (type_enum == proto::TYPE_CHARACTER) {
+            if (type == proto::TYPE_CHARACTER) {
                 character_infos_.erase(name);
             }
 #ifdef _DEBUG
-            if (type_enum == proto::TYPE_UNKNOWN) {
+            if (type == proto::TYPE_UNKNOWN) {
                 std::cerr << "[" << name << "]: unknown type.\n";
             }
 #endif // _DEBUG
@@ -342,7 +350,7 @@ namespace darwin {
     }
 
     void WorldState::Update(double time) {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         if (time != last_updated_) {
             CheckStillInUseCharactersLocked();
             CheckGroundCharactersLocked();
@@ -355,7 +363,7 @@ namespace darwin {
     }
 
     void WorldState::UpdatePing(const std::string& name) {
-        std::scoped_lock l(mutex_info_);
+        std::scoped_lock l(mutex_);
         last_seen_[name] = last_updated_;
     }
 
@@ -462,12 +470,12 @@ namespace darwin {
         return true;
     }
 
-    void WorldState::SetPotentialHits(
-        const std::map<std::string, std::string>& potential_hits)
+    void WorldState::SetCharacterHits(
+        const std::map<proto::Character, std::string>& character_hits)
     {
-        std::scoped_lock l(mutex_info_);
-        potential_hits_.clear();
-        potential_hits_ = potential_hits;
+        std::scoped_lock l(mutex_);
+        character_hits_.clear();
+        character_hits_ = character_hits;
     }
 
 }  // End namespace darwin.

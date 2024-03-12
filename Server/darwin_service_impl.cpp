@@ -61,33 +61,24 @@ namespace darwin {
         proto::ReportInGameResponse* response)
     {
         std::lock_guard<std::mutex> lock(writers_mutex_);
-#ifdef _DEBUG
-        if (!request->potential_hit().empty()) {
-            std::cout << std::format(
-                "[{}] Got a potential hit from {}\n",
-                context->peer(),
-                request->potential_hit());
+        // Empty name check.
+        if (request->name() == "") {
+            return grpc::Status(
+                grpc::StatusCode::INVALID_ARGUMENT,
+                std::format("[{}]:{} Name is empty?",
+                    context->peer(),
+                    world_state_.GetLastUpdated()));
         }
-#endif // _DEBUG
         // Check if character is own by this peer.
         std::optional<proto::Character> maybe_character =
             world_state_.GetCharacterOwnedByPeer(
                 context->peer(), 
                 request->name());
         if (!maybe_character) {
-            response->set_return_enum(proto::RETURN_REJECTED);
-            return grpc::Status::CANCELLED;
+            return grpc::Status(
+                grpc::StatusCode::FAILED_PRECONDITION, 
+                std::format("character {} don't exist?", request->name()));
         }
-        if (request->report_enum() == proto::REPORT_UNKNOWN) {
-            response->set_return_enum(proto::RETURN_REJECTED);
-            return grpc::Status::CANCELLED;
-        }
-        if (request->report_enum() == proto::REPORT_PING) {
-            world_state_.UpdatePing(request->name());
-            response->set_return_enum(proto::RETURN_OK);
-            return grpc::Status::OK;
-        }
-        assert(request->report_enum() == proto::REPORT_MOVEMENT_OR_HIT);
         // Update the physic.
         proto::Physic physic = UpdatePhysic(
             maybe_character.value().physic(),
@@ -102,31 +93,31 @@ namespace darwin {
                 break;
             }
         }
-        if (!request->potential_hit().empty()) {
-            character_potential_hits_.insert(
-                { request->name(), request->potential_hit() });
-        }
-        else {
-            maybe_character.value().mutable_physic()->set_mass(
-                maybe_character.value().physic().mass() - 
-                world_state_.GetPlayerParameter().move_cost());
-        }
+        maybe_character.value().mutable_physic()->set_mass(
+            maybe_character.value().physic().mass() -
+            world_state_.GetPlayerParameter().move_cost());
         auto now = std::chrono::system_clock::now();
         double time =
             std::chrono::duration_cast<std::chrono::duration<double>>(
                 now.time_since_epoch())
             .count();
         time_characters_.insert({ time, maybe_character.value() });
-        response->set_return_enum(proto::RETURN_OK);
+        // Potential hit.
+        if (!request->potential_hit().empty()) {
+#ifdef _DEBUG
+            std::cout << std::format(
+                "[{}]:{} Got a potential hit from {}\n",
+                context->peer(),
+                world_state_.GetLastUpdated(),
+                request->potential_hit());
+#endif // _DEBUG
+            if (!request->name().empty()) {
+                character_hits_.insert(
+                    { maybe_character.value(), request->potential_hit()});
+            }
+        }
         world_state_.UpdatePing(request->name());
         return grpc::Status::OK;
-    }
-
-    std::map<std::string, std::string> DarwinServiceImpl::GetPotentialHits() {
-        std::lock_guard<std::mutex> lock(writers_mutex_);
-        auto map = character_potential_hits_;
-        character_potential_hits_.clear();
-        return map;
     }
 
     grpc::Status DarwinServiceImpl::CreateCharacter(
@@ -221,7 +212,8 @@ namespace darwin {
                 ClearTimeCharacters();
             }
             // Update the list of potential hits.
-            world_state_.SetPotentialHits(GetPotentialHits());
+            world_state_.SetCharacterHits(character_hits_);
+            character_hits_.clear();
             // Update the elements in the world.
             world_state_.Update(time);
             const auto& elements = world_state_.GetElements();
@@ -257,7 +249,13 @@ namespace darwin {
         if (glm::any(glm::isnan(
             ProtoVector2Glm(client_physic.position()))))
         {
-            std::cerr << "Received a NaN position?\n";
+            std::cerr << "Received a NaN position keep server value!\n";
+            return result;
+        }
+        else if (GetLength(client_physic.position()) < 0.1f)
+        {
+            std::cerr << "Received a too small position keep server value!\n";
+            return result;
         }
         else
         {
@@ -267,7 +265,7 @@ namespace darwin {
         if (glm::any(glm::isnan(
             ProtoVector2Glm(client_physic.position_dt()))))
         {
-            std::cerr << "Received a NaN position_dt?\n";
+            std::cerr << "Received a NaN position_dt keep server value!\n";
         }
         else
         {

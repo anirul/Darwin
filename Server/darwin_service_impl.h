@@ -3,6 +3,7 @@
 #include <grpc++/grpc++.h>
 
 #include "Common/darwin_service.grpc.pb.h"
+#include "Common/proto_helper.h"
 #include "world_state.h"
 
 namespace darwin {
@@ -35,9 +36,6 @@ namespace darwin {
         std::map<double, proto::Character>& GetTimeCharacters();
         void ClearTimeCharacters();
         void ComputeWorld();
-        // Returns the name of character against the potential hits this will
-        // empty the list after the call.
-        std::map<std::string, std::string> GetPotentialHits();
 
     protected:
         proto::Physic UpdatePhysic(
@@ -47,7 +45,7 @@ namespace darwin {
     protected:
         std::map<double, proto::Character> time_characters_;
         // Name of the character against name of potential hits.
-        std::map<std::string, std::string> character_potential_hits_;
+        std::map<proto::Character, std::string> character_hits_;
         WorldState& world_state_;
         std::list<grpc::ServerWriter<proto::UpdateResponse>*> writers_;
         std::mutex writers_mutex_;

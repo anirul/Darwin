@@ -41,12 +41,6 @@ enum ColorEnum {
     COLOR_CIRCLE = 3;           // Change of color in a circle.
 }
 
-enum ReportEnum {
-    REPORT_UNKNOWN = 0;         // Unknown this is an error!
-    REPORT_PING = 1;            // Ping report.
-    REPORT_MOVEMENT_OR_HIT = 2; // Movement or hit report.
-}
-
 // Vector 3 this store position or other 3 float values.
 // Next: 4
 message Vector3 {
@@ -186,18 +180,13 @@ message ReportInGameRequest {
     Physic physic = 2;
     // Name of potential hit.
     string potential_hit = 3;
-    // Report type.
-    ReportEnum report_enum = 4;
     // Character status.
-    StatusEnum status_enum = 5;
+    StatusEnum status_enum = 4;
 }
 
 // ReportInGameResponse
-// Next: 2
-message ReportInGameResponse {
-    // Return enum.
-    ReturnEnum return_enum = 1;
-}
+// Next: 1
+message ReportInGameResponse {}
 
 // CreateCharacterRequest
 // Next: 3

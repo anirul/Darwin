@@ -4,8 +4,10 @@
 #include "darwin_client.h"
 #include "input_acquisition.h"
 #include "frame/common/application.h"
+#include "frame/gui/draw_gui_interface.h"
 #include "Common/world_simulator.h"
 #include "Common/darwin_constant.h"
+#include "modal_stats.h"
 
 namespace darwin::state {
 
@@ -44,6 +46,9 @@ namespace darwin::state {
         glm::vec3 character_forward_ = glm::vec3(0.0f);
         float last_mouse_wheel_ = 0.0f;
         InputAcquisition* input_acquisition_ptr_ = nullptr;
+        // GUI.
+        frame::gui::DrawGuiInterface* draw_gui_ = nullptr;
+        darwin::modal::ModalStats* stats_window_ = nullptr;
     };
 
 } // namespace darwin::state.

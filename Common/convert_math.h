@@ -13,7 +13,12 @@ namespace darwin {
     proto::Vector4 Glm2ProtoVector(const glm::dquat& vector4);
     glm::vec3 RandomVec3();
     double GetRadiusFromVolume(double volume);
+    // Check for exact intersections.
     bool IsIntersecting(
+        const proto::Physic& character,
+        const proto::Physic& element);
+    // Check for aproximative intersections.
+    bool IsAlmostIntersecting(
         const proto::Physic& character,
         const proto::Physic& element);
 

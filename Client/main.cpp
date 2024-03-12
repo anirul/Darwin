@@ -22,6 +22,7 @@
 #include "frame/gui/window_logger.h"
 #include "frame/logger.h"
 #include "frame/json/parse_level.h"
+#include "modal_stats.h"
 
 void grpc_log_handler(gpr_log_func_args* args) {
     frame::Logger& logger = frame::Logger::GetInstance();
@@ -65,6 +66,9 @@ int main(int ac, char** av) try
         20.0f);
     gui_window->AddWindow(
         std::make_unique<frame::gui::WindowLogger>("Logger"));
+    darwin::modal::ModalStatsParams params;
+    gui_window->AddWindow(
+        std::make_unique<darwin::modal::ModalStats>("Stats", params));
     // Start with the debug window hidden.
     gui_window->SetVisible(false);
     // Darkening the background of the modal window.

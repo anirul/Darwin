@@ -23,6 +23,7 @@
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/arena.h>
 #include <google/protobuf/arenastring.h>
+#include <google/protobuf/generated_message_bases.h>
 #include <google/protobuf/generated_message_util.h>
 #include <google/protobuf/metadata_lite.h>
 #include <google/protobuf/generated_message_reflection.h>
@@ -253,32 +254,6 @@ inline bool ColorEnum_Parse(
     ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ColorEnum* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ColorEnum>(
     ColorEnum_descriptor(), name, value);
-}
-enum ReportEnum : int {
-  REPORT_UNKNOWN = 0,
-  REPORT_PING = 1,
-  REPORT_MOVEMENT_OR_HIT = 2,
-  ReportEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  ReportEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
-};
-bool ReportEnum_IsValid(int value);
-constexpr ReportEnum ReportEnum_MIN = REPORT_UNKNOWN;
-constexpr ReportEnum ReportEnum_MAX = REPORT_MOVEMENT_OR_HIT;
-constexpr int ReportEnum_ARRAYSIZE = ReportEnum_MAX + 1;
-
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ReportEnum_descriptor();
-template<typename T>
-inline const std::string& ReportEnum_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, ReportEnum>::value ||
-    ::std::is_integral<T>::value,
-    "Incorrect type passed to function ReportEnum_Name.");
-  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    ReportEnum_descriptor(), enum_t_value);
-}
-inline bool ReportEnum_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ReportEnum* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ReportEnum>(
-    ReportEnum_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -2433,8 +2408,7 @@ class ReportInGameRequest final :
     kNameFieldNumber = 1,
     kPotentialHitFieldNumber = 3,
     kPhysicFieldNumber = 2,
-    kReportEnumFieldNumber = 4,
-    kStatusEnumFieldNumber = 5,
+    kStatusEnumFieldNumber = 4,
   };
   // string name = 1;
   void clear_name();
@@ -2482,16 +2456,7 @@ class ReportInGameRequest final :
       ::proto::Physic* physic);
   ::proto::Physic* unsafe_arena_release_physic();
 
-  // .proto.ReportEnum report_enum = 4;
-  void clear_report_enum();
-  ::proto::ReportEnum report_enum() const;
-  void set_report_enum(::proto::ReportEnum value);
-  private:
-  ::proto::ReportEnum _internal_report_enum() const;
-  void _internal_set_report_enum(::proto::ReportEnum value);
-  public:
-
-  // .proto.StatusEnum status_enum = 5;
+  // .proto.StatusEnum status_enum = 4;
   void clear_status_enum();
   ::proto::StatusEnum status_enum() const;
   void set_status_enum(::proto::StatusEnum value);
@@ -2511,7 +2476,6 @@ class ReportInGameRequest final :
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr potential_hit_;
     ::proto::Physic* physic_;
-    int report_enum_;
     int status_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -2521,10 +2485,9 @@ class ReportInGameRequest final :
 // -------------------------------------------------------------------
 
 class ReportInGameResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.ReportInGameResponse) */ {
+    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:proto.ReportInGameResponse) */ {
  public:
   inline ReportInGameResponse() : ReportInGameResponse(nullptr) {}
-  ~ReportInGameResponse() override;
   explicit PROTOBUF_CONSTEXPR ReportInGameResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
   ReportInGameResponse(const ReportInGameResponse& from);
@@ -2597,29 +2560,15 @@ class ReportInGameResponse final :
   ReportInGameResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<ReportInGameResponse>(arena);
   }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const ReportInGameResponse& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const ReportInGameResponse& from) {
-    ReportInGameResponse::MergeImpl(*this, from);
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const ReportInGameResponse& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
   }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const ReportInGameResponse& from) {
+    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
   public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(ReportInGameResponse* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
@@ -2640,18 +2589,6 @@ class ReportInGameResponse final :
 
   // accessors -------------------------------------------------------
 
-  enum : int {
-    kReturnEnumFieldNumber = 1,
-  };
-  // .proto.ReturnEnum return_enum = 1;
-  void clear_return_enum();
-  ::proto::ReturnEnum return_enum() const;
-  void set_return_enum(::proto::ReturnEnum value);
-  private:
-  ::proto::ReturnEnum _internal_return_enum() const;
-  void _internal_set_return_enum(::proto::ReturnEnum value);
-  public:
-
   // @@protoc_insertion_point(class_scope:proto.ReportInGameResponse)
  private:
   class _Internal;
@@ -2660,10 +2597,7 @@ class ReportInGameResponse final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    int return_enum_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
-  union { Impl_ _impl_; };
   friend struct ::TableStruct_darwin_5fservice_2eproto;
 };
 // -------------------------------------------------------------------
@@ -5495,27 +5429,7 @@ inline void ReportInGameRequest::set_allocated_potential_hit(std::string* potent
   // @@protoc_insertion_point(field_set_allocated:proto.ReportInGameRequest.potential_hit)
 }
 
-// .proto.ReportEnum report_enum = 4;
-inline void ReportInGameRequest::clear_report_enum() {
-  _impl_.report_enum_ = 0;
-}
-inline ::proto::ReportEnum ReportInGameRequest::_internal_report_enum() const {
-  return static_cast< ::proto::ReportEnum >(_impl_.report_enum_);
-}
-inline ::proto::ReportEnum ReportInGameRequest::report_enum() const {
-  // @@protoc_insertion_point(field_get:proto.ReportInGameRequest.report_enum)
-  return _internal_report_enum();
-}
-inline void ReportInGameRequest::_internal_set_report_enum(::proto::ReportEnum value) {
-  
-  _impl_.report_enum_ = value;
-}
-inline void ReportInGameRequest::set_report_enum(::proto::ReportEnum value) {
-  _internal_set_report_enum(value);
-  // @@protoc_insertion_point(field_set:proto.ReportInGameRequest.report_enum)
-}
-
-// .proto.StatusEnum status_enum = 5;
+// .proto.StatusEnum status_enum = 4;
 inline void ReportInGameRequest::clear_status_enum() {
   _impl_.status_enum_ = 0;
 }
@@ -5538,26 +5452,6 @@ inline void ReportInGameRequest::set_status_enum(::proto::StatusEnum value) {
 // -------------------------------------------------------------------
 
 // ReportInGameResponse
-
-// .proto.ReturnEnum return_enum = 1;
-inline void ReportInGameResponse::clear_return_enum() {
-  _impl_.return_enum_ = 0;
-}
-inline ::proto::ReturnEnum ReportInGameResponse::_internal_return_enum() const {
-  return static_cast< ::proto::ReturnEnum >(_impl_.return_enum_);
-}
-inline ::proto::ReturnEnum ReportInGameResponse::return_enum() const {
-  // @@protoc_insertion_point(field_get:proto.ReportInGameResponse.return_enum)
-  return _internal_return_enum();
-}
-inline void ReportInGameResponse::_internal_set_return_enum(::proto::ReturnEnum value) {
-  
-  _impl_.return_enum_ = value;
-}
-inline void ReportInGameResponse::set_return_enum(::proto::ReturnEnum value) {
-  _internal_set_return_enum(value);
-  // @@protoc_insertion_point(field_set:proto.ReportInGameResponse.return_enum)
-}
 
 // -------------------------------------------------------------------
 
@@ -5949,11 +5843,6 @@ template <> struct is_proto_enum< ::proto::ColorEnum> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::proto::ColorEnum>() {
   return ::proto::ColorEnum_descriptor();
-}
-template <> struct is_proto_enum< ::proto::ReportEnum> : ::std::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::proto::ReportEnum>() {
-  return ::proto::ReportEnum_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

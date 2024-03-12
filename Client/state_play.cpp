@@ -25,6 +25,35 @@ namespace darwin::state {
         auto unique_input = std::make_unique<InputAcquisition>();
         input_acquisition_ptr_ = unique_input.get();
         app_.GetWindow().SetInputInterface(std::move(unique_input));
+        for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
+            logger_->info(
+                "\tPlugin: [{}] {}",
+                (std::uint64_t)plugin,
+                plugin->GetName().c_str());
+            if (!draw_gui_) {
+                draw_gui_ =
+                    dynamic_cast<frame::gui::DrawGuiInterface*>(
+                        plugin);
+            }
+        }
+        if (!draw_gui_) {
+            throw std::runtime_error("No draw gui interface plugin found?");
+        }
+        for (const auto& title : draw_gui_->GetWindowTitles()) {
+            logger_->info("\tWindow: {}", title);
+            if (!stats_window_) {
+                frame::gui::GuiWindowInterface* window = 
+                    &draw_gui_->GetWindow(title);
+                stats_window_ = 
+                    dynamic_cast<darwin::modal::ModalStats*>(window);
+            }
+        }
+        if (stats_window_) {
+            logger_->info(
+                "\tStats window [{}]: {}", 
+                stats_window_->GetName(),
+                (std::uint64_t)stats_window_);
+        }
     }
 
     void StatePlay::Exit() {
@@ -158,17 +187,13 @@ namespace darwin::state {
             if (modified) {
                 character.mutable_physic()->CopyFrom(physic);
                 world_simulator_.SetCharacter(character);
-                darwin_client_->ReportMovement(
-                    physic, 
-                    character.status_enum());
-            }
-            else {
-                darwin_client_->ReportPing();
             }
         }
     }
 
     void StatePlay::Update(StateContext& state_context) {
+        stats_window_->SetCharacters(world_simulator_.GetCharacters());
+        auto player_parameter = world_simulator_.GetPlayerParameter();
         // Check in case of disconnect.
         if (!darwin_client_->IsConnected()) {
             state_context.ChangeState(
@@ -198,10 +223,7 @@ namespace darwin::state {
         // In case this is valid (not empty and not earth).
         if ((name != "") && (name != "earth")) {
             // Send a report movement to the server.
-            darwin_client_->ReportMovement(
-                character.physic(), 
-                character.status_enum(), 
-                name);
+            darwin_client_->ReportHit(name);
         }
         // Get the close uniforms from the world simulator.
         auto uniforms = world_simulator_.GetCloseUniforms(
@@ -228,7 +250,7 @@ namespace darwin::state {
                         std::move(darwin_client_)));
             }
             if (character.physic().mass() >=
-                world_simulator_.GetPlayerParameter().victory_size()) 
+                player_parameter.victory_size()) 
             {
                 state_context.ChangeState(
                     std::make_unique<StateVictory>(

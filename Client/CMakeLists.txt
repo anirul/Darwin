@@ -17,6 +17,8 @@ add_executable(DarwinClient
         modal_ping.h
         modal_server.cpp
         modal_server.h
+        modal_stats.cpp
+        modal_stats.h
         modal_victory.cpp
         modal_victory.h
         state_interface.h

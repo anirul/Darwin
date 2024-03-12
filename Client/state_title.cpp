@@ -12,7 +12,20 @@ namespace darwin::state {
 
     void StateTitle::Enter() {
         logger_->info("Entering title state");
-        // start_time_ = std::chrono::system_clock::now();
+        for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
+            logger_->info(
+                "\tPlugin: [{}] {}", 
+                (std::uint64_t)plugin, 
+                plugin->GetName().c_str());
+            if (!draw_gui_interface_) {
+                draw_gui_interface_ =
+                    dynamic_cast<frame::gui::DrawGuiInterface*>(
+                        plugin);
+            }
+        }
+        if (!draw_gui_interface_) {
+            throw std::runtime_error("No draw gui interface plugin found?");
+        }
         app_.GetWindow().AddKeyCallback(' ', [this] {
                 logger_->info("Space key pressed");
                 passed_ = true;
@@ -28,7 +41,9 @@ namespace darwin::state {
 
     void StateTitle::Update(StateContext& state_context) {
         auto duration = std::chrono::system_clock::now() - start_time_;
-        if (duration > std::chrono::seconds(10)) {
+        if (duration > std::chrono::seconds(10) && 
+            !draw_gui_interface_->IsVisible()) 
+        {
             logger_->info("10 seconds passed");
             passed_ = true;
         }

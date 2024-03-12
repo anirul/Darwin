@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common/darwin_service.grpc.pb.h"
+#include "Common/proto_helper.h"
 #include "Server/element_info.h"
 #include "Server/character_info.h"
 
@@ -35,8 +36,8 @@ namespace darwin {
         double GetLastUpdated() const;
         bool operator==(const WorldState& other) const;
         proto::Element GetPlanet() const;
-        void SetPotentialHits(
-            const std::map<std::string, std::string>& potential_hits);
+        void SetCharacterHits(
+            const std::map<proto::Character, std::string>& character_hits);
         void UpdatePing(const std::string& name);
 
     public:
@@ -72,7 +73,7 @@ namespace darwin {
         void LostSourceCharacterLocked(const FromTo& from_to);
 
     private:
-        mutable std::mutex mutex_info_;
+        mutable std::mutex mutex_;
         std::map<std::string, CharacterInfo> character_infos_;
         std::map<std::string, double> last_seen_;
         std::map<std::string, ElementInfo> element_infos_;
@@ -81,7 +82,7 @@ namespace darwin {
         std::vector<proto::Character> characters_;
         std::vector<proto::Element> elements_;
         proto::PlayerParameter player_parameter_;
-        std::map<std::string, std::string> potential_hits_;
+        std::map<proto::Character, std::string> character_hits_;
     };
 
 }  // namespace darwin.
