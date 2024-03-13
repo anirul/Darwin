@@ -22,7 +22,7 @@ namespace darwin {
         void UpdateTime();
         UniformEnum GetUniforms() const;
         UniformEnum GetCloseUniforms(const proto::Vector3& normal) const;
-        proto::Character GetCharacterByName(const std::string& name);
+        proto::Character GetCharacterByName(const std::string& name) const;
         void SetCharacter(const proto::Character& character);
         std::string GetPotentialHit(const proto::Character& character) const;
         proto::Physic GetPlanet() const;

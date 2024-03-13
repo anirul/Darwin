@@ -45,6 +45,8 @@ namespace darwin {
         if ((delta_time < 0.0001) || (delta_time > 1.0)) return;
         // Apply it to characters.
         for (auto& character : characters_) {
+            // TODO(anirul): Temporary hack.
+            if (character.name() != name_) continue;
             glm::dvec3 force = glm::dvec3(0.0);
             // Add all gravity forces.
             for (const auto& element : static_elements) {
@@ -173,7 +175,7 @@ namespace darwin {
     }
 
     proto::Character WorldSimulator::GetCharacterByName(
-        const std::string& name)
+        const std::string& name) const
     {
         std::lock_guard l(mutex_);
         for (auto character : characters_) {
@@ -220,7 +222,7 @@ namespace darwin {
                 return element.physic();
             }
         }
-        throw std::runtime_error("No planet found.");
+        return proto::Physic{};
     }
 
 } // End namespace darwin.

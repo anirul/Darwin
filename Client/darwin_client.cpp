@@ -119,9 +119,12 @@ namespace darwin {
                 start_timer = response.time();
             }
 
+            world_simulator_.SetUserName(character_name_);
+
             std::vector<proto::Character> characters;
             for (const auto& character : response.characters()) {
                 characters.push_back(MergeCharacter(character, delta_time));
+                previous_characters_.insert({ character.name(), character });
             }
 
             static std::size_t element_size = 0;
@@ -198,10 +201,10 @@ namespace darwin {
 
     proto::Character DarwinClient::MergeCharacter(
         proto::Character new_character,
-        double delta_time)
+        double delta_time) const
     {
         // This does not exist in the world simulator.
-        if (!world_simulator_.HasCharacter(new_character.name())) {
+        if (!previous_characters_.contains(new_character.name())) {
             return new_character;
         }
         // This is the character from this client.
@@ -212,24 +215,23 @@ namespace darwin {
             return new_character;
         }
         // Not from this client interpolate.
-        auto old_character = 
-            world_simulator_.GetCharacterByName(new_character.name());
+        auto old_character = previous_characters_.at(new_character.name());
         return InterpolateCharacter(old_character, new_character, delta_time);
     }
 
     proto::Character DarwinClient::InterpolateCharacter(
         const proto::Character& old_character,
         const proto::Character& new_character,
-        double delta_time) 
+        double delta_time) const
     {
+        // TODO(anirul): FIXME!
+        return new_character;
         auto status = new_character.status_enum();
         if ((status != proto::STATUS_ON_GROUND) && 
             (status != proto::STATUS_JUMPING))
         {
             return new_character;
         }
-        // Get the planet (will need the radius from it).
-        const auto planet = world_simulator_.GetPlanet();
         // Update the position to the current position.
         proto::Vector3 updated_position = 
             old_character.physic().position() +
@@ -251,7 +253,9 @@ namespace darwin {
             updated_position_dt = ProjectOnPlane(updated_position_dt, normal);
             // Update the position to the planet.
             updated_position = 
-                normal * (planet.radius() + new_character.physic().radius());
+                normal * 
+                (world_simulator_.GetPlanet().radius() + 
+                    new_character.physic().radius());
         }
         // Jumping.
         // Update the result.
@@ -278,7 +282,7 @@ namespace darwin {
         const proto::Character& server_character,
         const proto::Character& client_character) const
     {
-        static auto planet_physic = world_simulator_.GetPlanet();
+        const proto::Physic planet_physic = world_simulator_.GetPlanet();
         proto::Character character = client_character;
         if (glm::any(glm::isnan(
             ProtoVector2Glm(client_character.physic().position())))) 

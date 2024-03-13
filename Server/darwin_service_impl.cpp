@@ -86,13 +86,6 @@ namespace darwin {
         maybe_character.value().mutable_physic()->CopyFrom(physic);
         auto status = request->status_enum();
         maybe_character.value().set_status_enum(status);
-        // Delete previous entry.
-        for (const auto& time_character : time_characters_) {
-            if (time_character.second.name() == request->name()) {
-                time_characters_.erase(time_character.first);
-                break;
-            }
-        }
         maybe_character.value().mutable_physic()->set_mass(
             maybe_character.value().physic().mass() -
             world_state_.GetPlayerParameter().move_cost());

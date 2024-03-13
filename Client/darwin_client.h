@@ -28,11 +28,11 @@ namespace darwin {
         bool IsConnected() const;
         proto::Character MergeCharacter(
             proto::Character new_characters, 
-            double delta_time);
+            double delta_time) const;
         proto::Character InterpolateCharacter(
             const proto::Character& old_character,
             const proto::Character& new_character,
-            double delta_time);
+            double delta_time) const;
         std::vector<proto::ColorParameter> GetColorParameters() const;
 
     public:
@@ -62,6 +62,7 @@ namespace darwin {
     private:
         mutable std::mutex mutex_;
         proto::ReportInGameRequest report_request_;
+        std::map<std::string, proto::Character> previous_characters_;
         std::string name_;
         std::string character_name_;
         std::atomic<double> server_time_ = 0.0;

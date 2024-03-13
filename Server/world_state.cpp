@@ -379,12 +379,16 @@ namespace darwin {
             if (character_info.character.status_enum() == 
                 proto::STATUS_ON_GROUND) 
             {
+                auto position_normal = Normalize(
+                    character_info.character.physic().position());
                 character_info.character.mutable_physic()->
                     mutable_position()->
                     CopyFrom(
-                        character_info.character.normal() * 
+                        position_normal *
                         (ground.physic().radius() + 
                          character_info.character.physic().radius()));
+                character_info.character.mutable_normal()->CopyFrom(
+                    position_normal);
             }
         }
     }
