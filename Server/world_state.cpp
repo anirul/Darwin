@@ -1,5 +1,6 @@
 #include "world_state.h"
 
+#include <algorithm>
 #include <format>
 #include <cmath>
 
@@ -273,8 +274,13 @@ namespace darwin {
                 }
                 else
                 {
-                    ChangeSourceEatLocked(from_to);
-                    to_remove_type.insert({ target_name, type_enum });
+                    if (type_enum == proto::TYPE_UPGRADE) {
+                        ChangeSourceEatUpgradeLocked(from_to);
+                        to_remove_type.insert({ target_name, type_enum });
+                    }
+                    if (type_enum == proto::TYPE_CHARACTER) {
+                        ChangeSourceEatCharacterLocked(from_to);
+                    }
                 }
             }
         }
@@ -293,22 +299,32 @@ namespace darwin {
         }
     }
 
-    void WorldState::ChangeSourceEatLocked(const FromTo& from_to) {
-        proto::Physic physic{ from_to.physic_from };
-        physic.set_mass(
+    void WorldState::ChangeSourceEatUpgradeLocked(const FromTo& from_to) {
+        proto::Physic physic_from{ from_to.physic_from };
+        proto::Physic physic_to{ from_to.physic_to };
+        physic_from.set_mass(
             from_to.physic_from.mass() + from_to.physic_to.mass());
-        physic.set_radius(GetRadiusFromVolume(physic.mass()));
+        physic_from.set_radius(GetRadiusFromVolume(physic_from.mass()));
         character_infos_.at(
-            from_to.name_from).character.mutable_physic()->CopyFrom(physic);
-        if (GetPlayerParameter().change_color() == proto::COLOR_YES) {
-            auto final_color =
-                Normalize(
-                    from_to.color_from * from_to.physic_from.mass() +
-                    from_to.color_to * from_to.physic_to.mass());
-            character_infos_.at(
-                from_to.name_from).character.mutable_color()->CopyFrom(
-                    final_color);
-        }
+            from_to.name_from).character.mutable_physic()->CopyFrom(
+                physic_from);
+    }
+
+    void WorldState::ChangeSourceEatCharacterLocked(const FromTo& from_to) {
+        proto::Physic physic_from{ from_to.physic_from };
+        proto::Physic physic_to{ from_to.physic_to };
+        double move_mass = 
+            std::min(physic_to.mass(), player_parameter_.eat_speed());
+        physic_from.set_mass(from_to.physic_from.mass() + move_mass);
+        physic_from.set_radius(GetRadiusFromVolume(physic_from.mass()));
+        character_infos_.at(
+            from_to.name_from).character.mutable_physic()->CopyFrom(
+                physic_from);
+        physic_to.set_mass(from_to.physic_to.mass() - move_mass);
+        physic_to.set_radius(GetRadiusFromVolume(physic_to.mass()));
+        character_infos_.at(
+            from_to.name_to).character.mutable_physic()->CopyFrom(
+                physic_to);
     }
 
     void WorldState::LostSourceElementLocked(const FromTo& from_to) {

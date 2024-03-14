@@ -228,33 +228,6 @@ inline bool TypeEnum_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<TypeEnum>(
     TypeEnum_descriptor(), name, value);
 }
-enum ColorEnum : int {
-  COLOR_ERROR = 0,
-  COLOR_NO = 1,
-  COLOR_YES = 2,
-  COLOR_CIRCLE = 3,
-  ColorEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
-  ColorEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
-};
-bool ColorEnum_IsValid(int value);
-constexpr ColorEnum ColorEnum_MIN = COLOR_ERROR;
-constexpr ColorEnum ColorEnum_MAX = COLOR_CIRCLE;
-constexpr int ColorEnum_ARRAYSIZE = ColorEnum_MAX + 1;
-
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ColorEnum_descriptor();
-template<typename T>
-inline const std::string& ColorEnum_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, ColorEnum>::value ||
-    ::std::is_integral<T>::value,
-    "Incorrect type passed to function ColorEnum_Name.");
-  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    ColorEnum_descriptor(), enum_t_value);
-}
-inline bool ColorEnum_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ColorEnum* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ColorEnum>(
-    ColorEnum_descriptor(), name, value);
-}
 // ===================================================================
 
 class Vector3 final :
@@ -1595,11 +1568,11 @@ class PlayerParameter final :
     kStartMassFieldNumber = 3,
     kDropHeightFieldNumber = 4,
     kPenaltyFieldNumber = 5,
-    kMoveCostFieldNumber = 7,
-    kFrictionFieldNumber = 8,
-    kVictorySizeFieldNumber = 9,
-    kDisconnectionTimeoutFieldNumber = 10,
-    kChangeColorFieldNumber = 6,
+    kLivingCostFieldNumber = 6,
+    kFrictionFieldNumber = 7,
+    kVictorySizeFieldNumber = 8,
+    kDisconnectionTimeoutFieldNumber = 9,
+    kEatSpeedFieldNumber = 10,
   };
   // repeated .proto.ColorParameter colors = 11;
   int colors_size() const;
@@ -1664,16 +1637,16 @@ class PlayerParameter final :
   void _internal_set_penalty(double value);
   public:
 
-  // double move_cost = 7;
-  void clear_move_cost();
-  double move_cost() const;
-  void set_move_cost(double value);
+  // double living_cost = 6;
+  void clear_living_cost();
+  double living_cost() const;
+  void set_living_cost(double value);
   private:
-  double _internal_move_cost() const;
-  void _internal_set_move_cost(double value);
+  double _internal_living_cost() const;
+  void _internal_set_living_cost(double value);
   public:
 
-  // double friction = 8;
+  // double friction = 7;
   void clear_friction();
   double friction() const;
   void set_friction(double value);
@@ -1682,7 +1655,7 @@ class PlayerParameter final :
   void _internal_set_friction(double value);
   public:
 
-  // double victory_size = 9;
+  // double victory_size = 8;
   void clear_victory_size();
   double victory_size() const;
   void set_victory_size(double value);
@@ -1691,7 +1664,7 @@ class PlayerParameter final :
   void _internal_set_victory_size(double value);
   public:
 
-  // double disconnection_timeout = 10;
+  // double disconnection_timeout = 9;
   void clear_disconnection_timeout();
   double disconnection_timeout() const;
   void set_disconnection_timeout(double value);
@@ -1700,13 +1673,13 @@ class PlayerParameter final :
   void _internal_set_disconnection_timeout(double value);
   public:
 
-  // .proto.ColorEnum change_color = 6;
-  void clear_change_color();
-  ::proto::ColorEnum change_color() const;
-  void set_change_color(::proto::ColorEnum value);
+  // double eat_speed = 10;
+  void clear_eat_speed();
+  double eat_speed() const;
+  void set_eat_speed(double value);
   private:
-  ::proto::ColorEnum _internal_change_color() const;
-  void _internal_set_change_color(::proto::ColorEnum value);
+  double _internal_eat_speed() const;
+  void _internal_set_eat_speed(double value);
   public:
 
   // @@protoc_insertion_point(class_scope:proto.PlayerParameter)
@@ -1723,11 +1696,11 @@ class PlayerParameter final :
     double start_mass_;
     double drop_height_;
     double penalty_;
-    double move_cost_;
+    double living_cost_;
     double friction_;
     double victory_size_;
     double disconnection_timeout_;
-    int change_color_;
+    double eat_speed_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -4743,47 +4716,27 @@ inline void PlayerParameter::set_penalty(double value) {
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.penalty)
 }
 
-// .proto.ColorEnum change_color = 6;
-inline void PlayerParameter::clear_change_color() {
-  _impl_.change_color_ = 0;
+// double living_cost = 6;
+inline void PlayerParameter::clear_living_cost() {
+  _impl_.living_cost_ = 0;
 }
-inline ::proto::ColorEnum PlayerParameter::_internal_change_color() const {
-  return static_cast< ::proto::ColorEnum >(_impl_.change_color_);
+inline double PlayerParameter::_internal_living_cost() const {
+  return _impl_.living_cost_;
 }
-inline ::proto::ColorEnum PlayerParameter::change_color() const {
-  // @@protoc_insertion_point(field_get:proto.PlayerParameter.change_color)
-  return _internal_change_color();
+inline double PlayerParameter::living_cost() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.living_cost)
+  return _internal_living_cost();
 }
-inline void PlayerParameter::_internal_set_change_color(::proto::ColorEnum value) {
+inline void PlayerParameter::_internal_set_living_cost(double value) {
   
-  _impl_.change_color_ = value;
+  _impl_.living_cost_ = value;
 }
-inline void PlayerParameter::set_change_color(::proto::ColorEnum value) {
-  _internal_set_change_color(value);
-  // @@protoc_insertion_point(field_set:proto.PlayerParameter.change_color)
+inline void PlayerParameter::set_living_cost(double value) {
+  _internal_set_living_cost(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.living_cost)
 }
 
-// double move_cost = 7;
-inline void PlayerParameter::clear_move_cost() {
-  _impl_.move_cost_ = 0;
-}
-inline double PlayerParameter::_internal_move_cost() const {
-  return _impl_.move_cost_;
-}
-inline double PlayerParameter::move_cost() const {
-  // @@protoc_insertion_point(field_get:proto.PlayerParameter.move_cost)
-  return _internal_move_cost();
-}
-inline void PlayerParameter::_internal_set_move_cost(double value) {
-  
-  _impl_.move_cost_ = value;
-}
-inline void PlayerParameter::set_move_cost(double value) {
-  _internal_set_move_cost(value);
-  // @@protoc_insertion_point(field_set:proto.PlayerParameter.move_cost)
-}
-
-// double friction = 8;
+// double friction = 7;
 inline void PlayerParameter::clear_friction() {
   _impl_.friction_ = 0;
 }
@@ -4803,7 +4756,7 @@ inline void PlayerParameter::set_friction(double value) {
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.friction)
 }
 
-// double victory_size = 9;
+// double victory_size = 8;
 inline void PlayerParameter::clear_victory_size() {
   _impl_.victory_size_ = 0;
 }
@@ -4823,7 +4776,7 @@ inline void PlayerParameter::set_victory_size(double value) {
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.victory_size)
 }
 
-// double disconnection_timeout = 10;
+// double disconnection_timeout = 9;
 inline void PlayerParameter::clear_disconnection_timeout() {
   _impl_.disconnection_timeout_ = 0;
 }
@@ -4841,6 +4794,26 @@ inline void PlayerParameter::_internal_set_disconnection_timeout(double value) {
 inline void PlayerParameter::set_disconnection_timeout(double value) {
   _internal_set_disconnection_timeout(value);
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.disconnection_timeout)
+}
+
+// double eat_speed = 10;
+inline void PlayerParameter::clear_eat_speed() {
+  _impl_.eat_speed_ = 0;
+}
+inline double PlayerParameter::_internal_eat_speed() const {
+  return _impl_.eat_speed_;
+}
+inline double PlayerParameter::eat_speed() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.eat_speed)
+  return _internal_eat_speed();
+}
+inline void PlayerParameter::_internal_set_eat_speed(double value) {
+  
+  _impl_.eat_speed_ = value;
+}
+inline void PlayerParameter::set_eat_speed(double value) {
+  _internal_set_eat_speed(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.eat_speed)
 }
 
 // repeated .proto.ColorParameter colors = 11;
@@ -5838,11 +5811,6 @@ template <> struct is_proto_enum< ::proto::TypeEnum> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::proto::TypeEnum>() {
   return ::proto::TypeEnum_descriptor();
-}
-template <> struct is_proto_enum< ::proto::ColorEnum> : ::std::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::proto::ColorEnum>() {
-  return ::proto::ColorEnum_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

@@ -88,7 +88,7 @@ namespace darwin {
         maybe_character.value().set_status_enum(status);
         maybe_character.value().mutable_physic()->set_mass(
             maybe_character.value().physic().mass() -
-            world_state_.GetPlayerParameter().move_cost());
+            world_state_.GetPlayerParameter().living_cost());
         auto now = std::chrono::system_clock::now();
         double time =
             std::chrono::duration_cast<std::chrono::duration<double>>(

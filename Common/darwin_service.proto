@@ -34,13 +34,6 @@ enum TypeEnum {
     TYPE_CHARACTER = 7;         // Player character.
 }
 
-enum ColorEnum {
-    COLOR_ERROR = 0;            // Error in the function?
-    COLOR_NO = 1;               // No change of color.
-    COLOR_YES = 2;              // Change of color.
-    COLOR_CIRCLE = 3;           // Change of color in a circle.
-}
-
 // Vector 3 this store position or other 3 float values.
 // Next: 4
 message Vector3 {
@@ -126,16 +119,16 @@ message PlayerParameter {
     double drop_height = 4;
     // Penalty for eating too similar to player color.
     double penalty = 5;
-    // Change color when you eat.
-    ColorEnum change_color = 6;
     // Move cost in mass value.
-    double move_cost = 7;
+    double living_cost = 6;
     // Friction (this will stop the move at a certain point).
-    double friction = 8;
+    double friction = 7;
     // Victory size (in volume).
-    double victory_size = 9;
+    double victory_size = 8;
     // Disconnection timeout.
-    double disconnection_timeout = 10;
+    double disconnection_timeout = 9;
+    // Eating speed.
+    double eat_speed = 10;
     // Color list.
     repeated ColorParameter colors = 11;
 }

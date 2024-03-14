@@ -68,7 +68,8 @@ namespace darwin {
             proto::Vector3 color_from;
             proto::Vector3 color_to;
         };
-        void ChangeSourceEatLocked(const FromTo& from_to);
+        void ChangeSourceEatUpgradeLocked(const FromTo& from_to);
+        void ChangeSourceEatCharacterLocked(const FromTo& from_to);
         void LostSourceElementLocked(const FromTo& from_to);
         void LostSourceCharacterLocked(const FromTo& from_to);
 

@@ -60,6 +60,10 @@ namespace darwin {
             keys_.contains('d');
     }
 
+    bool InputAcquisition::IsTab() const {
+        return keys_.contains('\t');
+    }
+
     float InputAcquisition::GetHorizontal() const {
         float horizontal = 0.0f;
         if (keys_.contains('a')) {
