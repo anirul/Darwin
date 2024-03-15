@@ -3,40 +3,35 @@ syntax = "proto3";
 package proto;
 
 enum ReturnEnum {
-    RETURN_ERROR = 0;       // Error in the function?
-    RETURN_OK = 1;          // OK this passed well.
-    RETURN_REJECTED = 2;    // Rejected by the server.
+    RETURN_ERROR = 0;           // Error in the function?
+    RETURN_OK = 1;              // OK this passed well.
+    RETURN_REJECTED = 2;        // Rejected by the server.
 }
 
 enum VitalEnum {
-    VITAL_NONE = 0;         // Error status incorrect.
-    VITAL_ALIVE = 1;        // The player is alive and kicking.
-    VITAL_DEAD = 2;         // This player is dead.
-    VITAL_LOADING = 3;      // This player is loading in.
+    VITAL_NONE = 0;             // Error status incorrect.
+    VITAL_ALIVE = 1;            // The player is alive and kicking.
+    VITAL_DEAD = 2;             // This player is dead.
+    VITAL_LOADING = 3;          // This player is loading in.
 }
 
 enum StatusEnum {
-    STATUS_UNKNOWN = 0;     // Unknown this is an error!
-    STATUS_ON_GROUND = 1;   // On the ground.
-    STATUS_JUMPING = 2;     // Jumping.
+    STATUS_UNKNOWN = 0;         // Unknown this is an error!
+    STATUS_ON_GROUND = 1;       // On the ground.
+    STATUS_JUMPING = 2;         // Jumping.
+    STATUS_LOADING = 3;         // Loading in the game.
+    STATUS_DEAD = 4;            // Dead.
 }
 
 enum TypeEnum {
-    TYPE_UNKNOWN = 0;        // Unknown this is an error!
-    TYPE_GROUND = 1;        // From where the gravity is generated.
-    TYPE_EXPLOSION = 2;     // Explosion that push stuff around.
-    TYPE_UPGRADE = 3;       // Upgrade to upgrade character.
-    TYPE_GREEN = 4;         // Greenery (no effect on anything).
-    TYPE_BROWN = 5;         // Tree bark and non destructible elements.
-    TYPE_WATER = 6;         // Water.
-    TYPE_CHARACTER = 7;     // Player character.
-}
-
-enum ColorEnum {
-    COLOR_ERROR = 0;        // Error in the function?
-    COLOR_NO = 1;           // No change of color.
-    COLOR_YES = 2;          // Change of color.
-    COLOR_CIRCLE = 3;       // Change of color in a circle.
+    TYPE_UNKNOWN = 0;           // Unknown this is an error!
+    TYPE_GROUND = 1;            // From where the gravity is generated.
+    TYPE_EXPLOSION = 2;         // Explosion that push stuff around.
+    TYPE_UPGRADE = 3;           // Upgrade to upgrade character.
+    TYPE_GREEN = 4;             // Greenery (no effect on anything).
+    TYPE_BROWN = 5;             // Tree bark and non destructible elements.
+    TYPE_WATER = 6;             // Water.
+    TYPE_CHARACTER = 7;         // Player character.
 }
 
 // Vector 3 this store position or other 3 float values.
@@ -102,23 +97,17 @@ message Character {
     StatusEnum status_enum = 6;
 }
 
-// CharacterReport
-// Next: 5
-message CharacterReport {
-    // Character name.
+// ColorParameter
+// Next: 3
+message ColorParameter {
+    // Color name.
     string name = 1;
-    // Radius (score).
-    float radius = 2;
-    // Status.
-    VitalEnum vital_status = 3;
-    // Color.
-    Vector3 color = 4;
-    // Last seen time.
-    double last_seen = 5;
+    // Color value.
+    Vector3 color = 2;
 }
 
 // PlayerParameter
-// Next: 9
+// Next: 12
 message PlayerParameter {
     // Vertical speed (jumping).
     double vertical_speed = 1;
@@ -130,12 +119,18 @@ message PlayerParameter {
     double drop_height = 4;
     // Penalty for eating too similar to player color.
     double penalty = 5;
-    // Dot product limit for penalty.
-    double dot_penalty = 6;
-    // Change color when you eat.
-    ColorEnum change_color = 7;
-    // Move cost in mass value.
-    double move_cost = 8;
+    // living cost in mass value.
+    double living_cost = 6;
+    // Friction (this will stop the move at a certain point).
+    double friction = 7;
+    // Victory size (in volume).
+    double victory_size = 8;
+    // Disconnection timeout.
+    double disconnection_timeout = 9;
+    // Eating speed.
+    double eat_speed = 10;
+    // Color list.
+    repeated ColorParameter colors = 11;
 }
 
 // WorldDatabase saved as a file.
@@ -169,23 +164,22 @@ message UpdateResponse {
     double time = 3;
 }
 
-// ReportMovementRequest
-// Next: 4
-message ReportMovementRequest {
+// ReportInGameRequest
+// Next: 5
+message ReportInGameRequest {
     // Character name.
     string name = 1;
     // New physic.
     Physic physic = 2;
     // Name of potential hit.
     string potential_hit = 3;
+    // Character status.
+    StatusEnum status_enum = 4;
 }
 
-// ReportMovementResponse
-// Next: 2
-message ReportMovementResponse {
-    // Return enum.
-    ReturnEnum return_enum = 1;
-}
+// ReportInGameResponse
+// Next: 1
+message ReportInGameResponse {}
 
 // CreateCharacterRequest
 // Next: 3
@@ -197,12 +191,10 @@ message CreateCharacterRequest {
 }
 
 // CreateCharacterResponse
-// Next: 3
+// Next: 2
 message CreateCharacterResponse {
-    // Player parameter (used to set parameters).
-    PlayerParameter player_parameter = 1;
     // Return enum.
-    ReturnEnum return_enum = 2;
+    ReturnEnum return_enum = 1;
 }
 
 // PingRequest
@@ -213,32 +205,14 @@ message PingRequest {
 }
 
 // PingResponse
-// Next: 3
+// Next: 4
 message PingResponse {
     // Returned value.
     int32 value = 1;
     // Present time on the server.
     double time = 2;
-}
-
-// DeathReportRequest
-// Next: 3
-message DeathReportRequest {
-    // Character name.
-    string name = 1;
-    // Tocken.
-    string session_tocken = 2;
-}
-
-// DeathReportResponse
-// Next: 4
-message DeathReportResponse {
-    // Return enum.
-    ReturnEnum return_enum = 1;
-    // Present time on the server.
-    double time = 2;
-    // Report.
-    repeated CharacterReport character_reports = 3;
+    // Player parameter (used to set parameters).
+    PlayerParameter player_parameter = 3;
 }
 
 // The darwin service.
@@ -246,11 +220,9 @@ service DarwinService {
     // Update the position of object in the world to the clients.
     rpc Update(UpdateRequest) returns (stream UpdateResponse);
     // Client report the change of position and speed of a player.
-    rpc ReportMovement(ReportMovementRequest) returns (ReportMovementResponse);
+    rpc ReportInGame(ReportInGameRequest) returns (ReportInGameResponse);
     // Create a new character.
     rpc CreateCharacter(CreateCharacterRequest) returns (CreateCharacterResponse);
     // Ping the server.
     rpc Ping(PingRequest) returns (PingResponse);
-    // Death report.
-    rpc DeathReport(DeathReportRequest) returns (DeathReportResponse);
 }

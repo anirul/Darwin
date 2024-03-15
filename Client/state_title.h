@@ -3,6 +3,7 @@
 #include "frame/logger.h"
 #include "state_interface.h"
 #include "frame/common/application.h"
+#include "frame/gui/draw_gui_interface.h"
 
 namespace darwin::state {
 
@@ -18,6 +19,7 @@ namespace darwin::state {
         frame::Logger& logger_ = frame::Logger::GetInstance();
         frame::common::Application& app_;
         std::chrono::time_point<std::chrono::system_clock> start_time_;
+        frame::gui::DrawGuiInterface* draw_gui_interface_ = nullptr;
         bool passed_ = false;
     };
 

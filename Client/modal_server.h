@@ -27,7 +27,7 @@ namespace darwin::modal {
         std::string name_;
         ModalServerParams& params_;
         bool end_ = false;
-        char server_[64] = { 0 };
+        char server_[1024] = { 0 };
     };
 
 } // End namespace frame::modal.

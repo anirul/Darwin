@@ -21,15 +21,19 @@ namespace darwin {
         bool CreateCharacter(
             const std::string& name, 
             const proto::Vector3& color);
-        void ReportMovement(
-            const std::string& name, 
-            const proto::Physic& physic,
-            const std::string& potential_hit);
-        void SendReportMovement();
+        void ReportHit(const std::string& potential_hit);
+        void SendReportInGame();
         void Update();
         std::int32_t Ping(std::int32_t val = 45323);
         bool IsConnected() const;
-        proto::Character MergeCharacter(proto::Character new_characters);
+        proto::Character MergeCharacter(
+            proto::Character new_characters, 
+            double delta_time) const;
+        proto::Character InterpolateCharacter(
+            const proto::Character& old_character,
+            const proto::Character& new_character,
+            double delta_time) const;
+        std::vector<proto::ColorParameter> GetColorParameters() const;
 
     public:
         WorldSimulator& GetWorldSimulator() {
@@ -49,13 +53,16 @@ namespace darwin {
         }
 
     protected:
-        void PollCompletionQueue();
+        void SendReportInGameSync();
         proto::Character CorrectCharacter(
             const proto::Character& server_character,
             const proto::Character& client_character) const;
+        void Clear();
 
     private:
-        proto::ReportMovementRequest report_movement_request_;
+        mutable std::mutex mutex_;
+        proto::ReportInGameRequest report_request_;
+        std::map<std::string, proto::Character> previous_characters_;
         std::string name_;
         std::string character_name_;
         std::atomic<double> server_time_ = 0.0;
@@ -63,11 +70,7 @@ namespace darwin {
         frame::Logger& logger_ = frame::Logger::GetInstance();
         WorldSimulator world_simulator_;
         std::future<void> update_future_;
-        std::future<void> poll_future_;
         std::atomic<bool> end_{ false };
-        grpc::CompletionQueue cq_;
-        std::shared_ptr<grpc::ClientContext> context_ = 
-            std::make_shared<grpc::ClientContext>();
     };
 
 } // namespace darwin.

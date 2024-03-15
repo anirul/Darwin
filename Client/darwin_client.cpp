@@ -3,7 +3,6 @@
 #include <glm/glm.hpp>
 #include <grpc++/grpc++.h>
 
-#include "async_client_call.h"
 #include "Common/darwin_service.grpc.pb.h"
 #include "Common/vector.h"
 #include "Common/convert_math.h"
@@ -22,25 +21,21 @@ namespace darwin {
         stub_ = proto::DarwinService::NewStub(channel);
         // Create a new thread to the update.
         update_future_ = std::async(std::launch::async, [this] { Update(); });
-        // Create a new thread to the poll.
-        poll_future_ = std::async(std::launch::async, [this] { 
-                PollCompletionQueue(); 
-            });
     }
 
     DarwinClient::~DarwinClient() {
         end_.store(true);
-        cq_.Shutdown();
         update_future_.wait();
-        poll_future_.wait();
     }
 
     bool DarwinClient::CreateCharacter(
         const std::string& name, 
-        const proto::Vector3& color) {
+        const proto::Vector3& color) 
+    {
         proto::CreateCharacterRequest request;
         request.set_name(name);
         request.mutable_color()->CopyFrom(color);
+        Clear();
 
         proto::CreateCharacterResponse response;
         grpc::ClientContext context;
@@ -50,7 +45,6 @@ namespace darwin {
         if (status.ok()) {
             character_name_ = name;
             logger_->info("Create character: {}", name);
-            world_simulator_.SetPlayerParameter(response.player_parameter());
             return true;
         }
         else {
@@ -61,39 +55,36 @@ namespace darwin {
         }
     }
 
-    void DarwinClient::ReportMovement(
-        const std::string& name,
-        const proto::Physic& physic,
-        const std::string& potential_hit) 
-    {
-        report_movement_request_.set_name(name);
-        report_movement_request_.mutable_physic()->CopyFrom(physic);
-        report_movement_request_.set_potential_hit(potential_hit);
+    void DarwinClient::Clear() {
+        std::scoped_lock l(mutex_);
+        report_request_.set_name(character_name_);
+        world_simulator_.Clear();
+        character_name_ = "";
     }
 
-    void DarwinClient::SendReportMovement() {
-        auto promise = 
-            std::make_shared<std::promise<proto::ReportMovementResponse>>();
+    void DarwinClient::ReportHit(const std::string& potential_hit) {
+        std::scoped_lock l(mutex_);
+        report_request_.set_potential_hit(potential_hit);
+    }
 
-        // This shared state can be used to pass more information to the
-        // completion handler.
-        auto* call = new AsyncClientCall;
-        call->request = report_movement_request_;
-        call->response = std::make_shared<proto::ReportMovementResponse>();
-        call->promise = promise;
+    void DarwinClient::SendReportInGame() {
+        SendReportInGameSync();
+    }
 
-        // Prepare the asynchronous call
-        call->rpc = 
-            stub_->PrepareAsyncReportMovement(
-                &call->context, 
-                call->request, 
-                &cq_);
-
-        // Start the call
-        call->rpc->StartCall();
-
-        // Request to receive the response
-        call->rpc->Finish(call->response.get(), &call->status, (void*)call);
+    void DarwinClient::SendReportInGameSync() {
+        std::scoped_lock l(mutex_);
+        auto character = world_simulator_.GetCharacterByName(character_name_);
+        report_request_.set_name(character_name_);
+        report_request_.mutable_physic()->CopyFrom(character.physic());
+        report_request_.set_status_enum(character.status_enum());
+        proto::ReportInGameResponse response;
+        grpc::ClientContext context;
+        grpc::Status status = 
+            stub_->ReportInGame(&context, report_request_, &response);
+        if (!status.ok()) {
+            logger_->warn("ReportInGame failed: {}.", status.error_message());
+        }
+        report_request_.set_potential_hit("");
     }
 
     void DarwinClient::Update() {
@@ -103,21 +94,37 @@ namespace darwin {
         proto::UpdateResponse response;
         grpc::ClientContext context;
 
+        // 5 seconds from now.
+        std::chrono::system_clock::time_point deadline =
+            std::chrono::system_clock::now() + std::chrono::seconds(10);
+        // context.set_deadline(deadline);
+
         // The response stream.
         std::unique_ptr<grpc::ClientReader<proto::UpdateResponse>> 
             reader(stub_->Update(&context, request));
 
+        double start_timer = 0.0;
+        double delta_time = 0.1;
+        bool first = true;
+
         // Read the stream of responses.
         while (reader->Read(&response)) {
-
-            if (report_movement_request_.name() != "") {
-                SendReportMovement();
-                report_movement_request_.set_name("");
+            
+            if (first) {
+                first = false;
+                start_timer = response.time();
             }
+            else {
+                delta_time = response.time() - start_timer;
+                start_timer = response.time();
+            }
+
+            world_simulator_.SetUserName(character_name_);
 
             std::vector<proto::Character> characters;
             for (const auto& character : response.characters()) {
-                characters.push_back(MergeCharacter(character));
+                characters.push_back(MergeCharacter(character, delta_time));
+                previous_characters_.insert({ character.name(), character });
             }
 
             static std::size_t element_size = 0;
@@ -143,6 +150,10 @@ namespace darwin {
             // Update the time.
             server_time_.store(response.time());
 
+            // Send the report in game.
+            SendReportInGame();
+
+            // Check if the end is requested.
             if (end_.load()) {
                 logger_->warn("Force exiting...");
                 return;
@@ -174,6 +185,7 @@ namespace darwin {
                 "Ping response server time: {}", 
                 response.value(), 
                 response.time());
+            world_simulator_.SetPlayerParameter(response.player_parameter());
             server_time_ = response.time();
             return response.value();
         }
@@ -188,24 +200,89 @@ namespace darwin {
     }
 
     proto::Character DarwinClient::MergeCharacter(
-        proto::Character new_character)
+        proto::Character new_character,
+        double delta_time) const
     {
-        if (world_simulator_.GetCharactersSize() == 0) {
+        // This does not exist in the world simulator.
+        if (!previous_characters_.contains(new_character.name())) {
             return new_character;
         }
+        // This is the character from this client.
         if (new_character.name() == character_name_) {
             new_character = CorrectCharacter(
                 new_character,
                 world_simulator_.GetCharacterByName(character_name_));
+            return new_character;
         }
+        // Not from this client interpolate.
+        auto old_character = previous_characters_.at(new_character.name());
+        return InterpolateCharacter(old_character, new_character, delta_time);
+    }
+
+    proto::Character DarwinClient::InterpolateCharacter(
+        const proto::Character& old_character,
+        const proto::Character& new_character,
+        double delta_time) const
+    {
+        // TODO(anirul): FIXME!
         return new_character;
+        auto status = new_character.status_enum();
+        if ((status != proto::STATUS_ON_GROUND) && 
+            (status != proto::STATUS_JUMPING))
+        {
+            return new_character;
+        }
+        // Update the position to the current position.
+        proto::Vector3 updated_position = 
+            old_character.physic().position() +
+                (old_character.physic().position_dt() * delta_time) +
+                ((new_character.physic().position() - 
+                    old_character.physic().position()) *
+                        delta_time);
+        // Create a new position_dt to update the position to the future.
+        proto::Vector3 updated_position_dt =
+            old_character.physic().position_dt() +
+            ((new_character.physic().position_dt() -
+                old_character.physic().position_dt()) * delta_time);
+        proto::Character result = new_character;
+        // On the ground.
+        if (new_character.status_enum() == proto::STATUS_ON_GROUND) {
+            // Get a normal to the position.
+            auto normal = Normalize(updated_position);
+            // Project the updated position_dt to the planet.
+            updated_position_dt = ProjectOnPlane(updated_position_dt, normal);
+            // Update the position to the planet.
+            updated_position = 
+                normal * 
+                (world_simulator_.GetPlanet().radius() + 
+                    new_character.physic().radius());
+        }
+        // Jumping.
+        // Update the result.
+        result.mutable_physic()->mutable_position()->CopyFrom(
+            updated_position);
+        result.mutable_physic()->mutable_position_dt()->CopyFrom(
+            updated_position_dt);
+        return result;
+    }
+
+    std::vector<proto::ColorParameter> 
+        DarwinClient::GetColorParameters() const 
+    {
+        std::vector<proto::ColorParameter> color_parameters;
+        const proto::PlayerParameter player_parameter = 
+            world_simulator_.GetPlayerParameter();
+        for (const auto& color_parameter : player_parameter.colors()) {
+            color_parameters.push_back(color_parameter);
+        }
+        return color_parameters;
     }
 
     proto::Character DarwinClient::CorrectCharacter(
         const proto::Character& server_character,
         const proto::Character& client_character) const
     {
-        static auto planet_physic = world_simulator_.GetPlanet();
+        const proto::Physic planet_physic = world_simulator_.GetPlanet();
         proto::Character character = client_character;
         if (glm::any(glm::isnan(
             ProtoVector2Glm(client_character.physic().position())))) 
@@ -246,25 +323,6 @@ namespace darwin {
         character.mutable_physic()->set_radius(
             server_character.physic().radius());
         return character;
-    }
-
-    void DarwinClient::PollCompletionQueue() {
-        void* tag;
-        bool ok;
-        while (cq_.Next(&tag, &ok)) {
-            auto* call = static_cast<AsyncClientCall*>(tag);
-            if (!ok) {
-                // Handle error. You might want to set an exception on the promise.
-                logger_->warn("ReportMovement failed.");
-                call->promise->set_exception(std::make_exception_ptr(std::runtime_error("RPC failed")));
-            }
-            else {
-                // RPC succeeded, set the value on the promise
-                call->promise->set_value(*(call->response));
-            }
-            // Clean up
-            delete call;
-        }
     }
 
 } // namespace darwin.

@@ -24,17 +24,21 @@ namespace darwin::modal {
     public:
         ModalCharacter(
             const std::string& name,
-            ModalCharacterParams& params);
+            ModalCharacterParams& params,
+            const std::vector<proto::ColorParameter>& colors);
         bool DrawCallback() override;
         bool End() const override;
         std::string GetName() const override;
         void SetName(const std::string& name) override;
+        bool ColoredButton(const proto::ColorParameter& color);
 
     private:
+        char name_buffer_[64] = { 0 };
         std::string name_;
         ModalCharacterParams& params_;
         bool end_ = false;
         int selected_color_ = 0;
+        const std::vector<proto::ColorParameter> colors_;
     };
 
 } // End namespace darwin::modal.

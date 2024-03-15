@@ -2,8 +2,10 @@
 
 #include <algorithm>
 
-#include "state_disconnected.h"
 #include "state_context.h"
+#include "state_disconnected.h"
+#include "state_death.h"
+#include "state_victory.h"
 #include "Common/convert_math.h"
 #include "Common/vector.h"
 
@@ -23,6 +25,35 @@ namespace darwin::state {
         auto unique_input = std::make_unique<InputAcquisition>();
         input_acquisition_ptr_ = unique_input.get();
         app_.GetWindow().SetInputInterface(std::move(unique_input));
+        for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
+            logger_->info(
+                "\tPlugin: [{}] {}",
+                (std::uint64_t)plugin,
+                plugin->GetName().c_str());
+            if (!draw_gui_) {
+                draw_gui_ =
+                    dynamic_cast<frame::gui::DrawGuiInterface*>(
+                        plugin);
+            }
+        }
+        if (!draw_gui_) {
+            throw std::runtime_error("No draw gui interface plugin found?");
+        }
+        for (const auto& title : draw_gui_->GetWindowTitles()) {
+            logger_->info("\tWindow: {}", title);
+            if (!stats_window_) {
+                frame::gui::GuiWindowInterface* window = 
+                    &draw_gui_->GetWindow(title);
+                stats_window_ = 
+                    dynamic_cast<darwin::modal::ModalStats*>(window);
+            }
+        }
+        if (stats_window_) {
+            logger_->info(
+                "\tStats window [{}]: {}", 
+                stats_window_->GetName(),
+                (std::uint64_t)stats_window_);
+        }
     }
 
     void StatePlay::Exit() {
@@ -115,52 +146,43 @@ namespace darwin::state {
         if (character.status_enum() == proto::STATUS_ON_GROUND) {
             bool modified = false;
             proto::Physic physic = character.physic();
+            const auto planet_physic = world_simulator_.GetPlanet();
             // Reset position delta time on the ground.
             physic.release_position_dt()->CopyFrom(
-                CreateBasicVector3(0.0, 0.0, 0.0));
+                CreateVector3(0.0, 0.0, 0.0));
             proto::PlayerParameter player_parameter =
                 world_simulator_.GetPlayerParameter();
             if (input_acquisition_ptr_->IsJumping()) {
                 modified = true;
                 physic.mutable_position_dt()->CopyFrom(
-                    Add(
-                        physic.position_dt(),
-                        MultiplyVector3ByScalar(
-                            character.normal(),
-                            player_parameter.vertical_speed())));
+                    physic.position_dt() +
+                    (character.normal() * player_parameter.vertical_speed()));
                 character.set_status_enum(proto::STATUS_JUMPING);
             }
             if (input_acquisition_ptr_->IsMoving()) {
                 modified = true;
                 auto forward = Normalize(Glm2ProtoVector(character_forward_));
                 auto right =
-                    Normalize(CrossProduct(character.normal(), forward));
+                    Normalize(Cross(character.normal(), forward));
                 auto direction =
                     Normalize(
-                        Add(
-                            MultiplyVector3ByScalar(
-                                right,
-                                input_acquisition_ptr_->GetHorizontal()),
-                            MultiplyVector3ByScalar(
-                                forward,
-                                input_acquisition_ptr_->GetVertical())));
+                        right * input_acquisition_ptr_->GetHorizontal() +
+                        forward * input_acquisition_ptr_->GetVertical());
                 physic.mutable_position_dt()->CopyFrom(
-                    Add(
-                        physic.position_dt(),
-                        MultiplyVector3ByScalar(
-                            direction,
-                            player_parameter.horizontal_speed())));
+                    physic.position_dt() + 
+                    (direction * player_parameter.horizontal_speed()));
             }
             // Apply the changes.
             if (modified) {
-                *character.mutable_physic() = physic;
+                character.mutable_physic()->CopyFrom(physic);
                 world_simulator_.SetCharacter(character);
-                darwin_client_->ReportMovement(character.name(), physic, "");
             }
         }
     }
 
     void StatePlay::Update(StateContext& state_context) {
+        stats_window_->SetCharacters(world_simulator_.GetCharacters());
+        auto player_parameter = world_simulator_.GetPlayerParameter();
         // Check in case of disconnect.
         if (!darwin_client_->IsConnected()) {
             state_context.ChangeState(
@@ -190,14 +212,14 @@ namespace darwin::state {
         // In case this is valid (not empty and not earth).
         if ((name != "") && (name != "earth")) {
             // Send a report movement to the server.
-            darwin_client_->ReportMovement(
-                character_name, character.physic(), name);
+            darwin_client_->ReportHit(name);
         }
         // Get the close uniforms from the world simulator.
         auto uniforms = world_simulator_.GetCloseUniforms(
             Normalize(character.physic().position()));
         assert(uniforms.spheres.size() == uniforms.colors.size());
         auto& program = GetProgram();
+        bool is_character_valid = false;
         // Update Uniforms.
         program.Use();
         UpdateUniformSpheres(program, uniforms);
@@ -205,9 +227,26 @@ namespace darwin::state {
             logger_->warn("Character {} not found", character_name);
         }
         else {
+            is_character_valid = true;
             UpdateUniformCamera(program, character);
         }
         program.UnUse();
+        if (is_character_valid) {
+            if (character.physic().mass() <= 1.0) {
+                state_context.ChangeState(
+                    std::make_unique<StateDeath>(
+                        app_,
+                        std::move(darwin_client_)));
+            }
+            if (character.physic().mass() >=
+                player_parameter.victory_size()) 
+            {
+                state_context.ChangeState(
+                    std::make_unique<StateVictory>(
+                        app_,
+                        std::move(darwin_client_)));
+            }
+        }
     }
 
 } // namespace darwin::state.

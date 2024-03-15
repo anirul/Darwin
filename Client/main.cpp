@@ -1,8 +1,11 @@
 #include <iostream>
+#include <fstream>
 #include <utility>
 #include <vector>
 #include <imgui.h>
 #include <SDL2/SDL.h>
+#include <grpc/grpc.h>
+#include <grpc/support/log.h>
 
 #if defined(_WIN32) || defined(_WIN64)
 #define WINDOWS_LEAN_AND_MEAN
@@ -19,6 +22,22 @@
 #include "frame/gui/window_logger.h"
 #include "frame/logger.h"
 #include "frame/json/parse_level.h"
+#include "modal_stats.h"
+
+void grpc_log_handler(gpr_log_func_args* args) {
+    frame::Logger& logger = frame::Logger::GetInstance();
+    switch (args->severity) {
+    case GPR_LOG_SEVERITY_DEBUG:
+        logger->debug("GRPC: {}", args->message);
+        break;
+    case GPR_LOG_SEVERITY_INFO:
+        logger->info("GRPC: {}", args->message);
+        break;
+    case GPR_LOG_SEVERITY_ERROR:
+        logger->error("GRPC: {}", args->message);
+        break;
+    }
+}
 
 #if defined(_WIN32) || defined(_WIN64)
 int WINAPI WinMain(
@@ -31,16 +50,25 @@ int WINAPI WinMain(
 int main(int ac, char** av) try
 {
 #endif
+
+    // Set grpc log handler.
+    gpr_set_log_function(grpc_log_handler);
+    gpr_set_log_verbosity(GPR_LOG_SEVERITY_ERROR);
+    grpc_tracer_set_enabled("all", true);
+
     auto win = frame::CreateNewWindow(
         frame::DrawingTargetEnum::WINDOW,
         frame::RenderingAPIEnum::OPENGL,
         { 1280, 720 });
     auto gui_window = frame::gui::CreateDrawGui(
-        *win.get(), 
+        *win.get(),
         frame::file::FindFile("asset/font/axaxax/axaxax_bd.otf"),
         20.0f);
     gui_window->AddWindow(
         std::make_unique<frame::gui::WindowLogger>("Logger"));
+    darwin::modal::ModalStatsParams params;
+    gui_window->AddWindow(
+        std::make_unique<darwin::modal::ModalStats>("Stats", params));
     // Start with the debug window hidden.
     gui_window->SetVisible(false);
     // Darkening the background of the modal window.
@@ -50,18 +78,18 @@ int main(int ac, char** av) try
     auto* gui_window_ptr = gui_window.get();
     // Add a debugging key if you press on '`' key.
     win->AddKeyCallback('`', [gui_window_ptr] {
-            if (gui_window_ptr == nullptr) {
-                return false;
-            }
-            gui_window_ptr->SetVisible(!gui_window_ptr->IsVisible());
-            return true;
+        if (gui_window_ptr == nullptr) {
+            return false;
+        }
+        gui_window_ptr->SetVisible(!gui_window_ptr->IsVisible());
+        return true;
         });
     // Add an exit key if you press on 'ESC' key.
     win->AddKeyCallback(27, [] {
-            SDL_Event quitEvent;
-            quitEvent.type = SDL_QUIT;
-            SDL_PushEvent(&quitEvent);
-            return true;
+        SDL_Event quitEvent;
+        quitEvent.type = SDL_QUIT;
+        SDL_PushEvent(&quitEvent);
+        return true;
         });
     // Add plugin to the device.
     win->GetDevice().AddPlugin(std::move(gui_window));
@@ -74,11 +102,11 @@ int main(int ac, char** av) try
         std::make_unique<darwin::state::StateTitle>(app));
     // Add a load from file for resolution.
     app.Run([&state_context, &app] {
-            state_context.Update();
+        state_context.Update();
         });
     return 0;
 }
-catch (std::exception ex) 
+catch (std::exception ex)
 {
 #if defined(_WIN32) || defined(_WIN64)
     MessageBox(nullptr, ex.what(), "Exception", MB_ICONEXCLAMATION);
