@@ -10,7 +10,7 @@ namespace test {
             darwin::CreateBasicElement(
                 "element1",
                 proto::TYPE_GROUND,
-                darwin::CreateBasicVector3(1.0, 2.0, 3.0),
+                darwin::CreateVector3(1.0, 2.0, 3.0),
                 1.0,
                 1.0));
         world_state_.AddElement(
@@ -18,21 +18,21 @@ namespace test {
             darwin::CreateBasicElement(
                 "element2",
                 proto::TYPE_GROUND,
-                darwin::CreateBasicVector3(4.0, 5.0, 6.0),
+                darwin::CreateVector3(4.0, 5.0, 6.0),
                 2.0,
                 2.0));
         world_state_.AddCharacter(
             0.0,
             darwin::CreateBasicCharacter(
                 "character1",
-                darwin::CreateBasicVector3(7.0, 8.0, 9.0),
+                darwin::CreateVector3(7.0, 8.0, 9.0),
                 3.0,
                 3.0));
         world_state_.AddCharacter(
             0.0,
             darwin::CreateBasicCharacter(
                 "character2",
-                darwin::CreateBasicVector3(10.0, 11.0, 12.0),
+                darwin::CreateVector3(10.0, 11.0, 12.0),
                 4.0,
                 4.0));
     }

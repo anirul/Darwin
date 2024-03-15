@@ -42,8 +42,11 @@ namespace darwin {
         const std::vector<proto::Element>& static_elements,
         double delta_time)
     {
+        if ((delta_time < 0.0001) || (delta_time > 1.0)) return;
         // Apply it to characters.
         for (auto& character : characters_) {
+            // TODO(anirul): Temporary hack.
+            if (character.name() != name_) continue;
             glm::dvec3 force = glm::dvec3(0.0);
             // Add all gravity forces.
             for (const auto& element : static_elements) {
@@ -104,11 +107,21 @@ namespace darwin {
         return uniform_enum;
     }
 
+    bool WorldSimulator::HasCharacter(const std::string& name) const {
+        std::lock_guard l(mutex_);
+        for (const auto& character : characters_) {
+            if (character.name() == name) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     bool WorldSimulator::IsClose(
         const proto::Vector3& normal,
         const proto::Vector3& position) const
     {
-        return DotProduct(normal, position) > 0.8;
+        return Dot(normal, position) > 0.8;
     }
 
     UniformEnum WorldSimulator::GetCloseUniforms(
@@ -126,6 +139,7 @@ namespace darwin {
             }
         }
         for (const auto& character : characters_) {
+            if (character.status_enum() == proto::STATUS_DEAD) continue;
             if (IsClose(normal, Normalize(character.physic().position()))) {
                 uniform_enum.spheres.push_back(GetSphere(character.physic()));
                 uniform_enum.colors.push_back(GetColor(character));
@@ -161,7 +175,7 @@ namespace darwin {
     }
 
     proto::Character WorldSimulator::GetCharacterByName(
-        const std::string& name)
+        const std::string& name) const
     {
         std::lock_guard l(mutex_);
         for (auto character : characters_) {
@@ -208,7 +222,7 @@ namespace darwin {
                 return element.physic();
             }
         }
-        throw std::runtime_error("No planet found.");
+        return proto::Physic{};
     }
 
 } // End namespace darwin.

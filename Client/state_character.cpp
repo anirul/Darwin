@@ -22,10 +22,13 @@ namespace darwin::state {
         if (!draw_gui_) {
             throw std::runtime_error("No draw gui interface plugin found?");
         }
+        const std::vector<proto::ColorParameter> colors =
+            darwin_client_->GetColorParameters();
         draw_gui_->AddModalWindow(
             std::make_unique<modal::ModalCharacter>(
                 "Select Character",
-                modal_character_params_));
+                modal_character_params_,
+                colors));
     }
 
     void StateCharacter::Update(StateContext& state_context) {

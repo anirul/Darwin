@@ -3,6 +3,7 @@
 #include <grpc++/grpc++.h>
 
 #include "Common/darwin_service.grpc.pb.h"
+#include "Common/proto_helper.h"
 #include "world_state.h"
 
 namespace darwin {
@@ -17,10 +18,10 @@ namespace darwin {
             grpc::ServerContext* context, 
             const proto::UpdateRequest* request,
             grpc::ServerWriter<proto::UpdateResponse>* writer) override;
-        grpc::Status ReportMovement(
+        grpc::Status ReportInGame(
             grpc::ServerContext* context, 
-            const proto::ReportMovementRequest* request,
-            proto::ReportMovementResponse* response) override;
+            const proto::ReportInGameRequest* request,
+            proto::ReportInGameResponse* response) override;
         grpc::Status CreateCharacter(
             grpc::ServerContext* context, 
             const proto::CreateCharacterRequest* request,
@@ -29,20 +30,12 @@ namespace darwin {
             grpc::ServerContext* context, 
             const proto::PingRequest* request,
             proto::PingResponse* response) override;
-        grpc::Status DeathReport(
-            grpc::ServerContext* context, 
-            const proto::DeathReportRequest* request,
-            proto::DeathReportResponse* response) override;
 
     public:
         void BroadcastUpdate(const proto::UpdateResponse& response);
         std::map<double, proto::Character>& GetTimeCharacters();
         void ClearTimeCharacters();
-        std::mutex& GetTimeCharacterMutex();
         void ComputeWorld();
-        // Returns the name of character against the potential hits this will
-        // empty the list after the call.
-        std::map<std::string, std::string> GetPotentialHits();
 
     protected:
         proto::Physic UpdatePhysic(
@@ -52,7 +45,7 @@ namespace darwin {
     protected:
         std::map<double, proto::Character> time_characters_;
         // Name of the character against name of potential hits.
-        std::map<std::string, std::string> character_potential_hits_;
+        std::map<proto::Character, std::string> character_hits_;
         WorldState& world_state_;
         std::list<grpc::ServerWriter<proto::UpdateResponse>*> writers_;
         std::mutex writers_mutex_;

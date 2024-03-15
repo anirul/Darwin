@@ -2,6 +2,7 @@
 
 #include <random>
 #include <cmath>
+#include <format>
 
 #include "Common/darwin_constant.h"
 #include "Common/vector.h"
@@ -61,6 +62,17 @@ namespace darwin {
             Distance(character.position(), element.position());
         double radius_sum = character.radius() + element.radius();
         return distance < radius_sum;
+    }
+
+    bool IsAlmostIntersecting(
+        const proto::Physic& character,
+        const proto::Physic& element)
+    {
+        auto dot = 
+            Dot(
+                Normalize(character.position()), 
+                Normalize(element.position()));
+        return dot > ALMOST_INTERSECT;
     }
 
 }  // End namespace darwin.

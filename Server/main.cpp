@@ -21,6 +21,11 @@ ABSL_FLAG(
 
 int main(int ac, char** av) try {
     absl::ParseCommandLine(ac, av);
+
+    // Set grpc log handler.
+    gpr_set_log_verbosity(GPR_LOG_SEVERITY_ERROR);
+    grpc_tracer_set_enabled("all", true);
+
     grpc::ServerBuilder builder;
     darwin::WorldState world_state;
     std::cout 
