@@ -119,7 +119,7 @@ message PlayerParameter {
     double drop_height = 4;
     // Penalty for eating too similar to player color.
     double penalty = 5;
-    // Move cost in mass value.
+    // living cost in mass value.
     double living_cost = 6;
     // Friction (this will stop the move at a certain point).
     double friction = 7;

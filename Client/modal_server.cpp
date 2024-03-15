@@ -20,7 +20,7 @@ namespace darwin::modal {
         if (ImGui::InputText(
             "Server",
             server_,
-            64,
+            1024,
             ImGuiInputTextFlags_CharsNoBlank))
         {
             params_.server_name = server_;
