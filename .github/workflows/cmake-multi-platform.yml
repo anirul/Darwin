@@ -69,7 +69,7 @@ jobs:
       run: |
         git clone https://github.com/microsoft/vcpkg.git
         cd vcpkg
-        ${{ matrixvcpkg_script }}
+        ${{ matrixv.cpkg_script }}
         ./vcpkg integrate install
 
     - name: Configure CMake
