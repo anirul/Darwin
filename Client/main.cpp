@@ -4,6 +4,7 @@
 #include <vector>
 #include <imgui.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_keycode.h>
 #include <grpc/grpc.h>
 #include <grpc/support/log.h>
 
@@ -77,7 +78,7 @@ int main(int ac, char** av) try
         0.0f, 0.0f, 0.0f, 0.5f);
     auto* gui_window_ptr = gui_window.get();
     // Add a debugging key if you press on '`' key.
-    win->AddKeyCallback('`', [gui_window_ptr] {
+    win->AddKeyCallback(SDLK_F1, [gui_window_ptr] {
         if (gui_window_ptr == nullptr) {
             return false;
         }
