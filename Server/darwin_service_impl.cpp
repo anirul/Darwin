@@ -125,6 +125,25 @@ namespace darwin {
                 context->peer(),
                 request->name());
 #endif // _DEBUG
+        const auto player_parameter = world_state_.GetPlayerParameter();
+        bool found = false;
+        for (const auto& color : player_parameter.colors()) {
+            if (Dot(
+                    Normalize(color.color()), 
+                    Normalize(request->color())) <= 0.99) 
+            {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            response->set_return_enum(proto::RETURN_REJECTED);
+            return grpc::Status(
+                grpc::StatusCode::INVALID_ARGUMENT,
+                std::format(
+                    "Color [{}] is not valid.", 
+                    request->color().DebugString()));
+        }
         if (world_state_.CreateCharacter(
             context->peer(),
             request->name(),

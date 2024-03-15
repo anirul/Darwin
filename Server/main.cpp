@@ -18,6 +18,11 @@ ABSL_FLAG(
     world_db, 
     "world_db.json", 
     "The name of the world database file.");
+ABSL_FLAG(
+    std::uint32_t,
+    upgrade_count,
+    400,
+    "The maximum number of upgrade elements in the world.");
 
 int main(int ac, char** av) try {
     absl::ParseCommandLine(ac, av);
@@ -32,7 +37,7 @@ int main(int ac, char** av) try {
         << "loading world state from file: "<< absl::GetFlag(FLAGS_world_db) 
         << "\n";
     LoadWorldStateFromFile(world_state, absl::GetFlag(FLAGS_world_db));
-    world_state.AddRandomElements(400);
+    world_state.SetUpgradeElement(absl::GetFlag(FLAGS_upgrade_count));
     darwin::DarwinServiceImpl service{ world_state };
 
     std::cout << "starting world simulation\n";

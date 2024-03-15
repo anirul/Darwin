@@ -15,7 +15,7 @@ namespace darwin {
             const proto::Vector3& color);
         // This is there for testing purposes don't use in production.
         void AddCharacter(double time, const proto::Character& character);
-        void AddRandomElements(std::uint32_t number);
+        void SetUpgradeElement(std::uint32_t upgrade_count);
         void RemoveCharacter(const std::string& name);
         std::string RemovePeer(const std::string& peer);
         bool IsCharacterOwnByPeer(
@@ -52,6 +52,7 @@ namespace darwin {
         }
 
     private:
+        void AddRandomElementsLocked(std::uint32_t number);
         std::string RemovePeerLocked(const std::string& peer);
         void CheckStillInUseCharactersLocked();
         void CheckGroundCharactersLocked();
@@ -84,6 +85,7 @@ namespace darwin {
         std::vector<proto::Element> elements_;
         proto::PlayerParameter player_parameter_;
         std::map<proto::Character, std::string> character_hits_;
+        std::uint32_t element_max_number_ = 0;
     };
 
 }  // namespace darwin.

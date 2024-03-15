@@ -11,6 +11,12 @@
 
 namespace darwin {
 
+    void WorldState::SetUpgradeElement(std::uint32_t upgrade_count) {
+        std::scoped_lock l(mutex_);
+        element_max_number_ = upgrade_count;
+        AddRandomElementsLocked(upgrade_count);
+    }
+
     bool WorldState::CreateCharacter(
         const std::string& peer,
         const std::string& name,
@@ -107,11 +113,12 @@ namespace darwin {
         throw std::runtime_error("No planet found.");
     }
 
-    void WorldState::AddRandomElements(std::uint32_t number) {
-        std::scoped_lock l(mutex_);
+    void WorldState::AddRandomElementsLocked(std::uint32_t number) {
         for (std::uint32_t i = 0; i < number; ++i) {
             proto::Element element;
-            element.set_name(std::format("element{}", i));
+            static int element_number = 0;
+            element.set_name(
+                std::format("element_upgrade{}", element_number++));
             element.set_type_enum(proto::TYPE_UPGRADE);
             std::vector<proto::Vector3> colors;
             for (const auto& color : player_parameter_.colors()) {
@@ -287,6 +294,7 @@ namespace darwin {
         for (const auto& [name, type] : to_remove_type) {
             if (type == proto::TYPE_UPGRADE) {
                 element_infos_.erase(name);
+                AddRandomElementsLocked(1);
             }
             if (type == proto::TYPE_CHARACTER) {
                 character_infos_.erase(name);
