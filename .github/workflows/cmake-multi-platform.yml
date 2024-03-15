@@ -30,12 +30,15 @@ jobs:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
+            vcpkg_script: ./bootstrap-vcpkg.bat
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
+            vcpkg_script: ./bootstrap-vcpkg.sh
           - os: ubuntu-latest
             c_compiler: clang
             cpp_compiler: clang++
+            vcpkg_script: ./bootstrap-vcpkg.sh
         exclude:
           - os: windows-latest
             c_compiler: gcc
@@ -66,7 +69,7 @@ jobs:
       run: |
         git clone https://github.com/microsoft/vcpkg.git
         cd vcpkg
-        ./bootstrap-vcpkg.sh
+        ${{vcpkg_script}}
         ./vcpkg integrate install
 
     - name: Configure CMake
