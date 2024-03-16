@@ -26,6 +26,9 @@ namespace darwin {
         characters_ = characters;
         time_ = time;
         started_ = true;
+        last_server_update_time_ =
+            std::chrono::duration<double>(
+                std::chrono::system_clock::now().time_since_epoch()).count();
     }
 
     std::vector<proto::Element> WorldSimulator::GetGForceElementsLocked() {
@@ -125,7 +128,8 @@ namespace darwin {
     }
 
     UniformEnum WorldSimulator::GetCloseUniforms(
-        const proto::Vector3& normal) const
+        const proto::Vector3& normal,
+        double delta_time) const
     {
         std::lock_guard l(mutex_);
         UniformEnum uniform_enum;
@@ -141,7 +145,14 @@ namespace darwin {
         for (const auto& character : characters_) {
             if (character.status_enum() == proto::STATUS_DEAD) continue;
             if (IsClose(normal, Normalize(character.physic().position()))) {
-                uniform_enum.spheres.push_back(GetSphere(character.physic()));
+                if (character.name() == GetUserName()) {
+                    uniform_enum.spheres.push_back(
+                        GetSphere(character.physic()));
+                }
+                else {
+                    uniform_enum.spheres.push_back(
+                        GetSphereUdpate(character.physic(), delta_time));
+                }
                 uniform_enum.colors.push_back(GetColor(character));
             }
         }
@@ -153,6 +164,17 @@ namespace darwin {
             physic.position().x(),
             physic.position().y(),
             physic.position().z(),
+            physic.radius());
+    }
+
+    glm::vec4 WorldSimulator::GetSphereUdpate(
+        const proto::Physic& physic, 
+        double delta_time) const
+    {
+        return glm::vec4(
+            physic.position().x() + physic.position_dt().x() * delta_time,
+            physic.position().y() + physic.position_dt().y() * delta_time,
+            physic.position().z() + physic.position_dt().z() * delta_time,
             physic.radius());
     }
 
@@ -171,7 +193,7 @@ namespace darwin {
             character.color().x(),
             character.color().y(),
             character.color().z(),
-            1.0);
+            2.0);
     }
 
     proto::Character WorldSimulator::GetCharacterByName(

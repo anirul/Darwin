@@ -200,6 +200,9 @@ namespace darwin::state {
                 darwin_client_->GetServerTime());
             server_time = darwin_client_->GetServerTime();
         }
+        double now = 
+            std::chrono::duration<double>(
+                std::chrono::system_clock::now().time_since_epoch()).count();
         auto character_name = darwin_client_->GetCharacterName();
         auto character = 
             world_simulator_.GetCharacterByName(character_name);
@@ -214,19 +217,23 @@ namespace darwin::state {
             // Send a report movement to the server.
             darwin_client_->ReportHit(name);
         }
+        // Get the delta time.
+        double delta_time = now - world_simulator_.GetLastServerUpdateTime();
         // Get the close uniforms from the world simulator.
         auto uniforms = world_simulator_.GetCloseUniforms(
-            Normalize(character.physic().position()));
+            Normalize(character.physic().position()), delta_time);
         assert(uniforms.spheres.size() == uniforms.colors.size());
         auto& program = GetProgram();
         bool is_character_valid = false;
         // Update Uniforms.
         program.Use();
         UpdateUniformSpheres(program, uniforms);
-        if (character.name() != character_name) {
-            logger_->warn("Character {} not found", character_name);
+        if (character.name() != character_name) 
+        {
+            logger_->info("Character {} not found", character_name);
         }
-        else {
+        else 
+        {
             is_character_valid = true;
             UpdateUniformCamera(program, character);
         }

@@ -21,7 +21,9 @@ namespace darwin {
             double time);
         void UpdateTime();
         UniformEnum GetUniforms() const;
-        UniformEnum GetCloseUniforms(const proto::Vector3& normal) const;
+        UniformEnum GetCloseUniforms(
+            const proto::Vector3& normal, 
+            double delta_time) const;
         proto::Character GetCharacterByName(const std::string& name) const;
         void SetCharacter(const proto::Character& character);
         std::string GetPotentialHit(const proto::Character& character) const;
@@ -29,6 +31,10 @@ namespace darwin {
         bool HasCharacter(const std::string& name) const;
 
     public:
+        double GetLastServerUpdateTime() const {
+            std::lock_guard l(mutex_);
+            return last_server_update_time_;
+        }
         void SetPlayerParameter(const proto::PlayerParameter& parameter) {
             std::lock_guard l(mutex_);
             player_parameter_ = parameter;
@@ -64,6 +70,9 @@ namespace darwin {
             const proto::Vector3& normal, 
             const proto::Vector3& position) const;
         glm::vec4 GetSphere(const proto::Physic& physic) const;
+        glm::vec4 GetSphereUdpate(
+            const proto::Physic& physic, 
+            double delta_time) const;
         glm::vec4 GetColor(const proto::Element& element) const;
         glm::vec4 GetColor(const proto::Character& character) const;
         std::vector<proto::Element> GetGForceElementsLocked();
@@ -78,6 +87,7 @@ namespace darwin {
         std::vector<proto::Element> elements_;
         std::vector<proto::Character> characters_;
         double time_;
+        double last_server_update_time_;
         std::chrono::time_point<std::chrono::high_resolution_clock> last_time_;
         proto::PlayerParameter player_parameter_;
     };
