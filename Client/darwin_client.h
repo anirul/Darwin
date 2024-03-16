@@ -36,6 +36,9 @@ namespace darwin {
         std::vector<proto::ColorParameter> GetColorParameters() const;
 
     public:
+        static std::string GetDefaultServerName();
+
+    public:
         WorldSimulator& GetWorldSimulator() {
             return world_simulator_;
         }

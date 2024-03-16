@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Common/darwin_service.grpc.pb.h"
-#include "Common/proto_helper.h"
+#include "Common/stl_proto_wrapper.h"
 #include "Server/element_info.h"
 #include "Server/character_info.h"
 

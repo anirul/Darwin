@@ -24,6 +24,7 @@
 #include "frame/logger.h"
 #include "frame/json/parse_level.h"
 #include "modal_stats.h"
+#include "Common/stl_proto_wrapper.h"
 
 void grpc_log_handler(gpr_log_func_args* args) {
     frame::Logger& logger = frame::Logger::GetInstance();

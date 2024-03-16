@@ -2,6 +2,14 @@
 
 #include <random>
 
+namespace proto {
+
+    bool operator<(const proto::Character& lhs, const proto::Character& rhs) {
+        return lhs.name() < rhs.name();
+    }
+
+}  // namespace darwin.
+
 namespace darwin {
 
     bool operator==(

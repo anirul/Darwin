@@ -3,7 +3,7 @@
 #include <grpc++/grpc++.h>
 
 #include "Common/darwin_service.grpc.pb.h"
-#include "Common/proto_helper.h"
+#include "Common/stl_proto_wrapper.h"
 #include "world_state.h"
 
 namespace darwin {

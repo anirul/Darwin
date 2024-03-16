@@ -10,8 +10,6 @@ add_library(DarwinCommon
         world_simulator.h
         vector.cpp
         vector.h
-        proto_helper.cpp
-        proto_helper.h
         physic.cpp
         physic.h
         darwin_service.proto

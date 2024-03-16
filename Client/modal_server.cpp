@@ -12,7 +12,8 @@ namespace darwin::modal {
         name_(name), 
         params_(params) 
     {
-        std::copy(DEFAULT_SERVER.begin(), DEFAULT_SERVER.end(), server_);
+        std::string server_name = DarwinClient::GetDefaultServerName();
+        std::copy(server_name.begin(), server_name.end(), server_);
     }
 
 

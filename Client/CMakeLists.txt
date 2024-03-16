@@ -40,6 +40,7 @@ add_executable(DarwinClient
         state_title.h
         state_victory.cpp
         state_victory.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../asset/json/client_parameter.json
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/json/darwin_client.json
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/shader/opengl/darwin_ray_marching.vert
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/shader/opengl/darwin_ray_marching.frag

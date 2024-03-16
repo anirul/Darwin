@@ -34,7 +34,7 @@ int main(int ac, char** av) try {
     grpc::ServerBuilder builder;
     darwin::WorldState world_state;
     std::cout 
-        << "loading world state from file: "<< absl::GetFlag(FLAGS_world_db) 
+        << "loading world state from file: "<< absl::GetFlag(FLAGS_world_db)
         << "\n";
     LoadWorldStateFromFile(world_state, absl::GetFlag(FLAGS_world_db));
     world_state.SetUpgradeElement(absl::GetFlag(FLAGS_upgrade_count));

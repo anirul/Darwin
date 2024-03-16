@@ -50,6 +50,9 @@ namespace proto {
 class Character;
 struct CharacterDefaultTypeInternal;
 extern CharacterDefaultTypeInternal _Character_default_instance_;
+class ClientParameter;
+struct ClientParameterDefaultTypeInternal;
+extern ClientParameterDefaultTypeInternal _ClientParameter_default_instance_;
 class ColorParameter;
 struct ColorParameterDefaultTypeInternal;
 extern ColorParameterDefaultTypeInternal _ColorParameter_default_instance_;
@@ -98,6 +101,7 @@ extern WorldDatabaseDefaultTypeInternal _WorldDatabase_default_instance_;
 }  // namespace proto
 PROTOBUF_NAMESPACE_OPEN
 template<> ::proto::Character* Arena::CreateMaybeMessage<::proto::Character>(Arena*);
+template<> ::proto::ClientParameter* Arena::CreateMaybeMessage<::proto::ClientParameter>(Arena*);
 template<> ::proto::ColorParameter* Arena::CreateMaybeMessage<::proto::ColorParameter>(Arena*);
 template<> ::proto::CreateCharacterRequest* Arena::CreateMaybeMessage<::proto::CreateCharacterRequest>(Arena*);
 template<> ::proto::CreateCharacterResponse* Arena::CreateMaybeMessage<::proto::CreateCharacterResponse>(Arena*);
@@ -230,6 +234,159 @@ inline bool TypeEnum_Parse(
 }
 // ===================================================================
 
+class ClientParameter final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.ClientParameter) */ {
+ public:
+  inline ClientParameter() : ClientParameter(nullptr) {}
+  ~ClientParameter() override;
+  explicit PROTOBUF_CONSTEXPR ClientParameter(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  ClientParameter(const ClientParameter& from);
+  ClientParameter(ClientParameter&& from) noexcept
+    : ClientParameter() {
+    *this = ::std::move(from);
+  }
+
+  inline ClientParameter& operator=(const ClientParameter& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ClientParameter& operator=(ClientParameter&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ClientParameter& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ClientParameter* internal_default_instance() {
+    return reinterpret_cast<const ClientParameter*>(
+               &_ClientParameter_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  friend void swap(ClientParameter& a, ClientParameter& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ClientParameter* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ClientParameter* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ClientParameter* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ClientParameter>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const ClientParameter& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const ClientParameter& from) {
+    ClientParameter::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ClientParameter* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "proto.ClientParameter";
+  }
+  protected:
+  explicit ClientParameter(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kServerNameFieldNumber = 1,
+  };
+  // string server_name = 1;
+  void clear_server_name();
+  const std::string& server_name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_server_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_server_name();
+  PROTOBUF_NODISCARD std::string* release_server_name();
+  void set_allocated_server_name(std::string* server_name);
+  private:
+  const std::string& _internal_server_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_server_name(const std::string& value);
+  std::string* _internal_mutable_server_name();
+  public:
+
+  // @@protoc_insertion_point(class_scope:proto.ClientParameter)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr server_name_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_darwin_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
+
 class Vector3 final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.Vector3) */ {
  public:
@@ -278,7 +435,7 @@ class Vector3 final :
                &_Vector3_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    0;
+    1;
 
   friend void swap(Vector3& a, Vector3& b) {
     a.Swap(&b);
@@ -448,7 +605,7 @@ class Vector4 final :
                &_Vector4_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    2;
 
   friend void swap(Vector4& a, Vector4& b) {
     a.Swap(&b);
@@ -629,7 +786,7 @@ class Physic final :
                &_Physic_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   friend void swap(Physic& a, Physic& b) {
     a.Swap(&b);
@@ -868,7 +1025,7 @@ class Element final :
                &_Element_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(Element& a, Element& b) {
     a.Swap(&b);
@@ -1072,7 +1229,7 @@ class Character final :
                &_Character_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(Character& a, Character& b) {
     a.Swap(&b);
@@ -1316,7 +1473,7 @@ class ColorParameter final :
                &_ColorParameter_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(ColorParameter& a, ColorParameter& b) {
     a.Swap(&b);
@@ -1489,7 +1646,7 @@ class PlayerParameter final :
                &_PlayerParameter_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(PlayerParameter& a, PlayerParameter& b) {
     a.Swap(&b);
@@ -1756,7 +1913,7 @@ class WorldDatabase final :
                &_WorldDatabase_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   friend void swap(WorldDatabase& a, WorldDatabase& b) {
     a.Swap(&b);
@@ -1964,7 +2121,7 @@ class UpdateRequest final :
                &_UpdateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   friend void swap(UpdateRequest& a, UpdateRequest& b) {
     a.Swap(&b);
@@ -2117,7 +2274,7 @@ class UpdateResponse final :
                &_UpdateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   friend void swap(UpdateResponse& a, UpdateResponse& b) {
     a.Swap(&b);
@@ -2305,7 +2462,7 @@ class ReportInGameRequest final :
                &_ReportInGameRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   friend void swap(ReportInGameRequest& a, ReportInGameRequest& b) {
     a.Swap(&b);
@@ -2504,7 +2661,7 @@ class ReportInGameResponse final :
                &_ReportInGameResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   friend void swap(ReportInGameResponse& a, ReportInGameResponse& b) {
     a.Swap(&b);
@@ -2623,7 +2780,7 @@ class CreateCharacterRequest final :
                &_CreateCharacterRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    13;
 
   friend void swap(CreateCharacterRequest& a, CreateCharacterRequest& b) {
     a.Swap(&b);
@@ -2796,7 +2953,7 @@ class CreateCharacterResponse final :
                &_CreateCharacterResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    14;
 
   friend void swap(CreateCharacterResponse& a, CreateCharacterResponse& b) {
     a.Swap(&b);
@@ -2944,7 +3101,7 @@ class PingRequest final :
                &_PingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    15;
 
   friend void swap(PingRequest& a, PingRequest& b) {
     a.Swap(&b);
@@ -3092,7 +3249,7 @@ class PingResponse final :
                &_PingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    16;
 
   friend void swap(PingResponse& a, PingResponse& b) {
     a.Swap(&b);
@@ -3230,6 +3387,60 @@ class PingResponse final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// ClientParameter
+
+// string server_name = 1;
+inline void ClientParameter::clear_server_name() {
+  _impl_.server_name_.ClearToEmpty();
+}
+inline const std::string& ClientParameter::server_name() const {
+  // @@protoc_insertion_point(field_get:proto.ClientParameter.server_name)
+  return _internal_server_name();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void ClientParameter::set_server_name(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.server_name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:proto.ClientParameter.server_name)
+}
+inline std::string* ClientParameter::mutable_server_name() {
+  std::string* _s = _internal_mutable_server_name();
+  // @@protoc_insertion_point(field_mutable:proto.ClientParameter.server_name)
+  return _s;
+}
+inline const std::string& ClientParameter::_internal_server_name() const {
+  return _impl_.server_name_.Get();
+}
+inline void ClientParameter::_internal_set_server_name(const std::string& value) {
+  
+  _impl_.server_name_.Set(value, GetArenaForAllocation());
+}
+inline std::string* ClientParameter::_internal_mutable_server_name() {
+  
+  return _impl_.server_name_.Mutable(GetArenaForAllocation());
+}
+inline std::string* ClientParameter::release_server_name() {
+  // @@protoc_insertion_point(field_release:proto.ClientParameter.server_name)
+  return _impl_.server_name_.Release();
+}
+inline void ClientParameter::set_allocated_server_name(std::string* server_name) {
+  if (server_name != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.server_name_.SetAllocated(server_name, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.server_name_.IsDefault()) {
+    _impl_.server_name_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:proto.ClientParameter.server_name)
+}
+
+// -------------------------------------------------------------------
+
 // Vector3
 
 // double x = 1;
@@ -5755,6 +5966,8 @@ inline void PingResponse::set_allocated_player_parameter(::proto::PlayerParamete
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

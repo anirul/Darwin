@@ -3,16 +3,18 @@
 #include <glm/glm.hpp>
 #include <grpc++/grpc++.h>
 
+#include "Common/stl_proto_wrapper.h"
 #include "Common/darwin_service.grpc.pb.h"
 #include "Common/vector.h"
 #include "Common/convert_math.h"
+#include "frame/file/file_system.h"
 
 namespace darwin {
 
     DarwinClient::DarwinClient(const std::string& name)
         : name_(name) {
-        if (name_ == "") {
-            name_ = DEFAULT_SERVER;
+        if (name_.empty()) {
+            name_ = GetDefaultServerName();
         }
         auto channel = 
             grpc::CreateChannel(
@@ -276,6 +278,18 @@ namespace darwin {
             color_parameters.push_back(color_parameter);
         }
         return color_parameters;
+    }
+
+    std::string DarwinClient::GetDefaultServerName() {
+        static std::string s_default_server;
+        if (s_default_server.empty()) {
+            proto::ClientParameter client_parameter =
+                darwin::LoadProtoFromJsonFile<proto::ClientParameter>(
+                    frame::file::FindFile(
+                        "asset/json/client_parameter.json"));
+            s_default_server = client_parameter.server_name();
+        }
+        return s_default_server;
     }
 
     proto::Character DarwinClient::CorrectCharacter(

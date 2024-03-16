@@ -1,6 +1,9 @@
 #pragma once
 
 #include "frame/gui/gui_window_interface.h"
+#include "frame/file/file_system.h"
+#include "Common/stl_proto_wrapper.h"
+#include "Common/darwin_service.pb.h"
 
 namespace darwin::modal {
 
@@ -27,7 +30,7 @@ namespace darwin::modal {
         std::string name_;
         ModalServerParams& params_;
         bool end_ = false;
-        char server_[1024] = { 0 };
+        char server_[1024] = { 0 }; 
     };
 
 } // End namespace frame::modal.
