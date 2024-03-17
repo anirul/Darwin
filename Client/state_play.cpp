@@ -143,6 +143,10 @@ namespace darwin::state {
     }
 
     void StatePlay::UpdateMovement(proto::Character character) {
+        static double previous_time = GetTimeSecondNow();
+        double now = GetTimeSecondNow();
+        double delta_time = now - previous_time;
+        previous_time = now;
         if (character.status_enum() == proto::STATUS_ON_GROUND) {
             bool modified = false;
             proto::Physic physic = character.physic();
@@ -181,7 +185,9 @@ namespace darwin::state {
                 auto next_character = world_simulator_.GetCharacterByName(
                     character.name());
                 auto next_physic = next_character.physic();
-                double speed_multiply = 1.0 - player_parameter.friction();
+                double friction_delta_time = 
+                    player_parameter.friction() * delta_time;
+                double speed_multiply = 1.0 - friction_delta_time;
                 next_physic.mutable_position_dt()->CopyFrom(
                     next_physic.position_dt() * speed_multiply);
                 next_character.mutable_physic()->CopyFrom(next_physic);

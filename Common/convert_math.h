@@ -21,5 +21,6 @@ namespace darwin {
     bool IsAlmostIntersecting(
         const proto::Physic& character,
         const proto::Physic& element);
+    double GetTimeSecondNow();
 
 } // namespace darwin

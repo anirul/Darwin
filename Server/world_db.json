@@ -46,7 +46,7 @@
     "living_cost": 0.001,
     "eat_speed": 0.7,
     "penalty": -0.3,
-    "friction": 0.1,
+    "friction": 0.5,
     "victory_size": 100.0,
     "disconnection_timeout": 10.0,
     "colors": [

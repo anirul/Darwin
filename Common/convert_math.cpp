@@ -75,4 +75,9 @@ namespace darwin {
         return dot > ALMOST_INTERSECT;
     }
 
+    double GetTimeSecondNow() {
+        return std::chrono::duration_cast<std::chrono::duration<double>>(
+            std::chrono::system_clock::now().time_since_epoch()).count();
+    }
+
 }  // End namespace darwin.
