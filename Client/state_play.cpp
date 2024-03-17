@@ -199,6 +199,7 @@ namespace darwin::state {
                 double current_speed = lenght(next_physic.mutable_position_dt())
                 double friction_delta_time = 
                     player_parameter.friction() * delta_time;
+                // lets make firction stronger with speed (so we wont end up in orbit)
                 double speed_multiply = 1.0 - friction_delta_time*current_speed*current_speed;
                 next_physic.mutable_position_dt()->CopyFrom(
                     next_physic.position_dt() * speed_multiply);
