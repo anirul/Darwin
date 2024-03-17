@@ -41,6 +41,7 @@ namespace darwin {
                 request->name());
 #endif // _DEBUG
         auto character_name = world_state_.RemovePeer(context->peer());
+        world_state_.RemoveCharacter(character_name);
 #ifdef _DEBUG
         if (!character_name.empty()) {
             std::cout <<

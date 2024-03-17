@@ -218,6 +218,16 @@ namespace darwin {
         }
     }
 
+    void WorldSimulator::RemoveCharacter(const std::string& name) {
+        std::lock_guard l(mutex_);
+        for (auto it = characters_.begin(); it != characters_.end(); ++it) {
+            if (it->name() == name) {
+                characters_.erase(it);
+                return;
+            }
+        }
+    }
+
     std::string WorldSimulator::GetPotentialHit(
         const proto::Character& me) const
     {

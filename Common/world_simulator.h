@@ -26,6 +26,7 @@ namespace darwin {
             double delta_time) const;
         proto::Character GetCharacterByName(const std::string& name) const;
         void SetCharacter(const proto::Character& character);
+        void RemoveCharacter(const std::string& name);
         std::string GetPotentialHit(const proto::Character& character) const;
         proto::Physic GetPlanet() const;
         bool HasCharacter(const std::string& name) const;

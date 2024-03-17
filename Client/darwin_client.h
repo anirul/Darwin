@@ -21,6 +21,7 @@ namespace darwin {
         bool CreateCharacter(
             const std::string& name, 
             const proto::Vector3& color);
+        void RemovePreviousCharacter(const std::string& name);
         void ReportHit(const std::string& potential_hit);
         void SendReportInGame();
         void Update();

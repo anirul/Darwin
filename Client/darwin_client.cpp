@@ -57,6 +57,18 @@ namespace darwin {
         }
     }
 
+    void DarwinClient::RemovePreviousCharacter(const std::string& name) {
+        std::scoped_lock l(mutex_);
+        for (auto it = previous_characters_.begin();
+            it != previous_characters_.end(); ++it)
+        {
+            if (it->first == name) {
+                previous_characters_.erase(it);
+                break;
+            }
+        }
+    }
+
     void DarwinClient::Clear() {
         std::scoped_lock l(mutex_);
         report_request_.set_name(character_name_);
@@ -107,6 +119,8 @@ namespace darwin {
 
             std::vector<proto::Character> characters;
             for (const auto& character : response.characters()) {
+                auto name = character.name();
+                auto status = character.status_enum();
                 characters.push_back(MergeCharacter(character));
                 previous_characters_.insert({ character.name(), character });
             }
@@ -187,7 +201,8 @@ namespace darwin {
         proto::Character new_character) const
     {
         // This does not exist in the world simulator.
-        if (!previous_characters_.contains(new_character.name())) {
+        if (!previous_characters_.contains(new_character.name()) ||
+            new_character.status_enum() == proto::STATUS_LOADING) {
             return new_character;
         }
         // This is the character from this client.

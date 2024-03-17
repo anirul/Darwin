@@ -256,6 +256,8 @@ namespace darwin::state {
         program.UnUse();
         if (is_character_valid) {
             if (character.physic().mass() <= 1.0) {
+                world_simulator_.RemoveCharacter(character_name);
+                darwin_client_->RemovePreviousCharacter(character_name);
                 state_context.ChangeState(
                     std::make_unique<StateDeath>(
                         app_,
@@ -264,6 +266,8 @@ namespace darwin::state {
             if (character.physic().mass() >=
                 player_parameter.victory_size()) 
             {
+                world_simulator_.RemoveCharacter(character_name);
+                darwin_client_->RemovePreviousCharacter(character_name);
                 state_context.ChangeState(
                     std::make_unique<StateVictory>(
                         app_,

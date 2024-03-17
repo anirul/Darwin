@@ -59,8 +59,8 @@ namespace darwin {
                 CreateVector3(0.0, 0.0, 0.0));
             character.set_status_enum(proto::STATUS_LOADING);
             CharacterInfo character_info{ GetLastUpdated(), character};
-            character_infos_.emplace(character.name(), character_info);
-            peer_characters_.emplace(peer, name);
+            character_infos_.insert({ character.name(), character_info });
+            peer_characters_.insert({ peer, name });
             return true;
         }
         else
@@ -190,7 +190,10 @@ namespace darwin {
     {
         std::scoped_lock l(mutex_);
         if (peer_characters_.contains(peer)) {
-            return character_infos_.at(peer_characters_.at(peer)).character;
+            if (character_infos_.contains(peer_characters_.at(peer))) {
+                return character_infos_.at(
+                    peer_characters_.at(peer)).character;
+            }
         }
         return std::nullopt;
     }
