@@ -96,36 +96,18 @@ namespace darwin {
         proto::UpdateResponse response;
         grpc::ClientContext context;
 
-        // 5 seconds from now.
-        std::chrono::system_clock::time_point deadline =
-            std::chrono::system_clock::now() + std::chrono::seconds(10);
-        // context.set_deadline(deadline);
-
         // The response stream.
         std::unique_ptr<grpc::ClientReader<proto::UpdateResponse>> 
             reader(stub_->Update(&context, request));
 
-        double start_timer = 0.0;
-        double delta_time = 0.1;
-        bool first = true;
-
         // Read the stream of responses.
         while (reader->Read(&response)) {
             
-            if (first) {
-                first = false;
-                start_timer = response.time();
-            }
-            else {
-                delta_time = response.time() - start_timer;
-                start_timer = response.time();
-            }
-
             world_simulator_.SetUserName(character_name_);
 
             std::vector<proto::Character> characters;
             for (const auto& character : response.characters()) {
-                characters.push_back(MergeCharacter(character, delta_time));
+                characters.push_back(MergeCharacter(character));
                 previous_characters_.insert({ character.name(), character });
             }
 
@@ -202,8 +184,7 @@ namespace darwin {
     }
 
     proto::Character DarwinClient::MergeCharacter(
-        proto::Character new_character,
-        double delta_time) const
+        proto::Character new_character) const
     {
         // This does not exist in the world simulator.
         if (!previous_characters_.contains(new_character.name())) {
@@ -216,56 +197,7 @@ namespace darwin {
                 world_simulator_.GetCharacterByName(character_name_));
             return new_character;
         }
-        // Not from this client interpolate.
-        auto old_character = previous_characters_.at(new_character.name());
-        return InterpolateCharacter(old_character, new_character, delta_time);
-    }
-
-    proto::Character DarwinClient::InterpolateCharacter(
-        const proto::Character& old_character,
-        const proto::Character& new_character,
-        double delta_time) const
-    {
-        // TODO(anirul): FIXME!
         return new_character;
-        auto status = new_character.status_enum();
-        if ((status != proto::STATUS_ON_GROUND) && 
-            (status != proto::STATUS_JUMPING))
-        {
-            return new_character;
-        }
-        // Update the position to the current position.
-        proto::Vector3 updated_position = 
-            old_character.physic().position() +
-                (old_character.physic().position_dt() * delta_time) +
-                ((new_character.physic().position() - 
-                    old_character.physic().position()) *
-                        delta_time);
-        // Create a new position_dt to update the position to the future.
-        proto::Vector3 updated_position_dt =
-            old_character.physic().position_dt() +
-            ((new_character.physic().position_dt() -
-                old_character.physic().position_dt()) * delta_time);
-        proto::Character result = new_character;
-        // On the ground.
-        if (new_character.status_enum() == proto::STATUS_ON_GROUND) {
-            // Get a normal to the position.
-            auto normal = Normalize(updated_position);
-            // Project the updated position_dt to the planet.
-            updated_position_dt = ProjectOnPlane(updated_position_dt, normal);
-            // Update the position to the planet.
-            updated_position = 
-                normal * 
-                (world_simulator_.GetPlanet().radius() + 
-                    new_character.physic().radius());
-        }
-        // Jumping.
-        // Update the result.
-        result.mutable_physic()->mutable_position()->CopyFrom(
-            updated_position);
-        result.mutable_physic()->mutable_position_dt()->CopyFrom(
-            updated_position_dt);
-        return result;
     }
 
     std::vector<proto::ColorParameter> 
@@ -314,7 +246,7 @@ namespace darwin {
                 "Character [{}].position_dt() is not a number.",
                 character_name_);
             character.mutable_physic()->mutable_position_dt()->CopyFrom(
-                Normalize(server_character.physic().position()));
+                Normalize(server_character.physic().position_dt()));
         }
         if (glm::any(glm::isnan(ProtoVector2Glm(client_character.normal()))))
         {
@@ -324,7 +256,8 @@ namespace darwin {
             character.mutable_normal()->CopyFrom(
                 Normalize(server_character.normal()));
         }
-        if (glm::any(glm::isnan(ProtoVector2Glm(client_character.g_force()))))
+        if (glm::any(glm::isnan(
+            ProtoVector2Glm(client_character.g_force()))))
         {
             logger_->error(
                 "Character [{}].g_force() is not a number.",

@@ -27,12 +27,7 @@ namespace darwin {
         std::int32_t Ping(std::int32_t val = 45323);
         bool IsConnected() const;
         proto::Character MergeCharacter(
-            proto::Character new_characters, 
-            double delta_time) const;
-        proto::Character InterpolateCharacter(
-            const proto::Character& old_character,
-            const proto::Character& new_character,
-            double delta_time) const;
+            proto::Character new_characters) const;
         std::vector<proto::ColorParameter> GetColorParameters() const;
 
     public:
