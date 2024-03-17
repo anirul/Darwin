@@ -1719,7 +1719,7 @@ class PlayerParameter final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kColorsFieldNumber = 11,
+    kColorsFieldNumber = 12,
     kVerticalSpeedFieldNumber = 1,
     kHorizontalSpeedFieldNumber = 2,
     kStartMassFieldNumber = 3,
@@ -1728,10 +1728,11 @@ class PlayerParameter final :
     kLivingCostFieldNumber = 6,
     kFrictionFieldNumber = 7,
     kVictorySizeFieldNumber = 8,
-    kDisconnectionTimeoutFieldNumber = 9,
-    kEatSpeedFieldNumber = 10,
+    kMaxUpgradeGrowFieldNumber = 9,
+    kDisconnectionTimeoutFieldNumber = 10,
+    kEatSpeedFieldNumber = 11,
   };
-  // repeated .proto.ColorParameter colors = 11;
+  // repeated .proto.ColorParameter colors = 12;
   int colors_size() const;
   private:
   int _internal_colors_size() const;
@@ -1821,7 +1822,16 @@ class PlayerParameter final :
   void _internal_set_victory_size(double value);
   public:
 
-  // double disconnection_timeout = 9;
+  // double max_upgrade_grow = 9;
+  void clear_max_upgrade_grow();
+  double max_upgrade_grow() const;
+  void set_max_upgrade_grow(double value);
+  private:
+  double _internal_max_upgrade_grow() const;
+  void _internal_set_max_upgrade_grow(double value);
+  public:
+
+  // double disconnection_timeout = 10;
   void clear_disconnection_timeout();
   double disconnection_timeout() const;
   void set_disconnection_timeout(double value);
@@ -1830,7 +1840,7 @@ class PlayerParameter final :
   void _internal_set_disconnection_timeout(double value);
   public:
 
-  // double eat_speed = 10;
+  // double eat_speed = 11;
   void clear_eat_speed();
   double eat_speed() const;
   void set_eat_speed(double value);
@@ -1856,6 +1866,7 @@ class PlayerParameter final :
     double living_cost_;
     double friction_;
     double victory_size_;
+    double max_upgrade_grow_;
     double disconnection_timeout_;
     double eat_speed_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -4987,7 +4998,27 @@ inline void PlayerParameter::set_victory_size(double value) {
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.victory_size)
 }
 
-// double disconnection_timeout = 9;
+// double max_upgrade_grow = 9;
+inline void PlayerParameter::clear_max_upgrade_grow() {
+  _impl_.max_upgrade_grow_ = 0;
+}
+inline double PlayerParameter::_internal_max_upgrade_grow() const {
+  return _impl_.max_upgrade_grow_;
+}
+inline double PlayerParameter::max_upgrade_grow() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.max_upgrade_grow)
+  return _internal_max_upgrade_grow();
+}
+inline void PlayerParameter::_internal_set_max_upgrade_grow(double value) {
+  
+  _impl_.max_upgrade_grow_ = value;
+}
+inline void PlayerParameter::set_max_upgrade_grow(double value) {
+  _internal_set_max_upgrade_grow(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.max_upgrade_grow)
+}
+
+// double disconnection_timeout = 10;
 inline void PlayerParameter::clear_disconnection_timeout() {
   _impl_.disconnection_timeout_ = 0;
 }
@@ -5007,7 +5038,7 @@ inline void PlayerParameter::set_disconnection_timeout(double value) {
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.disconnection_timeout)
 }
 
-// double eat_speed = 10;
+// double eat_speed = 11;
 inline void PlayerParameter::clear_eat_speed() {
   _impl_.eat_speed_ = 0;
 }
@@ -5027,7 +5058,7 @@ inline void PlayerParameter::set_eat_speed(double value) {
   // @@protoc_insertion_point(field_set:proto.PlayerParameter.eat_speed)
 }
 
-// repeated .proto.ColorParameter colors = 11;
+// repeated .proto.ColorParameter colors = 12;
 inline int PlayerParameter::_internal_colors_size() const {
   return _impl_.colors_.size();
 }

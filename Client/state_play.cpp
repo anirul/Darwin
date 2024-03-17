@@ -152,7 +152,7 @@ namespace darwin::state {
             proto::Physic physic = character.physic();
             const auto planet_physic = world_simulator_.GetPlanet();
             // Reset position delta time on the ground.
-            physic.release_position_dt()->CopyFrom(
+            physic.mutable_position_dt()->CopyFrom(
                 CreateVector3(0.0, 0.0, 0.0));
             proto::PlayerParameter player_parameter =
                 world_simulator_.GetPlayerParameter();

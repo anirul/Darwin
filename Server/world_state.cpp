@@ -235,6 +235,18 @@ namespace darwin {
             proto::Physic physic_to;
             proto::Vector3 color_to;
             if (element_infos_.contains(target_name)) {
+                if (physic_from.mass() > 
+                    player_parameter_.max_upgrade_grow()) 
+                {
+                    // You can't eat any more elements!
+                    continue;
+                }
+                if (element_infos_.at(target_name).element.type_enum() !=
+                    proto::TYPE_UPGRADE)
+                {
+                    // You can't eat this type of element.
+                    continue;
+                }
                 physic_to = element_infos_.at(target_name).element.physic();
                 color_to = element_infos_.at(target_name).element.color();
                 type_enum = proto::TYPE_UPGRADE;

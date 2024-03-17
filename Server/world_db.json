@@ -39,15 +39,16 @@
   "characters": [],
   "time": 0.0,
   "player_parameter": {
-    "vertical_speed": 15.0,
-    "horizontal_speed": 15.0,
+    "vertical_speed": 12.0,
+    "horizontal_speed": 12.0,
     "start_mass": 4.0,
     "drop_height": 10.0,
-    "living_cost": 0.001,
+    "living_cost": 0.005,
     "eat_speed": 0.7,
     "penalty": -0.3,
-    "friction": 0.5,
+    "friction": 0.7,
     "victory_size": 100.0,
+    "max_upgrade_grow": 80.0,
     "disconnection_timeout": 10.0,
     "colors": [
       {

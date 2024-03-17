@@ -132,12 +132,14 @@ message PlayerParameter {
     double friction = 7;
     // Victory size (in volume).
     double victory_size = 8;
+    // Size at which you cannot grow with upgrades.
+    double max_upgrade_grow = 9;
     // Disconnection timeout.
-    double disconnection_timeout = 9;
+    double disconnection_timeout = 10;
     // Eating speed.
-    double eat_speed = 10;
+    double eat_speed = 11;
     // Color list.
-    repeated ColorParameter colors = 11;
+    repeated ColorParameter colors = 12;
 }
 
 // WorldDatabase saved as a file.
