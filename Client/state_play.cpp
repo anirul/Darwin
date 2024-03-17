@@ -177,6 +177,16 @@ namespace darwin::state {
                 character.mutable_physic()->CopyFrom(physic);
                 world_simulator_.SetCharacter(character);
             }
+            else {
+                auto next_character = world_simulator_.GetCharacterByName(
+                    character.name());
+                auto next_physic = next_character.physic();
+                double speed_multiply = 1.0 - player_parameter.friction();
+                next_physic.mutable_position_dt()->CopyFrom(
+                    next_physic.position_dt() * speed_multiply);
+                next_character.mutable_physic()->CopyFrom(next_physic);
+                world_simulator_.SetCharacter(next_character);
+            }
         }
     }
 

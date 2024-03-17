@@ -63,7 +63,7 @@ namespace darwin {
         std::map<std::string, proto::Character> previous_characters_;
         std::string name_;
         std::string character_name_;
-        std::atomic<double> server_time_ = 0.0;
+        std::atomic<double> server_time_{ 0.0 };
         std::unique_ptr<proto::DarwinService::Stub> stub_;
         frame::Logger& logger_ = frame::Logger::GetInstance();
         WorldSimulator world_simulator_;
