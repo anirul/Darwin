@@ -204,7 +204,7 @@ namespace darwin {
         time_characters_.clear();
     }
 
-    void DarwinServiceImpl::ComputeWorld() {
+    void DarwinServiceImpl::ComputeWorld(double loop_timer) {
         while (true) {
             auto now = std::chrono::system_clock::now();
             double time =
@@ -237,19 +237,21 @@ namespace darwin {
                 { characters.begin(), characters.end() });
             response.set_time(time);
             BroadcastUpdate(response);
+            std::int64_t loop_time_milli = 
+                static_cast<std::int64_t>(1000.0 * loop_timer);
             // Pring a warning if the computation is too slow.
-            if ((now + std::chrono::milliseconds(INTERVAL)) <
+            if ((now + std::chrono::milliseconds(loop_time_milli)) <
                 std::chrono::system_clock::now())
             {
                 std::cerr << 
                     std::format(
                         "ComputeWorld is too slow {} < {} !!!\n",
-                        now + std::chrono::milliseconds(INTERVAL),
+                        now + std::chrono::milliseconds(loop_time_milli),
                         std::chrono::system_clock::now());
             }
             // Wait for the next computation.
             std::this_thread::sleep_until(
-                now + std::chrono::milliseconds(INTERVAL));
+                now + std::chrono::milliseconds(loop_time_milli));
         }
     }
 

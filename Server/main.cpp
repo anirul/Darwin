@@ -23,6 +23,11 @@ ABSL_FLAG(
     upgrade_count,
     400,
     "The maximum number of upgrade elements in the world.");
+ABSL_FLAG(
+    double,
+    loop_timer,
+    0.2,
+    "The time in seconds between each world update.");
 
 int main(int ac, char** av) try {
     absl::ParseCommandLine(ac, av);
@@ -40,10 +45,13 @@ int main(int ac, char** av) try {
     world_state.SetUpgradeElement(absl::GetFlag(FLAGS_upgrade_count));
     darwin::DarwinServiceImpl service{ world_state };
 
-    std::cout << "starting world simulation\n";
+    double loop_timer = absl::GetFlag(FLAGS_loop_timer);
+    std::cout << std::format(
+        "starting world simulation with loop timer: {}\n", 
+        loop_timer);
     // Create a callback that will compute the next epoch.
-    auto future = std::async(std::launch::async, [&service] {
-        service.ComputeWorld();
+    auto future = std::async(std::launch::async, [&service, loop_timer] {
+        service.ComputeWorld(loop_timer);
     });
 
     std::cout << "listening on: " << absl::GetFlag(FLAGS_server_name) << "\n";

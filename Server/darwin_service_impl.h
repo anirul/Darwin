@@ -35,7 +35,7 @@ namespace darwin {
         void BroadcastUpdate(const proto::UpdateResponse& response);
         std::map<double, proto::Character>& GetTimeCharacters();
         void ClearTimeCharacters();
-        void ComputeWorld();
+        void ComputeWorld(double loop_timer);
 
     protected:
         proto::Physic UpdatePhysic(
