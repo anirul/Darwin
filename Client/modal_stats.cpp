@@ -3,6 +3,7 @@
 #include <imgui.h>
 
 #include "Common/world_simulator.h"
+#include "Common/vector.h"
 
 namespace darwin::modal {
 
@@ -70,10 +71,8 @@ namespace darwin::modal {
                 character.physic().position().z());
             ImGui::NextColumn();
             ImGui::Text(
-                "(%.2f, %.2f, %.2f)",
-                character.physic().position_dt().x(),
-                character.physic().position_dt().y(),
-                character.physic().position_dt().z());
+                "%.2f",
+                Length(character.physic().position_dt()));
             ImGui::NextColumn();
         }
         ImGui::Columns(1);
