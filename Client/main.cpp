@@ -73,6 +73,7 @@ int main(int ac, char** av) try
         std::make_unique<darwin::modal::ModalStats>("Stats", params));
     // Start with the debug window hidden.
     gui_window->SetVisible(false);
+    gui_window->SetKeyboardPassed(true);
     // Darkening the background of the modal window.
     ImGuiStyle& style = ImGui::GetStyle();
     style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(

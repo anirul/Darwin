@@ -114,7 +114,7 @@ message ColorParameter {
 }
 
 // PlayerParameter
-// Next: 12
+// Next: 13
 message PlayerParameter {
     // Vertical speed (jumping).
     double vertical_speed = 1;
