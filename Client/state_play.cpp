@@ -151,10 +151,6 @@ namespace darwin::state {
             bool modified = false;
             proto::Physic physic = character.physic();
             const auto planet_physic = world_simulator_.GetPlanet();
-            // dont set the speed to 0 (we will keep it)
-            // Reset position delta time on the ground.
-            // physic.mutable_position_dt()->CopyFrom(
-            //    CreateVector3(0.0, 0.0, 0.0));
             proto::PlayerParameter player_parameter =
                 world_simulator_.GetPlayerParameter();
             if (input_acquisition_ptr_->IsJumping()) {
@@ -184,8 +180,8 @@ namespace darwin::state {
                         forward * input_acquisition_ptr_->GetVertical());
                 // lets apply acceleration and friction
                 physic.mutable_position_dt()->CopyFrom(
-                    (physic.position_dt() + 
-                    (direction * acceleration_delta_time) * speed_multiply));
+                    physic.position_dt() + 
+                    direction * acceleration_delta_time * speed_multiply);
             }
             // Apply the changes.
             if (modified) {
@@ -196,11 +192,11 @@ namespace darwin::state {
                 auto next_character = world_simulator_.GetCharacterByName(
                     character.name());
                 auto next_physic = next_character.physic();
-                double current_speed = lenght(next_physic.mutable_position_dt())
+                double current_speed = lenght(next_physic.mutable_position_dt());
                 double friction_delta_time = 
                     player_parameter.friction() * delta_time;
                 // lets make firction stronger with speed (so we wont end up in orbit)
-                double speed_multiply = 1.0 - friction_delta_time*current_speed*current_speed;
+                double speed_multiply = 1.0 - friction_delta_time * current_speed * current_speed;
                 next_physic.mutable_position_dt()->CopyFrom(
                     next_physic.position_dt() * speed_multiply);
                 next_character.mutable_physic()->CopyFrom(next_physic);
