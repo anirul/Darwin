@@ -55,6 +55,8 @@ int main(int ac, char** av) try
 
     // Set grpc log handler.
     gpr_set_log_function(grpc_log_handler);
+    // Set grpc log verbosity set it to DEBUG if you want to see more or
+    // even INFO if you want to see all.
     gpr_set_log_verbosity(GPR_LOG_SEVERITY_ERROR);
     grpc_tracer_set_enabled("all", true);
 
@@ -65,7 +67,7 @@ int main(int ac, char** av) try
     auto gui_window = frame::gui::CreateDrawGui(
         *win.get(),
         frame::file::FindFile("asset/font/axaxax/axaxax_bd.otf"),
-        20.0f);
+        24.0f);
     gui_window->AddWindow(
         std::make_unique<frame::gui::WindowLogger>("Logger"));
     darwin::modal::ModalStatsParams params;
@@ -73,6 +75,7 @@ int main(int ac, char** av) try
         std::make_unique<darwin::modal::ModalStats>("Stats", params));
     // Start with the debug window hidden.
     gui_window->SetVisible(false);
+    // Set the keyboard to be passed to the modal window.
     gui_window->SetKeyboardPassed(true);
     // Darkening the background of the modal window.
     ImGuiStyle& style = ImGui::GetStyle();

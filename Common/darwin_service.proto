@@ -34,6 +34,23 @@ enum TypeEnum {
     TYPE_CHARACTER = 7;         // Player character.
 }
 
+enum SpecialEnum {
+    SPECIAL_UNKNOWN = 0;        // Unknown this is an error or initial.
+    SPECIAL_ACTIVATE = 1;       // Activate the special.
+    SPECIAL_ACTIVE = 2;         // Special is active.
+    SPECIAL_COOLDOWN = 3;       // Special is on cooldown.
+    SPECIAL_WAIT = 4;           // Wait (same as unknown).
+}
+
+// SpecialParameter
+// Next: 3
+message SpecialParameter {
+    // Special name (could be speed, shield, ...).
+    string name = 1;
+    // Special value.
+    SpecialEnum special_enum = 2;
+}
+
 // ClientParameter
 // Next: 2
 message ClientParameter {
@@ -88,7 +105,7 @@ message Element {
 }
 
 // Character it will be represented by a sphere on server.
-// Next: 7
+// Next: 8
 message Character {
     // Character name.
     string name = 1;
@@ -102,6 +119,8 @@ message Character {
     Vector3 normal = 5;
     // Status of the element.
     StatusEnum status_enum = 6;
+    // Special speed upgrade.
+    repeated SpecialParameter special_parameters = 7;
 }
 
 // ColorParameter
