@@ -24,6 +24,7 @@ namespace darwin {
         float GetMouseWheel();
         bool IsJumping() const;
         bool IsMoving() const;
+        bool IsBoosting() const;
         bool IsTab() const;
         float GetHorizontal() const;
         float GetVertical() const;

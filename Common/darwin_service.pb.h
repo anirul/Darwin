@@ -1731,6 +1731,7 @@ class PlayerParameter final :
     kMaxUpgradeGrowFieldNumber = 9,
     kDisconnectionTimeoutFieldNumber = 10,
     kEatSpeedFieldNumber = 11,
+    kMassSpeedBonusFieldNumber = 13,
   };
   // repeated .proto.ColorParameter colors = 12;
   int colors_size() const;
@@ -1849,6 +1850,15 @@ class PlayerParameter final :
   void _internal_set_eat_speed(double value);
   public:
 
+  // double mass_speed_bonus = 13;
+  void clear_mass_speed_bonus();
+  double mass_speed_bonus() const;
+  void set_mass_speed_bonus(double value);
+  private:
+  double _internal_mass_speed_bonus() const;
+  void _internal_set_mass_speed_bonus(double value);
+  public:
+
   // @@protoc_insertion_point(class_scope:proto.PlayerParameter)
  private:
   class _Internal;
@@ -1869,6 +1879,7 @@ class PlayerParameter final :
     double max_upgrade_grow_;
     double disconnection_timeout_;
     double eat_speed_;
+    double mass_speed_bonus_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -5096,6 +5107,26 @@ inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::ColorParameter 
 PlayerParameter::colors() const {
   // @@protoc_insertion_point(field_list:proto.PlayerParameter.colors)
   return _impl_.colors_;
+}
+
+// double mass_speed_bonus = 13;
+inline void PlayerParameter::clear_mass_speed_bonus() {
+  _impl_.mass_speed_bonus_ = 0;
+}
+inline double PlayerParameter::_internal_mass_speed_bonus() const {
+  return _impl_.mass_speed_bonus_;
+}
+inline double PlayerParameter::mass_speed_bonus() const {
+  // @@protoc_insertion_point(field_get:proto.PlayerParameter.mass_speed_bonus)
+  return _internal_mass_speed_bonus();
+}
+inline void PlayerParameter::_internal_set_mass_speed_bonus(double value) {
+  
+  _impl_.mass_speed_bonus_ = value;
+}
+inline void PlayerParameter::set_mass_speed_bonus(double value) {
+  _internal_set_mass_speed_bonus(value);
+  // @@protoc_insertion_point(field_set:proto.PlayerParameter.mass_speed_bonus)
 }
 
 // -------------------------------------------------------------------

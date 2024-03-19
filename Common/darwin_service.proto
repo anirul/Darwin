@@ -121,8 +121,12 @@ message Character {
     Vector3 normal = 5;
     // Status of the element.
     StatusEnum status_enum = 6;
+<<<<<<< HEAD
     // Special speed upgrade.
     repeated SpecialParameter special_parameters = 7;
+=======
+ 
+>>>>>>> 27ca3df (testing speed boosts)
 }
 
 // ColorParameter
@@ -161,6 +165,8 @@ message PlayerParameter {
     double eat_speed = 11;
     // Color list.
     repeated ColorParameter colors = 12;
+    // give large balls a max speed bonus
+    double mass_speed_bonus = 13;
 }
 
 // WorldDatabase saved as a file.
