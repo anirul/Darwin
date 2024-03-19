@@ -251,7 +251,7 @@ namespace darwin::state {
 =======
                 // lets make firction stronger with speed (so we wont end up in orbit)
                 // lets have the ball stop if its getting really slow
-                double speed_multiply = current_speed > player_parameter.friction() ? 
+                double speed_multiply = current_speed > 1.0 ? 
                      1.0 - friction_delta_time * current_speed * current_speed :
                      0.0;
 >>>>>>> 27ca3df (testing speed boosts)
