@@ -166,31 +166,13 @@ namespace darwin::state {
                 input_acquisition_ptr_->IsBoosting()) {
                 modified = true;
                 // calculate the firction for the delta_time
-<<<<<<< HEAD
-                double friction_delta_time = 
-                    player_parameter.friction() * 
-                    delta_time / std::log(physic.mass());
-                // calculate acceleration from friction and traget terminal 
-                // velocity.
-                double acceleration_delta_time = 
-                    friction_delta_time * 
-                    player_parameter.horizontal_speed() * 
-                    player_parameter.horizontal_speed();
-                // we need to current speed to get the quadratic friction
-                double current_speed = Length(physic.position_dt());
-                // we apply the friction even if we acceletare (accelaration 
-                // doesnt make friction disapear) also we wont end in orbit 
-                // this way.
-                auto friction_vector = 
-                    Normalize(physic.position_dt()) * 
-                    friction_delta_time * current_speed * current_speed ;
-=======
+
                 // pressing boost key (q) should lower friction and lower mass
                 double boosting_factor = 1.0;
                 if (input_acquisition_ptr_->IsBoosting()) {
                     if (is_boost_active) {
                         if (now - last_boost_start_time < 5.0) {
-                            boosting_factor = 2.0;
+                            boosting_factor = 1.3;
                         }
                         else {
                             is_boost_active = false;
@@ -204,21 +186,19 @@ namespace darwin::state {
                     }
                     
                 }
-               
                 // smaller balls should accelerate more so they can avoid better
-                double friction_delta_time = player_parameter.friction() * delta_time / std::log(physic.mass()) * boosting_factor;
+                double friction_delta_time = player_parameter.friction() * delta_time / std::log(physic.mass()) ;
                 // make bigger have hight max speed so they are more dangerous
                 double mass_bonus = 1.0 + physic.mass() / player_parameter.victory_size() / player_parameter.mass_speed_bonus(); // max speed bonus is divied by mass_speed_bonus factor relative to the mass
                 // calculate acceleration from friction and traget terminal velocity
                 double acceleration_delta_time = friction_delta_time * 
-                     player_parameter.horizontal_speed() * mass_bonus *
-                      player_parameter.horizontal_speed() * mass_bonus;
+                     player_parameter.horizontal_speed() * mass_bonus * boosting_factor *
+                     player_parameter.horizontal_speed() * mass_bonus * boosting_factor;
                 // we need to current speed to get the quadratic friction
                 double current_speed = Length(physic.position_dt());
                 // we apply the friction even if we acceletare (accelaration doesnt make friction disapear)
                 // also we wont end in orbit this way
                 auto friction_vector = Normalize(physic.position_dt()) * friction_delta_time * current_speed * current_speed;
->>>>>>> 27ca3df (testing speed boosts)
                 auto forward = Normalize(Glm2ProtoVector(character_forward_));
                 auto right =
                     Normalize(Cross(character.normal(), forward));
@@ -243,18 +223,11 @@ namespace darwin::state {
                 double current_speed = Length(next_physic.position_dt());
                 double friction_delta_time = 
                     player_parameter.friction() * delta_time;
-<<<<<<< HEAD
-                // Lets make firction stronger with speed (so we wont end up 
-                // in orbit).
-                double speed_multiply = 
-                    1.0 - friction_delta_time * current_speed * current_speed;
-=======
-                // lets make firction stronger with speed (so we wont end up in orbit)
+                // let the ball roll out with less friction so its cool
                 // lets have the ball stop if its getting really slow
                 double speed_multiply = current_speed > 1.0 ? 
-                     1.0 - friction_delta_time * current_speed * current_speed :
+                     1.0 - friction_delta_time / 10.0 :
                      0.0;
->>>>>>> 27ca3df (testing speed boosts)
                 next_physic.mutable_position_dt()->CopyFrom(
                     next_physic.position_dt() * speed_multiply);
                 next_character.mutable_physic()->CopyFrom(next_physic);

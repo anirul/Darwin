@@ -83,6 +83,9 @@ extern ReportInGameRequestDefaultTypeInternal _ReportInGameRequest_default_insta
 class ReportInGameResponse;
 struct ReportInGameResponseDefaultTypeInternal;
 extern ReportInGameResponseDefaultTypeInternal _ReportInGameResponse_default_instance_;
+class SpecialParameter;
+struct SpecialParameterDefaultTypeInternal;
+extern SpecialParameterDefaultTypeInternal _SpecialParameter_default_instance_;
 class UpdateRequest;
 struct UpdateRequestDefaultTypeInternal;
 extern UpdateRequestDefaultTypeInternal _UpdateRequest_default_instance_;
@@ -112,6 +115,7 @@ template<> ::proto::PingResponse* Arena::CreateMaybeMessage<::proto::PingRespons
 template<> ::proto::PlayerParameter* Arena::CreateMaybeMessage<::proto::PlayerParameter>(Arena*);
 template<> ::proto::ReportInGameRequest* Arena::CreateMaybeMessage<::proto::ReportInGameRequest>(Arena*);
 template<> ::proto::ReportInGameResponse* Arena::CreateMaybeMessage<::proto::ReportInGameResponse>(Arena*);
+template<> ::proto::SpecialParameter* Arena::CreateMaybeMessage<::proto::SpecialParameter>(Arena*);
 template<> ::proto::UpdateRequest* Arena::CreateMaybeMessage<::proto::UpdateRequest>(Arena*);
 template<> ::proto::UpdateResponse* Arena::CreateMaybeMessage<::proto::UpdateResponse>(Arena*);
 template<> ::proto::Vector3* Arena::CreateMaybeMessage<::proto::Vector3>(Arena*);
@@ -232,7 +236,210 @@ inline bool TypeEnum_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<TypeEnum>(
     TypeEnum_descriptor(), name, value);
 }
+enum SpecialEnum : int {
+  SPECIAL_UNKNOWN = 0,
+  SPECIAL_ACTIVATE = 1,
+  SPECIAL_ACTIVE = 2,
+  SPECIAL_COOLDOWN = 3,
+  SPECIAL_WAIT = 4,
+  SpecialEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  SpecialEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool SpecialEnum_IsValid(int value);
+constexpr SpecialEnum SpecialEnum_MIN = SPECIAL_UNKNOWN;
+constexpr SpecialEnum SpecialEnum_MAX = SPECIAL_WAIT;
+constexpr int SpecialEnum_ARRAYSIZE = SpecialEnum_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* SpecialEnum_descriptor();
+template<typename T>
+inline const std::string& SpecialEnum_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, SpecialEnum>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function SpecialEnum_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    SpecialEnum_descriptor(), enum_t_value);
+}
+inline bool SpecialEnum_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, SpecialEnum* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<SpecialEnum>(
+    SpecialEnum_descriptor(), name, value);
+}
 // ===================================================================
+
+class SpecialParameter final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.SpecialParameter) */ {
+ public:
+  inline SpecialParameter() : SpecialParameter(nullptr) {}
+  ~SpecialParameter() override;
+  explicit PROTOBUF_CONSTEXPR SpecialParameter(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SpecialParameter(const SpecialParameter& from);
+  SpecialParameter(SpecialParameter&& from) noexcept
+    : SpecialParameter() {
+    *this = ::std::move(from);
+  }
+
+  inline SpecialParameter& operator=(const SpecialParameter& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SpecialParameter& operator=(SpecialParameter&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SpecialParameter& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SpecialParameter* internal_default_instance() {
+    return reinterpret_cast<const SpecialParameter*>(
+               &_SpecialParameter_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  friend void swap(SpecialParameter& a, SpecialParameter& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SpecialParameter* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SpecialParameter* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SpecialParameter* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SpecialParameter>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const SpecialParameter& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const SpecialParameter& from) {
+    SpecialParameter::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SpecialParameter* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "proto.SpecialParameter";
+  }
+  protected:
+  explicit SpecialParameter(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kNameFieldNumber = 1,
+    kTimeLeftFieldNumber = 3,
+    kSpecialEnumFieldNumber = 2,
+  };
+  // string name = 1;
+  void clear_name();
+  const std::string& name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_name();
+  PROTOBUF_NODISCARD std::string* release_name();
+  void set_allocated_name(std::string* name);
+  private:
+  const std::string& _internal_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
+  std::string* _internal_mutable_name();
+  public:
+
+  // double time_left = 3;
+  void clear_time_left();
+  double time_left() const;
+  void set_time_left(double value);
+  private:
+  double _internal_time_left() const;
+  void _internal_set_time_left(double value);
+  public:
+
+  // .proto.SpecialEnum special_enum = 2;
+  void clear_special_enum();
+  ::proto::SpecialEnum special_enum() const;
+  void set_special_enum(::proto::SpecialEnum value);
+  private:
+  ::proto::SpecialEnum _internal_special_enum() const;
+  void _internal_set_special_enum(::proto::SpecialEnum value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:proto.SpecialParameter)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+    double time_left_;
+    int special_enum_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_darwin_5fservice_2eproto;
+};
+// -------------------------------------------------------------------
 
 class ClientParameter final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.ClientParameter) */ {
@@ -282,7 +489,7 @@ class ClientParameter final :
                &_ClientParameter_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    0;
+    1;
 
   friend void swap(ClientParameter& a, ClientParameter& b) {
     a.Swap(&b);
@@ -435,7 +642,7 @@ class Vector3 final :
                &_Vector3_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    2;
 
   friend void swap(Vector3& a, Vector3& b) {
     a.Swap(&b);
@@ -605,7 +812,7 @@ class Vector4 final :
                &_Vector4_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   friend void swap(Vector4& a, Vector4& b) {
     a.Swap(&b);
@@ -786,7 +993,7 @@ class Physic final :
                &_Physic_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(Physic& a, Physic& b) {
     a.Swap(&b);
@@ -1025,7 +1232,7 @@ class Element final :
                &_Element_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(Element& a, Element& b) {
     a.Swap(&b);
@@ -1229,7 +1436,7 @@ class Character final :
                &_Character_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(Character& a, Character& b) {
     a.Swap(&b);
@@ -1302,6 +1509,7 @@ class Character final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kSpecialParametersFieldNumber = 7,
     kNameFieldNumber = 1,
     kColorFieldNumber = 2,
     kPhysicFieldNumber = 3,
@@ -1309,6 +1517,24 @@ class Character final :
     kNormalFieldNumber = 5,
     kStatusEnumFieldNumber = 6,
   };
+  // repeated .proto.SpecialParameter special_parameters = 7;
+  int special_parameters_size() const;
+  private:
+  int _internal_special_parameters_size() const;
+  public:
+  void clear_special_parameters();
+  ::proto::SpecialParameter* mutable_special_parameters(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::SpecialParameter >*
+      mutable_special_parameters();
+  private:
+  const ::proto::SpecialParameter& _internal_special_parameters(int index) const;
+  ::proto::SpecialParameter* _internal_add_special_parameters();
+  public:
+  const ::proto::SpecialParameter& special_parameters(int index) const;
+  ::proto::SpecialParameter* add_special_parameters();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::SpecialParameter >&
+      special_parameters() const;
+
   // string name = 1;
   void clear_name();
   const std::string& name() const;
@@ -1412,6 +1638,7 @@ class Character final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::SpecialParameter > special_parameters_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
     ::proto::Vector3* color_;
     ::proto::Physic* physic_;
@@ -1473,7 +1700,7 @@ class ColorParameter final :
                &_ColorParameter_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(ColorParameter& a, ColorParameter& b) {
     a.Swap(&b);
@@ -1646,7 +1873,7 @@ class PlayerParameter final :
                &_PlayerParameter_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   friend void swap(PlayerParameter& a, PlayerParameter& b) {
     a.Swap(&b);
@@ -1935,7 +2162,7 @@ class WorldDatabase final :
                &_WorldDatabase_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   friend void swap(WorldDatabase& a, WorldDatabase& b) {
     a.Swap(&b);
@@ -2143,7 +2370,7 @@ class UpdateRequest final :
                &_UpdateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   friend void swap(UpdateRequest& a, UpdateRequest& b) {
     a.Swap(&b);
@@ -2296,7 +2523,7 @@ class UpdateResponse final :
                &_UpdateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   friend void swap(UpdateResponse& a, UpdateResponse& b) {
     a.Swap(&b);
@@ -2484,7 +2711,7 @@ class ReportInGameRequest final :
                &_ReportInGameRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   friend void swap(ReportInGameRequest& a, ReportInGameRequest& b) {
     a.Swap(&b);
@@ -2683,7 +2910,7 @@ class ReportInGameResponse final :
                &_ReportInGameResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    13;
 
   friend void swap(ReportInGameResponse& a, ReportInGameResponse& b) {
     a.Swap(&b);
@@ -2802,7 +3029,7 @@ class CreateCharacterRequest final :
                &_CreateCharacterRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    14;
 
   friend void swap(CreateCharacterRequest& a, CreateCharacterRequest& b) {
     a.Swap(&b);
@@ -2975,7 +3202,7 @@ class CreateCharacterResponse final :
                &_CreateCharacterResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    15;
 
   friend void swap(CreateCharacterResponse& a, CreateCharacterResponse& b) {
     a.Swap(&b);
@@ -3123,7 +3350,7 @@ class PingRequest final :
                &_PingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    16;
 
   friend void swap(PingRequest& a, PingRequest& b) {
     a.Swap(&b);
@@ -3271,7 +3498,7 @@ class PingResponse final :
                &_PingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    17;
 
   friend void swap(PingResponse& a, PingResponse& b) {
     a.Swap(&b);
@@ -3409,6 +3636,100 @@ class PingResponse final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// SpecialParameter
+
+// string name = 1;
+inline void SpecialParameter::clear_name() {
+  _impl_.name_.ClearToEmpty();
+}
+inline const std::string& SpecialParameter::name() const {
+  // @@protoc_insertion_point(field_get:proto.SpecialParameter.name)
+  return _internal_name();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void SpecialParameter::set_name(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:proto.SpecialParameter.name)
+}
+inline std::string* SpecialParameter::mutable_name() {
+  std::string* _s = _internal_mutable_name();
+  // @@protoc_insertion_point(field_mutable:proto.SpecialParameter.name)
+  return _s;
+}
+inline const std::string& SpecialParameter::_internal_name() const {
+  return _impl_.name_.Get();
+}
+inline void SpecialParameter::_internal_set_name(const std::string& value) {
+  
+  _impl_.name_.Set(value, GetArenaForAllocation());
+}
+inline std::string* SpecialParameter::_internal_mutable_name() {
+  
+  return _impl_.name_.Mutable(GetArenaForAllocation());
+}
+inline std::string* SpecialParameter::release_name() {
+  // @@protoc_insertion_point(field_release:proto.SpecialParameter.name)
+  return _impl_.name_.Release();
+}
+inline void SpecialParameter::set_allocated_name(std::string* name) {
+  if (name != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.name_.SetAllocated(name, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.name_.IsDefault()) {
+    _impl_.name_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:proto.SpecialParameter.name)
+}
+
+// .proto.SpecialEnum special_enum = 2;
+inline void SpecialParameter::clear_special_enum() {
+  _impl_.special_enum_ = 0;
+}
+inline ::proto::SpecialEnum SpecialParameter::_internal_special_enum() const {
+  return static_cast< ::proto::SpecialEnum >(_impl_.special_enum_);
+}
+inline ::proto::SpecialEnum SpecialParameter::special_enum() const {
+  // @@protoc_insertion_point(field_get:proto.SpecialParameter.special_enum)
+  return _internal_special_enum();
+}
+inline void SpecialParameter::_internal_set_special_enum(::proto::SpecialEnum value) {
+  
+  _impl_.special_enum_ = value;
+}
+inline void SpecialParameter::set_special_enum(::proto::SpecialEnum value) {
+  _internal_set_special_enum(value);
+  // @@protoc_insertion_point(field_set:proto.SpecialParameter.special_enum)
+}
+
+// double time_left = 3;
+inline void SpecialParameter::clear_time_left() {
+  _impl_.time_left_ = 0;
+}
+inline double SpecialParameter::_internal_time_left() const {
+  return _impl_.time_left_;
+}
+inline double SpecialParameter::time_left() const {
+  // @@protoc_insertion_point(field_get:proto.SpecialParameter.time_left)
+  return _internal_time_left();
+}
+inline void SpecialParameter::_internal_set_time_left(double value) {
+  
+  _impl_.time_left_ = value;
+}
+inline void SpecialParameter::set_time_left(double value) {
+  _internal_set_time_left(value);
+  // @@protoc_insertion_point(field_set:proto.SpecialParameter.time_left)
+}
+
+// -------------------------------------------------------------------
+
 // ClientParameter
 
 // string server_name = 1;
@@ -4699,6 +5020,46 @@ inline void Character::_internal_set_status_enum(::proto::StatusEnum value) {
 inline void Character::set_status_enum(::proto::StatusEnum value) {
   _internal_set_status_enum(value);
   // @@protoc_insertion_point(field_set:proto.Character.status_enum)
+}
+
+// repeated .proto.SpecialParameter special_parameters = 7;
+inline int Character::_internal_special_parameters_size() const {
+  return _impl_.special_parameters_.size();
+}
+inline int Character::special_parameters_size() const {
+  return _internal_special_parameters_size();
+}
+inline void Character::clear_special_parameters() {
+  _impl_.special_parameters_.Clear();
+}
+inline ::proto::SpecialParameter* Character::mutable_special_parameters(int index) {
+  // @@protoc_insertion_point(field_mutable:proto.Character.special_parameters)
+  return _impl_.special_parameters_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::SpecialParameter >*
+Character::mutable_special_parameters() {
+  // @@protoc_insertion_point(field_mutable_list:proto.Character.special_parameters)
+  return &_impl_.special_parameters_;
+}
+inline const ::proto::SpecialParameter& Character::_internal_special_parameters(int index) const {
+  return _impl_.special_parameters_.Get(index);
+}
+inline const ::proto::SpecialParameter& Character::special_parameters(int index) const {
+  // @@protoc_insertion_point(field_get:proto.Character.special_parameters)
+  return _internal_special_parameters(index);
+}
+inline ::proto::SpecialParameter* Character::_internal_add_special_parameters() {
+  return _impl_.special_parameters_.Add();
+}
+inline ::proto::SpecialParameter* Character::add_special_parameters() {
+  ::proto::SpecialParameter* _add = _internal_add_special_parameters();
+  // @@protoc_insertion_point(field_add:proto.Character.special_parameters)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::SpecialParameter >&
+Character::special_parameters() const {
+  // @@protoc_insertion_point(field_list:proto.Character.special_parameters)
+  return _impl_.special_parameters_;
 }
 
 // -------------------------------------------------------------------
@@ -6060,6 +6421,8 @@ inline void PingResponse::set_allocated_player_parameter(::proto::PlayerParamete
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -6086,6 +6449,11 @@ template <> struct is_proto_enum< ::proto::TypeEnum> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::proto::TypeEnum>() {
   return ::proto::TypeEnum_descriptor();
+}
+template <> struct is_proto_enum< ::proto::SpecialEnum> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::proto::SpecialEnum>() {
+  return ::proto::SpecialEnum_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

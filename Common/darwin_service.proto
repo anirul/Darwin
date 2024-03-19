@@ -121,12 +121,8 @@ message Character {
     Vector3 normal = 5;
     // Status of the element.
     StatusEnum status_enum = 6;
-<<<<<<< HEAD
     // Special speed upgrade.
     repeated SpecialParameter special_parameters = 7;
-=======
- 
->>>>>>> 27ca3df (testing speed boosts)
 }
 
 // ColorParameter
