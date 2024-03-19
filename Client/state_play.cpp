@@ -163,14 +163,23 @@ namespace darwin::state {
             if (input_acquisition_ptr_->IsMoving()) {
                 modified = true;
                 // calculate the firction for the delta_time
-                double friction_delta_time = player_parameter.friction() * delta_time / std::log(physic.mass());
-                // calculate acceleration from friction and traget terminal velocity
-                double acceleration_delta_time = friction_delta_time * player_parameter.horizontal_speed() * player_parameter.horizontal_speed();
+                double friction_delta_time = 
+                    player_parameter.friction() * 
+                    delta_time / std::log(physic.mass());
+                // calculate acceleration from friction and traget terminal 
+                // velocity.
+                double acceleration_delta_time = 
+                    friction_delta_time * 
+                    player_parameter.horizontal_speed() * 
+                    player_parameter.horizontal_speed();
                 // we need to current speed to get the quadratic friction
                 double current_speed = Length(physic.position_dt());
-                // we apply the friction even if we acceletare (accelaration doesnt make friction disapear)
-                // also we wont end in orbit this way
-                auto friction_vector = Normalize(physic.position_dt()) * friction_delta_time * current_speed * current_speed ;
+                // we apply the friction even if we acceletare (accelaration 
+                // doesnt make friction disapear) also we wont end in orbit 
+                // this way.
+                auto friction_vector = 
+                    Normalize(physic.position_dt()) * 
+                    friction_delta_time * current_speed * current_speed ;
                 auto forward = Normalize(Glm2ProtoVector(character_forward_));
                 auto right =
                     Normalize(Cross(character.normal(), forward));
@@ -195,8 +204,10 @@ namespace darwin::state {
                 double current_speed = Length(next_physic.position_dt());
                 double friction_delta_time = 
                     player_parameter.friction() * delta_time;
-                // lets make firction stronger with speed (so we wont end up in orbit)
-                double speed_multiply = 1.0 - friction_delta_time * current_speed * current_speed;
+                // Lets make firction stronger with speed (so we wont end up 
+                // in orbit).
+                double speed_multiply = 
+                    1.0 - friction_delta_time * current_speed * current_speed;
                 next_physic.mutable_position_dt()->CopyFrom(
                     next_physic.position_dt() * speed_multiply);
                 next_character.mutable_physic()->CopyFrom(next_physic);
