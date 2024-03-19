@@ -43,12 +43,14 @@ enum SpecialEnum {
 }
 
 // SpecialParameter
-// Next: 3
+// Next: 4
 message SpecialParameter {
     // Special name (could be speed, shield, ...).
     string name = 1;
     // Special value.
     SpecialEnum special_enum = 2;
+    // Time left for the special or cooldown.
+    double time_left = 3;
 }
 
 // ClientParameter
