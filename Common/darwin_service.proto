@@ -35,11 +35,11 @@ enum TypeEnum {
 }
 
 enum SpecialEnum {
-    SPECIAL_UNKNOWN = 0;        // Unknown this is an error or initial.
+    SPECIAL_UNKNOWN = 0;        // Unknown this is an error.
     SPECIAL_ACTIVATE = 1;       // Activate the special.
     SPECIAL_ACTIVE = 2;         // Special is active.
     SPECIAL_COOLDOWN = 3;       // Special is on cooldown.
-    SPECIAL_WAIT = 4;           // Wait (same as unknown).
+    SPECIAL_WAIT = 4;           // Wait.
 }
 
 // SpecialParameter
