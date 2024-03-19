@@ -26,7 +26,7 @@ ABSL_FLAG(
 ABSL_FLAG(
     double,
     loop_timer,
-    0.2,
+    0.1,
     "The time in seconds between each world update.");
 
 int main(int ac, char** av) try {
