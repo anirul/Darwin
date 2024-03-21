@@ -5,6 +5,7 @@
 
 #include "Common/stl_proto_wrapper.h"
 #include "Common/darwin_service.grpc.pb.h"
+#include "Common/client_parameter.pb.h"
 #include "Common/vector.h"
 #include "Common/convert_math.h"
 #include "frame/file/file_system.h"

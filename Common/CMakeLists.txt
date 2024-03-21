@@ -13,6 +13,8 @@ add_library(DarwinCommon
         physic.cpp
         physic.h
         darwin_service.proto
+        client_parameter.proto
+        vector_math.proto
 )
 
 target_include_directories(DarwinCommon
@@ -49,6 +51,10 @@ target_link_libraries(DarwinCommon
 set(HEADERS_TO_BE_COPIED
     darwin_service.pb.h
     darwin_service.grpc.pb.h
+    client_parameter.pb.h
+    client_parameter.grpc.pb.h
+    vector_math.pb.h
+    vector_math.grpc.pb.h
 )
 
 foreach(HEADERN ${HEADERS_TO_BE_COPIED})
