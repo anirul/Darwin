@@ -36,26 +36,28 @@
             "w": 0.9
           },
           "position": {
-            "x": 0.35,
-            "y": 0.9
+            "x": 0.5,
+            "y": 0.95
           },
-          "text_size_enum": "TEXT_SIZE_LARGE"
+          "text_size_enum": "TEXT_SIZE_LARGE",
+          "alignment_enum": "ALIGNMENT_BOTTOM"
         }
       },
       {
         "text": {
           "text": "Globe Globers",
           "color": {
-            "x": 1.0,
+            "x": 0.8,
             "y": 0.0,
             "z": 0.0,
-            "w": 0.9
+            "w": 0.8
           },
           "position": {
-            "x": 0.055,
-            "y": 0.355
+            "x": 0.51,
+            "y": 0.51
           },
-          "text_size_enum": "TEXT_SIZE_TITLE"
+          "text_size_enum": "TEXT_SIZE_TITLE",
+          "alignment_enum": "ALIGNMENT_CENTER"
         }
       },
       {
@@ -68,10 +70,11 @@
             "w": 0.9
           },
           "position": {
-            "x": 0.05,
-            "y": 0.35
+            "x": 0.5,
+            "y": 0.5
           },
-          "text_size_enum": "TEXT_SIZE_TITLE"
+          "text_size_enum": "TEXT_SIZE_TITLE",
+          "alignment_enum": "ALIGNMENT_CENTER"
         }
       }
     ]

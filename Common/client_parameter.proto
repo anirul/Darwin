@@ -7,8 +7,20 @@ import "vector_math.proto";
 enum TextSizeEnum {
     TEXT_SIZE_SMALL = 0;    // 18 pixels
     TEXT_SIZE_MEDIUM = 1;   // 24 pixels
-    TEXT_SIZE_LARGE = 2;    // 32 pixels
-    TEXT_SIZE_TITLE = 3;    // 96 pixels
+    TEXT_SIZE_LARGE = 2;    // 36 pixels
+    TEXT_SIZE_TITLE = 3;    // 160 pixels
+}
+
+enum AlignmentEnum {
+    ALIGNMENT_TOP_LEFT = 0;     // Hook at top left.
+    ALIGNMENT_TOP = 1;          // Hook at top center.
+    ALIGNMENT_TOP_RIGHT = 2;    // Hook at top right.
+    ALIGNMENT_CENTER_LEFT = 3;  // Hook at center left.
+    ALIGNMENT_CENTER = 4;       // Hook at center.
+    ALIGNMENT_CENTER_RIGHT = 5; // Hook at center right.
+    ALIGNMENT_BOTTOM_LEFT = 6;  // Hook at bottom left.
+    ALIGNMENT_BOTTOM = 7;       // Hook at bottom center.
+    ALIGNMENT_BOTTOM_RIGHT = 8; // Hook at bottom right.
 }
 
 // FontSize
@@ -36,38 +48,42 @@ message ClientParameter {
 }
 
 // PageElementText
-// Next: 5
+// Next: 6
 message PageElementText {
     string text = 1;
     Vector4 color = 2;
     Vector2 position = 3;
     TextSizeEnum text_size_enum = 4;
+    AlignmentEnum alignment_enum = 5;
 }
 
 // PageElementImage
-// Next: 4
+// Next: 5
 message PageElementImage {
     string image = 1;
     Vector2 position = 2;
     Vector2 size = 3;
+    AlignmentEnum alignment_enum = 4;
 }
 
 // PageElementLine
-// Next: 5
+// Next: 6
 message PageElementLine {
     Vector2 start = 1;
     Vector2 end = 2;
     Vector4 color = 3;
     double thickness = 4;
+    AlignmentEnum alignment_enum = 5;
 }
 
 // PageElementRectFilled
-// Next: 5
+// Next: 6
 message PageElementRectFilled {
     Vector2 position = 1;
     Vector2 size = 2;
     Vector4 color = 3;
     double rounding = 4;
+    AlignmentEnum alignment_enum = 5;
 }
 
 // PageElement
