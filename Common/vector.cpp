@@ -5,6 +5,16 @@
 
 namespace darwin {
 
+    proto::Vector2 CreateVector2(
+        double x,
+        double y)
+    {
+        proto::Vector2 vector2{};
+        vector2.set_x(x);
+        vector2.set_y(y);
+        return vector2;
+    }
+
     proto::Vector3 CreateVector3(
         double x,
         double y,

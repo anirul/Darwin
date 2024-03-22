@@ -8,6 +8,7 @@
 #include "frame/logger.h"
 #include "frame/gui/draw_gui_interface.h"
 #include "modal_ping.h"
+#include "Common/client_parameter.pb.h"
 
 namespace darwin::state {
 
@@ -18,7 +19,7 @@ namespace darwin::state {
             std::unique_ptr<darwin::DarwinClient> darwin_client) :
             app_(app), darwin_client_(std::move(darwin_client)) {}
         ~StatePing() override = default;
-        void Enter() override;
+        void Enter(const proto::ClientParameter& client_parameter) override;
         void Update(StateContext& state_context) override;
         void Exit() override;
 

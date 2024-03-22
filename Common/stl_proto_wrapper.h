@@ -7,6 +7,7 @@
 #include <google/protobuf/util/json_util.h>
 
 #include "darwin_service.pb.h"
+#include "client_parameter.pb.h"
 
 namespace proto {
 

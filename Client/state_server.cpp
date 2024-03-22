@@ -10,8 +10,10 @@
 
 namespace darwin::state {
 
-    void StateServer::Enter() {
+    void StateServer::Enter(const proto::ClientParameter& client_parameter) {
         logger_->info("Entering server state");
+        client_parameter_ = client_parameter;
+        modal_server_params_.server_name = client_parameter_.server_name();
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
             logger_->info("\tPlugin: [{}] {}", (std::uint64_t)plugin, plugin->GetName().c_str());
             if (!draw_gui_interface_) {
@@ -36,7 +38,8 @@ namespace darwin::state {
             case modal::ModalServerButton::Connect:
                 darwin_client_ = 
                     std::make_unique<DarwinClient>(
-                        modal_server_params_.server_name);
+                        modal_server_params_.server_name,
+                        client_parameter_);
                 state_context.ChangeState(
                     std::make_unique<StatePing>(
                         app_,

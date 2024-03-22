@@ -10,8 +10,9 @@ namespace darwin::state {
 
     StateTitle::StateTitle(frame::common::Application& app) : app_(app) {}
 
-    void StateTitle::Enter() {
+    void StateTitle::Enter(const proto::ClientParameter& client_parameter) {
         logger_->info("Entering title state");
+        client_parameter_ = client_parameter;
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
             logger_->info(
                 "\tPlugin: [{}] {}", 
@@ -26,6 +27,13 @@ namespace darwin::state {
         if (!draw_gui_interface_) {
             throw std::runtime_error("No draw gui interface plugin found?");
         }
+        draw_gui_interface_->AddOverlayWindow(
+            glm::vec2(0.0f, 0.0f),
+            app_.GetWindow().GetDevice().GetSize(),
+            std::make_unique<overlay::OverlayTitle>(
+                "overlay_title",
+                client_parameter_,
+                client_parameter_.overlay_title()));
         app_.GetWindow().AddKeyCallback(' ', [this] {
                 logger_->info("Space key pressed");
                 passed_ = true;
@@ -37,6 +45,7 @@ namespace darwin::state {
     void StateTitle::Exit() {
         logger_->info("Exiting title state");
         app_.GetWindow().RemoveKeyCallback(' ');
+        draw_gui_interface_->DeleteWindow("overlay_title");
     }
 
     void StateTitle::Update(StateContext& state_context) {

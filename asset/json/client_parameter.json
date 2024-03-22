@@ -1,3 +1,93 @@
 {
-  "server_name": "darwin.onemoregame.ch:80"
+  "server_name": "darwin.onemoregame.ch:80",
+  "font_file": "asset/font/axaxax/axaxax_bd.otf",
+  "font_sizes": [
+    {
+      "text_size_enum": "TEXT_SIZE_SMALL",
+      "size": 18.0
+    },
+    {
+      "text_size_enum": "TEXT_SIZE_MEDIUM",
+      "size": 24.0
+    },
+    {
+      "text_size_enum": "TEXT_SIZE_LARGE",
+      "size": 36.0
+    },
+    {
+      "text_size_enum": "TEXT_SIZE_TITLE",
+      "size": 160.0
+    }
+  ],
+  "overlay_title": {
+    "name": "overlay_title",
+    "size": {
+      "x": 1.0,
+      "y": 1.0
+    },
+    "page_elements": [
+      {
+        "text": {
+          "text": "[push space to continue]",
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 0.9
+          },
+          "position": {
+            "x": 0.35,
+            "y": 0.9
+          },
+          "text_size_enum": "TEXT_SIZE_LARGE"
+        }
+      },
+      {
+        "text": {
+          "text": "Globe Globers",
+          "color": {
+            "x": 1.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.9
+          },
+          "position": {
+            "x": 0.055,
+            "y": 0.355
+          },
+          "text_size_enum": "TEXT_SIZE_TITLE"
+        }
+      },
+      {
+        "text": {
+          "text": "Globe Globers",
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 0.9
+          },
+          "position": {
+            "x": 0.05,
+            "y": 0.35
+          },
+          "text_size_enum": "TEXT_SIZE_TITLE"
+        }
+      }
+    ]
+  },
+  "overlay_play": {
+    "name": "overlay_play",
+    "size": {
+      "x": 1.0,
+      "y": 1.0
+    }
+  },
+  "overlay_state": {
+    "name": "overlay_state",
+    "size": {
+      "x": 1.0,
+      "y": 1.0
+    }
+  }
 }

@@ -20,7 +20,7 @@ namespace darwin::state {
     {
     }
 
-    void StatePlay::Enter() {
+    void StatePlay::Enter(const proto::ClientParameter& client_parameter) {
         logger_->info("Entered play state");
         auto unique_input = std::make_unique<InputAcquisition>();
         input_acquisition_ptr_ = unique_input.get();

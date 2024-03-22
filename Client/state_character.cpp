@@ -6,7 +6,9 @@
 
 namespace darwin::state {
 
-    void StateCharacter::Enter() {
+    void StateCharacter::Enter(
+        const proto::ClientParameter& client_parameter) 
+    {
         logger_->info("Entering character state");
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
             logger_->info(
