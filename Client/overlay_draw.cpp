@@ -31,16 +31,61 @@ namespace darwin::overlay {
         pointer_parameters_[name] = pointer;
     }
 
+    proto::Vector2 OverlayDraw::GetAlignment(
+        const proto::Vector2& size, 
+        proto::AlignmentEnum alignement_enum) const
+    {
+        proto::Vector2 alignement;
+        switch (alignement_enum) {
+        case proto::ALIGNMENT_TOP_LEFT:
+            alignement = CreateVector2(0.0, 0.0);
+            break;
+        case proto::ALIGNMENT_TOP:
+            alignement = CreateVector2(size.x() / 2.0, 0.0);
+            break;
+        case proto::ALIGNMENT_TOP_RIGHT:
+            alignement = CreateVector2(size.x(), 0.0);
+            break;
+        case proto::ALIGNMENT_CENTER_LEFT:
+            alignement = CreateVector2(0.0, size.y() / 2.0);
+            break;
+        case proto::ALIGNMENT_CENTER:
+            alignement = CreateVector2(size.x() / 2.0, size.y() / 2.0);
+            break;
+        case proto::ALIGNMENT_CENTER_RIGHT:
+            alignement = CreateVector2(size.x(), size.y() / 2.0);
+            break;
+        case proto::ALIGNMENT_BOTTOM_LEFT:
+            alignement = CreateVector2(0.0, size.y());
+            break;
+        case proto::ALIGNMENT_BOTTOM:
+            alignement = CreateVector2(size.x() / 2.0, size.y());
+            break;
+        case proto::ALIGNMENT_BOTTOM_RIGHT:    
+            alignement = CreateVector2(size.x(), size.y());
+            break;
+        }
+        return alignement;
+    }
+
     void OverlayDraw::DrawText(
         ImDrawList* draw_list,
-        const proto::PageElementText& text) {
-        // Draw the text.
+        const proto::PageElementText& text)
+    {
+        // Push the font.
         OverlayFont::GetInstance(
             client_parameter_).PushFont(text.text_size_enum());
+        // Compute alignment.
+        auto text_size = ImGui::CalcTextSize(text.text().c_str());
+        auto alignment =
+            GetAlignment(
+                CreateVector2(text_size.x, text_size.y),
+                text.alignment_enum());
+        // Draw the text.
         draw_list->AddText(
             ImVec2(
-                text.position().x() * size_.x(), 
-                text.position().y() * size_.y()),
+                text.position().x() * size_.x() - alignment.x(),
+                text.position().y() * size_.y() - alignment.y()),
             ImColor(
                 static_cast<float>(text.color().x()),
                 static_cast<float>(text.color().y()),
@@ -52,28 +97,47 @@ namespace darwin::overlay {
 
     void OverlayDraw::DrawImage(
         ImDrawList* draw_list,
-        const proto::PageElementImage& image) {
+        const proto::PageElementImage& image)
+    {
         if (pointer_parameters_.contains(image.image()) == false) {
             return;
         }
+        // Compute alignment.
+        auto alignment =
+            GetAlignment(
+                CreateVector2(image.size().x(), image.size().y()),
+                image.alignment_enum());
         // Draw the image.
         draw_list->AddImage(
             reinterpret_cast<ImTextureID>(pointer_parameters_[image.image()]),
             ImVec2(
-                image.position().x() * size_.x(), 
-                image.position().y() * size_.y()),
+                image.position().x() * size_.x() - alignment.x(),
+                image.position().y() * size_.y() - alignment.y()),
             ImVec2(
-                (image.position().x() + image.size().x()) * size_.x(),
-                (image.position().y() + image.size().y()) * size_.y()));
+                (image.position().x() + image.size().x()) * size_.x() - 
+                    alignment.x(),
+                (image.position().y() + image.size().y()) * size_.y() - 
+                    alignment.y()));
     }
 
     void OverlayDraw::DrawLine(
         ImDrawList* draw_list,
-        const proto::PageElementLine& line) {
+        const proto::PageElementLine& line)
+    {
+        auto alignment =
+            GetAlignment(
+                CreateVector2(
+                    line.end().x() - line.start().x(), 
+                    line.end().y() - line.end().y()),
+                line.alignment_enum());
         // Draw the line.
         draw_list->AddLine(
-            ImVec2(line.start().x() * size_.x(), line.start().y() * size_.y()),
-            ImVec2(line.end().x() * size_.x(), line.end().y() * size_.y()),
+            ImVec2(
+                line.start().x() * size_.x() - alignment.x(),
+                line.start().y() * size_.y() - alignment.y()),
+            ImVec2(
+                line.end().x() * size_.x() - alignment.x(),
+                line.end().y() * size_.y() - alignment.y()),
             ImColor(
                 static_cast<float>(line.color().x()),
                 static_cast<float>(line.color().y()),
@@ -84,17 +148,24 @@ namespace darwin::overlay {
 
     void OverlayDraw::DrawRectFilled(
         ImDrawList* draw_list,
-        const proto::PageElementRectFilled& rect_filled) {
+        const proto::PageElementRectFilled& rect_filled) 
+    {
+        auto alignment =
+            GetAlignment(
+                CreateVector2(
+                    rect_filled.size().x(),
+                    rect_filled.size().y()),
+                rect_filled.alignment_enum());
         // Draw the filled rectangle.
         draw_list->AddRectFilled(
             ImVec2(
-                rect_filled.position().x() * size_.x(),
-                rect_filled.position().y() * size_.y()),
+                rect_filled.position().x() * size_.x() - alignment.x(),
+                rect_filled.position().y() * size_.y() - alignment.y()),
             ImVec2(
                 (rect_filled.position().x() + rect_filled.size().x()) * 
-                    size_.x(),
+                    size_.x() - alignment.x(),
                 (rect_filled.position().y() + rect_filled.size().y()) * 
-                    size_.y()),
+                    size_.y() - alignment.y()),
             ImColor(
                 static_cast<float>(rect_filled.color().x()),
                 static_cast<float>(rect_filled.color().y()),

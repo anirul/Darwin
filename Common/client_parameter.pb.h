@@ -111,6 +111,38 @@ inline bool TextSizeEnum_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<TextSizeEnum>(
     TextSizeEnum_descriptor(), name, value);
 }
+enum AlignmentEnum : int {
+  ALIGNMENT_TOP_LEFT = 0,
+  ALIGNMENT_TOP = 1,
+  ALIGNMENT_TOP_RIGHT = 2,
+  ALIGNMENT_CENTER_LEFT = 3,
+  ALIGNMENT_CENTER = 4,
+  ALIGNMENT_CENTER_RIGHT = 5,
+  ALIGNMENT_BOTTOM_LEFT = 6,
+  ALIGNMENT_BOTTOM = 7,
+  ALIGNMENT_BOTTOM_RIGHT = 8,
+  AlignmentEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  AlignmentEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool AlignmentEnum_IsValid(int value);
+constexpr AlignmentEnum AlignmentEnum_MIN = ALIGNMENT_TOP_LEFT;
+constexpr AlignmentEnum AlignmentEnum_MAX = ALIGNMENT_BOTTOM_RIGHT;
+constexpr int AlignmentEnum_ARRAYSIZE = AlignmentEnum_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* AlignmentEnum_descriptor();
+template<typename T>
+inline const std::string& AlignmentEnum_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, AlignmentEnum>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function AlignmentEnum_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    AlignmentEnum_descriptor(), enum_t_value);
+}
+inline bool AlignmentEnum_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, AlignmentEnum* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<AlignmentEnum>(
+    AlignmentEnum_descriptor(), name, value);
+}
 // ===================================================================
 
 class FontSize final :
@@ -646,6 +678,7 @@ class PageElementText final :
     kColorFieldNumber = 2,
     kPositionFieldNumber = 3,
     kTextSizeEnumFieldNumber = 4,
+    kAlignmentEnumFieldNumber = 5,
   };
   // string text = 1;
   void clear_text();
@@ -706,6 +739,15 @@ class PageElementText final :
   void _internal_set_text_size_enum(::proto::TextSizeEnum value);
   public:
 
+  // .proto.AlignmentEnum alignment_enum = 5;
+  void clear_alignment_enum();
+  ::proto::AlignmentEnum alignment_enum() const;
+  void set_alignment_enum(::proto::AlignmentEnum value);
+  private:
+  ::proto::AlignmentEnum _internal_alignment_enum() const;
+  void _internal_set_alignment_enum(::proto::AlignmentEnum value);
+  public:
+
   // @@protoc_insertion_point(class_scope:proto.PageElementText)
  private:
   class _Internal;
@@ -718,6 +760,7 @@ class PageElementText final :
     ::proto::Vector4* color_;
     ::proto::Vector2* position_;
     int text_size_enum_;
+    int alignment_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -849,6 +892,7 @@ class PageElementImage final :
     kImageFieldNumber = 1,
     kPositionFieldNumber = 2,
     kSizeFieldNumber = 3,
+    kAlignmentEnumFieldNumber = 4,
   };
   // string image = 1;
   void clear_image();
@@ -900,6 +944,15 @@ class PageElementImage final :
       ::proto::Vector2* size);
   ::proto::Vector2* unsafe_arena_release_size();
 
+  // .proto.AlignmentEnum alignment_enum = 4;
+  void clear_alignment_enum();
+  ::proto::AlignmentEnum alignment_enum() const;
+  void set_alignment_enum(::proto::AlignmentEnum value);
+  private:
+  ::proto::AlignmentEnum _internal_alignment_enum() const;
+  void _internal_set_alignment_enum(::proto::AlignmentEnum value);
+  public:
+
   // @@protoc_insertion_point(class_scope:proto.PageElementImage)
  private:
   class _Internal;
@@ -911,6 +964,7 @@ class PageElementImage final :
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr image_;
     ::proto::Vector2* position_;
     ::proto::Vector2* size_;
+    int alignment_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1043,6 +1097,7 @@ class PageElementLine final :
     kEndFieldNumber = 2,
     kColorFieldNumber = 3,
     kThicknessFieldNumber = 4,
+    kAlignmentEnumFieldNumber = 5,
   };
   // .proto.Vector2 start = 1;
   bool has_start() const;
@@ -1107,6 +1162,15 @@ class PageElementLine final :
   void _internal_set_thickness(double value);
   public:
 
+  // .proto.AlignmentEnum alignment_enum = 5;
+  void clear_alignment_enum();
+  ::proto::AlignmentEnum alignment_enum() const;
+  void set_alignment_enum(::proto::AlignmentEnum value);
+  private:
+  ::proto::AlignmentEnum _internal_alignment_enum() const;
+  void _internal_set_alignment_enum(::proto::AlignmentEnum value);
+  public:
+
   // @@protoc_insertion_point(class_scope:proto.PageElementLine)
  private:
   class _Internal;
@@ -1119,6 +1183,7 @@ class PageElementLine final :
     ::proto::Vector2* end_;
     ::proto::Vector4* color_;
     double thickness_;
+    int alignment_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1251,6 +1316,7 @@ class PageElementRectFilled final :
     kSizeFieldNumber = 2,
     kColorFieldNumber = 3,
     kRoundingFieldNumber = 4,
+    kAlignmentEnumFieldNumber = 5,
   };
   // .proto.Vector2 position = 1;
   bool has_position() const;
@@ -1315,6 +1381,15 @@ class PageElementRectFilled final :
   void _internal_set_rounding(double value);
   public:
 
+  // .proto.AlignmentEnum alignment_enum = 5;
+  void clear_alignment_enum();
+  ::proto::AlignmentEnum alignment_enum() const;
+  void set_alignment_enum(::proto::AlignmentEnum value);
+  private:
+  ::proto::AlignmentEnum _internal_alignment_enum() const;
+  void _internal_set_alignment_enum(::proto::AlignmentEnum value);
+  public:
+
   // @@protoc_insertion_point(class_scope:proto.PageElementRectFilled)
  private:
   class _Internal;
@@ -1327,6 +1402,7 @@ class PageElementRectFilled final :
     ::proto::Vector2* size_;
     ::proto::Vector4* color_;
     double rounding_;
+    int alignment_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -2474,6 +2550,26 @@ inline void PageElementText::set_text_size_enum(::proto::TextSizeEnum value) {
   // @@protoc_insertion_point(field_set:proto.PageElementText.text_size_enum)
 }
 
+// .proto.AlignmentEnum alignment_enum = 5;
+inline void PageElementText::clear_alignment_enum() {
+  _impl_.alignment_enum_ = 0;
+}
+inline ::proto::AlignmentEnum PageElementText::_internal_alignment_enum() const {
+  return static_cast< ::proto::AlignmentEnum >(_impl_.alignment_enum_);
+}
+inline ::proto::AlignmentEnum PageElementText::alignment_enum() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementText.alignment_enum)
+  return _internal_alignment_enum();
+}
+inline void PageElementText::_internal_set_alignment_enum(::proto::AlignmentEnum value) {
+  
+  _impl_.alignment_enum_ = value;
+}
+inline void PageElementText::set_alignment_enum(::proto::AlignmentEnum value) {
+  _internal_set_alignment_enum(value);
+  // @@protoc_insertion_point(field_set:proto.PageElementText.alignment_enum)
+}
+
 // -------------------------------------------------------------------
 
 // PageElementImage
@@ -2696,6 +2792,26 @@ inline void PageElementImage::set_allocated_size(::proto::Vector2* size) {
   }
   _impl_.size_ = size;
   // @@protoc_insertion_point(field_set_allocated:proto.PageElementImage.size)
+}
+
+// .proto.AlignmentEnum alignment_enum = 4;
+inline void PageElementImage::clear_alignment_enum() {
+  _impl_.alignment_enum_ = 0;
+}
+inline ::proto::AlignmentEnum PageElementImage::_internal_alignment_enum() const {
+  return static_cast< ::proto::AlignmentEnum >(_impl_.alignment_enum_);
+}
+inline ::proto::AlignmentEnum PageElementImage::alignment_enum() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementImage.alignment_enum)
+  return _internal_alignment_enum();
+}
+inline void PageElementImage::_internal_set_alignment_enum(::proto::AlignmentEnum value) {
+  
+  _impl_.alignment_enum_ = value;
+}
+inline void PageElementImage::set_alignment_enum(::proto::AlignmentEnum value) {
+  _internal_set_alignment_enum(value);
+  // @@protoc_insertion_point(field_set:proto.PageElementImage.alignment_enum)
 }
 
 // -------------------------------------------------------------------
@@ -2977,6 +3093,26 @@ inline void PageElementLine::set_thickness(double value) {
   // @@protoc_insertion_point(field_set:proto.PageElementLine.thickness)
 }
 
+// .proto.AlignmentEnum alignment_enum = 5;
+inline void PageElementLine::clear_alignment_enum() {
+  _impl_.alignment_enum_ = 0;
+}
+inline ::proto::AlignmentEnum PageElementLine::_internal_alignment_enum() const {
+  return static_cast< ::proto::AlignmentEnum >(_impl_.alignment_enum_);
+}
+inline ::proto::AlignmentEnum PageElementLine::alignment_enum() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementLine.alignment_enum)
+  return _internal_alignment_enum();
+}
+inline void PageElementLine::_internal_set_alignment_enum(::proto::AlignmentEnum value) {
+  
+  _impl_.alignment_enum_ = value;
+}
+inline void PageElementLine::set_alignment_enum(::proto::AlignmentEnum value) {
+  _internal_set_alignment_enum(value);
+  // @@protoc_insertion_point(field_set:proto.PageElementLine.alignment_enum)
+}
+
 // -------------------------------------------------------------------
 
 // PageElementRectFilled
@@ -3254,6 +3390,26 @@ inline void PageElementRectFilled::_internal_set_rounding(double value) {
 inline void PageElementRectFilled::set_rounding(double value) {
   _internal_set_rounding(value);
   // @@protoc_insertion_point(field_set:proto.PageElementRectFilled.rounding)
+}
+
+// .proto.AlignmentEnum alignment_enum = 5;
+inline void PageElementRectFilled::clear_alignment_enum() {
+  _impl_.alignment_enum_ = 0;
+}
+inline ::proto::AlignmentEnum PageElementRectFilled::_internal_alignment_enum() const {
+  return static_cast< ::proto::AlignmentEnum >(_impl_.alignment_enum_);
+}
+inline ::proto::AlignmentEnum PageElementRectFilled::alignment_enum() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementRectFilled.alignment_enum)
+  return _internal_alignment_enum();
+}
+inline void PageElementRectFilled::_internal_set_alignment_enum(::proto::AlignmentEnum value) {
+  
+  _impl_.alignment_enum_ = value;
+}
+inline void PageElementRectFilled::set_alignment_enum(::proto::AlignmentEnum value) {
+  _internal_set_alignment_enum(value);
+  // @@protoc_insertion_point(field_set:proto.PageElementRectFilled.alignment_enum)
 }
 
 // -------------------------------------------------------------------
@@ -3772,6 +3928,11 @@ template <> struct is_proto_enum< ::proto::TextSizeEnum> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::proto::TextSizeEnum>() {
   return ::proto::TextSizeEnum_descriptor();
+}
+template <> struct is_proto_enum< ::proto::AlignmentEnum> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::proto::AlignmentEnum>() {
+  return ::proto::AlignmentEnum_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE
