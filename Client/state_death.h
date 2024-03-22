@@ -6,6 +6,7 @@
 #include "frame/logger.h"
 #include "frame/gui/draw_gui_interface.h"
 #include "modal_death.h"
+#include "Common/client_parameter.pb.h"
 
 namespace darwin::state {
 
@@ -17,7 +18,7 @@ namespace darwin::state {
             app_(app), darwin_client_(std::move(darwin_client)) {}
         ~StateDeath() override = default;
 
-        void Enter() override;
+        void Enter(const proto::ClientParameter& client_parameter) override;
         void Update(StateContext& state_context) override;
         void Exit() override;
 

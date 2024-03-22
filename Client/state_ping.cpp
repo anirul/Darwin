@@ -9,7 +9,7 @@
 
 namespace darwin::state {
 
-    void StatePing::Enter() {
+    void StatePing::Enter(const proto::ClientParameter& client_parameter) {
         logger_->info("Entering ping state");
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
             logger_->info(

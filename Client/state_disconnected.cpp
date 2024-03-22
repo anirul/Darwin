@@ -11,7 +11,9 @@
 
 namespace darwin::state {
 
-    void StateDisconnected::Enter() {
+    void StateDisconnected::Enter(
+        const proto::ClientParameter& client_parameter) 
+    {
         logger_->info("State disconnected entered");
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
             logger_->info(

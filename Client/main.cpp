@@ -25,6 +25,7 @@
 #include "frame/json/parse_level.h"
 #include "modal_stats.h"
 #include "Common/stl_proto_wrapper.h"
+#include "overlay_font.h"
 
 void grpc_log_handler(gpr_log_func_args* args) {
     frame::Logger& logger = frame::Logger::GetInstance();
@@ -64,6 +65,10 @@ int main(int ac, char** av) try
         frame::DrawingTargetEnum::WINDOW,
         frame::RenderingAPIEnum::OPENGL,
         { 1280, 720 });
+    // Load the client parameter.
+    proto::ClientParameter client_parameter =
+        darwin::LoadProtoFromJsonFile<proto::ClientParameter>(
+            frame::file::FindFile("asset/json/client_parameter.json"));
     auto gui_window = frame::gui::CreateDrawGui(
         *win.get(),
         frame::file::FindFile("asset/font/axaxax/axaxax_bd.otf"),
@@ -105,7 +110,8 @@ int main(int ac, char** av) try
     frame::Logger& logger = frame::Logger::GetInstance();
     int i = 0;
     darwin::state::StateContext state_context(
-        std::make_unique<darwin::state::StateTitle>(app));
+        std::make_unique<darwin::state::StateTitle>(app),
+        client_parameter);
     // Add a load from file for resolution.
     app.Run([&state_context, &app] {
         state_context.Update();

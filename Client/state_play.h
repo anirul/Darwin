@@ -8,6 +8,7 @@
 #include "Common/world_simulator.h"
 #include "Common/darwin_constant.h"
 #include "modal_stats.h"
+#include "Common/client_parameter.pb.h"
 
 namespace darwin::state {
 
@@ -17,7 +18,7 @@ namespace darwin::state {
             frame::common::Application& app, 
             std::unique_ptr<darwin::DarwinClient> darwin_client);
         ~StatePlay() override = default;
-        void Enter() override;
+        void Enter(const proto::ClientParameter& client_parameter) override;
         void Update(StateContext& state_context) override;
         void Exit() override;
 

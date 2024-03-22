@@ -21,8 +21,16 @@ add_executable(DarwinClient
         modal_stats.h
         modal_victory.cpp
         modal_victory.h
-        overlay_name.cpp
-        overlay_name.h
+        overlay_font.cpp
+        overlay_font.h
+        overlay_play.cpp
+        overlay_play.h
+        overlay_state.cpp
+        overlay_state.h
+        overlay_title.cpp
+        overlay_title.h
+        overlay_draw.cpp
+        overlay_draw.h
         state_interface.h
         state_character.cpp
         state_character.h

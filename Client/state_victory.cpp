@@ -6,7 +6,7 @@
 
 namespace darwin::state {
 
-    void StateVictory::Enter() {
+    void StateVictory::Enter(const proto::ClientParameter& client_parameter) {
         logger_->info("Entering victory state");
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
             logger_->info(

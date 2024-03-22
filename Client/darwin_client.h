@@ -10,13 +10,16 @@
 #include "Common/darwin_constant.h"
 #include "Common/darwin_service.pb.h"
 #include "Common/darwin_service.grpc.pb.h"
+#include "Common/client_parameter.pb.h"
 #include "frame/logger.h"
 
 namespace darwin {
 
     class DarwinClient {
     public:
-        DarwinClient(const std::string& name);
+        DarwinClient(
+            const std::string& name,
+            const proto::ClientParameter& client_parameter);
         ~DarwinClient();
         bool CreateCharacter(
             const std::string& name, 
@@ -30,9 +33,6 @@ namespace darwin {
         proto::Character MergeCharacter(
             proto::Character new_characters) const;
         std::vector<proto::ColorParameter> GetColorParameters() const;
-
-    public:
-        static std::string GetDefaultServerName();
 
     public:
         WorldSimulator& GetWorldSimulator() {
@@ -60,6 +60,7 @@ namespace darwin {
 
     private:
         mutable std::mutex mutex_;
+        proto::ClientParameter client_parameter_;
         proto::ReportInGameRequest report_request_;
         std::map<std::string, proto::Character> previous_characters_;
         std::string name_;
