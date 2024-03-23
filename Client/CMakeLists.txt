@@ -64,6 +64,7 @@ target_include_directories(DarwinClient
 
 target_link_libraries(DarwinClient
     PUBLIC
+        muparser::muparser
         Frame
         FrameGui
         FrameCommon

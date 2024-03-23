@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iomanip>
 #include <imgui.h>
+#include <muParser.h>
 
 #include "Common/vector.h"
 #include "overlay_font.h"
@@ -70,30 +71,78 @@ namespace darwin::overlay {
         return alignement;
     }
 
-    proto::PageElementText OverlayDraw::ReplaceText(
-        const proto::PageElementText& text) const
+    std::string OverlayDraw::ReplaceText(
+        const std::string& text) const
     {
-        proto::PageElementText replaced_text = text;
+        std::string replaced_text = text;
         for (const auto& [name, value] : string_parameters_) {
-            auto pos = replaced_text.text().find(name);
+            auto pos = text.find(name);
             if (pos != std::string::npos) {
-                std::string text = replaced_text.text();
-                text.replace(pos, name.size(), value);
-                replaced_text.set_text(text);
+                replaced_text.replace(pos, name.size(), value);
             }
         }
         for (const auto& [name, value] : double_parameters_) {
-            auto pos = replaced_text.text().find(name);
+            auto pos = text.find(name);
             if (pos != std::string::npos) {
                 std::ostringstream stream;
                 stream << std::fixed << std::setprecision(2) << value;
                 std::string value_as_string = stream.str();
-                std::string text = replaced_text.text();
-                text.replace(pos, name.size(), value_as_string);
-                replaced_text.set_text(text);
+                replaced_text.replace(pos, name.size(), value_as_string);
             }
         }
         return replaced_text;
+    }
+
+    double OverlayDraw::ReplaceDouble(
+        const std::string& text) const
+    {
+        try {
+            mu::Parser parser;
+            std::string temp = ReplaceText(text);
+            parser.SetExpr(temp);
+            return parser.Eval();
+        }
+        catch (mu::Parser::exception_type& e) {
+            throw std::runtime_error(e.GetMsg());
+        }
+    }
+
+    ImVec2 OverlayDraw::ReplaceStart(
+        const proto::PageElementLine& line,
+        const proto::Vector2& alignment) const
+    {
+        if (line.has_start()) {
+            return ImVec2(
+                line.start().x() * size_.x() - alignment.x(),
+                line.start().y() * size_.y() - alignment.y());
+        }
+        if (line.has_start_string()) {
+            return ImVec2(
+                ReplaceDouble(
+                    line.start_string().x()) * size_.x() - alignment.x(),
+                ReplaceDouble(
+                    line.start_string().y()) * size_.y() - alignment.y());
+        }
+        throw std::runtime_error("No start found.");
+    }
+
+    ImVec2 OverlayDraw::ReplaceEnd(
+        const proto::PageElementLine& line,
+        const proto::Vector2& alignment) const
+    {
+        if (line.has_end()) {
+            return ImVec2(
+                line.end().x() * size_.x() - alignment.x(),
+                line.end().y() * size_.y() - alignment.y());
+        }
+        if (line.has_end_string()) {
+            return ImVec2(
+                ReplaceDouble(
+                    line.end_string().x()) * size_.x() - alignment.x(),
+                ReplaceDouble(
+                    line.end_string().y()) * size_.y() - alignment.y());
+        }
+        throw std::runtime_error("No end found.");
     }
 
     void OverlayDraw::DrawText(
@@ -111,14 +160,8 @@ namespace darwin::overlay {
                 text.alignment_enum());
         // Draw the text.
         draw_list->AddText(
-            ImVec2(
-                text.position().x() * size_.x() - alignment.x(),
-                text.position().y() * size_.y() - alignment.y()),
-            ImColor(
-                static_cast<float>(text.color().x()),
-                static_cast<float>(text.color().y()),
-                static_cast<float>(text.color().z()),
-                static_cast<float>(text.color().w())),
+            ReplacePosition(text, alignment),
+            ReplaceColor(text),
             text.text().c_str());
         OverlayFont::GetInstance(client_parameter_).PopFont();
     }
@@ -138,14 +181,8 @@ namespace darwin::overlay {
         // Draw the image.
         draw_list->AddImage(
             reinterpret_cast<ImTextureID>(pointer_parameters_[image.image()]),
-            ImVec2(
-                image.position().x() * size_.x() - alignment.x(),
-                image.position().y() * size_.y() - alignment.y()),
-            ImVec2(
-                (image.position().x() + image.size().x()) * size_.x() - 
-                    alignment.x(),
-                (image.position().y() + image.size().y()) * size_.y() - 
-                    alignment.y()));
+            ReplacePosition(image, alignment),
+            ReplacePositionSize(image, alignment));
     }
 
     void OverlayDraw::DrawLine(
@@ -160,17 +197,9 @@ namespace darwin::overlay {
                 line.alignment_enum());
         // Draw the line.
         draw_list->AddLine(
-            ImVec2(
-                line.start().x() * size_.x() - alignment.x(),
-                line.start().y() * size_.y() - alignment.y()),
-            ImVec2(
-                line.end().x() * size_.x() - alignment.x(),
-                line.end().y() * size_.y() - alignment.y()),
-            ImColor(
-                static_cast<float>(line.color().x()),
-                static_cast<float>(line.color().y()),
-                static_cast<float>(line.color().z()),
-                static_cast<float>(line.color().w())),
+            ReplaceStart(line, alignment),
+            ReplaceEnd(line, alignment),
+            ReplaceColor(line),
             static_cast<float>(line.thickness()));
     }
 
@@ -213,7 +242,10 @@ namespace darwin::overlay {
         for (const auto& element : page_description_.page_elements()) {
             switch (element.PageElementOneof_case()) {
             case proto::PageElement::kText: {
-                DrawText(draw_list, ReplaceText(element.text()));
+                proto::PageElementText page_element_text = element.text();
+                page_element_text.set_text(
+                    ReplaceText(page_element_text.text()));
+                DrawText(draw_list, page_element_text);
                 break;
             }
             case proto::PageElement::kRectFilled: {

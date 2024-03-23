@@ -2,6 +2,7 @@
 
 #include "overlay_font.h"
 #include "Common/vector.h"
+#include "frame/logger.h"
 
 namespace darwin::overlay {
 
@@ -44,6 +45,7 @@ namespace darwin::overlay {
             }
         }
         int i = 0;
+        // TODO(anirul): Sort characters by distance before sending them.
         for (const auto& character : characters_) {
             if (character.name() == character_name_) {
                 continue;
@@ -68,7 +70,13 @@ namespace darwin::overlay {
                 character.color().z());
             i++;
         }
-        overlay_draw_.Draw();
+        if (!character_name_.empty() && !player_character.name().empty()) {
+            overlay_draw_.Draw();
+        }
+        else {
+            frame::Logger::GetInstance()->warn(
+                "No character name or characters is empty.");
+        }
         return true;
     }
 
