@@ -1,5 +1,7 @@
 #include "overlay_draw.h"
 
+#include <sstream>
+#include <iomanip>
 #include <imgui.h>
 
 #include "Common/vector.h"
@@ -66,6 +68,32 @@ namespace darwin::overlay {
             break;
         }
         return alignement;
+    }
+
+    proto::PageElementText OverlayDraw::ReplaceText(
+        const proto::PageElementText& text) const
+    {
+        proto::PageElementText replaced_text = text;
+        for (const auto& [name, value] : string_parameters_) {
+            auto pos = replaced_text.text().find(name);
+            if (pos != std::string::npos) {
+                std::string text = replaced_text.text();
+                text.replace(pos, name.size(), value);
+                replaced_text.set_text(text);
+            }
+        }
+        for (const auto& [name, value] : double_parameters_) {
+            auto pos = replaced_text.text().find(name);
+            if (pos != std::string::npos) {
+                std::ostringstream stream;
+                stream << std::fixed << std::setprecision(2) << value;
+                std::string value_as_string = stream.str();
+                std::string text = replaced_text.text();
+                text.replace(pos, name.size(), value_as_string);
+                replaced_text.set_text(text);
+            }
+        }
+        return replaced_text;
     }
 
     void OverlayDraw::DrawText(
@@ -185,7 +213,7 @@ namespace darwin::overlay {
         for (const auto& element : page_description_.page_elements()) {
             switch (element.PageElementOneof_case()) {
             case proto::PageElement::kText: {
-                DrawText(draw_list, element.text());
+                DrawText(draw_list, ReplaceText(element.text()));
                 break;
             }
             case proto::PageElement::kRectFilled: {

@@ -84,7 +84,43 @@
     "size": {
       "x": 1.0,
       "y": 1.0
-    }
+    },
+    "page_elements": [
+      {
+        "text": {
+          "text": "[player_character.name]",
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 0.9
+          },
+          "position": {
+            "x": 0.5,
+            "y": 0.4
+          },
+          "text_size_enum": "TEXT_SIZE_LARGE",
+          "alignment_enum": "ALIGNMENT_CENTER"
+        }
+      },
+      {
+        "text": {
+          "text": "player_character.mass",
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 0.9
+          },
+          "position": {
+            "x": 0.5,
+            "y": 0.6
+          },
+          "text_size_enum": "TEXT_SIZE_LARGE",
+          "alignment_enum": "ALIGNMENT_CENTER"
+        }
+      }
+    ]
   },
   "overlay_state": {
     "name": "overlay_state",
