@@ -7,6 +7,7 @@
 #include "Common/world_simulator.h"
 #include "Common/client_parameter.pb.h"
 #include "Common/darwin_service.pb.h"
+#include "overlay_draw.h"
 
 namespace darwin::overlay {
 
@@ -14,6 +15,7 @@ namespace darwin::overlay {
     public:
         OverlayPlay(
             const std::string& name,
+            const proto::ClientParameter& client_parameter,
             const proto::PageDescription& page_description);
         bool DrawCallback() override;
         bool End() const override;
@@ -33,6 +35,7 @@ namespace darwin::overlay {
         std::string character_name_;
         proto::PageDescription page_description_;
         std::vector<proto::Character> characters_;
+        OverlayDraw overlay_draw_;
     };
 
 } // namespace darwin::overlay.

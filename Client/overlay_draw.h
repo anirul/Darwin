@@ -24,6 +24,8 @@ namespace darwin::overlay {
         proto::Vector2 GetAlignment(
             const proto::Vector2& size,
             proto::AlignmentEnum alignment_enum) const;
+        proto::PageElementText ReplaceText(
+            const proto::PageElementText& text) const;
         void DrawText(
             ImDrawList* draw_list, 
             const proto::PageElementText& text);

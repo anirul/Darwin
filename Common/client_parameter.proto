@@ -47,14 +47,33 @@ message ClientParameter {
     PageDescription overlay_play = 6;
 }
 
+// ColorString
+// Next: 5
+message ColorString {
+    string red = 1;
+    string green = 2;
+    string blue = 3;
+    string alpha = 4;
+}
+
+// Vector2String
+// Next: 3
+message Vector2String {
+    string x = 1;
+    string y = 2;
+}
+
 // PageElementText
-// Next: 6
+// Next: 7
 message PageElementText {
     string text = 1;
-    Vector4 color = 2;
-    Vector2 position = 3;
-    TextSizeEnum text_size_enum = 4;
-    AlignmentEnum alignment_enum = 5;
+    oneof ColorOneof {
+        Vector4 color = 2;
+        ColorString color_string = 3;
+    }
+    Vector2 position = 4;
+    TextSizeEnum text_size_enum = 5;
+    AlignmentEnum alignment_enum = 6;
 }
 
 // PageElementImage
@@ -67,23 +86,35 @@ message PageElementImage {
 }
 
 // PageElementLine
-// Next: 6
+// Next: 9
 message PageElementLine {
-    Vector2 start = 1;
-    Vector2 end = 2;
-    Vector4 color = 3;
-    double thickness = 4;
-    AlignmentEnum alignment_enum = 5;
+    oneof StartOneof {
+        Vector2 start = 1;
+        Vector2String start_string = 2;
+    }
+    oneof EndOneof {
+        Vector2 end = 3;
+        Vector2String end_string = 4;
+    }
+    oneof ColorOneof {
+        Vector4 color = 5;
+        ColorString color_string = 6;
+    }
+    double thickness = 7;
+    AlignmentEnum alignment_enum = 8;
 }
 
 // PageElementRectFilled
-// Next: 6
+// Next: 7
 message PageElementRectFilled {
     Vector2 position = 1;
     Vector2 size = 2;
-    Vector4 color = 3;
-    double rounding = 4;
-    AlignmentEnum alignment_enum = 5;
+    oneof ColorOneof {
+        Vector4 color = 3;
+        ColorString color_string = 4;
+    }
+    double rounding = 5;
+    AlignmentEnum alignment_enum = 6;
 }
 
 // PageElement
