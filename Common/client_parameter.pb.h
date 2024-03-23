@@ -980,6 +980,12 @@ class PageElementText final :
     COLORONEOF_NOT_SET = 0,
   };
 
+  enum PositionOneofCase {
+    kPosition = 4,
+    kPositionString = 5,
+    POSITIONONEOF_NOT_SET = 0,
+  };
+
   static inline const PageElementText* internal_default_instance() {
     return reinterpret_cast<const PageElementText*>(
                &_PageElementText_default_instance_);
@@ -1059,11 +1065,12 @@ class PageElementText final :
 
   enum : int {
     kTextFieldNumber = 1,
-    kPositionFieldNumber = 4,
-    kTextSizeEnumFieldNumber = 5,
-    kAlignmentEnumFieldNumber = 6,
+    kTextSizeEnumFieldNumber = 6,
+    kAlignmentEnumFieldNumber = 7,
     kColorFieldNumber = 2,
     kColorStringFieldNumber = 3,
+    kPositionFieldNumber = 4,
+    kPositionStringFieldNumber = 5,
   };
   // string text = 1;
   void clear_text();
@@ -1079,25 +1086,7 @@ class PageElementText final :
   std::string* _internal_mutable_text();
   public:
 
-  // .proto.Vector2 position = 4;
-  bool has_position() const;
-  private:
-  bool _internal_has_position() const;
-  public:
-  void clear_position();
-  const ::proto::Vector2& position() const;
-  PROTOBUF_NODISCARD ::proto::Vector2* release_position();
-  ::proto::Vector2* mutable_position();
-  void set_allocated_position(::proto::Vector2* position);
-  private:
-  const ::proto::Vector2& _internal_position() const;
-  ::proto::Vector2* _internal_mutable_position();
-  public:
-  void unsafe_arena_set_allocated_position(
-      ::proto::Vector2* position);
-  ::proto::Vector2* unsafe_arena_release_position();
-
-  // .proto.TextSizeEnum text_size_enum = 5;
+  // .proto.TextSizeEnum text_size_enum = 6;
   void clear_text_size_enum();
   ::proto::TextSizeEnum text_size_enum() const;
   void set_text_size_enum(::proto::TextSizeEnum value);
@@ -1106,7 +1095,7 @@ class PageElementText final :
   void _internal_set_text_size_enum(::proto::TextSizeEnum value);
   public:
 
-  // .proto.AlignmentEnum alignment_enum = 6;
+  // .proto.AlignmentEnum alignment_enum = 7;
   void clear_alignment_enum();
   ::proto::AlignmentEnum alignment_enum() const;
   void set_alignment_enum(::proto::AlignmentEnum value);
@@ -1151,23 +1140,65 @@ class PageElementText final :
       ::proto::ColorString* color_string);
   ::proto::ColorString* unsafe_arena_release_color_string();
 
+  // .proto.Vector2 position = 4;
+  bool has_position() const;
+  private:
+  bool _internal_has_position() const;
+  public:
+  void clear_position();
+  const ::proto::Vector2& position() const;
+  PROTOBUF_NODISCARD ::proto::Vector2* release_position();
+  ::proto::Vector2* mutable_position();
+  void set_allocated_position(::proto::Vector2* position);
+  private:
+  const ::proto::Vector2& _internal_position() const;
+  ::proto::Vector2* _internal_mutable_position();
+  public:
+  void unsafe_arena_set_allocated_position(
+      ::proto::Vector2* position);
+  ::proto::Vector2* unsafe_arena_release_position();
+
+  // .proto.Vector2String position_string = 5;
+  bool has_position_string() const;
+  private:
+  bool _internal_has_position_string() const;
+  public:
+  void clear_position_string();
+  const ::proto::Vector2String& position_string() const;
+  PROTOBUF_NODISCARD ::proto::Vector2String* release_position_string();
+  ::proto::Vector2String* mutable_position_string();
+  void set_allocated_position_string(::proto::Vector2String* position_string);
+  private:
+  const ::proto::Vector2String& _internal_position_string() const;
+  ::proto::Vector2String* _internal_mutable_position_string();
+  public:
+  void unsafe_arena_set_allocated_position_string(
+      ::proto::Vector2String* position_string);
+  ::proto::Vector2String* unsafe_arena_release_position_string();
+
   void clear_ColorOneof();
   ColorOneofCase ColorOneof_case() const;
+  void clear_PositionOneof();
+  PositionOneofCase PositionOneof_case() const;
   // @@protoc_insertion_point(class_scope:proto.PageElementText)
  private:
   class _Internal;
   void set_has_color();
   void set_has_color_string();
+  void set_has_position();
+  void set_has_position_string();
 
   inline bool has_ColorOneof() const;
   inline void clear_has_ColorOneof();
+
+  inline bool has_PositionOneof() const;
+  inline void clear_has_PositionOneof();
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr text_;
-    ::proto::Vector2* position_;
     int text_size_enum_;
     int alignment_enum_;
     union ColorOneofUnion {
@@ -1176,8 +1207,14 @@ class PageElementText final :
       ::proto::Vector4* color_;
       ::proto::ColorString* color_string_;
     } ColorOneof_;
+    union PositionOneofUnion {
+      constexpr PositionOneofUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      ::proto::Vector2* position_;
+      ::proto::Vector2String* position_string_;
+    } PositionOneof_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    uint32_t _oneof_case_[1];
+    uint32_t _oneof_case_[2];
 
   };
   union { Impl_ _impl_; };
@@ -1228,6 +1265,18 @@ class PageElementImage final :
   static const PageElementImage& default_instance() {
     return *internal_default_instance();
   }
+  enum PositionOneofCase {
+    kPosition = 2,
+    kPositionString = 3,
+    POSITIONONEOF_NOT_SET = 0,
+  };
+
+  enum SizeOneofCase {
+    kSize = 4,
+    kSizeString = 5,
+    SIZEONEOF_NOT_SET = 0,
+  };
+
   static inline const PageElementImage* internal_default_instance() {
     return reinterpret_cast<const PageElementImage*>(
                &_PageElementImage_default_instance_);
@@ -1307,9 +1356,11 @@ class PageElementImage final :
 
   enum : int {
     kImageFieldNumber = 1,
+    kAlignmentEnumFieldNumber = 6,
     kPositionFieldNumber = 2,
-    kSizeFieldNumber = 3,
-    kAlignmentEnumFieldNumber = 4,
+    kPositionStringFieldNumber = 3,
+    kSizeFieldNumber = 4,
+    kSizeStringFieldNumber = 5,
   };
   // string image = 1;
   void clear_image();
@@ -1323,6 +1374,15 @@ class PageElementImage final :
   const std::string& _internal_image() const;
   inline PROTOBUF_ALWAYS_INLINE void _internal_set_image(const std::string& value);
   std::string* _internal_mutable_image();
+  public:
+
+  // .proto.AlignmentEnum alignment_enum = 6;
+  void clear_alignment_enum();
+  ::proto::AlignmentEnum alignment_enum() const;
+  void set_alignment_enum(::proto::AlignmentEnum value);
+  private:
+  ::proto::AlignmentEnum _internal_alignment_enum() const;
+  void _internal_set_alignment_enum(::proto::AlignmentEnum value);
   public:
 
   // .proto.Vector2 position = 2;
@@ -1343,7 +1403,25 @@ class PageElementImage final :
       ::proto::Vector2* position);
   ::proto::Vector2* unsafe_arena_release_position();
 
-  // .proto.Vector2 size = 3;
+  // .proto.Vector2String position_string = 3;
+  bool has_position_string() const;
+  private:
+  bool _internal_has_position_string() const;
+  public:
+  void clear_position_string();
+  const ::proto::Vector2String& position_string() const;
+  PROTOBUF_NODISCARD ::proto::Vector2String* release_position_string();
+  ::proto::Vector2String* mutable_position_string();
+  void set_allocated_position_string(::proto::Vector2String* position_string);
+  private:
+  const ::proto::Vector2String& _internal_position_string() const;
+  ::proto::Vector2String* _internal_mutable_position_string();
+  public:
+  void unsafe_arena_set_allocated_position_string(
+      ::proto::Vector2String* position_string);
+  ::proto::Vector2String* unsafe_arena_release_position_string();
+
+  // .proto.Vector2 size = 4;
   bool has_size() const;
   private:
   bool _internal_has_size() const;
@@ -1361,28 +1439,63 @@ class PageElementImage final :
       ::proto::Vector2* size);
   ::proto::Vector2* unsafe_arena_release_size();
 
-  // .proto.AlignmentEnum alignment_enum = 4;
-  void clear_alignment_enum();
-  ::proto::AlignmentEnum alignment_enum() const;
-  void set_alignment_enum(::proto::AlignmentEnum value);
+  // .proto.Vector2String size_string = 5;
+  bool has_size_string() const;
   private:
-  ::proto::AlignmentEnum _internal_alignment_enum() const;
-  void _internal_set_alignment_enum(::proto::AlignmentEnum value);
+  bool _internal_has_size_string() const;
   public:
+  void clear_size_string();
+  const ::proto::Vector2String& size_string() const;
+  PROTOBUF_NODISCARD ::proto::Vector2String* release_size_string();
+  ::proto::Vector2String* mutable_size_string();
+  void set_allocated_size_string(::proto::Vector2String* size_string);
+  private:
+  const ::proto::Vector2String& _internal_size_string() const;
+  ::proto::Vector2String* _internal_mutable_size_string();
+  public:
+  void unsafe_arena_set_allocated_size_string(
+      ::proto::Vector2String* size_string);
+  ::proto::Vector2String* unsafe_arena_release_size_string();
 
+  void clear_PositionOneof();
+  PositionOneofCase PositionOneof_case() const;
+  void clear_SizeOneof();
+  SizeOneofCase SizeOneof_case() const;
   // @@protoc_insertion_point(class_scope:proto.PageElementImage)
  private:
   class _Internal;
+  void set_has_position();
+  void set_has_position_string();
+  void set_has_size();
+  void set_has_size_string();
+
+  inline bool has_PositionOneof() const;
+  inline void clear_has_PositionOneof();
+
+  inline bool has_SizeOneof() const;
+  inline void clear_has_SizeOneof();
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr image_;
-    ::proto::Vector2* position_;
-    ::proto::Vector2* size_;
     int alignment_enum_;
+    union PositionOneofUnion {
+      constexpr PositionOneofUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      ::proto::Vector2* position_;
+      ::proto::Vector2String* position_string_;
+    } PositionOneof_;
+    union SizeOneofUnion {
+      constexpr SizeOneofUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      ::proto::Vector2* size_;
+      ::proto::Vector2String* size_string_;
+    } SizeOneof_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    uint32_t _oneof_case_[2];
+
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_client_5fparameter_2eproto;
@@ -1764,9 +1877,21 @@ class PageElementRectFilled final :
   static const PageElementRectFilled& default_instance() {
     return *internal_default_instance();
   }
+  enum PositionOneofCase {
+    kPosition = 1,
+    kPositionString = 2,
+    POSITIONONEOF_NOT_SET = 0,
+  };
+
+  enum SizeOneofCase {
+    kSize = 3,
+    kSizeString = 4,
+    SIZEONEOF_NOT_SET = 0,
+  };
+
   enum ColorOneofCase {
-    kColor = 3,
-    kColorString = 4,
+    kColor = 5,
+    kColorString = 6,
     COLORONEOF_NOT_SET = 0,
   };
 
@@ -1848,13 +1973,33 @@ class PageElementRectFilled final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kRoundingFieldNumber = 7,
+    kAlignmentEnumFieldNumber = 8,
     kPositionFieldNumber = 1,
-    kSizeFieldNumber = 2,
-    kRoundingFieldNumber = 5,
-    kAlignmentEnumFieldNumber = 6,
-    kColorFieldNumber = 3,
-    kColorStringFieldNumber = 4,
+    kPositionStringFieldNumber = 2,
+    kSizeFieldNumber = 3,
+    kSizeStringFieldNumber = 4,
+    kColorFieldNumber = 5,
+    kColorStringFieldNumber = 6,
   };
+  // double rounding = 7;
+  void clear_rounding();
+  double rounding() const;
+  void set_rounding(double value);
+  private:
+  double _internal_rounding() const;
+  void _internal_set_rounding(double value);
+  public:
+
+  // .proto.AlignmentEnum alignment_enum = 8;
+  void clear_alignment_enum();
+  ::proto::AlignmentEnum alignment_enum() const;
+  void set_alignment_enum(::proto::AlignmentEnum value);
+  private:
+  ::proto::AlignmentEnum _internal_alignment_enum() const;
+  void _internal_set_alignment_enum(::proto::AlignmentEnum value);
+  public:
+
   // .proto.Vector2 position = 1;
   bool has_position() const;
   private:
@@ -1873,7 +2018,25 @@ class PageElementRectFilled final :
       ::proto::Vector2* position);
   ::proto::Vector2* unsafe_arena_release_position();
 
-  // .proto.Vector2 size = 2;
+  // .proto.Vector2String position_string = 2;
+  bool has_position_string() const;
+  private:
+  bool _internal_has_position_string() const;
+  public:
+  void clear_position_string();
+  const ::proto::Vector2String& position_string() const;
+  PROTOBUF_NODISCARD ::proto::Vector2String* release_position_string();
+  ::proto::Vector2String* mutable_position_string();
+  void set_allocated_position_string(::proto::Vector2String* position_string);
+  private:
+  const ::proto::Vector2String& _internal_position_string() const;
+  ::proto::Vector2String* _internal_mutable_position_string();
+  public:
+  void unsafe_arena_set_allocated_position_string(
+      ::proto::Vector2String* position_string);
+  ::proto::Vector2String* unsafe_arena_release_position_string();
+
+  // .proto.Vector2 size = 3;
   bool has_size() const;
   private:
   bool _internal_has_size() const;
@@ -1891,25 +2054,25 @@ class PageElementRectFilled final :
       ::proto::Vector2* size);
   ::proto::Vector2* unsafe_arena_release_size();
 
-  // double rounding = 5;
-  void clear_rounding();
-  double rounding() const;
-  void set_rounding(double value);
+  // .proto.Vector2String size_string = 4;
+  bool has_size_string() const;
   private:
-  double _internal_rounding() const;
-  void _internal_set_rounding(double value);
+  bool _internal_has_size_string() const;
   public:
-
-  // .proto.AlignmentEnum alignment_enum = 6;
-  void clear_alignment_enum();
-  ::proto::AlignmentEnum alignment_enum() const;
-  void set_alignment_enum(::proto::AlignmentEnum value);
+  void clear_size_string();
+  const ::proto::Vector2String& size_string() const;
+  PROTOBUF_NODISCARD ::proto::Vector2String* release_size_string();
+  ::proto::Vector2String* mutable_size_string();
+  void set_allocated_size_string(::proto::Vector2String* size_string);
   private:
-  ::proto::AlignmentEnum _internal_alignment_enum() const;
-  void _internal_set_alignment_enum(::proto::AlignmentEnum value);
+  const ::proto::Vector2String& _internal_size_string() const;
+  ::proto::Vector2String* _internal_mutable_size_string();
   public:
+  void unsafe_arena_set_allocated_size_string(
+      ::proto::Vector2String* size_string);
+  ::proto::Vector2String* unsafe_arena_release_size_string();
 
-  // .proto.Vector4 color = 3;
+  // .proto.Vector4 color = 5;
   bool has_color() const;
   private:
   bool _internal_has_color() const;
@@ -1927,7 +2090,7 @@ class PageElementRectFilled final :
       ::proto::Vector4* color);
   ::proto::Vector4* unsafe_arena_release_color();
 
-  // .proto.ColorString color_string = 4;
+  // .proto.ColorString color_string = 6;
   bool has_color_string() const;
   private:
   bool _internal_has_color_string() const;
@@ -1945,13 +2108,27 @@ class PageElementRectFilled final :
       ::proto::ColorString* color_string);
   ::proto::ColorString* unsafe_arena_release_color_string();
 
+  void clear_PositionOneof();
+  PositionOneofCase PositionOneof_case() const;
+  void clear_SizeOneof();
+  SizeOneofCase SizeOneof_case() const;
   void clear_ColorOneof();
   ColorOneofCase ColorOneof_case() const;
   // @@protoc_insertion_point(class_scope:proto.PageElementRectFilled)
  private:
   class _Internal;
+  void set_has_position();
+  void set_has_position_string();
+  void set_has_size();
+  void set_has_size_string();
   void set_has_color();
   void set_has_color_string();
+
+  inline bool has_PositionOneof() const;
+  inline void clear_has_PositionOneof();
+
+  inline bool has_SizeOneof() const;
+  inline void clear_has_SizeOneof();
 
   inline bool has_ColorOneof() const;
   inline void clear_has_ColorOneof();
@@ -1960,10 +2137,20 @@ class PageElementRectFilled final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::proto::Vector2* position_;
-    ::proto::Vector2* size_;
     double rounding_;
     int alignment_enum_;
+    union PositionOneofUnion {
+      constexpr PositionOneofUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      ::proto::Vector2* position_;
+      ::proto::Vector2String* position_string_;
+    } PositionOneof_;
+    union SizeOneofUnion {
+      constexpr SizeOneofUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      ::proto::Vector2* size_;
+      ::proto::Vector2String* size_string_;
+    } SizeOneof_;
     union ColorOneofUnion {
       constexpr ColorOneofUnion() : _constinit_{} {}
         ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
@@ -1971,7 +2158,7 @@ class PageElementRectFilled final :
       ::proto::ColorString* color_string_;
     } ColorOneof_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    uint32_t _oneof_case_[1];
+    uint32_t _oneof_case_[3];
 
   };
   union { Impl_ _impl_; };
@@ -3379,90 +3566,145 @@ inline ::proto::ColorString* PageElementText::mutable_color_string() {
 
 // .proto.Vector2 position = 4;
 inline bool PageElementText::_internal_has_position() const {
-  return this != internal_default_instance() && _impl_.position_ != nullptr;
+  return PositionOneof_case() == kPosition;
 }
 inline bool PageElementText::has_position() const {
   return _internal_has_position();
 }
+inline void PageElementText::set_has_position() {
+  _impl_._oneof_case_[1] = kPosition;
+}
+inline ::proto::Vector2* PageElementText::release_position() {
+  // @@protoc_insertion_point(field_release:proto.PageElementText.position)
+  if (_internal_has_position()) {
+    clear_has_PositionOneof();
+    ::proto::Vector2* temp = _impl_.PositionOneof_.position_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.PositionOneof_.position_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
 inline const ::proto::Vector2& PageElementText::_internal_position() const {
-  const ::proto::Vector2* p = _impl_.position_;
-  return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector2&>(
-      ::proto::_Vector2_default_instance_);
+  return _internal_has_position()
+      ? *_impl_.PositionOneof_.position_
+      : reinterpret_cast< ::proto::Vector2&>(::proto::_Vector2_default_instance_);
 }
 inline const ::proto::Vector2& PageElementText::position() const {
   // @@protoc_insertion_point(field_get:proto.PageElementText.position)
   return _internal_position();
 }
-inline void PageElementText::unsafe_arena_set_allocated_position(
-    ::proto::Vector2* position) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.position_);
-  }
-  _impl_.position_ = position;
-  if (position) {
-    
+inline ::proto::Vector2* PageElementText::unsafe_arena_release_position() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementText.position)
+  if (_internal_has_position()) {
+    clear_has_PositionOneof();
+    ::proto::Vector2* temp = _impl_.PositionOneof_.position_;
+    _impl_.PositionOneof_.position_ = nullptr;
+    return temp;
   } else {
-    
+    return nullptr;
+  }
+}
+inline void PageElementText::unsafe_arena_set_allocated_position(::proto::Vector2* position) {
+  clear_PositionOneof();
+  if (position) {
+    set_has_position();
+    _impl_.PositionOneof_.position_ = position;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementText.position)
 }
-inline ::proto::Vector2* PageElementText::release_position() {
-  
-  ::proto::Vector2* temp = _impl_.position_;
-  _impl_.position_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::proto::Vector2* PageElementText::unsafe_arena_release_position() {
-  // @@protoc_insertion_point(field_release:proto.PageElementText.position)
-  
-  ::proto::Vector2* temp = _impl_.position_;
-  _impl_.position_ = nullptr;
-  return temp;
-}
 inline ::proto::Vector2* PageElementText::_internal_mutable_position() {
-  
-  if (_impl_.position_ == nullptr) {
-    auto* p = CreateMaybeMessage<::proto::Vector2>(GetArenaForAllocation());
-    _impl_.position_ = p;
+  if (!_internal_has_position()) {
+    clear_PositionOneof();
+    set_has_position();
+    _impl_.PositionOneof_.position_ = CreateMaybeMessage< ::proto::Vector2 >(GetArenaForAllocation());
   }
-  return _impl_.position_;
+  return _impl_.PositionOneof_.position_;
 }
 inline ::proto::Vector2* PageElementText::mutable_position() {
   ::proto::Vector2* _msg = _internal_mutable_position();
   // @@protoc_insertion_point(field_mutable:proto.PageElementText.position)
   return _msg;
 }
-inline void PageElementText::set_allocated_position(::proto::Vector2* position) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.position_);
-  }
-  if (position) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(position));
-    if (message_arena != submessage_arena) {
-      position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, position, submessage_arena);
+
+// .proto.Vector2String position_string = 5;
+inline bool PageElementText::_internal_has_position_string() const {
+  return PositionOneof_case() == kPositionString;
+}
+inline bool PageElementText::has_position_string() const {
+  return _internal_has_position_string();
+}
+inline void PageElementText::set_has_position_string() {
+  _impl_._oneof_case_[1] = kPositionString;
+}
+inline void PageElementText::clear_position_string() {
+  if (_internal_has_position_string()) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.PositionOneof_.position_string_;
     }
-    
-  } else {
-    
+    clear_has_PositionOneof();
   }
-  _impl_.position_ = position;
-  // @@protoc_insertion_point(field_set_allocated:proto.PageElementText.position)
+}
+inline ::proto::Vector2String* PageElementText::release_position_string() {
+  // @@protoc_insertion_point(field_release:proto.PageElementText.position_string)
+  if (_internal_has_position_string()) {
+    clear_has_PositionOneof();
+    ::proto::Vector2String* temp = _impl_.PositionOneof_.position_string_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.PositionOneof_.position_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::proto::Vector2String& PageElementText::_internal_position_string() const {
+  return _internal_has_position_string()
+      ? *_impl_.PositionOneof_.position_string_
+      : reinterpret_cast< ::proto::Vector2String&>(::proto::_Vector2String_default_instance_);
+}
+inline const ::proto::Vector2String& PageElementText::position_string() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementText.position_string)
+  return _internal_position_string();
+}
+inline ::proto::Vector2String* PageElementText::unsafe_arena_release_position_string() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementText.position_string)
+  if (_internal_has_position_string()) {
+    clear_has_PositionOneof();
+    ::proto::Vector2String* temp = _impl_.PositionOneof_.position_string_;
+    _impl_.PositionOneof_.position_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void PageElementText::unsafe_arena_set_allocated_position_string(::proto::Vector2String* position_string) {
+  clear_PositionOneof();
+  if (position_string) {
+    set_has_position_string();
+    _impl_.PositionOneof_.position_string_ = position_string;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementText.position_string)
+}
+inline ::proto::Vector2String* PageElementText::_internal_mutable_position_string() {
+  if (!_internal_has_position_string()) {
+    clear_PositionOneof();
+    set_has_position_string();
+    _impl_.PositionOneof_.position_string_ = CreateMaybeMessage< ::proto::Vector2String >(GetArenaForAllocation());
+  }
+  return _impl_.PositionOneof_.position_string_;
+}
+inline ::proto::Vector2String* PageElementText::mutable_position_string() {
+  ::proto::Vector2String* _msg = _internal_mutable_position_string();
+  // @@protoc_insertion_point(field_mutable:proto.PageElementText.position_string)
+  return _msg;
 }
 
-// .proto.TextSizeEnum text_size_enum = 5;
+// .proto.TextSizeEnum text_size_enum = 6;
 inline void PageElementText::clear_text_size_enum() {
   _impl_.text_size_enum_ = 0;
 }
@@ -3482,7 +3724,7 @@ inline void PageElementText::set_text_size_enum(::proto::TextSizeEnum value) {
   // @@protoc_insertion_point(field_set:proto.PageElementText.text_size_enum)
 }
 
-// .proto.AlignmentEnum alignment_enum = 6;
+// .proto.AlignmentEnum alignment_enum = 7;
 inline void PageElementText::clear_alignment_enum() {
   _impl_.alignment_enum_ = 0;
 }
@@ -3508,8 +3750,17 @@ inline bool PageElementText::has_ColorOneof() const {
 inline void PageElementText::clear_has_ColorOneof() {
   _impl_._oneof_case_[0] = COLORONEOF_NOT_SET;
 }
+inline bool PageElementText::has_PositionOneof() const {
+  return PositionOneof_case() != POSITIONONEOF_NOT_SET;
+}
+inline void PageElementText::clear_has_PositionOneof() {
+  _impl_._oneof_case_[1] = POSITIONONEOF_NOT_SET;
+}
 inline PageElementText::ColorOneofCase PageElementText::ColorOneof_case() const {
   return PageElementText::ColorOneofCase(_impl_._oneof_case_[0]);
+}
+inline PageElementText::PositionOneofCase PageElementText::PositionOneof_case() const {
+  return PageElementText::PositionOneofCase(_impl_._oneof_case_[1]);
 }
 // -------------------------------------------------------------------
 
@@ -3567,175 +3818,285 @@ inline void PageElementImage::set_allocated_image(std::string* image) {
 
 // .proto.Vector2 position = 2;
 inline bool PageElementImage::_internal_has_position() const {
-  return this != internal_default_instance() && _impl_.position_ != nullptr;
+  return PositionOneof_case() == kPosition;
 }
 inline bool PageElementImage::has_position() const {
   return _internal_has_position();
 }
+inline void PageElementImage::set_has_position() {
+  _impl_._oneof_case_[0] = kPosition;
+}
+inline ::proto::Vector2* PageElementImage::release_position() {
+  // @@protoc_insertion_point(field_release:proto.PageElementImage.position)
+  if (_internal_has_position()) {
+    clear_has_PositionOneof();
+    ::proto::Vector2* temp = _impl_.PositionOneof_.position_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.PositionOneof_.position_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
 inline const ::proto::Vector2& PageElementImage::_internal_position() const {
-  const ::proto::Vector2* p = _impl_.position_;
-  return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector2&>(
-      ::proto::_Vector2_default_instance_);
+  return _internal_has_position()
+      ? *_impl_.PositionOneof_.position_
+      : reinterpret_cast< ::proto::Vector2&>(::proto::_Vector2_default_instance_);
 }
 inline const ::proto::Vector2& PageElementImage::position() const {
   // @@protoc_insertion_point(field_get:proto.PageElementImage.position)
   return _internal_position();
 }
-inline void PageElementImage::unsafe_arena_set_allocated_position(
-    ::proto::Vector2* position) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.position_);
-  }
-  _impl_.position_ = position;
-  if (position) {
-    
+inline ::proto::Vector2* PageElementImage::unsafe_arena_release_position() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementImage.position)
+  if (_internal_has_position()) {
+    clear_has_PositionOneof();
+    ::proto::Vector2* temp = _impl_.PositionOneof_.position_;
+    _impl_.PositionOneof_.position_ = nullptr;
+    return temp;
   } else {
-    
+    return nullptr;
+  }
+}
+inline void PageElementImage::unsafe_arena_set_allocated_position(::proto::Vector2* position) {
+  clear_PositionOneof();
+  if (position) {
+    set_has_position();
+    _impl_.PositionOneof_.position_ = position;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementImage.position)
 }
-inline ::proto::Vector2* PageElementImage::release_position() {
-  
-  ::proto::Vector2* temp = _impl_.position_;
-  _impl_.position_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::proto::Vector2* PageElementImage::unsafe_arena_release_position() {
-  // @@protoc_insertion_point(field_release:proto.PageElementImage.position)
-  
-  ::proto::Vector2* temp = _impl_.position_;
-  _impl_.position_ = nullptr;
-  return temp;
-}
 inline ::proto::Vector2* PageElementImage::_internal_mutable_position() {
-  
-  if (_impl_.position_ == nullptr) {
-    auto* p = CreateMaybeMessage<::proto::Vector2>(GetArenaForAllocation());
-    _impl_.position_ = p;
+  if (!_internal_has_position()) {
+    clear_PositionOneof();
+    set_has_position();
+    _impl_.PositionOneof_.position_ = CreateMaybeMessage< ::proto::Vector2 >(GetArenaForAllocation());
   }
-  return _impl_.position_;
+  return _impl_.PositionOneof_.position_;
 }
 inline ::proto::Vector2* PageElementImage::mutable_position() {
   ::proto::Vector2* _msg = _internal_mutable_position();
   // @@protoc_insertion_point(field_mutable:proto.PageElementImage.position)
   return _msg;
 }
-inline void PageElementImage::set_allocated_position(::proto::Vector2* position) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.position_);
-  }
-  if (position) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(position));
-    if (message_arena != submessage_arena) {
-      position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, position, submessage_arena);
+
+// .proto.Vector2String position_string = 3;
+inline bool PageElementImage::_internal_has_position_string() const {
+  return PositionOneof_case() == kPositionString;
+}
+inline bool PageElementImage::has_position_string() const {
+  return _internal_has_position_string();
+}
+inline void PageElementImage::set_has_position_string() {
+  _impl_._oneof_case_[0] = kPositionString;
+}
+inline void PageElementImage::clear_position_string() {
+  if (_internal_has_position_string()) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.PositionOneof_.position_string_;
     }
-    
-  } else {
-    
+    clear_has_PositionOneof();
   }
-  _impl_.position_ = position;
-  // @@protoc_insertion_point(field_set_allocated:proto.PageElementImage.position)
+}
+inline ::proto::Vector2String* PageElementImage::release_position_string() {
+  // @@protoc_insertion_point(field_release:proto.PageElementImage.position_string)
+  if (_internal_has_position_string()) {
+    clear_has_PositionOneof();
+    ::proto::Vector2String* temp = _impl_.PositionOneof_.position_string_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.PositionOneof_.position_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::proto::Vector2String& PageElementImage::_internal_position_string() const {
+  return _internal_has_position_string()
+      ? *_impl_.PositionOneof_.position_string_
+      : reinterpret_cast< ::proto::Vector2String&>(::proto::_Vector2String_default_instance_);
+}
+inline const ::proto::Vector2String& PageElementImage::position_string() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementImage.position_string)
+  return _internal_position_string();
+}
+inline ::proto::Vector2String* PageElementImage::unsafe_arena_release_position_string() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementImage.position_string)
+  if (_internal_has_position_string()) {
+    clear_has_PositionOneof();
+    ::proto::Vector2String* temp = _impl_.PositionOneof_.position_string_;
+    _impl_.PositionOneof_.position_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void PageElementImage::unsafe_arena_set_allocated_position_string(::proto::Vector2String* position_string) {
+  clear_PositionOneof();
+  if (position_string) {
+    set_has_position_string();
+    _impl_.PositionOneof_.position_string_ = position_string;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementImage.position_string)
+}
+inline ::proto::Vector2String* PageElementImage::_internal_mutable_position_string() {
+  if (!_internal_has_position_string()) {
+    clear_PositionOneof();
+    set_has_position_string();
+    _impl_.PositionOneof_.position_string_ = CreateMaybeMessage< ::proto::Vector2String >(GetArenaForAllocation());
+  }
+  return _impl_.PositionOneof_.position_string_;
+}
+inline ::proto::Vector2String* PageElementImage::mutable_position_string() {
+  ::proto::Vector2String* _msg = _internal_mutable_position_string();
+  // @@protoc_insertion_point(field_mutable:proto.PageElementImage.position_string)
+  return _msg;
 }
 
-// .proto.Vector2 size = 3;
+// .proto.Vector2 size = 4;
 inline bool PageElementImage::_internal_has_size() const {
-  return this != internal_default_instance() && _impl_.size_ != nullptr;
+  return SizeOneof_case() == kSize;
 }
 inline bool PageElementImage::has_size() const {
   return _internal_has_size();
 }
+inline void PageElementImage::set_has_size() {
+  _impl_._oneof_case_[1] = kSize;
+}
+inline ::proto::Vector2* PageElementImage::release_size() {
+  // @@protoc_insertion_point(field_release:proto.PageElementImage.size)
+  if (_internal_has_size()) {
+    clear_has_SizeOneof();
+    ::proto::Vector2* temp = _impl_.SizeOneof_.size_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.SizeOneof_.size_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
 inline const ::proto::Vector2& PageElementImage::_internal_size() const {
-  const ::proto::Vector2* p = _impl_.size_;
-  return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector2&>(
-      ::proto::_Vector2_default_instance_);
+  return _internal_has_size()
+      ? *_impl_.SizeOneof_.size_
+      : reinterpret_cast< ::proto::Vector2&>(::proto::_Vector2_default_instance_);
 }
 inline const ::proto::Vector2& PageElementImage::size() const {
   // @@protoc_insertion_point(field_get:proto.PageElementImage.size)
   return _internal_size();
 }
-inline void PageElementImage::unsafe_arena_set_allocated_size(
-    ::proto::Vector2* size) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.size_);
-  }
-  _impl_.size_ = size;
-  if (size) {
-    
+inline ::proto::Vector2* PageElementImage::unsafe_arena_release_size() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementImage.size)
+  if (_internal_has_size()) {
+    clear_has_SizeOneof();
+    ::proto::Vector2* temp = _impl_.SizeOneof_.size_;
+    _impl_.SizeOneof_.size_ = nullptr;
+    return temp;
   } else {
-    
+    return nullptr;
+  }
+}
+inline void PageElementImage::unsafe_arena_set_allocated_size(::proto::Vector2* size) {
+  clear_SizeOneof();
+  if (size) {
+    set_has_size();
+    _impl_.SizeOneof_.size_ = size;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementImage.size)
 }
-inline ::proto::Vector2* PageElementImage::release_size() {
-  
-  ::proto::Vector2* temp = _impl_.size_;
-  _impl_.size_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::proto::Vector2* PageElementImage::unsafe_arena_release_size() {
-  // @@protoc_insertion_point(field_release:proto.PageElementImage.size)
-  
-  ::proto::Vector2* temp = _impl_.size_;
-  _impl_.size_ = nullptr;
-  return temp;
-}
 inline ::proto::Vector2* PageElementImage::_internal_mutable_size() {
-  
-  if (_impl_.size_ == nullptr) {
-    auto* p = CreateMaybeMessage<::proto::Vector2>(GetArenaForAllocation());
-    _impl_.size_ = p;
+  if (!_internal_has_size()) {
+    clear_SizeOneof();
+    set_has_size();
+    _impl_.SizeOneof_.size_ = CreateMaybeMessage< ::proto::Vector2 >(GetArenaForAllocation());
   }
-  return _impl_.size_;
+  return _impl_.SizeOneof_.size_;
 }
 inline ::proto::Vector2* PageElementImage::mutable_size() {
   ::proto::Vector2* _msg = _internal_mutable_size();
   // @@protoc_insertion_point(field_mutable:proto.PageElementImage.size)
   return _msg;
 }
-inline void PageElementImage::set_allocated_size(::proto::Vector2* size) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.size_);
-  }
-  if (size) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(size));
-    if (message_arena != submessage_arena) {
-      size = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, size, submessage_arena);
+
+// .proto.Vector2String size_string = 5;
+inline bool PageElementImage::_internal_has_size_string() const {
+  return SizeOneof_case() == kSizeString;
+}
+inline bool PageElementImage::has_size_string() const {
+  return _internal_has_size_string();
+}
+inline void PageElementImage::set_has_size_string() {
+  _impl_._oneof_case_[1] = kSizeString;
+}
+inline void PageElementImage::clear_size_string() {
+  if (_internal_has_size_string()) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.SizeOneof_.size_string_;
     }
-    
-  } else {
-    
+    clear_has_SizeOneof();
   }
-  _impl_.size_ = size;
-  // @@protoc_insertion_point(field_set_allocated:proto.PageElementImage.size)
+}
+inline ::proto::Vector2String* PageElementImage::release_size_string() {
+  // @@protoc_insertion_point(field_release:proto.PageElementImage.size_string)
+  if (_internal_has_size_string()) {
+    clear_has_SizeOneof();
+    ::proto::Vector2String* temp = _impl_.SizeOneof_.size_string_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.SizeOneof_.size_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::proto::Vector2String& PageElementImage::_internal_size_string() const {
+  return _internal_has_size_string()
+      ? *_impl_.SizeOneof_.size_string_
+      : reinterpret_cast< ::proto::Vector2String&>(::proto::_Vector2String_default_instance_);
+}
+inline const ::proto::Vector2String& PageElementImage::size_string() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementImage.size_string)
+  return _internal_size_string();
+}
+inline ::proto::Vector2String* PageElementImage::unsafe_arena_release_size_string() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementImage.size_string)
+  if (_internal_has_size_string()) {
+    clear_has_SizeOneof();
+    ::proto::Vector2String* temp = _impl_.SizeOneof_.size_string_;
+    _impl_.SizeOneof_.size_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void PageElementImage::unsafe_arena_set_allocated_size_string(::proto::Vector2String* size_string) {
+  clear_SizeOneof();
+  if (size_string) {
+    set_has_size_string();
+    _impl_.SizeOneof_.size_string_ = size_string;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementImage.size_string)
+}
+inline ::proto::Vector2String* PageElementImage::_internal_mutable_size_string() {
+  if (!_internal_has_size_string()) {
+    clear_SizeOneof();
+    set_has_size_string();
+    _impl_.SizeOneof_.size_string_ = CreateMaybeMessage< ::proto::Vector2String >(GetArenaForAllocation());
+  }
+  return _impl_.SizeOneof_.size_string_;
+}
+inline ::proto::Vector2String* PageElementImage::mutable_size_string() {
+  ::proto::Vector2String* _msg = _internal_mutable_size_string();
+  // @@protoc_insertion_point(field_mutable:proto.PageElementImage.size_string)
+  return _msg;
 }
 
-// .proto.AlignmentEnum alignment_enum = 4;
+// .proto.AlignmentEnum alignment_enum = 6;
 inline void PageElementImage::clear_alignment_enum() {
   _impl_.alignment_enum_ = 0;
 }
@@ -3755,6 +4116,24 @@ inline void PageElementImage::set_alignment_enum(::proto::AlignmentEnum value) {
   // @@protoc_insertion_point(field_set:proto.PageElementImage.alignment_enum)
 }
 
+inline bool PageElementImage::has_PositionOneof() const {
+  return PositionOneof_case() != POSITIONONEOF_NOT_SET;
+}
+inline void PageElementImage::clear_has_PositionOneof() {
+  _impl_._oneof_case_[0] = POSITIONONEOF_NOT_SET;
+}
+inline bool PageElementImage::has_SizeOneof() const {
+  return SizeOneof_case() != SIZEONEOF_NOT_SET;
+}
+inline void PageElementImage::clear_has_SizeOneof() {
+  _impl_._oneof_case_[1] = SIZEONEOF_NOT_SET;
+}
+inline PageElementImage::PositionOneofCase PageElementImage::PositionOneof_case() const {
+  return PageElementImage::PositionOneofCase(_impl_._oneof_case_[0]);
+}
+inline PageElementImage::SizeOneofCase PageElementImage::SizeOneof_case() const {
+  return PageElementImage::SizeOneofCase(_impl_._oneof_case_[1]);
+}
 // -------------------------------------------------------------------
 
 // PageElementLine
@@ -4252,175 +4631,285 @@ inline PageElementLine::ColorOneofCase PageElementLine::ColorOneof_case() const 
 
 // .proto.Vector2 position = 1;
 inline bool PageElementRectFilled::_internal_has_position() const {
-  return this != internal_default_instance() && _impl_.position_ != nullptr;
+  return PositionOneof_case() == kPosition;
 }
 inline bool PageElementRectFilled::has_position() const {
   return _internal_has_position();
 }
+inline void PageElementRectFilled::set_has_position() {
+  _impl_._oneof_case_[0] = kPosition;
+}
+inline ::proto::Vector2* PageElementRectFilled::release_position() {
+  // @@protoc_insertion_point(field_release:proto.PageElementRectFilled.position)
+  if (_internal_has_position()) {
+    clear_has_PositionOneof();
+    ::proto::Vector2* temp = _impl_.PositionOneof_.position_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.PositionOneof_.position_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
 inline const ::proto::Vector2& PageElementRectFilled::_internal_position() const {
-  const ::proto::Vector2* p = _impl_.position_;
-  return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector2&>(
-      ::proto::_Vector2_default_instance_);
+  return _internal_has_position()
+      ? *_impl_.PositionOneof_.position_
+      : reinterpret_cast< ::proto::Vector2&>(::proto::_Vector2_default_instance_);
 }
 inline const ::proto::Vector2& PageElementRectFilled::position() const {
   // @@protoc_insertion_point(field_get:proto.PageElementRectFilled.position)
   return _internal_position();
 }
-inline void PageElementRectFilled::unsafe_arena_set_allocated_position(
-    ::proto::Vector2* position) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.position_);
-  }
-  _impl_.position_ = position;
-  if (position) {
-    
+inline ::proto::Vector2* PageElementRectFilled::unsafe_arena_release_position() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementRectFilled.position)
+  if (_internal_has_position()) {
+    clear_has_PositionOneof();
+    ::proto::Vector2* temp = _impl_.PositionOneof_.position_;
+    _impl_.PositionOneof_.position_ = nullptr;
+    return temp;
   } else {
-    
+    return nullptr;
+  }
+}
+inline void PageElementRectFilled::unsafe_arena_set_allocated_position(::proto::Vector2* position) {
+  clear_PositionOneof();
+  if (position) {
+    set_has_position();
+    _impl_.PositionOneof_.position_ = position;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementRectFilled.position)
 }
-inline ::proto::Vector2* PageElementRectFilled::release_position() {
-  
-  ::proto::Vector2* temp = _impl_.position_;
-  _impl_.position_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::proto::Vector2* PageElementRectFilled::unsafe_arena_release_position() {
-  // @@protoc_insertion_point(field_release:proto.PageElementRectFilled.position)
-  
-  ::proto::Vector2* temp = _impl_.position_;
-  _impl_.position_ = nullptr;
-  return temp;
-}
 inline ::proto::Vector2* PageElementRectFilled::_internal_mutable_position() {
-  
-  if (_impl_.position_ == nullptr) {
-    auto* p = CreateMaybeMessage<::proto::Vector2>(GetArenaForAllocation());
-    _impl_.position_ = p;
+  if (!_internal_has_position()) {
+    clear_PositionOneof();
+    set_has_position();
+    _impl_.PositionOneof_.position_ = CreateMaybeMessage< ::proto::Vector2 >(GetArenaForAllocation());
   }
-  return _impl_.position_;
+  return _impl_.PositionOneof_.position_;
 }
 inline ::proto::Vector2* PageElementRectFilled::mutable_position() {
   ::proto::Vector2* _msg = _internal_mutable_position();
   // @@protoc_insertion_point(field_mutable:proto.PageElementRectFilled.position)
   return _msg;
 }
-inline void PageElementRectFilled::set_allocated_position(::proto::Vector2* position) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.position_);
-  }
-  if (position) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(position));
-    if (message_arena != submessage_arena) {
-      position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, position, submessage_arena);
+
+// .proto.Vector2String position_string = 2;
+inline bool PageElementRectFilled::_internal_has_position_string() const {
+  return PositionOneof_case() == kPositionString;
+}
+inline bool PageElementRectFilled::has_position_string() const {
+  return _internal_has_position_string();
+}
+inline void PageElementRectFilled::set_has_position_string() {
+  _impl_._oneof_case_[0] = kPositionString;
+}
+inline void PageElementRectFilled::clear_position_string() {
+  if (_internal_has_position_string()) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.PositionOneof_.position_string_;
     }
-    
-  } else {
-    
+    clear_has_PositionOneof();
   }
-  _impl_.position_ = position;
-  // @@protoc_insertion_point(field_set_allocated:proto.PageElementRectFilled.position)
+}
+inline ::proto::Vector2String* PageElementRectFilled::release_position_string() {
+  // @@protoc_insertion_point(field_release:proto.PageElementRectFilled.position_string)
+  if (_internal_has_position_string()) {
+    clear_has_PositionOneof();
+    ::proto::Vector2String* temp = _impl_.PositionOneof_.position_string_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.PositionOneof_.position_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::proto::Vector2String& PageElementRectFilled::_internal_position_string() const {
+  return _internal_has_position_string()
+      ? *_impl_.PositionOneof_.position_string_
+      : reinterpret_cast< ::proto::Vector2String&>(::proto::_Vector2String_default_instance_);
+}
+inline const ::proto::Vector2String& PageElementRectFilled::position_string() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementRectFilled.position_string)
+  return _internal_position_string();
+}
+inline ::proto::Vector2String* PageElementRectFilled::unsafe_arena_release_position_string() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementRectFilled.position_string)
+  if (_internal_has_position_string()) {
+    clear_has_PositionOneof();
+    ::proto::Vector2String* temp = _impl_.PositionOneof_.position_string_;
+    _impl_.PositionOneof_.position_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void PageElementRectFilled::unsafe_arena_set_allocated_position_string(::proto::Vector2String* position_string) {
+  clear_PositionOneof();
+  if (position_string) {
+    set_has_position_string();
+    _impl_.PositionOneof_.position_string_ = position_string;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementRectFilled.position_string)
+}
+inline ::proto::Vector2String* PageElementRectFilled::_internal_mutable_position_string() {
+  if (!_internal_has_position_string()) {
+    clear_PositionOneof();
+    set_has_position_string();
+    _impl_.PositionOneof_.position_string_ = CreateMaybeMessage< ::proto::Vector2String >(GetArenaForAllocation());
+  }
+  return _impl_.PositionOneof_.position_string_;
+}
+inline ::proto::Vector2String* PageElementRectFilled::mutable_position_string() {
+  ::proto::Vector2String* _msg = _internal_mutable_position_string();
+  // @@protoc_insertion_point(field_mutable:proto.PageElementRectFilled.position_string)
+  return _msg;
 }
 
-// .proto.Vector2 size = 2;
+// .proto.Vector2 size = 3;
 inline bool PageElementRectFilled::_internal_has_size() const {
-  return this != internal_default_instance() && _impl_.size_ != nullptr;
+  return SizeOneof_case() == kSize;
 }
 inline bool PageElementRectFilled::has_size() const {
   return _internal_has_size();
 }
+inline void PageElementRectFilled::set_has_size() {
+  _impl_._oneof_case_[1] = kSize;
+}
+inline ::proto::Vector2* PageElementRectFilled::release_size() {
+  // @@protoc_insertion_point(field_release:proto.PageElementRectFilled.size)
+  if (_internal_has_size()) {
+    clear_has_SizeOneof();
+    ::proto::Vector2* temp = _impl_.SizeOneof_.size_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.SizeOneof_.size_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
 inline const ::proto::Vector2& PageElementRectFilled::_internal_size() const {
-  const ::proto::Vector2* p = _impl_.size_;
-  return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector2&>(
-      ::proto::_Vector2_default_instance_);
+  return _internal_has_size()
+      ? *_impl_.SizeOneof_.size_
+      : reinterpret_cast< ::proto::Vector2&>(::proto::_Vector2_default_instance_);
 }
 inline const ::proto::Vector2& PageElementRectFilled::size() const {
   // @@protoc_insertion_point(field_get:proto.PageElementRectFilled.size)
   return _internal_size();
 }
-inline void PageElementRectFilled::unsafe_arena_set_allocated_size(
-    ::proto::Vector2* size) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.size_);
-  }
-  _impl_.size_ = size;
-  if (size) {
-    
+inline ::proto::Vector2* PageElementRectFilled::unsafe_arena_release_size() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementRectFilled.size)
+  if (_internal_has_size()) {
+    clear_has_SizeOneof();
+    ::proto::Vector2* temp = _impl_.SizeOneof_.size_;
+    _impl_.SizeOneof_.size_ = nullptr;
+    return temp;
   } else {
-    
+    return nullptr;
+  }
+}
+inline void PageElementRectFilled::unsafe_arena_set_allocated_size(::proto::Vector2* size) {
+  clear_SizeOneof();
+  if (size) {
+    set_has_size();
+    _impl_.SizeOneof_.size_ = size;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementRectFilled.size)
 }
-inline ::proto::Vector2* PageElementRectFilled::release_size() {
-  
-  ::proto::Vector2* temp = _impl_.size_;
-  _impl_.size_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::proto::Vector2* PageElementRectFilled::unsafe_arena_release_size() {
-  // @@protoc_insertion_point(field_release:proto.PageElementRectFilled.size)
-  
-  ::proto::Vector2* temp = _impl_.size_;
-  _impl_.size_ = nullptr;
-  return temp;
-}
 inline ::proto::Vector2* PageElementRectFilled::_internal_mutable_size() {
-  
-  if (_impl_.size_ == nullptr) {
-    auto* p = CreateMaybeMessage<::proto::Vector2>(GetArenaForAllocation());
-    _impl_.size_ = p;
+  if (!_internal_has_size()) {
+    clear_SizeOneof();
+    set_has_size();
+    _impl_.SizeOneof_.size_ = CreateMaybeMessage< ::proto::Vector2 >(GetArenaForAllocation());
   }
-  return _impl_.size_;
+  return _impl_.SizeOneof_.size_;
 }
 inline ::proto::Vector2* PageElementRectFilled::mutable_size() {
   ::proto::Vector2* _msg = _internal_mutable_size();
   // @@protoc_insertion_point(field_mutable:proto.PageElementRectFilled.size)
   return _msg;
 }
-inline void PageElementRectFilled::set_allocated_size(::proto::Vector2* size) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.size_);
-  }
-  if (size) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(size));
-    if (message_arena != submessage_arena) {
-      size = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, size, submessage_arena);
+
+// .proto.Vector2String size_string = 4;
+inline bool PageElementRectFilled::_internal_has_size_string() const {
+  return SizeOneof_case() == kSizeString;
+}
+inline bool PageElementRectFilled::has_size_string() const {
+  return _internal_has_size_string();
+}
+inline void PageElementRectFilled::set_has_size_string() {
+  _impl_._oneof_case_[1] = kSizeString;
+}
+inline void PageElementRectFilled::clear_size_string() {
+  if (_internal_has_size_string()) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.SizeOneof_.size_string_;
     }
-    
-  } else {
-    
+    clear_has_SizeOneof();
   }
-  _impl_.size_ = size;
-  // @@protoc_insertion_point(field_set_allocated:proto.PageElementRectFilled.size)
+}
+inline ::proto::Vector2String* PageElementRectFilled::release_size_string() {
+  // @@protoc_insertion_point(field_release:proto.PageElementRectFilled.size_string)
+  if (_internal_has_size_string()) {
+    clear_has_SizeOneof();
+    ::proto::Vector2String* temp = _impl_.SizeOneof_.size_string_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.SizeOneof_.size_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::proto::Vector2String& PageElementRectFilled::_internal_size_string() const {
+  return _internal_has_size_string()
+      ? *_impl_.SizeOneof_.size_string_
+      : reinterpret_cast< ::proto::Vector2String&>(::proto::_Vector2String_default_instance_);
+}
+inline const ::proto::Vector2String& PageElementRectFilled::size_string() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementRectFilled.size_string)
+  return _internal_size_string();
+}
+inline ::proto::Vector2String* PageElementRectFilled::unsafe_arena_release_size_string() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementRectFilled.size_string)
+  if (_internal_has_size_string()) {
+    clear_has_SizeOneof();
+    ::proto::Vector2String* temp = _impl_.SizeOneof_.size_string_;
+    _impl_.SizeOneof_.size_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void PageElementRectFilled::unsafe_arena_set_allocated_size_string(::proto::Vector2String* size_string) {
+  clear_SizeOneof();
+  if (size_string) {
+    set_has_size_string();
+    _impl_.SizeOneof_.size_string_ = size_string;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementRectFilled.size_string)
+}
+inline ::proto::Vector2String* PageElementRectFilled::_internal_mutable_size_string() {
+  if (!_internal_has_size_string()) {
+    clear_SizeOneof();
+    set_has_size_string();
+    _impl_.SizeOneof_.size_string_ = CreateMaybeMessage< ::proto::Vector2String >(GetArenaForAllocation());
+  }
+  return _impl_.SizeOneof_.size_string_;
+}
+inline ::proto::Vector2String* PageElementRectFilled::mutable_size_string() {
+  ::proto::Vector2String* _msg = _internal_mutable_size_string();
+  // @@protoc_insertion_point(field_mutable:proto.PageElementRectFilled.size_string)
+  return _msg;
 }
 
-// .proto.Vector4 color = 3;
+// .proto.Vector4 color = 5;
 inline bool PageElementRectFilled::_internal_has_color() const {
   return ColorOneof_case() == kColor;
 }
@@ -4428,7 +4917,7 @@ inline bool PageElementRectFilled::has_color() const {
   return _internal_has_color();
 }
 inline void PageElementRectFilled::set_has_color() {
-  _impl_._oneof_case_[0] = kColor;
+  _impl_._oneof_case_[2] = kColor;
 }
 inline ::proto::Vector4* PageElementRectFilled::release_color() {
   // @@protoc_insertion_point(field_release:proto.PageElementRectFilled.color)
@@ -4486,7 +4975,7 @@ inline ::proto::Vector4* PageElementRectFilled::mutable_color() {
   return _msg;
 }
 
-// .proto.ColorString color_string = 4;
+// .proto.ColorString color_string = 6;
 inline bool PageElementRectFilled::_internal_has_color_string() const {
   return ColorOneof_case() == kColorString;
 }
@@ -4494,7 +4983,7 @@ inline bool PageElementRectFilled::has_color_string() const {
   return _internal_has_color_string();
 }
 inline void PageElementRectFilled::set_has_color_string() {
-  _impl_._oneof_case_[0] = kColorString;
+  _impl_._oneof_case_[2] = kColorString;
 }
 inline void PageElementRectFilled::clear_color_string() {
   if (_internal_has_color_string()) {
@@ -4560,7 +5049,7 @@ inline ::proto::ColorString* PageElementRectFilled::mutable_color_string() {
   return _msg;
 }
 
-// double rounding = 5;
+// double rounding = 7;
 inline void PageElementRectFilled::clear_rounding() {
   _impl_.rounding_ = 0;
 }
@@ -4580,7 +5069,7 @@ inline void PageElementRectFilled::set_rounding(double value) {
   // @@protoc_insertion_point(field_set:proto.PageElementRectFilled.rounding)
 }
 
-// .proto.AlignmentEnum alignment_enum = 6;
+// .proto.AlignmentEnum alignment_enum = 8;
 inline void PageElementRectFilled::clear_alignment_enum() {
   _impl_.alignment_enum_ = 0;
 }
@@ -4600,14 +5089,32 @@ inline void PageElementRectFilled::set_alignment_enum(::proto::AlignmentEnum val
   // @@protoc_insertion_point(field_set:proto.PageElementRectFilled.alignment_enum)
 }
 
+inline bool PageElementRectFilled::has_PositionOneof() const {
+  return PositionOneof_case() != POSITIONONEOF_NOT_SET;
+}
+inline void PageElementRectFilled::clear_has_PositionOneof() {
+  _impl_._oneof_case_[0] = POSITIONONEOF_NOT_SET;
+}
+inline bool PageElementRectFilled::has_SizeOneof() const {
+  return SizeOneof_case() != SIZEONEOF_NOT_SET;
+}
+inline void PageElementRectFilled::clear_has_SizeOneof() {
+  _impl_._oneof_case_[1] = SIZEONEOF_NOT_SET;
+}
 inline bool PageElementRectFilled::has_ColorOneof() const {
   return ColorOneof_case() != COLORONEOF_NOT_SET;
 }
 inline void PageElementRectFilled::clear_has_ColorOneof() {
-  _impl_._oneof_case_[0] = COLORONEOF_NOT_SET;
+  _impl_._oneof_case_[2] = COLORONEOF_NOT_SET;
+}
+inline PageElementRectFilled::PositionOneofCase PageElementRectFilled::PositionOneof_case() const {
+  return PageElementRectFilled::PositionOneofCase(_impl_._oneof_case_[0]);
+}
+inline PageElementRectFilled::SizeOneofCase PageElementRectFilled::SizeOneof_case() const {
+  return PageElementRectFilled::SizeOneofCase(_impl_._oneof_case_[1]);
 }
 inline PageElementRectFilled::ColorOneofCase PageElementRectFilled::ColorOneof_case() const {
-  return PageElementRectFilled::ColorOneofCase(_impl_._oneof_case_[0]);
+  return PageElementRectFilled::ColorOneofCase(_impl_._oneof_case_[2]);
 }
 // -------------------------------------------------------------------
 

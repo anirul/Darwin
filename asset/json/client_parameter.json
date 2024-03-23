@@ -89,6 +89,23 @@
       {
         "text": {
           "text": "[player_character.name]",
+          "color_string": {
+            "red": "player_character.color[0]",
+            "green": "player_character.color[1]",
+            "blue": "player_character.color[2]",
+            "alpha": "0.9"
+          },
+          "position": {
+            "x": 0.501,
+            "y": 0.401
+          },
+          "text_size_enum": "TEXT_SIZE_LARGE",
+          "alignment_enum": "ALIGNMENT_CENTER"
+        }
+      },
+      {
+        "text": {
+          "text": "[player_character.name]",
           "color": {
             "x": 1.0,
             "y": 1.0,
@@ -100,6 +117,26 @@
             "y": 0.4
           },
           "text_size_enum": "TEXT_SIZE_LARGE",
+          "alignment_enum": "ALIGNMENT_CENTER"
+        }
+      },
+      {
+        "line": {
+          "color_string": {
+            "red": "player_character.color[0]",
+            "green": "player_character.color[1]",
+            "blue": "player_character.color[2]",
+            "alpha": "0.9"
+          },
+          "start_string": {
+            "x": "0.5 - (player_character.mass / 200.0)",
+            "y": "0.6"
+          },
+          "end_string": {
+            "x": "0.5 + (player_character.mass / 200.0)",
+            "y": "0.6"
+          },
+          "thickness": 5.0,
           "alignment_enum": "ALIGNMENT_CENTER"
         }
       },

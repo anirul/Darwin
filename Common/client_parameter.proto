@@ -64,25 +64,34 @@ message Vector2String {
 }
 
 // PageElementText
-// Next: 7
+// Next: 8
 message PageElementText {
     string text = 1;
     oneof ColorOneof {
         Vector4 color = 2;
         ColorString color_string = 3;
     }
-    Vector2 position = 4;
-    TextSizeEnum text_size_enum = 5;
-    AlignmentEnum alignment_enum = 6;
+    oneof PositionOneof {
+        Vector2 position = 4;
+        Vector2String position_string = 5;
+    }
+    TextSizeEnum text_size_enum = 6;
+    AlignmentEnum alignment_enum = 7;
 }
 
 // PageElementImage
-// Next: 5
+// Next: 7
 message PageElementImage {
     string image = 1;
-    Vector2 position = 2;
-    Vector2 size = 3;
-    AlignmentEnum alignment_enum = 4;
+    oneof PositionOneof {
+        Vector2 position = 2;
+        Vector2String position_string = 3;
+    }
+    oneof SizeOneof {
+        Vector2 size = 4;
+        Vector2String size_string = 5;
+    }
+    AlignmentEnum alignment_enum = 6;
 }
 
 // PageElementLine
@@ -105,16 +114,22 @@ message PageElementLine {
 }
 
 // PageElementRectFilled
-// Next: 7
+// Next: 9
 message PageElementRectFilled {
-    Vector2 position = 1;
-    Vector2 size = 2;
-    oneof ColorOneof {
-        Vector4 color = 3;
-        ColorString color_string = 4;
+    oneof PositionOneof {
+        Vector2 position = 1;
+        Vector2String position_string = 2;
     }
-    double rounding = 5;
-    AlignmentEnum alignment_enum = 6;
+    oneof SizeOneof {
+        Vector2 size = 3;
+        Vector2String size_string = 4;
+    }
+    oneof ColorOneof {
+        Vector4 color = 5;
+        ColorString color_string = 6;
+    }
+    double rounding = 7;
+    AlignmentEnum alignment_enum = 8;
 }
 
 // PageElement
