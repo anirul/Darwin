@@ -75,7 +75,7 @@ namespace darwin::overlay {
         }
         else {
             frame::Logger::GetInstance()->warn(
-                "No character name or characters is empty.");
+                "No character name or player_character has no name.");
         }
         return true;
     }

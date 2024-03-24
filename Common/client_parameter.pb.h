@@ -62,6 +62,9 @@ extern PageDescriptionDefaultTypeInternal _PageDescription_default_instance_;
 class PageElement;
 struct PageElementDefaultTypeInternal;
 extern PageElementDefaultTypeInternal _PageElement_default_instance_;
+class PageElementDecoration;
+struct PageElementDecorationDefaultTypeInternal;
+extern PageElementDecorationDefaultTypeInternal _PageElementDecoration_default_instance_;
 class PageElementImage;
 struct PageElementImageDefaultTypeInternal;
 extern PageElementImageDefaultTypeInternal _PageElementImage_default_instance_;
@@ -84,6 +87,7 @@ template<> ::proto::ColorString* Arena::CreateMaybeMessage<::proto::ColorString>
 template<> ::proto::FontSize* Arena::CreateMaybeMessage<::proto::FontSize>(Arena*);
 template<> ::proto::PageDescription* Arena::CreateMaybeMessage<::proto::PageDescription>(Arena*);
 template<> ::proto::PageElement* Arena::CreateMaybeMessage<::proto::PageElement>(Arena*);
+template<> ::proto::PageElementDecoration* Arena::CreateMaybeMessage<::proto::PageElementDecoration>(Arena*);
 template<> ::proto::PageElementImage* Arena::CreateMaybeMessage<::proto::PageElementImage>(Arena*);
 template<> ::proto::PageElementLine* Arena::CreateMaybeMessage<::proto::PageElementLine>(Arena*);
 template<> ::proto::PageElementRectFilled* Arena::CreateMaybeMessage<::proto::PageElementRectFilled>(Arena*);
@@ -150,6 +154,32 @@ inline bool AlignmentEnum_Parse(
     ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, AlignmentEnum* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<AlignmentEnum>(
     AlignmentEnum_descriptor(), name, value);
+}
+enum DecorationEnum : int {
+  DECORATION_NONE = 0,
+  DECORATION_SHADOW = 1,
+  DECORATION_OUTLINE = 2,
+  DecorationEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  DecorationEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool DecorationEnum_IsValid(int value);
+constexpr DecorationEnum DecorationEnum_MIN = DECORATION_NONE;
+constexpr DecorationEnum DecorationEnum_MAX = DECORATION_OUTLINE;
+constexpr int DecorationEnum_ARRAYSIZE = DecorationEnum_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* DecorationEnum_descriptor();
+template<typename T>
+inline const std::string& DecorationEnum_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, DecorationEnum>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function DecorationEnum_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    DecorationEnum_descriptor(), enum_t_value);
+}
+inline bool DecorationEnum_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, DecorationEnum* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<DecorationEnum>(
+    DecorationEnum_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -931,6 +961,270 @@ class Vector2String final :
 };
 // -------------------------------------------------------------------
 
+class PageElementDecoration final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.PageElementDecoration) */ {
+ public:
+  inline PageElementDecoration() : PageElementDecoration(nullptr) {}
+  ~PageElementDecoration() override;
+  explicit PROTOBUF_CONSTEXPR PageElementDecoration(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  PageElementDecoration(const PageElementDecoration& from);
+  PageElementDecoration(PageElementDecoration&& from) noexcept
+    : PageElementDecoration() {
+    *this = ::std::move(from);
+  }
+
+  inline PageElementDecoration& operator=(const PageElementDecoration& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PageElementDecoration& operator=(PageElementDecoration&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PageElementDecoration& default_instance() {
+    return *internal_default_instance();
+  }
+  enum OffsetOneofCase {
+    kOffset = 1,
+    kOffsetString = 2,
+    OFFSETONEOF_NOT_SET = 0,
+  };
+
+  enum ColorOneofCase {
+    kColor = 3,
+    kColorString = 4,
+    COLORONEOF_NOT_SET = 0,
+  };
+
+  static inline const PageElementDecoration* internal_default_instance() {
+    return reinterpret_cast<const PageElementDecoration*>(
+               &_PageElementDecoration_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  friend void swap(PageElementDecoration& a, PageElementDecoration& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PageElementDecoration* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PageElementDecoration* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PageElementDecoration* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PageElementDecoration>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const PageElementDecoration& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const PageElementDecoration& from) {
+    PageElementDecoration::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PageElementDecoration* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "proto.PageElementDecoration";
+  }
+  protected:
+  explicit PageElementDecoration(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kDecorationEnumFieldNumber = 5,
+    kOffsetFieldNumber = 1,
+    kOffsetStringFieldNumber = 2,
+    kColorFieldNumber = 3,
+    kColorStringFieldNumber = 4,
+  };
+  // .proto.DecorationEnum decoration_enum = 5;
+  void clear_decoration_enum();
+  ::proto::DecorationEnum decoration_enum() const;
+  void set_decoration_enum(::proto::DecorationEnum value);
+  private:
+  ::proto::DecorationEnum _internal_decoration_enum() const;
+  void _internal_set_decoration_enum(::proto::DecorationEnum value);
+  public:
+
+  // .proto.Vector2 offset = 1;
+  bool has_offset() const;
+  private:
+  bool _internal_has_offset() const;
+  public:
+  void clear_offset();
+  const ::proto::Vector2& offset() const;
+  PROTOBUF_NODISCARD ::proto::Vector2* release_offset();
+  ::proto::Vector2* mutable_offset();
+  void set_allocated_offset(::proto::Vector2* offset);
+  private:
+  const ::proto::Vector2& _internal_offset() const;
+  ::proto::Vector2* _internal_mutable_offset();
+  public:
+  void unsafe_arena_set_allocated_offset(
+      ::proto::Vector2* offset);
+  ::proto::Vector2* unsafe_arena_release_offset();
+
+  // .proto.Vector2String offset_string = 2;
+  bool has_offset_string() const;
+  private:
+  bool _internal_has_offset_string() const;
+  public:
+  void clear_offset_string();
+  const ::proto::Vector2String& offset_string() const;
+  PROTOBUF_NODISCARD ::proto::Vector2String* release_offset_string();
+  ::proto::Vector2String* mutable_offset_string();
+  void set_allocated_offset_string(::proto::Vector2String* offset_string);
+  private:
+  const ::proto::Vector2String& _internal_offset_string() const;
+  ::proto::Vector2String* _internal_mutable_offset_string();
+  public:
+  void unsafe_arena_set_allocated_offset_string(
+      ::proto::Vector2String* offset_string);
+  ::proto::Vector2String* unsafe_arena_release_offset_string();
+
+  // .proto.Vector4 color = 3;
+  bool has_color() const;
+  private:
+  bool _internal_has_color() const;
+  public:
+  void clear_color();
+  const ::proto::Vector4& color() const;
+  PROTOBUF_NODISCARD ::proto::Vector4* release_color();
+  ::proto::Vector4* mutable_color();
+  void set_allocated_color(::proto::Vector4* color);
+  private:
+  const ::proto::Vector4& _internal_color() const;
+  ::proto::Vector4* _internal_mutable_color();
+  public:
+  void unsafe_arena_set_allocated_color(
+      ::proto::Vector4* color);
+  ::proto::Vector4* unsafe_arena_release_color();
+
+  // .proto.ColorString color_string = 4;
+  bool has_color_string() const;
+  private:
+  bool _internal_has_color_string() const;
+  public:
+  void clear_color_string();
+  const ::proto::ColorString& color_string() const;
+  PROTOBUF_NODISCARD ::proto::ColorString* release_color_string();
+  ::proto::ColorString* mutable_color_string();
+  void set_allocated_color_string(::proto::ColorString* color_string);
+  private:
+  const ::proto::ColorString& _internal_color_string() const;
+  ::proto::ColorString* _internal_mutable_color_string();
+  public:
+  void unsafe_arena_set_allocated_color_string(
+      ::proto::ColorString* color_string);
+  ::proto::ColorString* unsafe_arena_release_color_string();
+
+  void clear_OffsetOneof();
+  OffsetOneofCase OffsetOneof_case() const;
+  void clear_ColorOneof();
+  ColorOneofCase ColorOneof_case() const;
+  // @@protoc_insertion_point(class_scope:proto.PageElementDecoration)
+ private:
+  class _Internal;
+  void set_has_offset();
+  void set_has_offset_string();
+  void set_has_color();
+  void set_has_color_string();
+
+  inline bool has_OffsetOneof() const;
+  inline void clear_has_OffsetOneof();
+
+  inline bool has_ColorOneof() const;
+  inline void clear_has_ColorOneof();
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    int decoration_enum_;
+    union OffsetOneofUnion {
+      constexpr OffsetOneofUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      ::proto::Vector2* offset_;
+      ::proto::Vector2String* offset_string_;
+    } OffsetOneof_;
+    union ColorOneofUnion {
+      constexpr ColorOneofUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      ::proto::Vector4* color_;
+      ::proto::ColorString* color_string_;
+    } ColorOneof_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    uint32_t _oneof_case_[2];
+
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_client_5fparameter_2eproto;
+};
+// -------------------------------------------------------------------
+
 class PageElementText final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.PageElementText) */ {
  public:
@@ -991,7 +1285,7 @@ class PageElementText final :
                &_PageElementText_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(PageElementText& a, PageElementText& b) {
     a.Swap(&b);
@@ -1064,6 +1358,7 @@ class PageElementText final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kDecorationsFieldNumber = 8,
     kTextFieldNumber = 1,
     kTextSizeEnumFieldNumber = 6,
     kAlignmentEnumFieldNumber = 7,
@@ -1072,6 +1367,24 @@ class PageElementText final :
     kPositionFieldNumber = 4,
     kPositionStringFieldNumber = 5,
   };
+  // repeated .proto.PageElementDecoration decorations = 8;
+  int decorations_size() const;
+  private:
+  int _internal_decorations_size() const;
+  public:
+  void clear_decorations();
+  ::proto::PageElementDecoration* mutable_decorations(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::PageElementDecoration >*
+      mutable_decorations();
+  private:
+  const ::proto::PageElementDecoration& _internal_decorations(int index) const;
+  ::proto::PageElementDecoration* _internal_add_decorations();
+  public:
+  const ::proto::PageElementDecoration& decorations(int index) const;
+  ::proto::PageElementDecoration* add_decorations();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::PageElementDecoration >&
+      decorations() const;
+
   // string text = 1;
   void clear_text();
   const std::string& text() const;
@@ -1198,6 +1511,7 @@ class PageElementText final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::PageElementDecoration > decorations_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr text_;
     int text_size_enum_;
     int alignment_enum_;
@@ -1282,7 +1596,7 @@ class PageElementImage final :
                &_PageElementImage_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(PageElementImage& a, PageElementImage& b) {
     a.Swap(&b);
@@ -1568,7 +1882,7 @@ class PageElementLine final :
                &_PageElementLine_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(PageElementLine& a, PageElementLine& b) {
     a.Swap(&b);
@@ -1900,7 +2214,7 @@ class PageElementRectFilled final :
                &_PageElementRectFilled_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   friend void swap(PageElementRectFilled& a, PageElementRectFilled& b) {
     a.Swap(&b);
@@ -2222,7 +2536,7 @@ class PageElement final :
                &_PageElement_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   friend void swap(PageElement& a, PageElement& b) {
     a.Swap(&b);
@@ -2454,7 +2768,7 @@ class PageDescription final :
                &_PageDescription_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   friend void swap(PageDescription& a, PageDescription& b) {
     a.Swap(&b);
@@ -3372,6 +3686,328 @@ inline void Vector2String::set_allocated_y(std::string* y) {
 
 // -------------------------------------------------------------------
 
+// PageElementDecoration
+
+// .proto.Vector2 offset = 1;
+inline bool PageElementDecoration::_internal_has_offset() const {
+  return OffsetOneof_case() == kOffset;
+}
+inline bool PageElementDecoration::has_offset() const {
+  return _internal_has_offset();
+}
+inline void PageElementDecoration::set_has_offset() {
+  _impl_._oneof_case_[0] = kOffset;
+}
+inline ::proto::Vector2* PageElementDecoration::release_offset() {
+  // @@protoc_insertion_point(field_release:proto.PageElementDecoration.offset)
+  if (_internal_has_offset()) {
+    clear_has_OffsetOneof();
+    ::proto::Vector2* temp = _impl_.OffsetOneof_.offset_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.OffsetOneof_.offset_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::proto::Vector2& PageElementDecoration::_internal_offset() const {
+  return _internal_has_offset()
+      ? *_impl_.OffsetOneof_.offset_
+      : reinterpret_cast< ::proto::Vector2&>(::proto::_Vector2_default_instance_);
+}
+inline const ::proto::Vector2& PageElementDecoration::offset() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementDecoration.offset)
+  return _internal_offset();
+}
+inline ::proto::Vector2* PageElementDecoration::unsafe_arena_release_offset() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementDecoration.offset)
+  if (_internal_has_offset()) {
+    clear_has_OffsetOneof();
+    ::proto::Vector2* temp = _impl_.OffsetOneof_.offset_;
+    _impl_.OffsetOneof_.offset_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void PageElementDecoration::unsafe_arena_set_allocated_offset(::proto::Vector2* offset) {
+  clear_OffsetOneof();
+  if (offset) {
+    set_has_offset();
+    _impl_.OffsetOneof_.offset_ = offset;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementDecoration.offset)
+}
+inline ::proto::Vector2* PageElementDecoration::_internal_mutable_offset() {
+  if (!_internal_has_offset()) {
+    clear_OffsetOneof();
+    set_has_offset();
+    _impl_.OffsetOneof_.offset_ = CreateMaybeMessage< ::proto::Vector2 >(GetArenaForAllocation());
+  }
+  return _impl_.OffsetOneof_.offset_;
+}
+inline ::proto::Vector2* PageElementDecoration::mutable_offset() {
+  ::proto::Vector2* _msg = _internal_mutable_offset();
+  // @@protoc_insertion_point(field_mutable:proto.PageElementDecoration.offset)
+  return _msg;
+}
+
+// .proto.Vector2String offset_string = 2;
+inline bool PageElementDecoration::_internal_has_offset_string() const {
+  return OffsetOneof_case() == kOffsetString;
+}
+inline bool PageElementDecoration::has_offset_string() const {
+  return _internal_has_offset_string();
+}
+inline void PageElementDecoration::set_has_offset_string() {
+  _impl_._oneof_case_[0] = kOffsetString;
+}
+inline void PageElementDecoration::clear_offset_string() {
+  if (_internal_has_offset_string()) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.OffsetOneof_.offset_string_;
+    }
+    clear_has_OffsetOneof();
+  }
+}
+inline ::proto::Vector2String* PageElementDecoration::release_offset_string() {
+  // @@protoc_insertion_point(field_release:proto.PageElementDecoration.offset_string)
+  if (_internal_has_offset_string()) {
+    clear_has_OffsetOneof();
+    ::proto::Vector2String* temp = _impl_.OffsetOneof_.offset_string_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.OffsetOneof_.offset_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::proto::Vector2String& PageElementDecoration::_internal_offset_string() const {
+  return _internal_has_offset_string()
+      ? *_impl_.OffsetOneof_.offset_string_
+      : reinterpret_cast< ::proto::Vector2String&>(::proto::_Vector2String_default_instance_);
+}
+inline const ::proto::Vector2String& PageElementDecoration::offset_string() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementDecoration.offset_string)
+  return _internal_offset_string();
+}
+inline ::proto::Vector2String* PageElementDecoration::unsafe_arena_release_offset_string() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementDecoration.offset_string)
+  if (_internal_has_offset_string()) {
+    clear_has_OffsetOneof();
+    ::proto::Vector2String* temp = _impl_.OffsetOneof_.offset_string_;
+    _impl_.OffsetOneof_.offset_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void PageElementDecoration::unsafe_arena_set_allocated_offset_string(::proto::Vector2String* offset_string) {
+  clear_OffsetOneof();
+  if (offset_string) {
+    set_has_offset_string();
+    _impl_.OffsetOneof_.offset_string_ = offset_string;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementDecoration.offset_string)
+}
+inline ::proto::Vector2String* PageElementDecoration::_internal_mutable_offset_string() {
+  if (!_internal_has_offset_string()) {
+    clear_OffsetOneof();
+    set_has_offset_string();
+    _impl_.OffsetOneof_.offset_string_ = CreateMaybeMessage< ::proto::Vector2String >(GetArenaForAllocation());
+  }
+  return _impl_.OffsetOneof_.offset_string_;
+}
+inline ::proto::Vector2String* PageElementDecoration::mutable_offset_string() {
+  ::proto::Vector2String* _msg = _internal_mutable_offset_string();
+  // @@protoc_insertion_point(field_mutable:proto.PageElementDecoration.offset_string)
+  return _msg;
+}
+
+// .proto.Vector4 color = 3;
+inline bool PageElementDecoration::_internal_has_color() const {
+  return ColorOneof_case() == kColor;
+}
+inline bool PageElementDecoration::has_color() const {
+  return _internal_has_color();
+}
+inline void PageElementDecoration::set_has_color() {
+  _impl_._oneof_case_[1] = kColor;
+}
+inline ::proto::Vector4* PageElementDecoration::release_color() {
+  // @@protoc_insertion_point(field_release:proto.PageElementDecoration.color)
+  if (_internal_has_color()) {
+    clear_has_ColorOneof();
+    ::proto::Vector4* temp = _impl_.ColorOneof_.color_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.ColorOneof_.color_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::proto::Vector4& PageElementDecoration::_internal_color() const {
+  return _internal_has_color()
+      ? *_impl_.ColorOneof_.color_
+      : reinterpret_cast< ::proto::Vector4&>(::proto::_Vector4_default_instance_);
+}
+inline const ::proto::Vector4& PageElementDecoration::color() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementDecoration.color)
+  return _internal_color();
+}
+inline ::proto::Vector4* PageElementDecoration::unsafe_arena_release_color() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementDecoration.color)
+  if (_internal_has_color()) {
+    clear_has_ColorOneof();
+    ::proto::Vector4* temp = _impl_.ColorOneof_.color_;
+    _impl_.ColorOneof_.color_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void PageElementDecoration::unsafe_arena_set_allocated_color(::proto::Vector4* color) {
+  clear_ColorOneof();
+  if (color) {
+    set_has_color();
+    _impl_.ColorOneof_.color_ = color;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementDecoration.color)
+}
+inline ::proto::Vector4* PageElementDecoration::_internal_mutable_color() {
+  if (!_internal_has_color()) {
+    clear_ColorOneof();
+    set_has_color();
+    _impl_.ColorOneof_.color_ = CreateMaybeMessage< ::proto::Vector4 >(GetArenaForAllocation());
+  }
+  return _impl_.ColorOneof_.color_;
+}
+inline ::proto::Vector4* PageElementDecoration::mutable_color() {
+  ::proto::Vector4* _msg = _internal_mutable_color();
+  // @@protoc_insertion_point(field_mutable:proto.PageElementDecoration.color)
+  return _msg;
+}
+
+// .proto.ColorString color_string = 4;
+inline bool PageElementDecoration::_internal_has_color_string() const {
+  return ColorOneof_case() == kColorString;
+}
+inline bool PageElementDecoration::has_color_string() const {
+  return _internal_has_color_string();
+}
+inline void PageElementDecoration::set_has_color_string() {
+  _impl_._oneof_case_[1] = kColorString;
+}
+inline void PageElementDecoration::clear_color_string() {
+  if (_internal_has_color_string()) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.ColorOneof_.color_string_;
+    }
+    clear_has_ColorOneof();
+  }
+}
+inline ::proto::ColorString* PageElementDecoration::release_color_string() {
+  // @@protoc_insertion_point(field_release:proto.PageElementDecoration.color_string)
+  if (_internal_has_color_string()) {
+    clear_has_ColorOneof();
+    ::proto::ColorString* temp = _impl_.ColorOneof_.color_string_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.ColorOneof_.color_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::proto::ColorString& PageElementDecoration::_internal_color_string() const {
+  return _internal_has_color_string()
+      ? *_impl_.ColorOneof_.color_string_
+      : reinterpret_cast< ::proto::ColorString&>(::proto::_ColorString_default_instance_);
+}
+inline const ::proto::ColorString& PageElementDecoration::color_string() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementDecoration.color_string)
+  return _internal_color_string();
+}
+inline ::proto::ColorString* PageElementDecoration::unsafe_arena_release_color_string() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:proto.PageElementDecoration.color_string)
+  if (_internal_has_color_string()) {
+    clear_has_ColorOneof();
+    ::proto::ColorString* temp = _impl_.ColorOneof_.color_string_;
+    _impl_.ColorOneof_.color_string_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void PageElementDecoration::unsafe_arena_set_allocated_color_string(::proto::ColorString* color_string) {
+  clear_ColorOneof();
+  if (color_string) {
+    set_has_color_string();
+    _impl_.ColorOneof_.color_string_ = color_string;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:proto.PageElementDecoration.color_string)
+}
+inline ::proto::ColorString* PageElementDecoration::_internal_mutable_color_string() {
+  if (!_internal_has_color_string()) {
+    clear_ColorOneof();
+    set_has_color_string();
+    _impl_.ColorOneof_.color_string_ = CreateMaybeMessage< ::proto::ColorString >(GetArenaForAllocation());
+  }
+  return _impl_.ColorOneof_.color_string_;
+}
+inline ::proto::ColorString* PageElementDecoration::mutable_color_string() {
+  ::proto::ColorString* _msg = _internal_mutable_color_string();
+  // @@protoc_insertion_point(field_mutable:proto.PageElementDecoration.color_string)
+  return _msg;
+}
+
+// .proto.DecorationEnum decoration_enum = 5;
+inline void PageElementDecoration::clear_decoration_enum() {
+  _impl_.decoration_enum_ = 0;
+}
+inline ::proto::DecorationEnum PageElementDecoration::_internal_decoration_enum() const {
+  return static_cast< ::proto::DecorationEnum >(_impl_.decoration_enum_);
+}
+inline ::proto::DecorationEnum PageElementDecoration::decoration_enum() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementDecoration.decoration_enum)
+  return _internal_decoration_enum();
+}
+inline void PageElementDecoration::_internal_set_decoration_enum(::proto::DecorationEnum value) {
+  
+  _impl_.decoration_enum_ = value;
+}
+inline void PageElementDecoration::set_decoration_enum(::proto::DecorationEnum value) {
+  _internal_set_decoration_enum(value);
+  // @@protoc_insertion_point(field_set:proto.PageElementDecoration.decoration_enum)
+}
+
+inline bool PageElementDecoration::has_OffsetOneof() const {
+  return OffsetOneof_case() != OFFSETONEOF_NOT_SET;
+}
+inline void PageElementDecoration::clear_has_OffsetOneof() {
+  _impl_._oneof_case_[0] = OFFSETONEOF_NOT_SET;
+}
+inline bool PageElementDecoration::has_ColorOneof() const {
+  return ColorOneof_case() != COLORONEOF_NOT_SET;
+}
+inline void PageElementDecoration::clear_has_ColorOneof() {
+  _impl_._oneof_case_[1] = COLORONEOF_NOT_SET;
+}
+inline PageElementDecoration::OffsetOneofCase PageElementDecoration::OffsetOneof_case() const {
+  return PageElementDecoration::OffsetOneofCase(_impl_._oneof_case_[0]);
+}
+inline PageElementDecoration::ColorOneofCase PageElementDecoration::ColorOneof_case() const {
+  return PageElementDecoration::ColorOneofCase(_impl_._oneof_case_[1]);
+}
+// -------------------------------------------------------------------
+
 // PageElementText
 
 // string text = 1;
@@ -3742,6 +4378,46 @@ inline void PageElementText::_internal_set_alignment_enum(::proto::AlignmentEnum
 inline void PageElementText::set_alignment_enum(::proto::AlignmentEnum value) {
   _internal_set_alignment_enum(value);
   // @@protoc_insertion_point(field_set:proto.PageElementText.alignment_enum)
+}
+
+// repeated .proto.PageElementDecoration decorations = 8;
+inline int PageElementText::_internal_decorations_size() const {
+  return _impl_.decorations_.size();
+}
+inline int PageElementText::decorations_size() const {
+  return _internal_decorations_size();
+}
+inline void PageElementText::clear_decorations() {
+  _impl_.decorations_.Clear();
+}
+inline ::proto::PageElementDecoration* PageElementText::mutable_decorations(int index) {
+  // @@protoc_insertion_point(field_mutable:proto.PageElementText.decorations)
+  return _impl_.decorations_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::PageElementDecoration >*
+PageElementText::mutable_decorations() {
+  // @@protoc_insertion_point(field_mutable_list:proto.PageElementText.decorations)
+  return &_impl_.decorations_;
+}
+inline const ::proto::PageElementDecoration& PageElementText::_internal_decorations(int index) const {
+  return _impl_.decorations_.Get(index);
+}
+inline const ::proto::PageElementDecoration& PageElementText::decorations(int index) const {
+  // @@protoc_insertion_point(field_get:proto.PageElementText.decorations)
+  return _internal_decorations(index);
+}
+inline ::proto::PageElementDecoration* PageElementText::_internal_add_decorations() {
+  return _impl_.decorations_.Add();
+}
+inline ::proto::PageElementDecoration* PageElementText::add_decorations() {
+  ::proto::PageElementDecoration* _add = _internal_add_decorations();
+  // @@protoc_insertion_point(field_add:proto.PageElementText.decorations)
+  return _add;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::proto::PageElementDecoration >&
+PageElementText::decorations() const {
+  // @@protoc_insertion_point(field_list:proto.PageElementText.decorations)
+  return _impl_.decorations_;
 }
 
 inline bool PageElementText::has_ColorOneof() const {
@@ -5625,6 +6301,8 @@ PageDescription::page_elements() const {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -5641,6 +6319,11 @@ template <> struct is_proto_enum< ::proto::AlignmentEnum> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::proto::AlignmentEnum>() {
   return ::proto::AlignmentEnum_descriptor();
+}
+template <> struct is_proto_enum< ::proto::DecorationEnum> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::proto::DecorationEnum>() {
+  return ::proto::DecorationEnum_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

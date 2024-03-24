@@ -5,10 +5,10 @@ package proto;
 import "vector_math.proto";
 
 enum TextSizeEnum {
-    TEXT_SIZE_SMALL = 0;    // 18 pixels
-    TEXT_SIZE_MEDIUM = 1;   // 24 pixels
-    TEXT_SIZE_LARGE = 2;    // 36 pixels
-    TEXT_SIZE_TITLE = 3;    // 160 pixels
+    TEXT_SIZE_SMALL = 0;        // 18 pixels
+    TEXT_SIZE_MEDIUM = 1;       // 24 pixels
+    TEXT_SIZE_LARGE = 2;        // 36 pixels
+    TEXT_SIZE_TITLE = 3;        // 160 pixels
 }
 
 enum AlignmentEnum {
@@ -21,6 +21,12 @@ enum AlignmentEnum {
     ALIGNMENT_BOTTOM_LEFT = 6;  // Hook at bottom left.
     ALIGNMENT_BOTTOM = 7;       // Hook at bottom center.
     ALIGNMENT_BOTTOM_RIGHT = 8; // Hook at bottom right.
+}
+
+enum DecorationEnum {
+    DECORATION_NONE = 0;        // No outline.
+    DECORATION_SHADOW = 1;      // Shadow a single outline in one direction.
+    DECORATION_OUTLINE = 2;     // Outlne a shadow that is in every direction.
 }
 
 // FontSize
@@ -63,8 +69,22 @@ message Vector2String {
     string y = 2;
 }
 
+// PageElementDecoration
+// Next: 5
+message PageElementDecoration {
+    oneof OffsetOneof {
+        Vector2 offset = 1;
+        Vector2String offset_string = 2;
+    }
+    oneof ColorOneof {
+        Vector4 color = 3;
+        ColorString color_string = 4;
+    }
+    DecorationEnum decoration_enum = 5;
+}
+
 // PageElementText
-// Next: 8
+// Next: 9
 message PageElementText {
     string text = 1;
     oneof ColorOneof {
@@ -77,6 +97,7 @@ message PageElementText {
     }
     TextSizeEnum text_size_enum = 6;
     AlignmentEnum alignment_enum = 7;
+    repeated PageElementDecoration decorations = 8;
 }
 
 // PageElementImage

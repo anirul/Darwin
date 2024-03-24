@@ -40,24 +40,22 @@
             "y": 0.95
           },
           "text_size_enum": "TEXT_SIZE_LARGE",
-          "alignment_enum": "ALIGNMENT_BOTTOM"
-        }
-      },
-      {
-        "text": {
-          "text": "Globe Globers",
-          "color": {
-            "x": 0.8,
-            "y": 0.0,
-            "z": 0.0,
-            "w": 0.8
-          },
-          "position": {
-            "x": 0.51,
-            "y": 0.51
-          },
-          "text_size_enum": "TEXT_SIZE_TITLE",
-          "alignment_enum": "ALIGNMENT_CENTER"
+          "alignment_enum": "ALIGNMENT_BOTTOM",
+          "decorations": [
+            {
+              "offset": {
+                "x": 0.004,
+                "y": 0.004
+              },
+              "color": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.9
+              },
+              "decoration_enum": "DECORATION_OUTLINE"
+            }
+          ]
         }
       },
       {
@@ -74,7 +72,22 @@
             "y": 0.5
           },
           "text_size_enum": "TEXT_SIZE_TITLE",
-          "alignment_enum": "ALIGNMENT_CENTER"
+          "alignment_enum": "ALIGNMENT_CENTER",
+          "decorations": [
+            {
+              "offset": {
+                "x": 0.01,
+                "y": 0.01
+              },
+              "color": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.8
+              },
+              "decoration_enum": "DECORATION_SHADOW"
+            }
+          ]
         }
       }
     ]
@@ -89,23 +102,6 @@
       {
         "text": {
           "text": "[player_character.name]",
-          "color_string": {
-            "red": "player_character.color[0]",
-            "green": "player_character.color[1]",
-            "blue": "player_character.color[2]",
-            "alpha": "0.9"
-          },
-          "position": {
-            "x": 0.501,
-            "y": 0.401
-          },
-          "text_size_enum": "TEXT_SIZE_LARGE",
-          "alignment_enum": "ALIGNMENT_CENTER"
-        }
-      },
-      {
-        "text": {
-          "text": "[player_character.name]",
           "color": {
             "x": 1.0,
             "y": 1.0,
@@ -117,7 +113,22 @@
             "y": 0.4
           },
           "text_size_enum": "TEXT_SIZE_LARGE",
-          "alignment_enum": "ALIGNMENT_CENTER"
+          "alignment_enum": "ALIGNMENT_CENTER",
+          "decorations": [
+            {
+              "offset": {
+                "x": 0.001,
+                "y": 0.001
+              },
+              "color_string": {
+                "red": "player_character.color[0]",
+                "green": "player_character.color[1]",
+                "blue": "player_character.color[2]",
+                "alpha": "0.9"
+              },
+              "decoration_enum": "DECORATION_OUTLINE"
+            }
+          ]
         }
       },
       {
@@ -154,7 +165,22 @@
             "y": 0.6
           },
           "text_size_enum": "TEXT_SIZE_LARGE",
-          "alignment_enum": "ALIGNMENT_CENTER"
+          "alignment_enum": "ALIGNMENT_CENTER",
+          "decorations": [
+            {
+              "offset": {
+                "x": 0.001,
+                "y": 0.001
+              },
+              "color_string": {
+                "red": "player_character.color[0]",
+                "green": "player_character.color[1]",
+                "blue": "player_character.color[2]",
+                "alpha": "0.9"
+              },
+              "decoration_enum": "DECORATION_OUTLINE"
+            }
+          ]
         }
       }
     ]
