@@ -19,42 +19,58 @@ namespace darwin::overlay {
 
     bool OverlayPlay::DrawCallback() {
         overlay_draw_.Parameter("character_name", character_name_);
-        overlay_draw_.Parameter(
-            "character_count", 
-            static_cast<int>(characters_.size()));
         proto::Character player_character;
+        // I need the normal to the camera to filter out characters that are
+        // not in the fieald of view.
         for (const auto& character : characters_) {
             if (character.name() == character_name_) {
                 player_character = character;
                 overlay_draw_.Parameter(
-                    "player_character.name", 
-                    player_character.name());
+                    "player_character.name",
+                    character.name());
                 overlay_draw_.Parameter(
-                    "player_character.mass", 
-                    player_character.physic().mass());
+                    "player_character.mass",
+                    character.physic().mass());
                 overlay_draw_.Parameter(
                     "player_character.color[0]",
-                    player_character.color().x());
+                    character.color().x());
                 overlay_draw_.Parameter(
                     "player_character.color[1]",
-                    player_character.color().y());
+                    character.color().y());
                 overlay_draw_.Parameter(
                     "player_character.color[2]",
-                    player_character.color().z());
+                    character.color().z());
                 break;
             }
         }
-        int i = 0;
-        // TODO(anirul): Sort characters by distance before sending them.
+        std::map<double, proto::Character> characters_sorted;
         for (const auto& character : characters_) {
-            if (character.name() == character_name_) {
+            if (Dot(
+                Normalize(player_character.physic().position()), 
+                Normalize(character.physic().position())) < 0.5) 
+            {
                 continue;
             }
-            if (Dot(player_character.normal(), character.normal()) < 0.8) {
-                continue;
+            characters_sorted.insert({ 
+                    Distance(
+                        character.physic().position(), 
+                        characters_[0].physic().position()), 
+                    character
+                });
+        }
+        int i = 0;
+        for (const auto& [_, character] : characters_sorted) {
+            if (i > 10) {
+                overlay_draw_.Parameter("character[10].name", "and more...");
+                overlay_draw_.Parameter("character[10].mass", 0.0);
+                overlay_draw_.Parameter("character[10].color[0]", 0.0);
+                overlay_draw_.Parameter("character[10].color[1]", 0.0);
+                overlay_draw_.Parameter("character[10].color[2]", 0.0);
+                ++i;
+                break;
             }
             overlay_draw_.Parameter(
-                std::format("character[{}].name", i), 
+                std::format("character[{}].name", i),
                 character.name());
             overlay_draw_.Parameter(
                 std::format("character[{}].mass", i),
@@ -68,8 +84,9 @@ namespace darwin::overlay {
             overlay_draw_.Parameter(
                 std::format("character[{}].color[2]", i),
                 character.color().z());
-            i++;
+            ++i;
         }
+        overlay_draw_.Parameter("character_count", i);
         if (!character_name_.empty() && !player_character.name().empty()) {
             overlay_draw_.Draw();
         }

@@ -35,14 +35,10 @@ namespace darwin::overlay {
             }
             if (position_container.has_position_string()) {
                 return ImVec2(
-                    ReplaceDouble(
-                        position_container.position_string().x()) * 
-                        size_.x() -
-                        alignment.x(),
-                    ReplaceDouble(
-                        position_container.position_string().y()) * 
-                        size_.y() -
-                        alignment.y());
+                    ReplaceDouble(position_container.position_string().x()) *
+                    size_.x() - alignment.x(),
+                    ReplaceDouble(position_container.position_string().y()) *
+                    size_.y() - alignment.y());
             }
             throw std::runtime_error("No position found.");
         }
@@ -125,6 +121,7 @@ namespace darwin::overlay {
         proto::Vector2 GetAlignment(
             const proto::Vector2& size,
             proto::AlignmentEnum alignment_enum) const;
+        std::string ReplaceIndex(const std::string& text) const;
         std::string ReplaceText(const std::string& text) const;
         double ReplaceDouble(const std::string& text) const;
         void DrawText(
@@ -139,6 +136,9 @@ namespace darwin::overlay {
         void DrawRectFilled(
             ImDrawList* draw_lit,
             const proto::PageElementRectFilled& rect_filled);
+        void DrawList(
+            ImDrawList* draw_list, 
+            const proto::PageElementList& list);
 
     private:
         proto::ClientParameter client_parameter_;
@@ -148,6 +148,9 @@ namespace darwin::overlay {
         // calls (ReplaceText, ReplaceDouble, etc).
         mutable std::map<std::string, std::string> string_parameters_;
         mutable std::map<std::string, double> double_parameters_;
+        // Used to index into the parameters.
+        int index_int_ = -1;
+        std::string index_ = "<index>";
         std::map<std::string, void*> pointer_parameters_;
     };
 
