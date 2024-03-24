@@ -9,6 +9,7 @@
 #include "overlay_play.h"
 #include "Common/convert_math.h"
 #include "Common/vector.h"
+#include "overlay_state.h"
 
 namespace darwin::state {
 
@@ -41,6 +42,17 @@ namespace darwin::state {
         if (!draw_gui_) {
             throw std::runtime_error("No draw gui interface plugin found?");
         }
+#ifdef _DEBUG
+        auto overlay_state = std::make_unique<overlay::OverlayState>(
+            "overlay_state",
+            client_parameter_,
+            client_parameter_.overlay_state());
+        overlay_state->SetStateName("state play");
+        draw_gui_->AddOverlayWindow(
+            glm::vec2(0.0f, 0.0f),
+            app_.GetWindow().GetDevice().GetSize(),
+            std::move(overlay_state));
+#endif // _DEBUG
         auto overlay_play = std::make_unique<overlay::OverlayPlay>(
             "overlay_play",
             client_parameter_,
@@ -70,8 +82,11 @@ namespace darwin::state {
     void StatePlay::Exit() {
         logger_->info("Exited play state");
         app_.GetWindow().SetInputInterface(nullptr);
-        draw_gui_->DeleteWindow("overlay_play");
         input_acquisition_ptr_ = nullptr;
+        draw_gui_->DeleteWindow("overlay_play");
+#ifdef _DEBUG
+        draw_gui_->DeleteWindow("overlay_state");
+#endif // _DEBUG
     }
 
     frame::ProgramInterface& StatePlay::GetProgram() {

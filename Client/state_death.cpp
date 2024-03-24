@@ -3,11 +3,13 @@
 #include "state_context.h"
 #include "state_title.h"
 #include "state_character.h"
+#include "overlay_state.h"
 
 namespace darwin::state {
 
     void StateDeath::Enter(const proto::ClientParameter& client_parameter) {
         logger_->info("Entering death state");
+        client_parameter_ = client_parameter;
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
             logger_->info(
                 "\tPlugin: [{}] {}",
@@ -22,6 +24,17 @@ namespace darwin::state {
         if (!draw_gui_) {
             throw std::runtime_error("No draw gui interface plugin found?");
         }
+#ifdef _DEBUG
+        auto overlay_state = std::make_unique<overlay::OverlayState>(
+            "overlay_state",
+            client_parameter_,
+            client_parameter_.overlay_state());
+        overlay_state->SetStateName("state death");
+        draw_gui_->AddOverlayWindow(
+            glm::vec2(0.0f, 0.0f),
+            app_.GetWindow().GetDevice().GetSize(),
+            std::move(overlay_state));
+#endif // _DEBUG
         draw_gui_->AddModalWindow(
             std::make_unique<modal::ModalDeath>(
                 "Death...",
@@ -49,6 +62,9 @@ namespace darwin::state {
 
     void StateDeath::Exit() {
         logger_->info("Exit death state");
+#ifdef _DEBUG
+        draw_gui_->DeleteWindow("overlay_state");
+#endif // _DEBUG
     }
 
 } // namespace darwin::state.

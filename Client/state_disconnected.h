@@ -27,6 +27,7 @@ namespace darwin::state {
         frame::gui::DrawGuiInterface* draw_gui_ = nullptr;
         modal::ModalDisconnectedParams modal_disconnected_params_;
         std::unique_ptr<DarwinClient> darwin_client_;
+        proto::ClientParameter client_parameter_;
     };
 
 } // namespace darwin::state.
