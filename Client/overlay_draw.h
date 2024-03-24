@@ -99,6 +99,21 @@ namespace darwin::overlay {
             }
             throw std::runtime_error("No color found.");
         }
+        template<typename T>
+        ImVec2 ReplaceOffset(T offset) const
+        {
+            if (offset.has_offset()) {
+                return ImVec2(
+                    offset.offset().x() * size_.x(),
+                    offset.offset().y() * size_.y());
+            }
+            if (offset.has_offset_string()) {
+                return ImVec2(
+                    ReplaceDouble(offset.offset_string().x()) * size_.x(),
+                    ReplaceDouble(offset.offset_string().y()) * size_.y());
+            }
+            throw std::runtime_error("No offset found.");
+        }
 
     protected:
         ImVec2 ReplaceStart(

@@ -158,9 +158,45 @@ namespace darwin::overlay {
             GetAlignment(
                 CreateVector2(text_size.x, text_size.y),
                 text.alignment_enum());
+        auto position = ReplacePosition(text, alignment);
+        for (const auto& decoration : text.decorations()) {
+            auto offset = ReplaceOffset(decoration);
+            ImColor color = ReplaceColor(decoration);
+            switch (decoration.decoration_enum()) {
+                case proto::DECORATION_SHADOW :
+                // Draw the shadow.
+                draw_list->AddText(
+                    ImVec2(position.x + offset.x, position.y + offset.y),
+                    color,
+                    text.text().c_str());
+                break;
+                case proto::DECORATION_OUTLINE :
+                // Draw the outline.
+                draw_list->AddText(
+                    ImVec2(position.x + offset.x, position.y + offset.y),
+                    color,
+                    text.text().c_str());
+                draw_list->AddText(
+                    ImVec2(position.x - offset.x, position.y + offset.y),
+                    color,
+                    text.text().c_str());
+                draw_list->AddText(
+                    ImVec2(position.x + offset.x, position.y - offset.y),
+                    color,
+                    text.text().c_str());
+                draw_list->AddText(
+                    ImVec2(position.x - offset.x, position.y - offset.y),
+                    color,
+                    text.text().c_str());
+                break;
+                case proto::DECORATION_NONE:
+                default:
+                    throw std::runtime_error("Unknown decoration.");
+            }
+        }
         // Draw the text.
         draw_list->AddText(
-            ReplacePosition(text, alignment),
+            position,
             ReplaceColor(text),
             text.text().c_str());
         OverlayFont::GetInstance(client_parameter_).PopFont();
@@ -215,19 +251,9 @@ namespace darwin::overlay {
                 rect_filled.alignment_enum());
         // Draw the filled rectangle.
         draw_list->AddRectFilled(
-            ImVec2(
-                rect_filled.position().x() * size_.x() - alignment.x(),
-                rect_filled.position().y() * size_.y() - alignment.y()),
-            ImVec2(
-                (rect_filled.position().x() + rect_filled.size().x()) * 
-                    size_.x() - alignment.x(),
-                (rect_filled.position().y() + rect_filled.size().y()) * 
-                    size_.y() - alignment.y()),
-            ImColor(
-                static_cast<float>(rect_filled.color().x()),
-                static_cast<float>(rect_filled.color().y()),
-                static_cast<float>(rect_filled.color().z()),
-                static_cast<float>(rect_filled.color().w())));
+            ReplacePosition(rect_filled, alignment),
+            ReplacePositionSize(rect_filled, alignment),
+            ReplaceColor(rect_filled));
     }
 
     bool OverlayDraw::Draw() {

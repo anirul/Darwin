@@ -46,7 +46,7 @@
     "living_cost": 0.005,
     "eat_speed": 0.7,
     "penalty": -0.3,
-    "friction": 0.05,
+    "friction": 0.1,
     "victory_size": 100.0,
     "max_upgrade_grow": 80.0,
     "disconnection_timeout": 10.0,
