@@ -30,6 +30,7 @@ namespace darwin::state {
         frame::gui::DrawGuiInterface* draw_gui_ = nullptr;
         std::mutex mutex_;
         darwin::modal::ModalPingParams modal_ping_params_;
+        proto::ClientParameter client_parameter_;
     };
 
 } // namespace darwin::state.

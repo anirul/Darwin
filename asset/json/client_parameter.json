@@ -190,6 +190,40 @@
     "size": {
       "x": 1.0,
       "y": 1.0
-    }
+    },
+    "page_elements": [
+      {
+        "text": {
+          "text": "state_name",
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 0.9
+          },
+          "position": {
+            "x": 0.5,
+            "y": 0.01
+          },
+          "text_size_enum": "TEXT_SIZE_SMALL",
+          "alignment_enum": "ALIGNMENT_CENTER",
+          "decorations": [
+            {
+              "offset": {
+                "x": 0.001,
+                "y": 0.001
+              },
+              "color": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.9
+              },
+              "decoration_enum": "DECORATION_OUTLINE"
+            }
+          ]
+        }
+      }
+    ]
   }
 }

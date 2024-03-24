@@ -28,6 +28,7 @@ namespace darwin::state {
         frame::Logger& logger_ = frame::Logger::GetInstance();
         frame::gui::DrawGuiInterface* draw_gui_ = nullptr;
         darwin::modal::ModalDeathParams modal_death_params_;
+        proto::ClientParameter client_parameter_;
     };
 
 } // namespace darwin.
