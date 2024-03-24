@@ -153,6 +153,22 @@ message PageElementRectFilled {
     AlignmentEnum alignment_enum = 8;
 }
 
+// PageElementList
+// Next: 8
+message PageElementList {
+    string element_count = 1;
+    string element_index = 2;
+    oneof PositionOneof {
+        Vector2 position = 3;
+        Vector2String position_string = 4;
+    }
+    oneof SizeOneof{
+        Vector2 size = 5;
+        Vector2String size_string = 6;
+    }
+    repeated PageElement page_elements = 7;
+}
+
 // PageElement
 // Next: 5
 message PageElement {
@@ -161,6 +177,7 @@ message PageElement {
         PageElementImage image = 2;
         PageElementLine line = 3;
         PageElementRectFilled rect_filled = 4;
+        PageElementList list = 5;
     }
 }
 

@@ -7,6 +7,7 @@
 
 #include "Common/vector.h"
 #include "overlay_font.h"
+#include "frame/logger.h"
 
 namespace darwin::overlay {
 
@@ -71,22 +72,41 @@ namespace darwin::overlay {
         return alignement;
     }
 
+    std::string OverlayDraw::ReplaceIndex(const std::string& text) const
+    {
+        if (index_int_ == -1) {
+            return text;
+        }
+        auto pos = text.find(index_);
+        if (pos != std::string::npos) {
+            std::string replaced_text = text;
+            replaced_text.replace(
+                pos, 
+                index_.size(), 
+                std::to_string(index_int_));
+            return replaced_text;
+        }
+        return text;
+    }
+
     std::string OverlayDraw::ReplaceText(
         const std::string& text) const
     {
-        // Mailslot.
-        if (string_parameters_.contains(text)) {
-            return string_parameters_.at(text);
-        }
         std::string replaced_text = text;
+        // Memoization.
+        if (string_parameters_.contains(replaced_text)) {
+            return string_parameters_.at(replaced_text);
+        }
+        // Used to replace string into the string.
         for (const auto& [name, value] : string_parameters_) {
-            auto pos = text.find(name);
+            auto pos = replaced_text.find(name);
             if (pos != std::string::npos) {
                 replaced_text.replace(pos, name.size(), value);
             }
         }
+        // Used to replace double into string.
         for (const auto& [name, value] : double_parameters_) {
-            auto pos = text.find(name);
+            auto pos = replaced_text.find(name);
             if (pos != std::string::npos) {
                 std::ostringstream stream;
                 stream << std::fixed << std::setprecision(2) << value;
@@ -101,16 +121,19 @@ namespace darwin::overlay {
     double OverlayDraw::ReplaceDouble(
         const std::string& text) const
     {
-        // Mailslot.
-        if (double_parameters_.contains(text)) {
-            return double_parameters_.at(text);
+        // Do the replace text before the computation to avoid trouble with
+        // memoization.
+        std::string replaced_index = ReplaceIndex(text);
+        // Memoization.
+        if (double_parameters_.contains(replaced_index)) {
+            return double_parameters_.at(replaced_index);
         }
         try {
             mu::Parser parser;
-            std::string temp = ReplaceText(text);
-            parser.SetExpr(temp);
+            auto replaced_text = ReplaceText(replaced_index);
+            parser.SetExpr(replaced_text);
             double answer = parser.Eval();
-            double_parameters_[text] = answer;
+            double_parameters_[replaced_text] = answer;
             return answer;
         }
         catch (mu::Parser::exception_type& e) {
@@ -129,10 +152,10 @@ namespace darwin::overlay {
         }
         if (line.has_start_string()) {
             return ImVec2(
-                ReplaceDouble(
-                    line.start_string().x()) * size_.x() - alignment.x(),
-                ReplaceDouble(
-                    line.start_string().y()) * size_.y() - alignment.y());
+                ReplaceDouble(line.start_string().x()) * 
+                size_.x() - alignment.x(),
+                ReplaceDouble(line.start_string().y()) * 
+                size_.y() - alignment.y());
         }
         throw std::runtime_error("No start found.");
     }
@@ -163,8 +186,11 @@ namespace darwin::overlay {
         // Push the font.
         OverlayFont::GetInstance(
             client_parameter_).PushFont(text.text_size_enum());
+        // Replace the text.
+        auto text_str = ReplaceIndex(text.text());
+        text_str = ReplaceText(text_str);
         // Compute alignment.
-        auto text_size = ImGui::CalcTextSize(text.text().c_str());
+        auto text_size = ImGui::CalcTextSize(text_str.c_str());
         auto alignment =
             GetAlignment(
                 CreateVector2(text_size.x, text_size.y),
@@ -179,27 +205,17 @@ namespace darwin::overlay {
                 draw_list->AddText(
                     ImVec2(position.x + offset.x, position.y + offset.y),
                     color,
-                    text.text().c_str());
+                    text_str.c_str());
                 break;
                 case proto::DECORATION_OUTLINE :
-                // Draw the outline.
-                draw_list->AddText(
-                    ImVec2(position.x + offset.x, position.y + offset.y),
-                    color,
-                    text.text().c_str());
-                draw_list->AddText(
-                    ImVec2(position.x - offset.x, position.y + offset.y),
-                    color,
-                    text.text().c_str());
-                draw_list->AddText(
-                    ImVec2(position.x + offset.x, position.y - offset.y),
-                    color,
-                    text.text().c_str());
-                draw_list->AddText(
-                    ImVec2(position.x - offset.x, position.y - offset.y),
-                    color,
-                    text.text().c_str());
-                break;
+                    // Draw the outline.
+                    draw_list->AddRectFilled(
+                        ImVec2(position.x - offset.x, position.y - offset.y),
+                        ImVec2(
+                            position.x + offset.x + text_size.x, 
+                            position.y + offset.y + text_size.y),
+                    color);
+                    break;
                 case proto::DECORATION_NONE:
                 default:
                     throw std::runtime_error("Unknown decoration.");
@@ -209,7 +225,7 @@ namespace darwin::overlay {
         draw_list->AddText(
             position,
             ReplaceColor(text),
-            text.text().c_str());
+            text_str.c_str());
         OverlayFont::GetInstance(client_parameter_).PopFont();
     }
 
@@ -267,6 +283,42 @@ namespace darwin::overlay {
             ReplaceColor(rect_filled));
     }
 
+    void OverlayDraw::DrawList(
+        ImDrawList* draw_list,
+        const proto::PageElementList& list)
+    {
+        index_ = list.element_index();
+        int max_loop = static_cast<int>(ReplaceDouble(list.element_count()));
+        for (int i = 0; i < max_loop; ++i) {
+            index_int_ = i;
+            // Draw the list.
+            for (const auto& element : list.page_elements()) {
+                switch (element.PageElementOneof_case()) {
+                case proto::PageElement::kText: {
+                    DrawText(draw_list, element.text());
+                    break;
+                }
+                case proto::PageElement::kRectFilled: {
+                    DrawRectFilled(draw_list, element.rect_filled());
+                    break;
+                }
+                case proto::PageElement::kLine: {
+                    DrawLine(draw_list, element.line());
+                    break;
+                }
+                case proto::PageElement::kImage: {
+                    DrawImage(draw_list, element.image());
+                    break;
+                }
+                case proto::PageElement::kList: 
+                    [[fallthrough]];
+                default:
+                    throw std::runtime_error("Unknown page element.");
+                }
+            }
+        }
+    }
+
     bool OverlayDraw::Draw() {
         // Draw the page.
         ImDrawList* draw_list = ImGui::GetForegroundDrawList();
@@ -279,10 +331,7 @@ namespace darwin::overlay {
         for (const auto& element : page_description_.page_elements()) {
             switch (element.PageElementOneof_case()) {
             case proto::PageElement::kText: {
-                proto::PageElementText page_element_text = element.text();
-                page_element_text.set_text(
-                    ReplaceText(page_element_text.text()));
-                DrawText(draw_list, page_element_text);
+                DrawText(draw_list, element.text());
                 break;
             }
             case proto::PageElement::kRectFilled: {
@@ -297,6 +346,12 @@ namespace darwin::overlay {
                 DrawImage(draw_list, element.image());
                 break;
             }
+            case proto::PageElement::kList: {
+                DrawList(draw_list, element.list());
+                break;
+            }
+            default:
+                throw std::runtime_error("Unknown page element.");
             }
         }
         draw_list->PopClipRect();
