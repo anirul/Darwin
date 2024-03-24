@@ -144,8 +144,10 @@ namespace darwin::overlay {
         proto::ClientParameter client_parameter_;
         proto::PageDescription page_description_;
         proto::Vector2 size_;
-        std::map<std::string, std::string> string_parameters_;
-        std::map<std::string, double> double_parameters_;
+        // These parameters are mutable to maintain the constness of the
+        // calls (ReplaceText, ReplaceDouble, etc).
+        mutable std::map<std::string, std::string> string_parameters_;
+        mutable std::map<std::string, double> double_parameters_;
         std::map<std::string, void*> pointer_parameters_;
     };
 

@@ -74,6 +74,10 @@ namespace darwin::overlay {
     std::string OverlayDraw::ReplaceText(
         const std::string& text) const
     {
+        // Mailslot.
+        if (string_parameters_.contains(text)) {
+            return string_parameters_.at(text);
+        }
         std::string replaced_text = text;
         for (const auto& [name, value] : string_parameters_) {
             auto pos = text.find(name);
@@ -90,17 +94,24 @@ namespace darwin::overlay {
                 replaced_text.replace(pos, name.size(), value_as_string);
             }
         }
+        string_parameters_[text] = replaced_text;
         return replaced_text;
     }
 
     double OverlayDraw::ReplaceDouble(
         const std::string& text) const
     {
+        // Mailslot.
+        if (double_parameters_.contains(text)) {
+            return double_parameters_.at(text);
+        }
         try {
             mu::Parser parser;
             std::string temp = ReplaceText(text);
             parser.SetExpr(temp);
-            return parser.Eval();
+            double answer = parser.Eval();
+            double_parameters_[text] = answer;
+            return answer;
         }
         catch (mu::Parser::exception_type& e) {
             throw std::runtime_error(e.GetMsg());
