@@ -2,6 +2,8 @@
 
 add_executable(DarwinClient
     WIN32
+        audio_system.cpp
+        audio_system.h
         darwin_client.cpp
         darwin_client.h
         input_acquisition.cpp
@@ -50,6 +52,7 @@ add_executable(DarwinClient
         state_title.h
         state_victory.cpp
         state_victory.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../asset/json/client_audio.json
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/json/client_parameter.json
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/json/darwin_client.json
         ${CMAKE_CURRENT_SOURCE_DIR}/../asset/shader/opengl/darwin_ray_marching.vert
@@ -65,6 +68,9 @@ target_include_directories(DarwinClient
 target_link_libraries(DarwinClient
     PUBLIC
         muparser::muparser
+        $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,
+            SDL2_mixer::SDL2_mixer,
+            SDL2_mixer::SDL2_mixer-static>
         Frame
         FrameGui
         FrameCommon

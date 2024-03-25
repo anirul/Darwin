@@ -19,6 +19,7 @@ find_package(glm CONFIG REQUIRED)
 find_package(GTest CONFIG REQUIRED)
 find_package(gRPC)
 find_package(muparser CONFIG REQUIRED)
+find_package(SDL2_mixer CONFIG REQUIRED)
 
 # Add submodules build.
 add_subdirectory(External/Frame)

@@ -1,0 +1,59 @@
+{
+  "sample_rate": 44100,
+  "audio_format_enum": "AUDIO_FORMAT_DEFAULT",
+  "channels": 2,
+  "chunk_size": 2048,
+  "fade_music": 0.1,
+  "music_queues": [
+    {
+      "audio_file": "asset/audio/nothing.ogg",
+      "title": "Absolutely Nothing",
+      "author": "Jeremy Blake",
+      "audio_music_enum": "AUDIO_MUSIC_TITLE"
+    },
+    {
+      "audio_file": "asset/audio/ignis.ogg",
+      "title": "Ignis",
+      "author": "Scott Buckley",
+      "audio_music_enum": "AUDIO_MUSIC_MENU"
+    },
+    {
+      "audio_file": "asset/audio/decimate.ogg",
+      "title": "Decimate",
+      "author": "Jeremy Blake",
+      "audio_music_enum": "AUDIO_MUSIC_PLAY"
+    },
+    {
+      "audio_file": "asset/audio/bonus.ogg",
+      "title": "Bonus",
+      "author": "mixkit",
+      "audio_music_enum": "AUDIO_MUSIC_WIN"
+    },
+    {
+      "audio_file": "asset/audio/gameover.ogg",
+      "title": "Game Over",
+      "author": "mixkit",
+      "audio_music_enum": "AUDIO_MUSIC_DEATH"
+    }
+  ],
+  "sound_queues": [
+    {
+      "audio_file": "asset/audio/alert.wav",
+      "title": "Alert",
+      "author": "mixkit",
+      "audio_sound_enum": "AUDIO_SOUND_GOOD"
+    },
+    {
+      "audio_file": "asset/audio/bling.wav",
+      "title": "Bling",
+      "author": "mixkit",
+      "audio_sound_enum": "AUDIO_SOUND_BAD"
+    },
+    {
+      "audio_file": "asset/audio/jump.wav",
+      "title": "Jump",
+      "author": "mixkit",
+      "audio_sound_enum": "AUDIO_SOUND_JUMP"
+    }
+  ]
+}

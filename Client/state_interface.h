@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common/client_parameter.pb.h"
+#include "audio_system.h"
 
 namespace darwin::state {
 

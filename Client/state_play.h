@@ -17,8 +17,11 @@ namespace darwin::state {
     public:
         StatePlay(
             frame::common::Application& app, 
+            audio::AudioSystem& audio_system,
             std::unique_ptr<darwin::DarwinClient> darwin_client);
         ~StatePlay() override = default;
+
+    public:
         void Enter(const proto::ClientParameter& client_parameter) override;
         void Update(StateContext& state_context) override;
         void Exit() override;
@@ -35,6 +38,7 @@ namespace darwin::state {
 
     private:
         frame::common::Application& app_;
+        audio::AudioSystem& audio_system_;
         std::unique_ptr<darwin::DarwinClient> darwin_client_;
         std::string user_name_;
         proto::ClientParameter client_parameter_;

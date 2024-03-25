@@ -12,6 +12,7 @@ namespace darwin::state {
 
     void StatePing::Enter(const proto::ClientParameter& client_parameter) {
         logger_->info("Entering ping state");
+        audio_system_.PlayMusic(proto::AUDIO_MUSIC_MENU);
         client_parameter_ = client_parameter;
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
             logger_->info(
@@ -64,12 +65,14 @@ namespace darwin::state {
                     state_context.ChangeState(
                         std::make_unique<StateCharacter>(
                             app_, 
+                            audio_system_,
                             std::move(darwin_client_)));
                     break;
                 case modal::ModalPingButton::Cancel:
                     state_context.ChangeState(
                         std::make_unique<StateDisconnected>(
                             app_, 
+                            audio_system_,
                             std::move(darwin_client_)));
                     break;
             }

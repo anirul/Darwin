@@ -9,10 +9,17 @@
 
 namespace darwin::state {
 
-    StateTitle::StateTitle(frame::common::Application& app) : app_(app) {}
+    StateTitle::StateTitle(
+        frame::common::Application& app,
+        audio::AudioSystem& audio_system)
+        : app_(app),
+          audio_system_(audio_system) {}
 
-    void StateTitle::Enter(const proto::ClientParameter& client_parameter) {
+    void StateTitle::Enter(
+        const proto::ClientParameter& client_parameter) 
+    {
         logger_->info("Entering title state");
+        audio_system_.PlayMusic(proto::AUDIO_MUSIC_TITLE);
         client_parameter_ = client_parameter;
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
             logger_->info(
@@ -73,7 +80,7 @@ namespace darwin::state {
         }
         if (passed_) {
             state_context.ChangeState(
-                std::make_unique<StateServer>(app_));
+                std::make_unique<StateServer>(app_, audio_system_));
         }
     }
 

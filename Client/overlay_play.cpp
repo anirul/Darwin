@@ -47,7 +47,7 @@ namespace darwin::overlay {
         for (const auto& character : characters_) {
             if (Dot(
                 Normalize(player_character.physic().position()), 
-                Normalize(character.physic().position())) < 0.5) 
+                Normalize(character.physic().position())) < 0.7) 
             {
                 continue;
             }
