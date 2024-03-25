@@ -16,6 +16,7 @@ namespace darwin::state {
         const proto::ClientParameter& client_parameter) 
     {
         logger_->info("State disconnected entered");
+        audio_system_.PlayMusic(proto::AUDIO_MUSIC_MENU);
         client_parameter_ = client_parameter;
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
             logger_->info(
@@ -56,11 +57,12 @@ namespace darwin::state {
                 state_context.ChangeState(
                     std::make_unique<StatePing>(
                         app_,
+                        audio_system_,
                         std::move(darwin_client_)));
                 break;
             case modal::ModalDisconnectedButton::Cancel:
                 state_context.ChangeState(
-                    std::make_unique<StateTitle>(app_));
+                    std::make_unique<StateTitle>(app_, audio_system_));
                 break;
             default:
                 throw std::runtime_error(

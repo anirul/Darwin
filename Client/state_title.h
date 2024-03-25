@@ -13,8 +13,12 @@ namespace darwin::state {
 
     class StateTitle : public StateInterface {
     public:
-        StateTitle(frame::common::Application& app);
+        StateTitle(
+            frame::common::Application& app,
+            audio::AudioSystem& audio_system);
         ~StateTitle() override = default;
+
+    public:
         void Enter(const proto::ClientParameter& client_parameter) override;
         void Update(StateContext& state_context) override;
         void Exit() override;
@@ -22,6 +26,7 @@ namespace darwin::state {
     private:
         frame::Logger& logger_ = frame::Logger::GetInstance();
         frame::common::Application& app_;
+        audio::AudioSystem& audio_system_;
         proto::ClientParameter client_parameter_;
         std::chrono::time_point<std::chrono::system_clock> start_time_;
         frame::gui::DrawGuiInterface* draw_gui_interface_ = nullptr;

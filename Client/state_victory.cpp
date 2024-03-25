@@ -9,6 +9,7 @@ namespace darwin::state {
 
     void StateVictory::Enter(const proto::ClientParameter& client_parameter) {
         logger_->info("Entering victory state");
+        audio_system_.PlayMusic(proto::AUDIO_MUSIC_WIN);
         client_parameter_ = client_parameter;
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
             logger_->info(
@@ -48,13 +49,14 @@ namespace darwin::state {
             case modal::ModalVictoryButton::Respawn: {
                 state_context.ChangeState(
                     std::make_unique<StateCharacter>(
-                            app_, 
-                            std::move(darwin_client_)));
+                        app_, 
+                        audio_system_,
+                        std::move(darwin_client_)));
                 }
                     break;
                 case modal::ModalVictoryButton::Exit:
                     state_context.ChangeState(
-                        std::make_unique<StateTitle>(app_));
+                        std::make_unique<StateTitle>(app_, audio_system_));
                     break;
             }
         }

@@ -13,10 +13,14 @@ namespace darwin::state {
 
     void StateServer::Enter(const proto::ClientParameter& client_parameter) {
         logger_->info("Entering server state");
+        audio_system_.PlayMusic(proto::AUDIO_MUSIC_MENU);
         client_parameter_ = client_parameter;
         modal_server_params_.server_name = client_parameter_.server_name();
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
-            logger_->info("\tPlugin: [{}] {}", (std::uint64_t)plugin, plugin->GetName().c_str());
+            logger_->info(
+                "\tPlugin: [{}] {}", 
+                (std::uint64_t)plugin, 
+                plugin->GetName().c_str());
             if (!draw_gui_interface_) {
                 draw_gui_interface_ =
                     dynamic_cast<frame::gui::DrawGuiInterface*>(
@@ -55,11 +59,12 @@ namespace darwin::state {
                 state_context.ChangeState(
                     std::make_unique<StatePing>(
                         app_,
+                        audio_system_,
                         std::move(darwin_client_)));
                 break;
             case modal::ModalServerButton::Cancel:
                 state_context.ChangeState(
-                    std::make_unique<StateTitle>(app_));
+                    std::make_unique<StateTitle>(app_, audio_system_));
                 break;
             }
         }

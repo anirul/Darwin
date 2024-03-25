@@ -15,15 +15,18 @@ namespace darwin::state {
 
     StatePlay::StatePlay(
         frame::common::Application& app,
-        std::unique_ptr<darwin::DarwinClient> darwin_client) :
-        app_(app),
-        darwin_client_(std::move(darwin_client)),
-        world_simulator_(darwin_client_->GetWorldSimulator())
+        audio::AudioSystem& audio_system,
+        std::unique_ptr<darwin::DarwinClient> darwin_client)
+        : app_(app),
+          audio_system_(audio_system),
+          darwin_client_(std::move(darwin_client)),
+          world_simulator_(darwin_client_->GetWorldSimulator())
     {
     }
 
     void StatePlay::Enter(const proto::ClientParameter& client_parameter) {
         logger_->info("Entered play state");
+        audio_system_.PlayMusic(proto::AUDIO_MUSIC_PLAY);
         client_parameter_ = client_parameter;
         auto unique_input = std::make_unique<InputAcquisition>();
         input_acquisition_ptr_ = unique_input.get();
@@ -182,6 +185,7 @@ namespace darwin::state {
                 world_simulator_.GetPlayerParameter();
             if (input_acquisition_ptr_->IsJumping()) {
                 modified = true;
+                audio_system_.PlaySound(proto::AUDIO_SOUND_JUMP);
                 physic.mutable_position_dt()->CopyFrom(
                     physic.position_dt() +
                     (character.normal() * player_parameter.vertical_speed()));
@@ -245,12 +249,24 @@ namespace darwin::state {
 
     void StatePlay::Update(StateContext& state_context) {
         stats_window_->SetCharacters(world_simulator_.GetCharacters());
+        auto sound_effect = 
+            world_simulator_.GetSoundEffect(
+                darwin_client_->GetCharacterName());
+        if (sound_effect != SoundEffectEnum::SOUND_EFFECT_NONE) {
+            if (sound_effect == SoundEffectEnum::SOUND_EFFECT_GOOD) {
+                audio_system_.PlaySound(proto::AUDIO_SOUND_GOOD);
+            }
+            if (sound_effect == SoundEffectEnum::SOUND_EFFECT_BAD) {
+                audio_system_.PlaySound(proto::AUDIO_SOUND_BAD);
+            }
+        }
         auto player_parameter = world_simulator_.GetPlayerParameter();
         // Check in case of disconnect.
         if (!darwin_client_->IsConnected()) {
             state_context.ChangeState(
                 std::make_unique<StateDisconnected>(
                     app_,
+                    audio_system_,
                     std::move(darwin_client_)));
             return;
         }
@@ -314,6 +330,7 @@ namespace darwin::state {
                 state_context.ChangeState(
                     std::make_unique<StateDeath>(
                         app_,
+                        audio_system_,
                         std::move(darwin_client_)));
             }
             if (character.physic().mass() >=
@@ -324,6 +341,7 @@ namespace darwin::state {
                 state_context.ChangeState(
                     std::make_unique<StateVictory>(
                         app_,
+                        audio_system_,
                         std::move(darwin_client_)));
             }
         }

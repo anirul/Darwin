@@ -14,13 +14,14 @@
             "name": "imgui",
             "features": [ "opengl3-binding", "sdl2-binding", "docking-experimental" ]
         },
-	"muparser",
+	    "muparser",
         "opengl",
         "protobuf",
         {
             "name": "sdl2",
             "features": [ "vulkan" ]
         },
+        "sdl2-mixer",
         "spdlog",
         "stb",
         "tinyobjloader",

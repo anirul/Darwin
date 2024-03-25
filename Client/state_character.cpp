@@ -11,6 +11,7 @@ namespace darwin::state {
         const proto::ClientParameter& client_parameter) 
     {
         logger_->info("Entering character state");
+        audio_system_.PlayMusic(proto::AUDIO_MUSIC_MENU);
         client_parameter_ = client_parameter;
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
             logger_->info(
@@ -39,6 +40,9 @@ namespace darwin::state {
 #endif // _DEBUG
         const std::vector<proto::ColorParameter> colors =
             darwin_client_->GetColorParameters();
+        if (colors.empty()) {
+            throw std::runtime_error("No colors found?");
+        }
         draw_gui_->AddModalWindow(
             std::make_unique<modal::ModalCharacter>(
                 "Select Character",
@@ -57,19 +61,23 @@ namespace darwin::state {
                         state_context.ChangeState(
                             std::make_unique<StatePlay>(
                                 app_, 
+                                audio_system_,
                                 std::move(darwin_client_)));
                     }
                     else {
                         state_context.ChangeState(
                             std::make_unique<StateCharacter>(
                                 app_, 
+                                audio_system_,
                                 std::move(darwin_client_)));
                     }
                 }
                     break;
                 case modal::ModalCharacterButton::Cancel:
                     state_context.ChangeState(
-                        std::make_unique<StateServer>(app_));
+                        std::make_unique<StateServer>(
+                            app_, 
+                            audio_system_));
                     break;
             }
         }

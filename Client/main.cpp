@@ -26,6 +26,8 @@
 #include "modal_stats.h"
 #include "Common/stl_proto_wrapper.h"
 #include "overlay_font.h"
+#include "Common/client_audio.pb.h"
+#include "audio_system.h"
 
 void grpc_log_handler(gpr_log_func_args* args) {
     frame::Logger& logger = frame::Logger::GetInstance();
@@ -69,6 +71,9 @@ int main(int ac, char** av) try
     proto::ClientParameter client_parameter =
         darwin::LoadProtoFromJsonFile<proto::ClientParameter>(
             frame::file::FindFile("asset/json/client_parameter.json"));
+    proto::ClientAudio client_audio =
+        darwin::LoadProtoFromJsonFile<proto::ClientAudio>(
+            frame::file::FindFile("asset/json/client_audio.json"));
     auto gui_window = frame::gui::CreateDrawGui(
         *win.get(),
         frame::file::FindFile("asset/font/axaxax/axaxax_bd.otf"),
@@ -89,18 +94,18 @@ int main(int ac, char** av) try
     auto* gui_window_ptr = gui_window.get();
     // Add a debugging key if you press on '`' key.
     win->AddKeyCallback(SDLK_F1, [gui_window_ptr] {
-        if (gui_window_ptr == nullptr) {
-            return false;
-        }
-        gui_window_ptr->SetVisible(!gui_window_ptr->IsVisible());
-        return true;
+            if (gui_window_ptr == nullptr) {
+                return false;
+            }
+            gui_window_ptr->SetVisible(!gui_window_ptr->IsVisible());
+            return true;
         });
     // Add an exit key if you press on 'ESC' key.
     win->AddKeyCallback(27, [] {
-        SDL_Event quitEvent;
-        quitEvent.type = SDL_QUIT;
-        SDL_PushEvent(&quitEvent);
-        return true;
+            SDL_Event quitEvent;
+            quitEvent.type = SDL_QUIT;
+            SDL_PushEvent(&quitEvent);
+            return true;
         });
     // Add plugin to the device.
     win->GetDevice().AddPlugin(std::move(gui_window));
@@ -109,12 +114,13 @@ int main(int ac, char** av) try
     app.Startup(frame::file::FindFile("asset/json/darwin_client.json"));
     frame::Logger& logger = frame::Logger::GetInstance();
     int i = 0;
+    darwin::audio::AudioSystem audio_system(client_audio);
     darwin::state::StateContext state_context(
-        std::make_unique<darwin::state::StateTitle>(app),
+        std::make_unique<darwin::state::StateTitle>(app, audio_system),
         client_parameter);
     // Add a load from file for resolution.
     app.Run([&state_context, &app] {
-        state_context.Update();
+            state_context.Update();
         });
     return 0;
 }

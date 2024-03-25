@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package proto;
+
+enum AudioMusicEnum {
+    AUDIO_MUSIC_NONE = 0;       // No audio state (this is an error).
+    AUDIO_MUSIC_TITLE = 1;      // Title audio.
+    AUDIO_MUSIC_MENU = 2;       // Menu audio.
+    AUDIO_MUSIC_PLAY = 3;       // Play audio.
+    AUDIO_MUSIC_DEATH = 4;      // Death audio (game over).
+    AUDIO_MUSIC_WIN = 5;        // Win audio (wining the game).
+}
+
+enum AudioSoundEnum {
+    AUDIO_SOUND_NONE = 0;       // No audio sound (this is an error).
+    AUDIO_SOUND_JUMP = 1;       // Jump audio sound.
+    AUDIO_SOUND_GOOD = 2;       // Good audio sound (you took some mass).
+    AUDIO_SOUND_BAD = 3;        // Bad audio sound (you lost some mass).
+}
+
+enum AudioFormatEnum {
+    AUDIO_FORMAT_NONE = 0;      // No audio format (this is an error).
+    AUDIO_FORMAT_DEFAULT = 1;   // Default audio format.
+    AUDIO_FORMAT_S16_LSB = 2;   // Signed 16-bit little-endian audio format.
+    AUDIO_FORMAT_S16_MSB = 3;   // Signed 16-bit big-endian audio format.
+    AUDIO_FORMAT_S16_SYS = 4;   // Signed 16-bit system-endian audio format.
+}
+
+// MusicQueue
+// Next: 5
+message MusicQueue {
+    string audio_file = 1;
+    string title = 2;
+    string author = 3;
+    AudioMusicEnum audio_music_enum = 4;
+}
+
+// AudioSound
+// Next: 5
+message SoundQueue {
+    string audio_file = 1;
+    string title = 2;
+    string author = 3;
+    AudioSoundEnum audio_sound_enum = 4;
+}
+
+// ClientAudio
+// Next: 7
+message ClientAudio {
+    int32 sample_rate = 1;
+    AudioFormatEnum audio_format_enum = 2;
+    int32 channels = 3;
+    int32 chunk_size = 4;
+    double fade_music = 5;
+    repeated MusicQueue music_queues = 6;
+    repeated SoundQueue sound_queues = 7;
+}

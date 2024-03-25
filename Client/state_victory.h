@@ -14,16 +14,21 @@ namespace darwin::state {
     public:
         StateVictory(
             frame::common::Application& app,
-            std::unique_ptr<darwin::DarwinClient> darwin_client) :
-            app_(app), darwin_client_(std::move(darwin_client)) {}
+            audio::AudioSystem& audio_system,
+            std::unique_ptr<darwin::DarwinClient> darwin_client)
+            : app_(app), 
+              audio_system_(audio_system),
+              darwin_client_(std::move(darwin_client)) {}
         ~StateVictory() override = default;
 
+    public:
         void Enter(const proto::ClientParameter& client_parameter) override;
         void Update(StateContext& state_context) override;
         void Exit() override;
 
     private:
         frame::common::Application& app_;
+        audio::AudioSystem& audio_system_;
         std::unique_ptr<darwin::DarwinClient> darwin_client_;
         frame::Logger& logger_ = frame::Logger::GetInstance();
         frame::gui::DrawGuiInterface* draw_gui_ = nullptr;

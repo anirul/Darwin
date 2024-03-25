@@ -19,7 +19,11 @@ namespace darwin::state {
      */
     class StateServer : public StateInterface {
     public:
-        StateServer(frame::common::Application& app) : app_(app) {}
+        StateServer(
+            frame::common::Application& app,
+            audio::AudioSystem& audio_system)
+            : app_(app),
+              audio_system_(audio_system) {}
         ~StateServer() = default;
         //! @brief Enter state.
         void Enter(const proto::ClientParameter& client_parameter) override;
@@ -30,6 +34,7 @@ namespace darwin::state {
 
     private:
         frame::common::Application& app_;
+        audio::AudioSystem& audio_system_;
         frame::Logger& logger_ = frame::Logger::GetInstance();
         frame::gui::DrawGuiInterface* draw_gui_interface_ = nullptr;
         modal::ModalServerParams modal_server_params_;
