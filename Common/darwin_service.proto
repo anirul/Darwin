@@ -139,8 +139,6 @@ message PlayerParameter {
     double eat_speed = 11;
     // Color list.
     repeated ColorParameter colors = 12;
-    // give large balls a max speed bonus
-    double mass_speed_bonus = 13;
 }
 
 // WorldDatabase saved as a file.

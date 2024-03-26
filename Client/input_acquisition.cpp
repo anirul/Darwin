@@ -60,11 +60,6 @@ namespace darwin {
             keys_.contains('d');
     }
 
-    bool InputAcquisition::IsBoosting() const {
-        return
-            keys_.contains('q');
-    }
-
     bool InputAcquisition::IsTab() const {
         return keys_.contains('\t');
     }
@@ -82,7 +77,7 @@ namespace darwin {
 
     float InputAcquisition::GetVertical() const {
         float vertical = 0.0f;
-        if (keys_.contains('w') || keys_.contains('q')) {
+        if (keys_.contains('w')) {
             vertical += 1.0f;
         }
         if (keys_.contains('s')) {

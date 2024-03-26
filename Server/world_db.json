@@ -40,7 +40,7 @@
   "time": 0.0,
   "player_parameter": {
     "vertical_speed": 12.0,
-    "horizontal_speed": 8.0,
+    "horizontal_speed": 12.0,
     "start_mass": 4.0,
     "drop_height": 10.0,
     "living_cost": 0.005,
@@ -75,7 +75,6 @@
           "z": 1.0
         }
       }
-    ],
-    "mass_speed_bonus": 3.0
+    ]
   }
 }
