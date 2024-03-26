@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package proto;
 
+import "vector_math.proto";
+
 enum ReturnEnum {
     RETURN_ERROR = 0;           // Error in the function?
     RETURN_OK = 1;              // OK this passed well.
@@ -51,30 +53,6 @@ message SpecialParameter {
     SpecialEnum special_enum = 2;
     // Time left for the special or cooldown.
     double time_left = 3;
-}
-
-// ClientParameter
-// Next: 2
-message ClientParameter {
-    // Default server name.
-    string server_name = 1;
-}
-
-// Vector 3 this store position or other 3 float values.
-// Next: 4
-message Vector3 {
-    double x = 1;
-    double y = 2;
-    double z = 3;
-}
-
-// Vector 4 this is representing a quaternion (rotation).
-// Next: 5
-message Vector4 {
-    double x = 1;
-    double y = 2;
-    double z = 3;
-    double w = 4;
 }
 
 // Physical property of the element.

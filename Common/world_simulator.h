@@ -11,6 +11,12 @@ namespace darwin {
         std::vector<glm::vec4> colors;
     };
 
+    enum class SoundEffectEnum {
+        SOUND_EFFECT_NONE,  
+        SOUND_EFFECT_BAD,
+        SOUND_EFFECT_GOOD,
+    };
+
     class WorldSimulator {
     public:
         void SetUserName(const std::string& name);
@@ -30,6 +36,8 @@ namespace darwin {
         std::string GetPotentialHit(const proto::Character& character) const;
         proto::Physic GetPlanet() const;
         bool HasCharacter(const std::string& name) const;
+        SoundEffectEnum GetSoundEffect(
+            const std::string& player_character_name);
 
     public:
         double GetLastServerUpdateTime() const {
@@ -87,10 +95,12 @@ namespace darwin {
         mutable std::mutex mutex_;
         std::vector<proto::Element> elements_;
         std::vector<proto::Character> characters_;
+        proto::Character player_character_;
         double time_;
         double last_server_update_time_;
         std::chrono::time_point<std::chrono::high_resolution_clock> last_time_;
         proto::PlayerParameter player_parameter_;
+        SoundEffectEnum sound_effect_ = SoundEffectEnum::SOUND_EFFECT_NONE;
     };
 
 } // End namespace darwin.

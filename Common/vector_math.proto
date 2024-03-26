@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package proto;
+
+// Vector 2 this store position or other 2 float values.
+// Next: 3
+message Vector2 {
+    double x = 1;
+    double y = 2;
+}
+
+// Vector 3 this store position or other 3 float values.
+// Next: 4
+message Vector3 {
+    double x = 1;
+    double y = 2;
+    double z = 3;
+}
+
+// Vector 4 this is representing a quaternion (rotation).
+// Next: 5
+message Vector4 {
+    double x = 1;
+    double y = 2;
+    double z = 3;
+    double w = 4;
+}

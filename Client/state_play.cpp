@@ -6,22 +6,28 @@
 #include "state_disconnected.h"
 #include "state_death.h"
 #include "state_victory.h"
+#include "overlay_play.h"
 #include "Common/convert_math.h"
 #include "Common/vector.h"
+#include "overlay_state.h"
 
 namespace darwin::state {
 
     StatePlay::StatePlay(
         frame::common::Application& app,
-        std::unique_ptr<darwin::DarwinClient> darwin_client) :
-        app_(app),
-        darwin_client_(std::move(darwin_client)),
-        world_simulator_(darwin_client_->GetWorldSimulator())
+        audio::AudioSystem& audio_system,
+        std::unique_ptr<darwin::DarwinClient> darwin_client)
+        : app_(app),
+          audio_system_(audio_system),
+          darwin_client_(std::move(darwin_client)),
+          world_simulator_(darwin_client_->GetWorldSimulator())
     {
     }
 
-    void StatePlay::Enter() {
+    void StatePlay::Enter(const proto::ClientParameter& client_parameter) {
         logger_->info("Entered play state");
+        audio_system_.PlayMusic(proto::AUDIO_MUSIC_PLAY);
+        client_parameter_ = client_parameter;
         auto unique_input = std::make_unique<InputAcquisition>();
         input_acquisition_ptr_ = unique_input.get();
         app_.GetWindow().SetInputInterface(std::move(unique_input));
@@ -39,6 +45,26 @@ namespace darwin::state {
         if (!draw_gui_) {
             throw std::runtime_error("No draw gui interface plugin found?");
         }
+#ifdef _DEBUG
+        auto overlay_state = std::make_unique<overlay::OverlayState>(
+            "overlay_state",
+            client_parameter_,
+            client_parameter_.overlay_state());
+        overlay_state->SetStateName("state play");
+        draw_gui_->AddOverlayWindow(
+            glm::vec2(0.0f, 0.0f),
+            app_.GetWindow().GetDevice().GetSize(),
+            std::move(overlay_state));
+#endif // _DEBUG
+        auto overlay_play = std::make_unique<overlay::OverlayPlay>(
+            "overlay_play",
+            client_parameter_,
+            client_parameter_.overlay_play());
+        overlay_play_ptr_ = overlay_play.get();
+        draw_gui_->AddOverlayWindow(
+            glm::vec2(0.0f, 0.0f),
+            app_.GetWindow().GetDevice().GetSize(),
+            std::move(overlay_play));
         for (const auto& title : draw_gui_->GetWindowTitles()) {
             logger_->info("\tWindow: {}", title);
             if (!stats_window_) {
@@ -60,6 +86,10 @@ namespace darwin::state {
         logger_->info("Exited play state");
         app_.GetWindow().SetInputInterface(nullptr);
         input_acquisition_ptr_ = nullptr;
+        draw_gui_->DeleteWindow("overlay_play");
+#ifdef _DEBUG
+        draw_gui_->DeleteWindow("overlay_state");
+#endif // _DEBUG
     }
 
     frame::ProgramInterface& StatePlay::GetProgram() {
@@ -157,6 +187,7 @@ namespace darwin::state {
                 world_simulator_.GetPlayerParameter();
             if (input_acquisition_ptr_->IsJumping()) {
                 modified = true;
+                audio_system_.PlaySound(proto::AUDIO_SOUND_JUMP);
                 physic.mutable_position_dt()->CopyFrom(
                     physic.position_dt() +
                     (character.normal() * player_parameter.vertical_speed()));
@@ -238,12 +269,24 @@ namespace darwin::state {
 
     void StatePlay::Update(StateContext& state_context) {
         stats_window_->SetCharacters(world_simulator_.GetCharacters());
+        auto sound_effect = 
+            world_simulator_.GetSoundEffect(
+                darwin_client_->GetCharacterName());
+        if (sound_effect != SoundEffectEnum::SOUND_EFFECT_NONE) {
+            if (sound_effect == SoundEffectEnum::SOUND_EFFECT_GOOD) {
+                audio_system_.PlaySound(proto::AUDIO_SOUND_GOOD);
+            }
+            if (sound_effect == SoundEffectEnum::SOUND_EFFECT_BAD) {
+                audio_system_.PlaySound(proto::AUDIO_SOUND_BAD);
+            }
+        }
         auto player_parameter = world_simulator_.GetPlayerParameter();
         // Check in case of disconnect.
         if (!darwin_client_->IsConnected()) {
             state_context.ChangeState(
                 std::make_unique<StateDisconnected>(
                     app_,
+                    audio_system_,
                     std::move(darwin_client_)));
             return;
         }
@@ -273,6 +316,12 @@ namespace darwin::state {
             // Send a report movement to the server.
             darwin_client_->ReportHit(name);
         }
+        // Update the overlay.
+        if (overlay_play_ptr_) {
+            overlay_play_ptr_->SetCharacterName(character_name);
+            overlay_play_ptr_->SetCharacters(
+                world_simulator_.GetCharacters());
+        }
         // Get the delta time.
         double delta_time = now - world_simulator_.GetLastServerUpdateTime();
         // Get the close uniforms from the world simulator.
@@ -301,6 +350,7 @@ namespace darwin::state {
                 state_context.ChangeState(
                     std::make_unique<StateDeath>(
                         app_,
+                        audio_system_,
                         std::move(darwin_client_)));
             }
             if (character.physic().mass() >=
@@ -311,6 +361,7 @@ namespace darwin::state {
                 state_context.ChangeState(
                     std::make_unique<StateVictory>(
                         app_,
+                        audio_system_,
                         std::move(darwin_client_)));
             }
         }

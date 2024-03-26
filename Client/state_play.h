@@ -8,6 +8,8 @@
 #include "Common/world_simulator.h"
 #include "Common/darwin_constant.h"
 #include "modal_stats.h"
+#include "Common/client_parameter.pb.h"
+#include "overlay_play.h"
 
 namespace darwin::state {
 
@@ -15,9 +17,12 @@ namespace darwin::state {
     public:
         StatePlay(
             frame::common::Application& app, 
+            audio::AudioSystem& audio_system,
             std::unique_ptr<darwin::DarwinClient> darwin_client);
         ~StatePlay() override = default;
-        void Enter() override;
+
+    public:
+        void Enter(const proto::ClientParameter& client_parameter) override;
         void Update(StateContext& state_context) override;
         void Exit() override;
 
@@ -33,8 +38,10 @@ namespace darwin::state {
 
     private:
         frame::common::Application& app_;
+        audio::AudioSystem& audio_system_;
         std::unique_ptr<darwin::DarwinClient> darwin_client_;
         std::string user_name_;
+        proto::ClientParameter client_parameter_;
         frame::Logger& logger_ = frame::Logger::GetInstance();
         WorldSimulator& world_simulator_;
         // Camera parameters.
@@ -49,6 +56,7 @@ namespace darwin::state {
         // GUI.
         frame::gui::DrawGuiInterface* draw_gui_ = nullptr;
         darwin::modal::ModalStats* stats_window_ = nullptr;
+        overlay::OverlayPlay* overlay_play_ptr_ = nullptr;
     };
 
 } // namespace darwin::state.

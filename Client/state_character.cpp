@@ -3,11 +3,16 @@
 #include "state_context.h"
 #include "state_play.h"
 #include "state_server.h"
+#include "overlay_state.h"
 
 namespace darwin::state {
 
-    void StateCharacter::Enter() {
+    void StateCharacter::Enter(
+        const proto::ClientParameter& client_parameter) 
+    {
         logger_->info("Entering character state");
+        audio_system_.PlayMusic(proto::AUDIO_MUSIC_MENU);
+        client_parameter_ = client_parameter;
         for (auto* plugin : app_.GetWindow().GetDevice().GetPluginPtrs()) {
             logger_->info(
                 "\tPlugin: [{}] {}",
@@ -22,8 +27,22 @@ namespace darwin::state {
         if (!draw_gui_) {
             throw std::runtime_error("No draw gui interface plugin found?");
         }
+#ifdef _DEBUG
+        auto overlay_state = std::make_unique<overlay::OverlayState>(
+            "overlay_state",
+            client_parameter_,
+            client_parameter_.overlay_state());
+        overlay_state->SetStateName("state character");
+        draw_gui_->AddOverlayWindow(
+            glm::vec2(0.0f, 0.0f),
+            app_.GetWindow().GetDevice().GetSize(),
+            std::move(overlay_state));
+#endif // _DEBUG
         const std::vector<proto::ColorParameter> colors =
             darwin_client_->GetColorParameters();
+        if (colors.empty()) {
+            throw std::runtime_error("No colors found?");
+        }
         draw_gui_->AddModalWindow(
             std::make_unique<modal::ModalCharacter>(
                 "Select Character",
@@ -42,19 +61,23 @@ namespace darwin::state {
                         state_context.ChangeState(
                             std::make_unique<StatePlay>(
                                 app_, 
+                                audio_system_,
                                 std::move(darwin_client_)));
                     }
                     else {
                         state_context.ChangeState(
                             std::make_unique<StateCharacter>(
                                 app_, 
+                                audio_system_,
                                 std::move(darwin_client_)));
                     }
                 }
                     break;
                 case modal::ModalCharacterButton::Cancel:
                     state_context.ChangeState(
-                        std::make_unique<StateServer>(app_));
+                        std::make_unique<StateServer>(
+                            app_, 
+                            audio_system_));
                     break;
             }
         }
@@ -62,6 +85,9 @@ namespace darwin::state {
 
     void StateCharacter::Exit() {
         logger_->info("Exit character state");
+#ifdef _DEBUG
+        draw_gui_->DeleteWindow("overlay_state");
+#endif // _DEBUG
     }
 
 } // namespace darwin::state.

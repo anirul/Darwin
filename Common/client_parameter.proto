@@ -1,0 +1,190 @@
+syntax = "proto3";
+
+package proto;
+
+import "vector_math.proto";
+
+enum TextSizeEnum {
+    TEXT_SIZE_SMALL = 0;        // 18 pixels
+    TEXT_SIZE_MEDIUM = 1;       // 24 pixels
+    TEXT_SIZE_LARGE = 2;        // 36 pixels
+    TEXT_SIZE_TITLE = 3;        // 160 pixels
+}
+
+enum AlignmentEnum {
+    ALIGNMENT_TOP_LEFT = 0;     // Hook at top left.
+    ALIGNMENT_TOP = 1;          // Hook at top center.
+    ALIGNMENT_TOP_RIGHT = 2;    // Hook at top right.
+    ALIGNMENT_CENTER_LEFT = 3;  // Hook at center left.
+    ALIGNMENT_CENTER = 4;       // Hook at center.
+    ALIGNMENT_CENTER_RIGHT = 5; // Hook at center right.
+    ALIGNMENT_BOTTOM_LEFT = 6;  // Hook at bottom left.
+    ALIGNMENT_BOTTOM = 7;       // Hook at bottom center.
+    ALIGNMENT_BOTTOM_RIGHT = 8; // Hook at bottom right.
+}
+
+enum DecorationEnum {
+    DECORATION_NONE = 0;        // No outline.
+    DECORATION_SHADOW = 1;      // Shadow a single outline in one direction.
+    DECORATION_OUTLINE = 2;     // Outlne a shadow that is in every direction.
+}
+
+// FontSize
+// Next: 3
+message FontSize {
+    TextSizeEnum text_size_enum = 1;
+    double size = 2;
+}
+
+// ClientParameter
+// Next: 7
+message ClientParameter {
+    // Default server name.
+    string server_name = 1;
+    // Default font.
+    string font_file = 2;
+    // Default font sizes.
+    repeated FontSize font_sizes = 3;
+    // Overlay of the title.
+    PageDescription overlay_title = 4;
+    // This is the overlay on state change.
+    PageDescription overlay_state = 5;
+    // This is the overlay when you play.
+    PageDescription overlay_play = 6;
+}
+
+// ColorString
+// Next: 5
+message ColorString {
+    string red = 1;
+    string green = 2;
+    string blue = 3;
+    string alpha = 4;
+}
+
+// Vector2String
+// Next: 3
+message Vector2String {
+    string x = 1;
+    string y = 2;
+}
+
+// PageElementDecoration
+// Next: 5
+message PageElementDecoration {
+    oneof OffsetOneof {
+        Vector2 offset = 1;
+        Vector2String offset_string = 2;
+    }
+    oneof ColorOneof {
+        Vector4 color = 3;
+        ColorString color_string = 4;
+    }
+    DecorationEnum decoration_enum = 5;
+}
+
+// PageElementText
+// Next: 9
+message PageElementText {
+    string text = 1;
+    oneof ColorOneof {
+        Vector4 color = 2;
+        ColorString color_string = 3;
+    }
+    oneof PositionOneof {
+        Vector2 position = 4;
+        Vector2String position_string = 5;
+    }
+    TextSizeEnum text_size_enum = 6;
+    AlignmentEnum alignment_enum = 7;
+    repeated PageElementDecoration decorations = 8;
+}
+
+// PageElementImage
+// Next: 7
+message PageElementImage {
+    string image = 1;
+    oneof PositionOneof {
+        Vector2 position = 2;
+        Vector2String position_string = 3;
+    }
+    oneof SizeOneof {
+        Vector2 size = 4;
+        Vector2String size_string = 5;
+    }
+    AlignmentEnum alignment_enum = 6;
+}
+
+// PageElementLine
+// Next: 9
+message PageElementLine {
+    oneof StartOneof {
+        Vector2 start = 1;
+        Vector2String start_string = 2;
+    }
+    oneof EndOneof {
+        Vector2 end = 3;
+        Vector2String end_string = 4;
+    }
+    oneof ColorOneof {
+        Vector4 color = 5;
+        ColorString color_string = 6;
+    }
+    double thickness = 7;
+    AlignmentEnum alignment_enum = 8;
+}
+
+// PageElementRectFilled
+// Next: 9
+message PageElementRectFilled {
+    oneof PositionOneof {
+        Vector2 position = 1;
+        Vector2String position_string = 2;
+    }
+    oneof SizeOneof {
+        Vector2 size = 3;
+        Vector2String size_string = 4;
+    }
+    oneof ColorOneof {
+        Vector4 color = 5;
+        ColorString color_string = 6;
+    }
+    double rounding = 7;
+    AlignmentEnum alignment_enum = 8;
+}
+
+// PageElementList
+// Next: 8
+message PageElementList {
+    string element_count = 1;
+    string element_index = 2;
+    oneof PositionOneof {
+        Vector2 position = 3;
+        Vector2String position_string = 4;
+    }
+    oneof SizeOneof{
+        Vector2 size = 5;
+        Vector2String size_string = 6;
+    }
+    repeated PageElement page_elements = 7;
+}
+
+// PageElement
+// Next: 5
+message PageElement {
+    oneof PageElementOneof {
+        PageElementText text = 1;
+        PageElementImage image = 2;
+        PageElementLine line = 3;
+        PageElementRectFilled rect_filled = 4;
+        PageElementList list = 5;
+    }
+}
+
+// PageDescription
+// Next: 4
+message PageDescription {
+    string name = 1;
+    Vector2 size = 2;
+    repeated PageElement page_elements = 3;
+}

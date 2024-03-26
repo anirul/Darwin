@@ -28,13 +28,16 @@ namespace darwin::state {
      */
     class StateContext {
     public:
-        StateContext(std::unique_ptr<StateInterface> state);
+        StateContext(
+            std::unique_ptr<StateInterface> state,
+            const proto::ClientParameter& client_parameter);
         ~StateContext();
         void ChangeState(std::unique_ptr<StateInterface> new_state);
         void Update();
 
     private:
         std::unique_ptr<StateInterface> state_;
+        proto::ClientParameter client_parameter_;
     };
 
 } // namespace darwin::state.

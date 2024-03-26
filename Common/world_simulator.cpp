@@ -120,6 +120,38 @@ namespace darwin {
         return false;
     }
 
+    SoundEffectEnum WorldSimulator::GetSoundEffect(
+        const std::string& player_character_name) 
+    {
+        std::lock_guard l(mutex_);
+        if (player_character_.name() != player_character_name) {
+            for (const auto& character : characters_) {
+                if (character.name() == player_character_name) {
+                    player_character_ = character;
+                    return SoundEffectEnum::SOUND_EFFECT_NONE;
+                }
+            }
+        }
+        for (const auto& character : characters_) {
+            if (character.name() == player_character_.name()) {
+                if (character.physic().mass() > 
+                    player_character_.physic().mass()) 
+                {
+                    player_character_ = character;
+                    return SoundEffectEnum::SOUND_EFFECT_GOOD;
+                }
+                if (character.physic().mass() + 0.1 < 
+                    player_character_.physic().mass()) 
+                {
+                    player_character_ = character;
+                    return SoundEffectEnum::SOUND_EFFECT_BAD;
+                }
+                player_character_ = character;
+            }
+        }
+        return SoundEffectEnum::SOUND_EFFECT_NONE;
+    }
+
     bool WorldSimulator::IsClose(
         const proto::Vector3& normal,
         const proto::Vector3& position) const

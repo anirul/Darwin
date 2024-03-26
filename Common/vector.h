@@ -4,6 +4,7 @@
 
 namespace darwin {
 
+    proto::Vector2 CreateVector2(double x, double y);
     proto::Vector3 CreateVector3(double x, double y, double z);
     proto::Vector4 CreateVector4(double x, double y, double z, double w);
     double Length(const proto::Vector3& vector3);

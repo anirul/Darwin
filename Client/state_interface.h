@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Common/client_parameter.pb.h"
+#include "audio_system.h"
+
 namespace darwin::state {
 
     class StateContext;
@@ -12,7 +15,8 @@ namespace darwin::state {
     public:
         virtual ~StateInterface() = default;
         //! @brief Enter state.
-        virtual void Enter() = 0;
+        virtual void Enter(
+            const proto::ClientParameter& client_parameter) = 0;
         //! @brief Update state.
         virtual void Update(StateContext& state_context) = 0;
         //! @brief Exit state.

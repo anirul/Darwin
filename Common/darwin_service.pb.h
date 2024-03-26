@@ -32,6 +32,7 @@
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
+#include "vector_math.pb.h"
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_darwin_5fservice_2eproto
@@ -50,9 +51,6 @@ namespace proto {
 class Character;
 struct CharacterDefaultTypeInternal;
 extern CharacterDefaultTypeInternal _Character_default_instance_;
-class ClientParameter;
-struct ClientParameterDefaultTypeInternal;
-extern ClientParameterDefaultTypeInternal _ClientParameter_default_instance_;
 class ColorParameter;
 struct ColorParameterDefaultTypeInternal;
 extern ColorParameterDefaultTypeInternal _ColorParameter_default_instance_;
@@ -92,19 +90,12 @@ extern UpdateRequestDefaultTypeInternal _UpdateRequest_default_instance_;
 class UpdateResponse;
 struct UpdateResponseDefaultTypeInternal;
 extern UpdateResponseDefaultTypeInternal _UpdateResponse_default_instance_;
-class Vector3;
-struct Vector3DefaultTypeInternal;
-extern Vector3DefaultTypeInternal _Vector3_default_instance_;
-class Vector4;
-struct Vector4DefaultTypeInternal;
-extern Vector4DefaultTypeInternal _Vector4_default_instance_;
 class WorldDatabase;
 struct WorldDatabaseDefaultTypeInternal;
 extern WorldDatabaseDefaultTypeInternal _WorldDatabase_default_instance_;
 }  // namespace proto
 PROTOBUF_NAMESPACE_OPEN
 template<> ::proto::Character* Arena::CreateMaybeMessage<::proto::Character>(Arena*);
-template<> ::proto::ClientParameter* Arena::CreateMaybeMessage<::proto::ClientParameter>(Arena*);
 template<> ::proto::ColorParameter* Arena::CreateMaybeMessage<::proto::ColorParameter>(Arena*);
 template<> ::proto::CreateCharacterRequest* Arena::CreateMaybeMessage<::proto::CreateCharacterRequest>(Arena*);
 template<> ::proto::CreateCharacterResponse* Arena::CreateMaybeMessage<::proto::CreateCharacterResponse>(Arena*);
@@ -118,8 +109,6 @@ template<> ::proto::ReportInGameResponse* Arena::CreateMaybeMessage<::proto::Rep
 template<> ::proto::SpecialParameter* Arena::CreateMaybeMessage<::proto::SpecialParameter>(Arena*);
 template<> ::proto::UpdateRequest* Arena::CreateMaybeMessage<::proto::UpdateRequest>(Arena*);
 template<> ::proto::UpdateResponse* Arena::CreateMaybeMessage<::proto::UpdateResponse>(Arena*);
-template<> ::proto::Vector3* Arena::CreateMaybeMessage<::proto::Vector3>(Arena*);
-template<> ::proto::Vector4* Arena::CreateMaybeMessage<::proto::Vector4>(Arena*);
 template<> ::proto::WorldDatabase* Arena::CreateMaybeMessage<::proto::WorldDatabase>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace proto {
@@ -444,21 +433,21 @@ class SpecialParameter final :
 class ClientParameter final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:proto.ClientParameter) */ {
  public:
-  inline ClientParameter() : ClientParameter(nullptr) {}
-  ~ClientParameter() override;
-  explicit PROTOBUF_CONSTEXPR ClientParameter(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline SpecialParameter() : SpecialParameter(nullptr) {}
+  ~SpecialParameter() override;
+  explicit PROTOBUF_CONSTEXPR SpecialParameter(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  ClientParameter(const ClientParameter& from);
-  ClientParameter(ClientParameter&& from) noexcept
-    : ClientParameter() {
+  SpecialParameter(const SpecialParameter& from);
+  SpecialParameter(SpecialParameter&& from) noexcept
+    : SpecialParameter() {
     *this = ::std::move(from);
   }
 
-  inline ClientParameter& operator=(const ClientParameter& from) {
+  inline SpecialParameter& operator=(const SpecialParameter& from) {
     CopyFrom(from);
     return *this;
   }
-  inline ClientParameter& operator=(ClientParameter&& from) noexcept {
+  inline SpecialParameter& operator=(SpecialParameter&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -481,20 +470,20 @@ class ClientParameter final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const ClientParameter& default_instance() {
+  static const SpecialParameter& default_instance() {
     return *internal_default_instance();
   }
-  static inline const ClientParameter* internal_default_instance() {
-    return reinterpret_cast<const ClientParameter*>(
-               &_ClientParameter_default_instance_);
+  static inline const SpecialParameter* internal_default_instance() {
+    return reinterpret_cast<const SpecialParameter*>(
+               &_SpecialParameter_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     1;
 
-  friend void swap(ClientParameter& a, ClientParameter& b) {
+  friend void swap(SpecialParameter& a, SpecialParameter& b) {
     a.Swap(&b);
   }
-  inline void Swap(ClientParameter* other) {
+  inline void Swap(SpecialParameter* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -507,7 +496,7 @@ class ClientParameter final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(ClientParameter* other) {
+  void UnsafeArenaSwap(SpecialParameter* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -515,14 +504,14 @@ class ClientParameter final :
 
   // implements Message ----------------------------------------------
 
-  ClientParameter* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<ClientParameter>(arena);
+  SpecialParameter* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SpecialParameter>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const ClientParameter& from);
+  void CopyFrom(const SpecialParameter& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const ClientParameter& from) {
-    ClientParameter::MergeImpl(*this, from);
+  void MergeFrom( const SpecialParameter& from) {
+    SpecialParameter::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -540,15 +529,15 @@ class ClientParameter final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(ClientParameter* other);
+  void InternalSwap(SpecialParameter* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "proto.ClientParameter";
+    return "proto.SpecialParameter";
   }
   protected:
-  explicit ClientParameter(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit SpecialParameter(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -562,11 +551,13 @@ class ClientParameter final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kServerNameFieldNumber = 1,
+    kNameFieldNumber = 1,
+    kTimeLeftFieldNumber = 3,
+    kSpecialEnumFieldNumber = 2,
   };
-  // string server_name = 1;
-  void clear_server_name();
-  const std::string& server_name() const;
+  // string name = 1;
+  void clear_name();
+  const std::string& name() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
   void set_server_name(ArgT0&& arg0, ArgT... args);
   std::string* mutable_server_name();
@@ -904,29 +895,30 @@ class Vector4 final :
   double y() const;
   void set_y(double value);
   private:
-  double _internal_y() const;
-  void _internal_set_y(double value);
+  const std::string& _internal_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
+  std::string* _internal_mutable_name();
   public:
 
-  // double z = 3;
-  void clear_z();
-  double z() const;
-  void set_z(double value);
+  // double time_left = 3;
+  void clear_time_left();
+  double time_left() const;
+  void set_time_left(double value);
   private:
-  double _internal_z() const;
-  void _internal_set_z(double value);
+  double _internal_time_left() const;
+  void _internal_set_time_left(double value);
   public:
 
-  // double w = 4;
-  void clear_w();
-  double w() const;
-  void set_w(double value);
+  // .proto.SpecialEnum special_enum = 2;
+  void clear_special_enum();
+  ::proto::SpecialEnum special_enum() const;
+  void set_special_enum(::proto::SpecialEnum value);
   private:
-  double _internal_w() const;
-  void _internal_set_w(double value);
+  ::proto::SpecialEnum _internal_special_enum() const;
+  void _internal_set_special_enum(::proto::SpecialEnum value);
   public:
 
-  // @@protoc_insertion_point(class_scope:proto.Vector4)
+  // @@protoc_insertion_point(class_scope:proto.SpecialParameter)
  private:
   class _Internal;
 
@@ -934,10 +926,9 @@ class Vector4 final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    double x_;
-    double y_;
-    double z_;
-    double w_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+    double time_left_;
+    int special_enum_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -3732,202 +3723,94 @@ inline void SpecialParameter::set_time_left(double value) {
 
 // ClientParameter
 
-// string server_name = 1;
-inline void ClientParameter::clear_server_name() {
-  _impl_.server_name_.ClearToEmpty();
+// string name = 1;
+inline void SpecialParameter::clear_name() {
+  _impl_.name_.ClearToEmpty();
 }
-inline const std::string& ClientParameter::server_name() const {
-  // @@protoc_insertion_point(field_get:proto.ClientParameter.server_name)
-  return _internal_server_name();
+inline const std::string& SpecialParameter::name() const {
+  // @@protoc_insertion_point(field_get:proto.SpecialParameter.name)
+  return _internal_name();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void ClientParameter::set_server_name(ArgT0&& arg0, ArgT... args) {
+void SpecialParameter::set_name(ArgT0&& arg0, ArgT... args) {
  
- _impl_.server_name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:proto.ClientParameter.server_name)
+ _impl_.name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:proto.SpecialParameter.name)
 }
-inline std::string* ClientParameter::mutable_server_name() {
-  std::string* _s = _internal_mutable_server_name();
-  // @@protoc_insertion_point(field_mutable:proto.ClientParameter.server_name)
+inline std::string* SpecialParameter::mutable_name() {
+  std::string* _s = _internal_mutable_name();
+  // @@protoc_insertion_point(field_mutable:proto.SpecialParameter.name)
   return _s;
 }
-inline const std::string& ClientParameter::_internal_server_name() const {
-  return _impl_.server_name_.Get();
+inline const std::string& SpecialParameter::_internal_name() const {
+  return _impl_.name_.Get();
 }
-inline void ClientParameter::_internal_set_server_name(const std::string& value) {
+inline void SpecialParameter::_internal_set_name(const std::string& value) {
   
-  _impl_.server_name_.Set(value, GetArenaForAllocation());
+  _impl_.name_.Set(value, GetArenaForAllocation());
 }
-inline std::string* ClientParameter::_internal_mutable_server_name() {
+inline std::string* SpecialParameter::_internal_mutable_name() {
   
-  return _impl_.server_name_.Mutable(GetArenaForAllocation());
+  return _impl_.name_.Mutable(GetArenaForAllocation());
 }
-inline std::string* ClientParameter::release_server_name() {
-  // @@protoc_insertion_point(field_release:proto.ClientParameter.server_name)
-  return _impl_.server_name_.Release();
+inline std::string* SpecialParameter::release_name() {
+  // @@protoc_insertion_point(field_release:proto.SpecialParameter.name)
+  return _impl_.name_.Release();
 }
-inline void ClientParameter::set_allocated_server_name(std::string* server_name) {
-  if (server_name != nullptr) {
+inline void SpecialParameter::set_allocated_name(std::string* name) {
+  if (name != nullptr) {
     
   } else {
     
   }
-  _impl_.server_name_.SetAllocated(server_name, GetArenaForAllocation());
+  _impl_.name_.SetAllocated(name, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (_impl_.server_name_.IsDefault()) {
-    _impl_.server_name_.Set("", GetArenaForAllocation());
+  if (_impl_.name_.IsDefault()) {
+    _impl_.name_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:proto.ClientParameter.server_name)
+  // @@protoc_insertion_point(field_set_allocated:proto.SpecialParameter.name)
 }
 
-// -------------------------------------------------------------------
-
-// Vector3
-
-// double x = 1;
-inline void Vector3::clear_x() {
-  _impl_.x_ = 0;
+// .proto.SpecialEnum special_enum = 2;
+inline void SpecialParameter::clear_special_enum() {
+  _impl_.special_enum_ = 0;
 }
-inline double Vector3::_internal_x() const {
-  return _impl_.x_;
+inline ::proto::SpecialEnum SpecialParameter::_internal_special_enum() const {
+  return static_cast< ::proto::SpecialEnum >(_impl_.special_enum_);
 }
-inline double Vector3::x() const {
-  // @@protoc_insertion_point(field_get:proto.Vector3.x)
-  return _internal_x();
+inline ::proto::SpecialEnum SpecialParameter::special_enum() const {
+  // @@protoc_insertion_point(field_get:proto.SpecialParameter.special_enum)
+  return _internal_special_enum();
 }
-inline void Vector3::_internal_set_x(double value) {
+inline void SpecialParameter::_internal_set_special_enum(::proto::SpecialEnum value) {
   
-  _impl_.x_ = value;
+  _impl_.special_enum_ = value;
 }
-inline void Vector3::set_x(double value) {
-  _internal_set_x(value);
-  // @@protoc_insertion_point(field_set:proto.Vector3.x)
+inline void SpecialParameter::set_special_enum(::proto::SpecialEnum value) {
+  _internal_set_special_enum(value);
+  // @@protoc_insertion_point(field_set:proto.SpecialParameter.special_enum)
 }
 
-// double y = 2;
-inline void Vector3::clear_y() {
-  _impl_.y_ = 0;
+// double time_left = 3;
+inline void SpecialParameter::clear_time_left() {
+  _impl_.time_left_ = 0;
 }
-inline double Vector3::_internal_y() const {
-  return _impl_.y_;
+inline double SpecialParameter::_internal_time_left() const {
+  return _impl_.time_left_;
 }
-inline double Vector3::y() const {
-  // @@protoc_insertion_point(field_get:proto.Vector3.y)
-  return _internal_y();
+inline double SpecialParameter::time_left() const {
+  // @@protoc_insertion_point(field_get:proto.SpecialParameter.time_left)
+  return _internal_time_left();
 }
-inline void Vector3::_internal_set_y(double value) {
+inline void SpecialParameter::_internal_set_time_left(double value) {
   
-  _impl_.y_ = value;
+  _impl_.time_left_ = value;
 }
-inline void Vector3::set_y(double value) {
-  _internal_set_y(value);
-  // @@protoc_insertion_point(field_set:proto.Vector3.y)
-}
-
-// double z = 3;
-inline void Vector3::clear_z() {
-  _impl_.z_ = 0;
-}
-inline double Vector3::_internal_z() const {
-  return _impl_.z_;
-}
-inline double Vector3::z() const {
-  // @@protoc_insertion_point(field_get:proto.Vector3.z)
-  return _internal_z();
-}
-inline void Vector3::_internal_set_z(double value) {
-  
-  _impl_.z_ = value;
-}
-inline void Vector3::set_z(double value) {
-  _internal_set_z(value);
-  // @@protoc_insertion_point(field_set:proto.Vector3.z)
-}
-
-// -------------------------------------------------------------------
-
-// Vector4
-
-// double x = 1;
-inline void Vector4::clear_x() {
-  _impl_.x_ = 0;
-}
-inline double Vector4::_internal_x() const {
-  return _impl_.x_;
-}
-inline double Vector4::x() const {
-  // @@protoc_insertion_point(field_get:proto.Vector4.x)
-  return _internal_x();
-}
-inline void Vector4::_internal_set_x(double value) {
-  
-  _impl_.x_ = value;
-}
-inline void Vector4::set_x(double value) {
-  _internal_set_x(value);
-  // @@protoc_insertion_point(field_set:proto.Vector4.x)
-}
-
-// double y = 2;
-inline void Vector4::clear_y() {
-  _impl_.y_ = 0;
-}
-inline double Vector4::_internal_y() const {
-  return _impl_.y_;
-}
-inline double Vector4::y() const {
-  // @@protoc_insertion_point(field_get:proto.Vector4.y)
-  return _internal_y();
-}
-inline void Vector4::_internal_set_y(double value) {
-  
-  _impl_.y_ = value;
-}
-inline void Vector4::set_y(double value) {
-  _internal_set_y(value);
-  // @@protoc_insertion_point(field_set:proto.Vector4.y)
-}
-
-// double z = 3;
-inline void Vector4::clear_z() {
-  _impl_.z_ = 0;
-}
-inline double Vector4::_internal_z() const {
-  return _impl_.z_;
-}
-inline double Vector4::z() const {
-  // @@protoc_insertion_point(field_get:proto.Vector4.z)
-  return _internal_z();
-}
-inline void Vector4::_internal_set_z(double value) {
-  
-  _impl_.z_ = value;
-}
-inline void Vector4::set_z(double value) {
-  _internal_set_z(value);
-  // @@protoc_insertion_point(field_set:proto.Vector4.z)
-}
-
-// double w = 4;
-inline void Vector4::clear_w() {
-  _impl_.w_ = 0;
-}
-inline double Vector4::_internal_w() const {
-  return _impl_.w_;
-}
-inline double Vector4::w() const {
-  // @@protoc_insertion_point(field_get:proto.Vector4.w)
-  return _internal_w();
-}
-inline void Vector4::_internal_set_w(double value) {
-  
-  _impl_.w_ = value;
-}
-inline void Vector4::set_w(double value) {
-  _internal_set_w(value);
-  // @@protoc_insertion_point(field_set:proto.Vector4.w)
+inline void SpecialParameter::set_time_left(double value) {
+  _internal_set_time_left(value);
+  // @@protoc_insertion_point(field_set:proto.SpecialParameter.time_left)
 }
 
 // -------------------------------------------------------------------
@@ -3980,12 +3863,6 @@ inline bool Physic::_internal_has_position() const {
 }
 inline bool Physic::has_position() const {
   return _internal_has_position();
-}
-inline void Physic::clear_position() {
-  if (GetArenaForAllocation() == nullptr && _impl_.position_ != nullptr) {
-    delete _impl_.position_;
-  }
-  _impl_.position_ = nullptr;
 }
 inline const ::proto::Vector3& Physic::_internal_position() const {
   const ::proto::Vector3* p = _impl_.position_;
@@ -4047,11 +3924,12 @@ inline ::proto::Vector3* Physic::mutable_position() {
 inline void Physic::set_allocated_position(::proto::Vector3* position) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.position_;
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.position_);
   }
   if (position) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(position);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(position));
     if (message_arena != submessage_arena) {
       position = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, position, submessage_arena);
@@ -4070,12 +3948,6 @@ inline bool Physic::_internal_has_position_dt() const {
 }
 inline bool Physic::has_position_dt() const {
   return _internal_has_position_dt();
-}
-inline void Physic::clear_position_dt() {
-  if (GetArenaForAllocation() == nullptr && _impl_.position_dt_ != nullptr) {
-    delete _impl_.position_dt_;
-  }
-  _impl_.position_dt_ = nullptr;
 }
 inline const ::proto::Vector3& Physic::_internal_position_dt() const {
   const ::proto::Vector3* p = _impl_.position_dt_;
@@ -4137,11 +4009,12 @@ inline ::proto::Vector3* Physic::mutable_position_dt() {
 inline void Physic::set_allocated_position_dt(::proto::Vector3* position_dt) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.position_dt_;
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.position_dt_);
   }
   if (position_dt) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(position_dt);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(position_dt));
     if (message_arena != submessage_arena) {
       position_dt = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, position_dt, submessage_arena);
@@ -4160,12 +4033,6 @@ inline bool Physic::_internal_has_orientation() const {
 }
 inline bool Physic::has_orientation() const {
   return _internal_has_orientation();
-}
-inline void Physic::clear_orientation() {
-  if (GetArenaForAllocation() == nullptr && _impl_.orientation_ != nullptr) {
-    delete _impl_.orientation_;
-  }
-  _impl_.orientation_ = nullptr;
 }
 inline const ::proto::Vector4& Physic::_internal_orientation() const {
   const ::proto::Vector4* p = _impl_.orientation_;
@@ -4227,11 +4094,12 @@ inline ::proto::Vector4* Physic::mutable_orientation() {
 inline void Physic::set_allocated_orientation(::proto::Vector4* orientation) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.orientation_;
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.orientation_);
   }
   if (orientation) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(orientation);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(orientation));
     if (message_arena != submessage_arena) {
       orientation = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, orientation, submessage_arena);
@@ -4250,12 +4118,6 @@ inline bool Physic::_internal_has_orientation_dt() const {
 }
 inline bool Physic::has_orientation_dt() const {
   return _internal_has_orientation_dt();
-}
-inline void Physic::clear_orientation_dt() {
-  if (GetArenaForAllocation() == nullptr && _impl_.orientation_dt_ != nullptr) {
-    delete _impl_.orientation_dt_;
-  }
-  _impl_.orientation_dt_ = nullptr;
 }
 inline const ::proto::Vector4& Physic::_internal_orientation_dt() const {
   const ::proto::Vector4* p = _impl_.orientation_dt_;
@@ -4317,11 +4179,12 @@ inline ::proto::Vector4* Physic::mutable_orientation_dt() {
 inline void Physic::set_allocated_orientation_dt(::proto::Vector4* orientation_dt) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.orientation_dt_;
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.orientation_dt_);
   }
   if (orientation_dt) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(orientation_dt);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(orientation_dt));
     if (message_arena != submessage_arena) {
       orientation_dt = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, orientation_dt, submessage_arena);
@@ -4395,12 +4258,6 @@ inline bool Element::_internal_has_color() const {
 inline bool Element::has_color() const {
   return _internal_has_color();
 }
-inline void Element::clear_color() {
-  if (GetArenaForAllocation() == nullptr && _impl_.color_ != nullptr) {
-    delete _impl_.color_;
-  }
-  _impl_.color_ = nullptr;
-}
 inline const ::proto::Vector3& Element::_internal_color() const {
   const ::proto::Vector3* p = _impl_.color_;
   return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector3&>(
@@ -4461,11 +4318,12 @@ inline ::proto::Vector3* Element::mutable_color() {
 inline void Element::set_allocated_color(::proto::Vector3* color) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.color_;
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.color_);
   }
   if (color) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(color);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(color));
     if (message_arena != submessage_arena) {
       color = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, color, submessage_arena);
@@ -4649,12 +4507,6 @@ inline bool Character::_internal_has_color() const {
 inline bool Character::has_color() const {
   return _internal_has_color();
 }
-inline void Character::clear_color() {
-  if (GetArenaForAllocation() == nullptr && _impl_.color_ != nullptr) {
-    delete _impl_.color_;
-  }
-  _impl_.color_ = nullptr;
-}
 inline const ::proto::Vector3& Character::_internal_color() const {
   const ::proto::Vector3* p = _impl_.color_;
   return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector3&>(
@@ -4715,11 +4567,12 @@ inline ::proto::Vector3* Character::mutable_color() {
 inline void Character::set_allocated_color(::proto::Vector3* color) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.color_;
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.color_);
   }
   if (color) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(color);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(color));
     if (message_arena != submessage_arena) {
       color = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, color, submessage_arena);
@@ -4829,12 +4682,6 @@ inline bool Character::_internal_has_g_force() const {
 inline bool Character::has_g_force() const {
   return _internal_has_g_force();
 }
-inline void Character::clear_g_force() {
-  if (GetArenaForAllocation() == nullptr && _impl_.g_force_ != nullptr) {
-    delete _impl_.g_force_;
-  }
-  _impl_.g_force_ = nullptr;
-}
 inline const ::proto::Vector3& Character::_internal_g_force() const {
   const ::proto::Vector3* p = _impl_.g_force_;
   return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector3&>(
@@ -4895,11 +4742,12 @@ inline ::proto::Vector3* Character::mutable_g_force() {
 inline void Character::set_allocated_g_force(::proto::Vector3* g_force) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.g_force_;
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.g_force_);
   }
   if (g_force) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(g_force);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(g_force));
     if (message_arena != submessage_arena) {
       g_force = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, g_force, submessage_arena);
@@ -4918,12 +4766,6 @@ inline bool Character::_internal_has_normal() const {
 }
 inline bool Character::has_normal() const {
   return _internal_has_normal();
-}
-inline void Character::clear_normal() {
-  if (GetArenaForAllocation() == nullptr && _impl_.normal_ != nullptr) {
-    delete _impl_.normal_;
-  }
-  _impl_.normal_ = nullptr;
 }
 inline const ::proto::Vector3& Character::_internal_normal() const {
   const ::proto::Vector3* p = _impl_.normal_;
@@ -4985,11 +4827,12 @@ inline ::proto::Vector3* Character::mutable_normal() {
 inline void Character::set_allocated_normal(::proto::Vector3* normal) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.normal_;
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.normal_);
   }
   if (normal) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(normal);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(normal));
     if (message_arena != submessage_arena) {
       normal = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, normal, submessage_arena);
@@ -5123,12 +4966,6 @@ inline bool ColorParameter::_internal_has_color() const {
 inline bool ColorParameter::has_color() const {
   return _internal_has_color();
 }
-inline void ColorParameter::clear_color() {
-  if (GetArenaForAllocation() == nullptr && _impl_.color_ != nullptr) {
-    delete _impl_.color_;
-  }
-  _impl_.color_ = nullptr;
-}
 inline const ::proto::Vector3& ColorParameter::_internal_color() const {
   const ::proto::Vector3* p = _impl_.color_;
   return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector3&>(
@@ -5189,11 +5026,12 @@ inline ::proto::Vector3* ColorParameter::mutable_color() {
 inline void ColorParameter::set_allocated_color(::proto::Vector3* color) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.color_;
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.color_);
   }
   if (color) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(color);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(color));
     if (message_arena != submessage_arena) {
       color = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, color, submessage_arena);
@@ -6121,12 +5959,6 @@ inline bool CreateCharacterRequest::_internal_has_color() const {
 inline bool CreateCharacterRequest::has_color() const {
   return _internal_has_color();
 }
-inline void CreateCharacterRequest::clear_color() {
-  if (GetArenaForAllocation() == nullptr && _impl_.color_ != nullptr) {
-    delete _impl_.color_;
-  }
-  _impl_.color_ = nullptr;
-}
 inline const ::proto::Vector3& CreateCharacterRequest::_internal_color() const {
   const ::proto::Vector3* p = _impl_.color_;
   return p != nullptr ? *p : reinterpret_cast<const ::proto::Vector3&>(
@@ -6187,11 +6019,12 @@ inline ::proto::Vector3* CreateCharacterRequest::mutable_color() {
 inline void CreateCharacterRequest::set_allocated_color(::proto::Vector3* color) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete _impl_.color_;
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.color_);
   }
   if (color) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(color);
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(color));
     if (message_arena != submessage_arena) {
       color = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
           message_arena, color, submessage_arena);
