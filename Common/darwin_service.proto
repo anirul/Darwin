@@ -44,6 +44,12 @@ enum SpecialEnum {
     SPECIAL_WAIT = 4;           // Wait.
 }
 
+enum CharacterTypeEnum {
+    CHARACTER_NONE = 0;         // Error status incorrect.
+    CHARACTER_PLAYER = 1;       // Player character.
+    CHARACTER_NPC = 2;          // Non player character (AI).
+}
+
 // SpecialParameter
 // Next: 4
 message SpecialParameter {
@@ -85,7 +91,7 @@ message Element {
 }
 
 // Character it will be represented by a sphere on server.
-// Next: 8
+// Next: 9
 message Character {
     // Character name.
     string name = 1;
@@ -101,6 +107,8 @@ message Character {
     StatusEnum status_enum = 6;
     // Special speed upgrade.
     repeated SpecialParameter special_parameters = 7;
+    // Character type.
+    CharacterTypeEnum character_type = 8;
 }
 
 // ColorParameter
