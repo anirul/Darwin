@@ -70,7 +70,7 @@ namespace darwin {
         switch (special_effect.special_state_enum()) {
             // This is a special state that is not activated.
             case proto::SPECIAL_STATE_WAIT: {
-                effect_parameter.set_counter(0.0);d
+                effect_parameter.set_counter(0.0);
                 return effect_parameter;
             }
             // This is a special state that is active.
