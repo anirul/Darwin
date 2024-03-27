@@ -21,8 +21,9 @@ namespace darwin {
     bool InputAcquisition::MouseMoved(
         glm::vec2 position,
         glm::vec2 relative,
-        double dt) {
-        mouse_position_ = position;
+        double dt) 
+    {
+        mouse_position_ += relative;
         return true;
     }
 

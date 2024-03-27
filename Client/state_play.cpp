@@ -1,6 +1,7 @@
 #include "state_play.h"
 
 #include <algorithm>
+#include <SDL2/SDL.h>
 
 #include "state_context.h"
 #include "state_disconnected.h"
@@ -80,6 +81,7 @@ namespace darwin::state {
                 stats_window_->GetName(),
                 (std::uint64_t)stats_window_);
         }
+        SDL_SetRelativeMouseMode(SDL_TRUE);
     }
 
     void StatePlay::Exit() {
@@ -90,6 +92,7 @@ namespace darwin::state {
 #ifdef _DEBUG
         draw_gui_->DeleteWindow("overlay_state");
 #endif // _DEBUG
+        SDL_SetRelativeMouseMode(SDL_FALSE);
     }
 
     frame::ProgramInterface& StatePlay::GetProgram() {
