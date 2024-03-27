@@ -97,6 +97,11 @@ int main(int ac, char** av) try
             if (gui_window_ptr == nullptr) {
                 return false;
             }
+            if (gui_window_ptr->IsVisible()) {
+                SDL_SetRelativeMouseMode(SDL_TRUE);
+            } else {
+                SDL_SetRelativeMouseMode(SDL_FALSE);
+            }
             gui_window_ptr->SetVisible(!gui_window_ptr->IsVisible());
             return true;
         });

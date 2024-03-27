@@ -16,8 +16,8 @@ uniform vec4 sphere_col[384];
 
 // Ray marching algorithm limits.
 const int max_steps = 200;
-const float min_dist = 0.01;
-const float max_dist = 100.;
+const float min_dist = 0.001;
+const float max_dist = 100.0;
 
 // light constants.
 const float ambiant_treshold = 0.15;
@@ -143,9 +143,14 @@ Hit GetDistance(vec3 position)
 	Hit hit;
 	hit.normal = normalize(position - sphere_pos[smallest_id].xyz);
 	hit.dist = smallest_dist;
-	if (sphere_col[smallest_id].w > 1.0) {
+	if (sphere_pos[smallest_id].w > 20.0) {
+		// Planet texture.
+        hit.color = 
+			vec4(vec3(snoise(position * 0.2)), 1.0) * vec4(0.5) + vec4(0.5);
+    } else if (sphere_col[smallest_id].w > 1.0) {
+		// Character texture.
 		hit.color = 
-			vec4(vec3(snoise(hit.normal)), 1.0) * 
+			vec4(vec3(snoise(hit.normal + position)), 1.0) * 
 			vec4(vec3(sphere_col[smallest_id]), 1.0);
 	} else {
 		hit.color = sphere_col[smallest_id];
