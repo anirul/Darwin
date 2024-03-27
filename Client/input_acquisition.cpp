@@ -1,5 +1,7 @@
 #include "input_acquisition.h"
 
+#include <SDL2/SDL.h>
+
 namespace darwin {
 
     bool InputAcquisition::KeyPressed(char key, double dt) {
@@ -25,10 +27,28 @@ namespace darwin {
     }
 
     bool InputAcquisition::MousePressed(char button, double dt) {
+        if (SDL_BUTTON(SDL_BUTTON_LEFT)) {
+            mouse_buttons_.insert(SDL_BUTTON_LEFT);
+        }
+        if (SDL_BUTTON(SDL_BUTTON_MIDDLE)) {
+            mouse_buttons_.insert(SDL_BUTTON_MIDDLE);
+        }
+        if (SDL_BUTTON(SDL_BUTTON_RIGHT)) {
+            mouse_buttons_.insert(SDL_BUTTON_RIGHT);
+        }
         return true;
     }
 
     bool InputAcquisition::MouseReleased(char button, double dt) {
+        if (SDL_BUTTON(SDL_BUTTON_LEFT)) {
+            mouse_buttons_.erase(SDL_BUTTON_LEFT);
+        }
+        if (SDL_BUTTON(SDL_BUTTON_MIDDLE)) {
+            mouse_buttons_.erase(SDL_BUTTON_MIDDLE);
+        }
+        if (SDL_BUTTON(SDL_BUTTON_RIGHT)) {
+            mouse_buttons_.erase(SDL_BUTTON_RIGHT);
+        }
         return true;
     }
 
@@ -60,8 +80,16 @@ namespace darwin {
             keys_.contains('d');
     }
 
-    bool InputAcquisition::IsTab() const {
-        return keys_.contains('\t');
+    bool InputAcquisition::IsMouseLeft() const {
+        return mouse_buttons_.contains(SDL_BUTTON_LEFT);
+    }
+
+    bool InputAcquisition::IsMouseRight() const {
+        return mouse_buttons_.contains(SDL_BUTTON_RIGHT);
+    }
+
+    bool InputAcquisition::IsMouseMiddle() const {
+        return mouse_buttons_.contains(SDL_BUTTON_MIDDLE);
     }
 
     float InputAcquisition::GetHorizontal() const {

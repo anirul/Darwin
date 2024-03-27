@@ -56,6 +56,57 @@ namespace darwin {
         return grpc::Status::OK;
     }
 
+    void DarwinServiceImpl::AddDefaultSpecialEffectBoost(
+        proto::SpecialEffectParameter& special_effect) const 
+    {
+        const auto& player_parameter = world_state_.GetPlayerParameter();
+        special_effect.set_effect_duration(
+            player_parameter.special_effect_boost().effect_duration());
+        special_effect.set_cooldown_duration(
+            player_parameter.special_effect_boost().cooldown_duration());
+    }
+
+    proto::SpecialEffectParameter DarwinServiceImpl::UpdateSpecialEffectBoost(
+        const proto::SpecialEffectParameter& special_effect,
+        double delta_time) const
+    {
+        switch (special_effect.special_state_enum()) {
+            // This is a special state that is not activated.
+            case proto::SPECIAL_STATE_UNKNOWN: {
+                return special_effect;
+            }
+            // This is a special state that is active.
+            case proto::SPECIAL_STATE_ACTIVE: {
+                auto effect_parameter = special_effect;
+                effect_parameter.set_counter(
+                    effect_parameter.counter() + delta_time);
+                if (effect_parameter.counter() >
+                    effect_parameter.effect_duration())
+                {
+                    effect_parameter.set_counter(0.0);
+                    effect_parameter.set_special_state_enum(
+                        proto::SPECIAL_STATE_COOLDOWN);
+                }
+                return effect_parameter;
+            }
+            // This is a special state that is cooling down.
+            case proto::SPECIAL_STATE_COOLDOWN: {
+                auto effect_parameter = special_effect;
+                effect_parameter.set_counter(
+                    effect_parameter.counter() + delta_time);
+                if (effect_parameter.counter() <
+                    effect_parameter.cooldown_duration())
+                {
+                    return effect_parameter;
+                }
+                effect_parameter.set_special_state_enum(
+                    proto::SPECIAL_STATE_UNKNOWN);
+                return effect_parameter;
+            }
+        }
+        return special_effect;
+    }
+
     grpc::Status DarwinServiceImpl::ReportInGame(
         grpc::ServerContext* context,
         const proto::ReportInGameRequest* request,
@@ -95,6 +146,15 @@ namespace darwin {
             std::chrono::duration_cast<std::chrono::duration<double>>(
                 now.time_since_epoch())
             .count();
+        // Fill the special effect boost.
+        auto special_effect_boost = 
+            maybe_character.value().special_effect_boost();
+        AddDefaultSpecialEffectBoost(special_effect_boost);
+        special_effect_boost = 
+            UpdateSpecialEffectBoost(special_effect_boost, loop_timer_);
+        maybe_character.value().mutable_special_effect_boost()->CopyFrom(
+            special_effect_boost);
+        // Update the character.
         time_characters_.insert({ time, maybe_character.value() });
         // Potential hit.
         if (!request->potential_hit().empty()) {
@@ -128,7 +188,7 @@ namespace darwin {
 #endif // _DEBUG
         const auto player_parameter = world_state_.GetPlayerParameter();
         bool found = false;
-        for (const auto& color : player_parameter.colors()) {
+        for (const auto& color : player_parameter.color_parameters()) {
             if (Dot(
                     Normalize(color.color()), 
                     Normalize(request->color())) <= 0.99) 
@@ -206,6 +266,7 @@ namespace darwin {
     }
 
     void DarwinServiceImpl::ComputeWorld(double loop_timer) {
+        loop_timer_ = loop_timer;
         while (true) {
             auto now = std::chrono::system_clock::now();
             double time =
@@ -255,7 +316,7 @@ namespace darwin {
                 now + std::chrono::milliseconds(loop_time_milli));
         }
     }
-
+    
     proto::Physic DarwinServiceImpl::UpdatePhysic(
         const proto::Physic& server_physic,
         const proto::Physic& client_physic) const

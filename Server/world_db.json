@@ -41,6 +41,7 @@
   "player_parameter": {
     "vertical_speed": 12.0,
     "horizontal_speed": 12.0,
+    "boost_speed": 18.0,
     "start_mass": 4.0,
     "drop_height": 10.0,
     "living_cost": 0.005,
@@ -50,7 +51,7 @@
     "victory_size": 100.0,
     "max_upgrade_grow": 80.0,
     "disconnection_timeout": 10.0,
-    "colors": [
+    "color_parameters": [
       {
         "name": "red",
         "color": {
@@ -75,6 +76,12 @@
           "z": 1.0
         }
       }
-    ]
+    ],
+    "special_effect_boost": {
+      "special_state_enum": "SPECIAL_STATE_UNKNOWN",
+      "effect_duration": 0.5,
+      "cooldown_duration": 5.0,
+      "counter": 0.0
+    }
   }
 }

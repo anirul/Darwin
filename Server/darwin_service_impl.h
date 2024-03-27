@@ -38,6 +38,12 @@ namespace darwin {
         void ComputeWorld(double loop_timer);
 
     protected:
+        proto::SpecialEffectParameter UpdateSpecialEffectBoost(
+            const proto::SpecialEffectParameter& special_effect,
+            double delta_time) const;
+        void AddDefaultSpecialEffectBoost(
+            proto::SpecialEffectParameter& special_effect) 
+            const;
         proto::Physic UpdatePhysic(
             const proto::Physic& server_physic, 
             const proto::Physic& client_physic) const;
@@ -49,6 +55,7 @@ namespace darwin {
         WorldState& world_state_;
         std::list<grpc::ServerWriter<proto::UpdateResponse>*> writers_;
         std::mutex writers_mutex_;
+        double loop_timer_ = 0.0;
     };
 
 }  // namespace darwin.

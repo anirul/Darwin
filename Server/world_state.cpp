@@ -121,7 +121,7 @@ namespace darwin {
                 std::format("element_upgrade{}", element_number++));
             element.set_type_enum(proto::TYPE_UPGRADE);
             std::vector<proto::Vector3> colors;
-            for (const auto& color : player_parameter_.colors()) {
+            for (const auto& color : player_parameter_.color_parameters()) {
                 colors.push_back(color.color());
             }
             element.mutable_color()->CopyFrom(

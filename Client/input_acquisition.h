@@ -24,7 +24,9 @@ namespace darwin {
         float GetMouseWheel();
         bool IsJumping() const;
         bool IsMoving() const;
-        bool IsTab() const;
+        bool IsMouseLeft() const;
+        bool IsMouseRight() const;
+        bool IsMouseMiddle() const;
         float GetHorizontal() const;
         float GetVertical() const;
 
@@ -32,6 +34,7 @@ namespace darwin {
         glm::vec2 mouse_position_;
         float mouse_wheel_;
         std::set<char> keys_;
+        std::set<char> mouse_buttons_;
     };
 
 } // namespace darwin.

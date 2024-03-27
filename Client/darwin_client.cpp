@@ -96,6 +96,8 @@ namespace darwin {
         report_request_.set_name(character_name_);
         report_request_.mutable_physic()->CopyFrom(character.physic());
         report_request_.set_status_enum(character.status_enum());
+        report_request_.mutable_special_effect_boost()->CopyFrom(
+            character.special_effect_boost());
         proto::ReportInGameResponse response;
         grpc::ClientContext context;
         grpc::Status status = 
@@ -226,7 +228,9 @@ namespace darwin {
         std::vector<proto::ColorParameter> color_parameters;
         const proto::PlayerParameter player_parameter = 
             world_simulator_.GetPlayerParameter();
-        for (const auto& color_parameter : player_parameter.colors()) {
+        for (const auto& color_parameter : 
+            player_parameter.color_parameters()) 
+        {
             color_parameters.push_back(color_parameter);
         }
         return color_parameters;

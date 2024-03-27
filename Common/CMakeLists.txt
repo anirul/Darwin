@@ -13,6 +13,7 @@ add_library(DarwinCommon
         physic.cpp
         physic.h
         darwin_service.proto
+        world_parameter.proto
         client_audio.proto
         client_parameter.proto
         vector_math.proto
@@ -58,6 +59,8 @@ set(HEADERS_TO_BE_COPIED
     client_parameter.grpc.pb.h
     vector_math.pb.h
     vector_math.grpc.pb.h
+    world_parameter.pb.h
+    world_parameter.grpc.pb.h
 )
 
 foreach(HEADERN ${HEADERS_TO_BE_COPIED})

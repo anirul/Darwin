@@ -3,164 +3,7 @@ syntax = "proto3";
 package proto;
 
 import "vector_math.proto";
-
-enum ReturnEnum {
-    RETURN_ERROR = 0;           // Error in the function?
-    RETURN_OK = 1;              // OK this passed well.
-    RETURN_REJECTED = 2;        // Rejected by the server.
-}
-
-enum VitalEnum {
-    VITAL_NONE = 0;             // Error status incorrect.
-    VITAL_ALIVE = 1;            // The player is alive and kicking.
-    VITAL_DEAD = 2;             // This player is dead.
-    VITAL_LOADING = 3;          // This player is loading in.
-}
-
-enum StatusEnum {
-    STATUS_UNKNOWN = 0;         // Unknown this is an error!
-    STATUS_ON_GROUND = 1;       // On the ground.
-    STATUS_JUMPING = 2;         // Jumping.
-    STATUS_LOADING = 3;         // Loading in the game.
-    STATUS_DEAD = 4;            // Dead.
-}
-
-enum TypeEnum {
-    TYPE_UNKNOWN = 0;           // Unknown this is an error!
-    TYPE_GROUND = 1;            // From where the gravity is generated.
-    TYPE_EXPLOSION = 2;         // Explosion that push stuff around.
-    TYPE_UPGRADE = 3;           // Upgrade to upgrade character.
-    TYPE_GREEN = 4;             // Greenery (no effect on anything).
-    TYPE_BROWN = 5;             // Tree bark and non destructible elements.
-    TYPE_WATER = 6;             // Water.
-    TYPE_CHARACTER = 7;         // Player character.
-}
-
-enum SpecialEnum {
-    SPECIAL_UNKNOWN = 0;        // Unknown this is an error.
-    SPECIAL_ACTIVATE = 1;       // Activate the special.
-    SPECIAL_ACTIVE = 2;         // Special is active.
-    SPECIAL_COOLDOWN = 3;       // Special is on cooldown.
-    SPECIAL_WAIT = 4;           // Wait.
-}
-
-enum CharacterTypeEnum {
-    CHARACTER_NONE = 0;         // Error status incorrect.
-    CHARACTER_PLAYER = 1;       // Player character.
-    CHARACTER_NPC = 2;          // Non player character (AI).
-}
-
-// SpecialParameter
-// Next: 4
-message SpecialParameter {
-    // Special name (could be speed, shield, ...).
-    string name = 1;
-    // Special value.
-    SpecialEnum special_enum = 2;
-    // Time left for the special or cooldown.
-    double time_left = 3;
-}
-
-// Physical property of the element.
-// Next: 7
-message Physic {
-    // Sphere radius.
-    double radius = 1;
-    // weight total.
-    double mass = 2;
-    // Sphere position.
-    Vector3 position = 3;
-    // Velocity the speed it has d(position)/dt.
-    Vector3 position_dt = 5;
-    // Sphere look direction.
-    Vector4 orientation = 4;
-    // Rotation d(orientation)/dt.
-    Vector4 orientation_dt = 6;
-}
-
-// Sphere element in the world.
-// Next: 5
-message Element {
-    string name = 1;
-    // Material string.
-    Vector3 color = 2;
-    // Physic, position, speed etc...
-    Physic physic = 3;
-    // What type of element is it?
-    TypeEnum type_enum = 4;
-}
-
-// Character it will be represented by a sphere on server.
-// Next: 9
-message Character {
-    // Character name.
-    string name = 1;
-    // Color string.
-    Vector3 color = 2;
-    // Physic paramters.
-    Physic physic = 3;
-    // G force.
-    Vector3 g_force = 4;
-    // normal used by camera (is normalize(-gforce)).
-    Vector3 normal = 5;
-    // Status of the element.
-    StatusEnum status_enum = 6;
-    // Special speed upgrade.
-    repeated SpecialParameter special_parameters = 7;
-    // Character type.
-    CharacterTypeEnum character_type = 8;
-}
-
-// ColorParameter
-// Next: 3
-message ColorParameter {
-    // Color name.
-    string name = 1;
-    // Color value.
-    Vector3 color = 2;
-}
-
-// PlayerParameter
-// Next: 13
-message PlayerParameter {
-    // Vertical speed (jumping).
-    double vertical_speed = 1;
-    // Horizontal speed (running).
-    double horizontal_speed = 2;
-    // Player start mass.
-    double start_mass = 3;
-    // Player drop height (start at planet radius and add this value).
-    double drop_height = 4;
-    // Penalty for eating too similar to player color.
-    double penalty = 5;
-    // living cost in mass value.
-    double living_cost = 6;
-    // Friction (this will stop the move at a certain point).
-    double friction = 7;
-    // Victory size (in volume).
-    double victory_size = 8;
-    // Size at which you cannot grow with upgrades.
-    double max_upgrade_grow = 9;
-    // Disconnection timeout.
-    double disconnection_timeout = 10;
-    // Eating speed.
-    double eat_speed = 11;
-    // Color list.
-    repeated ColorParameter colors = 12;
-}
-
-// WorldDatabase saved as a file.
-// Next: 5
-message WorldDatabase {
-    // Elements list.
-    repeated Element elements = 1;
-    // Characters list.
-    repeated Character characters = 2;
-    // Present time on the server.
-    double time = 3;
-    // World parameter this will be moved to client at connection.
-    PlayerParameter player_parameter = 4;
-}
+import "world_parameter.proto";
 
 // UpdateRequest
 // Next: 2
@@ -181,7 +24,7 @@ message UpdateResponse {
 }
 
 // ReportInGameRequest
-// Next: 5
+// Next: 6
 message ReportInGameRequest {
     // Character name.
     string name = 1;
@@ -191,6 +34,8 @@ message ReportInGameRequest {
     string potential_hit = 3;
     // Character status.
     StatusEnum status_enum = 4;
+    // Character special effect.
+    SpecialEffectParameter special_effect_boost = 5;
 }
 
 // ReportInGameResponse

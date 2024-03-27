@@ -27,6 +27,16 @@ namespace darwin::state {
         void Exit() override;
 
     protected:
+        bool ProcessJump(
+            proto::Physic& physic,
+            proto::Character& character);
+        bool ProcessMove(
+            proto::Physic& physic,
+            proto::Character& character,
+            double delta_time);
+        bool ProcessBoost(
+            proto::Physic& physic,
+            proto::Character& character);
         frame::ProgramInterface& GetProgram();
         void UpdateUniformSpheres(
             frame::ProgramInterface& program,

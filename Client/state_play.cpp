@@ -172,59 +172,113 @@ namespace darwin::state {
         program.Uniform("camera_target", character_pos);
     }
 
+    bool StatePlay::ProcessJump(
+        proto::Physic& physic,
+        proto::Character& character) 
+    {
+        if (input_acquisition_ptr_->IsJumping()) {
+            proto::PlayerParameter player_parameter =
+                world_simulator_.GetPlayerParameter();
+            audio_system_.PlaySound(proto::AUDIO_SOUND_JUMP);
+            physic.mutable_position_dt()->CopyFrom(
+                physic.position_dt() +
+                (character.normal() * player_parameter.vertical_speed()));
+            character.set_status_enum(proto::STATUS_JUMPING);
+            return true;
+        }
+        return false;
+    }
+
+    bool StatePlay::ProcessMove(
+        proto::Physic& physic,
+        proto::Character& character,
+        double delta_time)
+    {
+        if (input_acquisition_ptr_->IsMoving()) {
+            proto::PlayerParameter player_parameter =
+                world_simulator_.GetPlayerParameter();
+            // calculate the firction for the delta_time
+            double friction_delta_time =
+                player_parameter.friction() *
+                delta_time / std::log(physic.mass());
+            // calculate acceleration from friction and traget terminal 
+            // velocity.
+            double acceleration_delta_time =
+                friction_delta_time *
+                player_parameter.horizontal_speed() *
+                player_parameter.horizontal_speed();
+            // we need to current speed to get the quadratic friction
+            double current_speed = Length(physic.position_dt());
+            // we apply the friction even if we acceletare (accelaration 
+            // doesnt make friction disapear) also we wont end in orbit 
+            // this way.
+            auto friction_vector =
+                Normalize(physic.position_dt()) *
+                friction_delta_time * current_speed * current_speed;
+            auto forward = Normalize(Glm2ProtoVector(character_forward_));
+            auto right =
+                Normalize(Cross(character.normal(), forward));
+            auto direction =
+                Normalize(
+                    right * input_acquisition_ptr_->GetHorizontal() +
+                    forward * input_acquisition_ptr_->GetVertical());
+            // lets apply acceleration and friction
+            physic.mutable_position_dt()->CopyFrom(
+                physic.position_dt() +
+                direction * acceleration_delta_time - friction_vector);
+            return true;
+        }
+        return false;
+    }
+
+    bool StatePlay::ProcessBoost(
+        proto::Physic& physic, 
+        proto::Character& character) 
+    {
+        if (input_acquisition_ptr_->IsMouseLeft()) {
+            proto::PlayerParameter player_parameter =
+                world_simulator_.GetPlayerParameter();
+            switch (character.special_effect_boost().special_state_enum()) {
+                case proto::SPECIAL_STATE_UNKNOWN:
+                    character.mutable_special_effect_boost()->
+                        set_special_state_enum(
+                            proto::SPECIAL_STATE_ACTIVE);
+                    break;
+                case proto::SPECIAL_STATE_ACTIVE: {
+                    logger_->warn(std::format("Boosting!"));
+                    auto direction = Normalize(physic.position_dt());
+                    physic.mutable_position_dt()->CopyFrom(
+                        direction * player_parameter.boost_speed());
+                    return true;
+                }
+                case proto::SPECIAL_STATE_COOLDOWN:
+                    break;
+            }
+        }
+        return false;
+    }
+
     void StatePlay::UpdateMovement(proto::Character character) {
         static double previous_time = GetTimeSecondNow();
         double now = GetTimeSecondNow();
         double delta_time = now - previous_time;
         previous_time = now;
         if (character.status_enum() == proto::STATUS_ON_GROUND) {
-            bool modified = false;
             proto::Physic physic = character.physic();
             const auto planet_physic = world_simulator_.GetPlanet();
             proto::PlayerParameter player_parameter =
                 world_simulator_.GetPlayerParameter();
-            if (input_acquisition_ptr_->IsJumping()) {
-                modified = true;
-                audio_system_.PlaySound(proto::AUDIO_SOUND_JUMP);
-                physic.mutable_position_dt()->CopyFrom(
-                    physic.position_dt() +
-                    (character.normal() * player_parameter.vertical_speed()));
-                character.set_status_enum(proto::STATUS_JUMPING);
-            }
-            if (input_acquisition_ptr_->IsMoving()) {
-                modified = true;
-                // calculate the firction for the delta_time
-                double friction_delta_time = 
-                    player_parameter.friction() * 
-                    delta_time / std::log(physic.mass());
-                // calculate acceleration from friction and traget terminal 
-                // velocity.
-                double acceleration_delta_time = 
-                    friction_delta_time * 
-                    player_parameter.horizontal_speed() * 
-                    player_parameter.horizontal_speed();
-                // we need to current speed to get the quadratic friction
-                double current_speed = Length(physic.position_dt());
-                // we apply the friction even if we acceletare (accelaration 
-                // doesnt make friction disapear) also we wont end in orbit 
-                // this way.
-                auto friction_vector = 
-                    Normalize(physic.position_dt()) * 
-                    friction_delta_time * current_speed * current_speed ;
-                auto forward = Normalize(Glm2ProtoVector(character_forward_));
-                auto right =
-                    Normalize(Cross(character.normal(), forward));
-                auto direction =
-                    Normalize(
-                        right * input_acquisition_ptr_->GetHorizontal() +
-                        forward * input_acquisition_ptr_->GetVertical());
-                // lets apply acceleration and friction
-                physic.mutable_position_dt()->CopyFrom(
-                    physic.position_dt() + 
-                    direction * acceleration_delta_time - friction_vector);
-            }
+            std::vector<bool> modified_list;
+            modified_list.push_back(ProcessJump(physic, character));
+            modified_list.push_back(
+                ProcessMove(physic, character, delta_time));
+            modified_list.push_back(ProcessBoost(physic, character));
             // Apply the changes.
-            if (modified) {
+            if (std::any_of(
+                    modified_list.begin(), 
+                    modified_list.end(), 
+                    [](bool b) { return b; })) 
+            {
                 character.mutable_physic()->CopyFrom(physic);
                 world_simulator_.SetCharacter(character);
             }
