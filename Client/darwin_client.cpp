@@ -126,7 +126,6 @@ namespace darwin {
 
             std::vector<proto::Character> characters;
             for (const auto& character : response.characters()) {
-                auto name = character.name();
                 auto status = character.status_enum();
                 characters.push_back(MergeCharacter(character));
                 previous_characters_.insert({ character.name(), character });
@@ -281,6 +280,8 @@ namespace darwin {
             server_character.physic().mass());
         character.mutable_physic()->set_radius(
             server_character.physic().radius());
+        character.mutable_special_effect_boost()->CopyFrom(
+            server_character.special_effect_boost());
         return character;
     }
 

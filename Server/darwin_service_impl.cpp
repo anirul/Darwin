@@ -56,28 +56,30 @@ namespace darwin {
         return grpc::Status::OK;
     }
 
-    void DarwinServiceImpl::AddDefaultSpecialEffectBoost(
-        proto::SpecialEffectParameter& special_effect) const 
-    {
-        const auto& player_parameter = world_state_.GetPlayerParameter();
-        special_effect.set_effect_duration(
-            player_parameter.special_effect_boost().effect_duration());
-        special_effect.set_cooldown_duration(
-            player_parameter.special_effect_boost().cooldown_duration());
-    }
-
     proto::SpecialEffectParameter DarwinServiceImpl::UpdateSpecialEffectBoost(
         const proto::SpecialEffectParameter& special_effect,
         double delta_time) const
     {
+        auto effect_parameter = special_effect;
+        auto player_boost =
+            world_state_.GetPlayerParameter().special_effect_boost();
+        effect_parameter.set_cooldown_duration(
+            player_boost.cooldown_duration());
+        effect_parameter.set_effect_duration(
+            player_boost.effect_duration());
         switch (special_effect.special_state_enum()) {
             // This is a special state that is not activated.
-            case proto::SPECIAL_STATE_UNKNOWN: {
-                return special_effect;
+            case proto::SPECIAL_STATE_WAIT: {
+                std::cout << "Boost state : Wait\n";
+                effect_parameter.set_counter(0.0);
+                return effect_parameter;
             }
             // This is a special state that is active.
             case proto::SPECIAL_STATE_ACTIVE: {
-                auto effect_parameter = special_effect;
+                std::cout << 
+                    std::format(
+                        "Boost state ({}): Active\n", 
+                        effect_parameter.counter());
                 effect_parameter.set_counter(
                     effect_parameter.counter() + delta_time);
                 if (effect_parameter.counter() >
@@ -91,20 +93,23 @@ namespace darwin {
             }
             // This is a special state that is cooling down.
             case proto::SPECIAL_STATE_COOLDOWN: {
-                auto effect_parameter = special_effect;
+                std::cout << 
+                    std::format(
+                        "Boost state ({}): Cooldown\n", 
+                        effect_parameter.counter());
                 effect_parameter.set_counter(
                     effect_parameter.counter() + delta_time);
-                if (effect_parameter.counter() <
+                if (effect_parameter.counter() >
                     effect_parameter.cooldown_duration())
                 {
-                    return effect_parameter;
+                    effect_parameter.set_counter(0.0);
+                    effect_parameter.set_special_state_enum(
+                        proto::SPECIAL_STATE_WAIT);
                 }
-                effect_parameter.set_special_state_enum(
-                    proto::SPECIAL_STATE_UNKNOWN);
                 return effect_parameter;
             }
         }
-        return special_effect;
+        return effect_parameter;
     }
 
     grpc::Status DarwinServiceImpl::ReportInGame(
@@ -147,9 +152,11 @@ namespace darwin {
                 now.time_since_epoch())
             .count();
         // Fill the special effect boost.
-        auto special_effect_boost = 
-            maybe_character.value().special_effect_boost();
-        AddDefaultSpecialEffectBoost(special_effect_boost);
+        auto special_effect_boost = request->special_effect_boost();
+        // For a weird reason the special_effect_boost counter is not updated.
+        special_effect_boost.set_counter(
+            maybe_character.value().special_effect_boost().counter());
+        CheckNewBoost(maybe_character.value(), special_effect_boost);
         special_effect_boost = 
             UpdateSpecialEffectBoost(special_effect_boost, loop_timer_);
         maybe_character.value().mutable_special_effect_boost()->CopyFrom(
@@ -349,6 +356,20 @@ namespace darwin {
                 client_physic.position_dt());
         }
         return result;
+    }
+
+    void DarwinServiceImpl::CheckNewBoost(
+        proto::Character& character, 
+        const proto::SpecialEffectParameter& special_effect)
+    {
+        if (character.special_effect_boost().special_state_enum() ==
+            proto::SPECIAL_STATE_WAIT &&
+            special_effect.special_state_enum() == proto::SPECIAL_STATE_ACTIVE)
+        {
+            std::cout << "you pay for your boost!\n";
+            character.mutable_physic()->set_mass(
+                character.physic().mass() - 1.0);
+        }
     }
 
 } // End namespace darwin.

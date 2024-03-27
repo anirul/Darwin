@@ -78,7 +78,7 @@
       }
     ],
     "special_effect_boost": {
-      "special_state_enum": "SPECIAL_STATE_UNKNOWN",
+      "special_state_enum": "SPECIAL_STATE_WAIT",
       "effect_duration": 0.5,
       "cooldown_duration": 5.0,
       "counter": 0.0

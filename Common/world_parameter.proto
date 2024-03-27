@@ -37,7 +37,7 @@ enum TypeEnum {
 }
 
 enum SpecialStateEnum {
-    SPECIAL_STATE_UNKNOWN = 0;  // Unknown this is an error.
+    SPECIAL_STATE_WAIT = 0;     // Wait for someone to use this.
     SPECIAL_STATE_ACTIVE = 1;   // Special is active.
     SPECIAL_STATE_COOLDOWN = 2; // Special is on cooldown.
 }

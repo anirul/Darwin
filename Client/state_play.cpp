@@ -239,7 +239,7 @@ namespace darwin::state {
             proto::PlayerParameter player_parameter =
                 world_simulator_.GetPlayerParameter();
             switch (character.special_effect_boost().special_state_enum()) {
-                case proto::SPECIAL_STATE_UNKNOWN:
+                case proto::SPECIAL_STATE_WAIT:
                     character.mutable_special_effect_boost()->
                         set_special_state_enum(
                             proto::SPECIAL_STATE_ACTIVE);

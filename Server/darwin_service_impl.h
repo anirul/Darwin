@@ -41,12 +41,12 @@ namespace darwin {
         proto::SpecialEffectParameter UpdateSpecialEffectBoost(
             const proto::SpecialEffectParameter& special_effect,
             double delta_time) const;
-        void AddDefaultSpecialEffectBoost(
-            proto::SpecialEffectParameter& special_effect) 
-            const;
         proto::Physic UpdatePhysic(
             const proto::Physic& server_physic, 
             const proto::Physic& client_physic) const;
+        void CheckNewBoost(
+            proto::Character& character,
+            const proto::SpecialEffectParameter& new_special_effect);
         
     protected:
         std::map<double, proto::Character> time_characters_;

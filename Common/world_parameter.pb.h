@@ -193,14 +193,14 @@ inline bool TypeEnum_Parse(
     TypeEnum_descriptor(), name, value);
 }
 enum SpecialStateEnum : int {
-  SPECIAL_STATE_UNKNOWN = 0,
+  SPECIAL_STATE_WAIT = 0,
   SPECIAL_STATE_ACTIVE = 1,
   SPECIAL_STATE_COOLDOWN = 2,
   SpecialStateEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   SpecialStateEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool SpecialStateEnum_IsValid(int value);
-constexpr SpecialStateEnum SpecialStateEnum_MIN = SPECIAL_STATE_UNKNOWN;
+constexpr SpecialStateEnum SpecialStateEnum_MIN = SPECIAL_STATE_WAIT;
 constexpr SpecialStateEnum SpecialStateEnum_MAX = SPECIAL_STATE_COOLDOWN;
 constexpr int SpecialStateEnum_ARRAYSIZE = SpecialStateEnum_MAX + 1;
 
