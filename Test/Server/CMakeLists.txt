@@ -26,3 +26,5 @@ target_link_libraries(DarwinServerTest
 )
 
 set_property(TARGET DarwinServerTest PROPERTY FOLDER "DarwinTest")
+
+gtest_discover_tests(DarwinServerTest)

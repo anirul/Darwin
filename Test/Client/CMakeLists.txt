@@ -18,3 +18,5 @@ target_link_libraries(DarwinClientTest
 )
 
 set_property(TARGET DarwinClientTest PROPERTY FOLDER "DarwinTest")
+
+gtest_discover_tests(DarwinClientTest)

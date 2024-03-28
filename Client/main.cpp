@@ -129,7 +129,7 @@ int main(int ac, char** av) try
         });
     return 0;
 }
-catch (std::exception ex)
+catch (const std::exception& ex)
 {
 #if defined(_WIN32) || defined(_WIN64)
     MessageBox(nullptr, ex.what(), "Exception", MB_ICONEXCLAMATION);

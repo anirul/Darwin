@@ -18,7 +18,9 @@ namespace darwin::audio {
         if (!SDL_WasInit(SDL_INIT_AUDIO)) {
             if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
                 throw std::runtime_error(
-                    "Failed to initialize SDL audio subsystem.");
+                    std::format(
+                        "Failed to initialize SDL audio subsystem ({}).",
+                        SDL_GetError()));
             }
         }
         // Initialize SDL mixer.
