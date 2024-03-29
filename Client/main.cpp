@@ -67,6 +67,11 @@ int main(int ac, char** av) try
         frame::DrawingTargetEnum::WINDOW,
         frame::RenderingAPIEnum::OPENGL,
         { 1280, 720 });
+#ifndef _DEBUG
+    SDL_SetWindowFullscreen(
+        static_cast<SDL_Window*>(win->GetWindowContext()),
+        SDL_WindowFlags::SDL_WINDOW_FULLSCREEN_DESKTOP);
+#endif
     // Load the client parameter.
     proto::ClientParameter client_parameter =
         darwin::LoadProtoFromJsonFile<proto::ClientParameter>(
