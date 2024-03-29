@@ -94,9 +94,6 @@ int main(int ac, char** av) try
     auto* gui_window_ptr = gui_window.get();
     // Add a debugging key if you press on '`' key.
     win->AddKeyCallback(SDLK_F1, [gui_window_ptr] {
-            if (gui_window_ptr == nullptr) {
-                return false;
-            }
             if (gui_window_ptr->IsVisible()) {
                 SDL_SetRelativeMouseMode(SDL_TRUE);
             } else {
@@ -116,6 +113,17 @@ int main(int ac, char** av) try
     win->GetDevice().AddPlugin(std::move(gui_window));
     // Move the window to the application.
     frame::common::Application app(std::move(win));
+    // Switch fullscreen if you press on 'F11' key.
+    app.GetWindow().AddKeyCallback(SDLK_F11, [&app] {
+            auto& window = app.GetWindow();
+            auto fullScreen =
+                window.GetFullScreenEnum() ==
+                    frame::FullScreenEnum::WINDOW ?
+                    frame::FullScreenEnum::FULLSCREEN_DESKTOP :
+                    frame::FullScreenEnum::WINDOW;
+            app.Resize(window.GetSize(), fullScreen);
+            return true;
+        });
     app.Startup(frame::file::FindFile("asset/json/darwin_client.json"));
     frame::Logger& logger = frame::Logger::GetInstance();
     int i = 0;
