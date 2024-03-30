@@ -120,6 +120,13 @@ float snoise(vec3 v) {
                                 dot(p2,x2), dot(p3,x3) ) );
 }
 
+vec3 planetColor(vec3 pos_in) {
+  vec3 pos = pos_in + vec3(1500., 1000., 510.);
+  return vec3(mod(pos.x/20., 1.),
+              mod(pos.y/30., 1.),
+              sin(pos.z/20.));
+}
+
 uniform float atmosphere_scale = 20.0; // Scale of the atmosphere
 
 // Simplified Rayleigh and Mie coefficients
@@ -170,7 +177,7 @@ Hit GetDistance(vec3 position)
 	if (sphere_pos[smallest_id].w > 20.0) {
 		// Planet texture.
         hit.color = 
-			vec4(vec3(snoise(position * 0.2)), 1.0) * vec4(0.5) + vec4(0.5);
+			vec4(planetColor(position*snoise(position * 0.2)), 1.0) * vec4(0.5) + vec4(0.5);
     } else if (sphere_col[smallest_id].w > 1.0) {
 		// Character texture.
 		hit.color = 
