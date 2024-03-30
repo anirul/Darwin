@@ -273,8 +273,64 @@
                 "w": 0.5
               },
               "decoration_enum": "DECORATION_OUTLINE"
-            }
+            } 
           ]
+        }
+      },
+      {
+        "rect_filled":{
+          "position":{
+            "x":0.005,
+            "y":0.90
+          },
+          "size":{
+            "x":0.15,
+            "y":0.15
+          },
+          "color":{
+            "x":0.0,
+            "y":0.0,
+            "z":0.0,
+            "w":0.5
+          },
+          "rounding":0.0,
+          "alignment_enum":"ALIGNMENT_CENTER_LEFT"
+        }
+      }, 
+      {
+        "text": {
+          "text": "authors_name",
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 0.9
+          },
+          "position": {
+            "x": 0.01,
+            "y": 0.97
+          },
+          "text_size_enum": "TEXT_SIZE_SMALL",
+          "alignment_enum": "ALIGNMENT_CENTER_LEFT",
+          "decorations": []
+        }
+      },
+      {
+        "text": {
+          "text": "music_name",
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 0.9
+          },
+          "position": {
+            "x": 0.01,
+            "y": 0.93
+          },
+          "text_size_enum": "TEXT_SIZE_SMALL",
+          "alignment_enum": "ALIGNMENT_CENTER_LEFT",
+          "decorations":[]
         }
       }
     ]
