@@ -140,8 +140,7 @@ namespace darwin {
             maybe_character.value().physic(),
             request->physic());
         maybe_character.value().mutable_physic()->CopyFrom(physic);
-        auto status = request->status_enum();
-        maybe_character.value().set_status_enum(status);
+        maybe_character.value().set_status_enum(request->status_enum());
         maybe_character.value().mutable_physic()->set_mass(
             maybe_character.value().physic().mass() -
             world_state_.GetPlayerParameter().living_cost());
@@ -161,7 +160,7 @@ namespace darwin {
         maybe_character.value().mutable_special_effect_boost()->CopyFrom(
             special_effect_boost);
         // Update the character.
-        time_characters_.insert({ time, maybe_character.value() });
+        characters_.push_back(maybe_character.value());
         // Potential hit.
         if (!request->potential_hit().empty()) {
 #ifdef _DEBUG
@@ -252,70 +251,70 @@ namespace darwin {
         return grpc::Status::OK;
     }
 
-    void DarwinServiceImpl::BroadcastUpdate(
+    void DarwinServiceImpl::BroadcastUpdateLocked(
         const proto::UpdateResponse& response)
     {
-        std::lock_guard<std::mutex> lock(writers_mutex_);
         for (auto writer : writers_) {
             writer->Write(response);
         }
     }
 
-    std::map<double, proto::Character>& DarwinServiceImpl::GetTimeCharacters()
+    std::vector<proto::Character>& DarwinServiceImpl::GetCharacters()
     {
-        return time_characters_;
+        return characters_;
     }
 
-    void DarwinServiceImpl::ClearTimeCharacters()
+    void DarwinServiceImpl::ClearCharacters()
     {
-        time_characters_.clear();
+        characters_.clear();
     }
 
     void DarwinServiceImpl::ComputeWorld(double loop_timer) {
         loop_timer_ = loop_timer;
         while (true) {
+            const std::int64_t loop_time_milli =
+                static_cast<std::int64_t>(1000.0 * loop_timer);
             auto now = std::chrono::system_clock::now();
-            double time =
-                std::chrono::duration_cast<std::chrono::duration<double>>(
-                    now.time_since_epoch())
-                .count();
-            // Update the players.
             {
                 std::lock_guard<std::mutex> lock(writers_mutex_);
-                for (const auto& time_player : GetTimeCharacters()) {
-                    world_state_.UpdateCharacter(
-                        time_player.first,
-                        time_player.second.name(),
-                        time_player.second.status_enum(),
-                        time_player.second.physic());
+                double time =
+                    std::chrono::duration_cast<std::chrono::duration<double>>(
+                        now.time_since_epoch())
+                    .count();
+                // Update the players.
+                {
+                    for (const auto& player : GetCharacters()) {
+                        world_state_.UpdateCharacter(
+                            player.name(),
+                            player.status_enum(),
+                            player.physic());
+                    }
+                    ClearCharacters();
                 }
-                ClearTimeCharacters();
-            }
-            // Update the list of potential hits.
-            world_state_.SetCharacterHits(character_hits_);
-            character_hits_.clear();
-            // Update the elements in the world.
-            world_state_.Update(time);
-            const auto& elements = world_state_.GetElements();
-            const auto& characters = world_state_.GetCharacters();
-            proto::UpdateResponse response;
-            response.mutable_elements()->CopyFrom(
-                { elements.begin(), elements.end() });
-            response.mutable_characters()->CopyFrom(
-                { characters.begin(), characters.end() });
-            response.set_time(time);
-            BroadcastUpdate(response);
-            std::int64_t loop_time_milli = 
-                static_cast<std::int64_t>(1000.0 * loop_timer);
-            // Pring a warning if the computation is too slow.
-            if ((now + std::chrono::milliseconds(loop_time_milli)) <
-                std::chrono::system_clock::now())
-            {
-                std::cerr << 
-                    std::format(
-                        "ComputeWorld is too slow {} < {} !!!\n",
-                        now + std::chrono::milliseconds(loop_time_milli),
-                        std::chrono::system_clock::now());
+                // Update the list of potential hits.
+                world_state_.SetCharacterHits(character_hits_);
+                character_hits_.clear();
+                // Update the elements in the world.
+                world_state_.Update(time);
+                const auto& elements = world_state_.GetElements();
+                const auto& characters = world_state_.GetCharacters();
+                proto::UpdateResponse response;
+                response.mutable_elements()->CopyFrom(
+                    { elements.begin(), elements.end() });
+                response.mutable_characters()->CopyFrom(
+                    { characters.begin(), characters.end() });
+                response.set_time(time);
+                BroadcastUpdateLocked(response);
+                // Pring a warning if the computation is too slow.
+                if ((now + std::chrono::milliseconds(loop_time_milli)) <
+                    std::chrono::system_clock::now())
+                {
+                    std::cerr <<
+                        std::format(
+                            "ComputeWorld is too slow {} < {} !!!\n",
+                            now + std::chrono::milliseconds(loop_time_milli),
+                            std::chrono::system_clock::now());
+                }
             }
             // Wait for the next computation.
             std::this_thread::sleep_until(

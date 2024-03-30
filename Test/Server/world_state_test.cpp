@@ -17,7 +17,6 @@ namespace test {
         world_state_ = std::make_unique<darwin::WorldState>();
         EXPECT_TRUE(world_state_);
         world_state_->AddElement(
-            0.0, 
             darwin::CreateBasicElement(
                 "ground",
                 proto::TYPE_GROUND,
@@ -34,7 +33,6 @@ namespace test {
         world_state_ = std::make_unique<darwin::WorldState>();
         EXPECT_TRUE(world_state_);
         world_state_->AddElement(
-            0.0,
             darwin::CreateBasicElement(
                 "ground",
                 proto::TYPE_GROUND,
@@ -55,7 +53,6 @@ namespace test {
         world_state_ = std::make_unique<darwin::WorldState>();
         EXPECT_TRUE(world_state_);
         world_state_->AddElement(
-            0.0,
             darwin::CreateBasicElement(
                 "ground1",
                 proto::TYPE_GROUND,
@@ -63,7 +60,6 @@ namespace test {
                 1'000'000.0,
                 1.0));
         world_state_->AddElement(
-            0.0,
             darwin::CreateBasicElement(
                 "ground2",
                 proto::TYPE_GROUND,
@@ -86,7 +82,6 @@ namespace test {
         // A planet with the mass of 1'000'000'000.0g (1'000'000kg) and a
         // radius of 10.0.
         world_state_->AddElement(
-            0.0,
             darwin::CreateBasicElement(
                 "ground",
                 proto::TYPE_GROUND,
@@ -95,7 +90,6 @@ namespace test {
                 10.0));
         // Tiny spec in space!
         world_state_->AddElement(
-            0.0,
             darwin::CreateBasicElement(
                 "elem",
                 proto::TYPE_BROWN,
@@ -124,7 +118,6 @@ namespace test {
         // A planet with the mass of 1'000'000'000.0g (1'000'000kg) and a
         // radius of 10.0.
         world_state_->AddElement(
-            0.0,
             darwin::CreateBasicElement(
                 "ground",
                 proto::TYPE_GROUND,
@@ -133,7 +126,6 @@ namespace test {
                 10.0));
         // a character with a mass of 80'000.0g (80kg) and a radius of 1.0.
         world_state_->AddCharacter(
-            0.0, 
             darwin::CreateBasicCharacter(
                 "character",
                 darwin::CreateVector3(1.0, -4.0, 2.0),

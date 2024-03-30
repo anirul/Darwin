@@ -6,7 +6,6 @@ namespace test {
 
     void WorldStateFileTest::PopulateWorldState() {
         world_state_.AddElement(
-            0.0,
             darwin::CreateBasicElement(
                 "element1",
                 proto::TYPE_GROUND,
@@ -14,7 +13,6 @@ namespace test {
                 1.0,
                 1.0));
         world_state_.AddElement(
-            0.0,
             darwin::CreateBasicElement(
                 "element2",
                 proto::TYPE_GROUND,
@@ -22,14 +20,12 @@ namespace test {
                 2.0,
                 2.0));
         world_state_.AddCharacter(
-            0.0,
             darwin::CreateBasicCharacter(
                 "character1",
                 darwin::CreateVector3(7.0, 8.0, 9.0),
                 3.0,
                 3.0));
         world_state_.AddCharacter(
-            0.0,
             darwin::CreateBasicCharacter(
                 "character2",
                 darwin::CreateVector3(10.0, 11.0, 12.0),
