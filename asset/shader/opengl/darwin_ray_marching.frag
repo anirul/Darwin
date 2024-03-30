@@ -177,7 +177,7 @@ Hit GetDistance(vec3 position)
 	if (sphere_pos[smallest_id].w > 20.0) {
 		// Planet texture.
         hit.color = 
-			vec4(planetColor(position*snoise(position * 0.2)), 1.0) * vec4(0.5) + vec4(0.5);
+			vec4(planetColor(position*snoise(position * (0.2+sin(time_s/1000.)*0.1))), 1.0) * vec4(0.5) + vec4(0.5);
     } else if (sphere_col[smallest_id].w > 1.0) {
 		// Character texture.
 		hit.color = 
@@ -299,7 +299,17 @@ void main()
     } else {
 		// Light and shadow computation.
 		float light_shadow = LightAndShadow(position, result.normal);
-		vec3 diffuse_col = vec3(light_shadow * result.color);
+    vec3 color_light_shadow = vec3(light_shadow);
+
+    // Light up food and player.
+    for (int i = 0; i < sphere_size; ++i) {
+      if (sphere_pos[i].w <= 10) {
+        float dist = length(position - vec3(sphere_pos[i]));
+        color_light_shadow += max(5-dist, 0.)/6. * vec3(sphere_col[i]);
+      }
+    }
+
+		vec3 diffuse_col = color_light_shadow * vec3(result.color);
 		vec3 specular_col = vec3(0.0);
 		if ((light_shadow > ambiant_treshold) && 
 			(diffuse_col != vec3(0, 0, 0))) 
