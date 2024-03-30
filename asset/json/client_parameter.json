@@ -270,7 +270,7 @@
                 "x": 0.0,
                 "y": 0.0,
                 "z": 0.0,
-                "w": 0.5
+                "w": 0.5 
               },
               "decoration_enum": "DECORATION_OUTLINE"
             } 
@@ -287,11 +287,11 @@
             "x":0.15,
             "y":0.15
           },
-          "color":{
-            "x":0.0,
-            "y":0.0,
-            "z":0.0,
-            "w":0.5
+          "color_string":{
+            "red" :"0.0",
+            "green":"0.0",
+            "blue":"0.0",
+            "alpha":"0.5 - timer_s"
           },
           "rounding":0.0,
           "alignment_enum":"ALIGNMENT_CENTER_LEFT"
@@ -300,11 +300,11 @@
       {
         "text": {
           "text": "authors_name",
-          "color": {
-            "x": 1.0,
-            "y": 1.0,
-            "z": 1.0,
-            "w": 0.9
+          "color_string": {
+            "red": "1.0",
+            "green": "1.0",
+            "blue": "1.0",
+            "alpha": "0.9 - timer_s"
           },
           "position": {
             "x": 0.01,
@@ -318,11 +318,11 @@
       {
         "text": {
           "text": "music_name",
-          "color": {
-            "x": 1.0,
-            "y": 1.0,
-            "z": 1.0,
-            "w": 0.9
+          "color_string": {
+            "red": "1.0",
+            "green": "1.0",
+            "blue": "1.0",
+            "alpha": "0.9 - timer_s"
           },
           "position": {
             "x": 0.01,
