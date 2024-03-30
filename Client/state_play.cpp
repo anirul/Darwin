@@ -241,23 +241,26 @@ namespace darwin::state {
         if (input_acquisition_ptr_->IsMouseLeft()) {
             proto::PlayerParameter player_parameter =
                 world_simulator_.GetPlayerParameter();
-            switch (character.special_effect_boost().special_state_enum()) {
-                case proto::SPECIAL_STATE_WAIT:
-                    character.mutable_special_effect_boost()->
-                        set_special_state_enum(
-                            proto::SPECIAL_STATE_ACTIVE);
-                    break;
-                case proto::SPECIAL_STATE_ACTIVE: {
-                    logger_->warn(std::format("Boosting!"));
-                    auto direction = Normalize(physic.position_dt());
-                    physic.mutable_position_dt()->CopyFrom(
-                        direction * player_parameter.boost_speed());
-                    return true;
-                }
-                case proto::SPECIAL_STATE_COOLDOWN:
-                    break;
-            }
+            logger_->warn(std::format("Boosting!"));
+            auto forward = Normalize(Glm2ProtoVector(character_forward_));
+            auto right =
+                Normalize(Cross(character.normal(), forward));
+            auto input_direction =
+                Normalize(
+                    right * input_acquisition_ptr_->GetHorizontal() +
+                    forward * input_acquisition_ptr_->GetVertical());
+            auto move_direction = Normalize(physic.position_dt());
+            auto direction = input_acquisition_ptr_->IsMoving() ?
+                               input_direction :
+                               move_direction;
+            physic.mutable_position_dt()->CopyFrom(
+                direction * player_parameter.boost_speed());
+            character.mutable_special_effect_boost()
+                ->set_special_state_enum(proto::SPECIAL_STATE_ACTIVE);
+            return true;
         }
+        character.mutable_special_effect_boost()
+            ->set_special_state_enum(proto::SPECIAL_STATE_WAIT);
         return false;
     }
 
