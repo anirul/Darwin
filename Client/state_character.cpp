@@ -31,7 +31,8 @@ namespace darwin::state {
         auto overlay_state = std::make_unique<overlay::OverlayState>(
             "overlay_state",
             client_parameter_,
-            client_parameter_.overlay_state());
+            client_parameter_.overlay_state(),
+            audio_system_);
         overlay_state->SetStateName("state character");
         draw_gui_->AddOverlayWindow(
             glm::vec2(0.0f, 0.0f),
@@ -48,6 +49,7 @@ namespace darwin::state {
                 "Select Character",
                 modal_character_params_,
                 colors));
+        
     }
 
     void StateCharacter::Update(StateContext& state_context) {

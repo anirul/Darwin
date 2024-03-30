@@ -55,6 +55,14 @@ namespace darwin::audio {
                 std::make_pair(
                     music_queue.audio_music_enum(), 
                     music));
+            music_name_.insert(
+                std::make_pair(
+                    music_queue.audio_music_enum(),
+                    music_queue.title()));
+            authors_name_.insert(
+                std::make_pair(
+                    music_queue.audio_music_enum(),
+                    music_queue.author()));
         }
         for (const auto& sound_queue : client_audio_.sound_queues()) {
             auto path = frame::file::FindFile(sound_queue.audio_file());

@@ -39,7 +39,8 @@ namespace darwin::state {
         auto overlay_state = std::make_unique<overlay::OverlayState>(
             "overlay_state",
             client_parameter_,
-            client_parameter_.overlay_state());
+            client_parameter_.overlay_state(),
+            audio_system_);
         overlay_state->SetStateName("state title");
         draw_gui_interface_->AddOverlayWindow(
             glm::vec2(0.0f, 0.0f),
