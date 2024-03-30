@@ -1,5 +1,6 @@
 {
   "server_name": "darwin.calodox.org:443",
+  "is_ssl_enable": true,
   "font_file": "asset/font/axaxax/axaxax_bd.otf",
   "font_sizes": [
     {
@@ -56,6 +57,24 @@
               "decoration_enum": "DECORATION_OUTLINE"
             }
           ]
+        }
+      },
+      {
+        "text": {
+          "text": "Calodox present:",
+          "color_string": {
+            "red": "1.0",
+            "green": "1.0",
+            "blue": "1.0",
+            "alpha": "0.9 - (timer_s * 0.5)"
+          },
+          "position": {
+            "x": 0.3,
+            "y": 0.2
+          },
+          "text_size_enum": "TEXT_SIZE_LARGE",
+          "alignment_enum": "ALIGNMENT_CENTER",
+          "decorations": []
         }
       },
       {

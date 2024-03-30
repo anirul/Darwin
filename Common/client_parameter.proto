@@ -37,20 +37,22 @@ message FontSize {
 }
 
 // ClientParameter
-// Next: 7
+// Next: 8
 message ClientParameter {
     // Default server name.
     string server_name = 1;
+    // Is ssl enable.
+    bool is_ssl_enable = 2;
     // Default font.
-    string font_file = 2;
+    string font_file = 3;
     // Default font sizes.
-    repeated FontSize font_sizes = 3;
+    repeated FontSize font_sizes = 4;
     // Overlay of the title.
-    PageDescription overlay_title = 4;
+    PageDescription overlay_title = 5;
     // This is the overlay on state change.
-    PageDescription overlay_state = 5;
+    PageDescription overlay_state = 6;
     // This is the overlay when you play.
-    PageDescription overlay_play = 6;
+    PageDescription overlay_play = 7;
 }
 
 // ColorString

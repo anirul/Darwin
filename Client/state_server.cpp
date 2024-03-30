@@ -53,6 +53,8 @@ namespace darwin::state {
             modal::ModalServerButton::None) {
             switch (modal_server_params_.button_result) {
             case modal::ModalServerButton::Connect:
+                client_parameter_.set_is_ssl_enable(
+                    modal_server_params_.ssl_enable);
                 darwin_client_ = 
                     std::make_unique<DarwinClient>(
                         modal_server_params_.server_name,

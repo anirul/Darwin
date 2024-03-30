@@ -10,9 +10,14 @@ namespace darwin::overlay {
           page_description_(page_description),
           overlay_draw_(client_parameter, page_description)
     {
+        start_time_ = std::chrono::system_clock::now();
     }
 
     bool OverlayTitle::DrawCallback() {
+        auto duration = std::chrono::system_clock::now() - start_time_;
+        overlay_draw_.Parameter(
+            "timer_s", 
+            std::chrono::duration<double>(duration).count());
         overlay_draw_.Draw();
         return true;
     }

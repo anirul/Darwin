@@ -26,6 +26,9 @@ namespace darwin::modal {
         {
             params_.server_name = server_;
         }
+        bool b_value = params_.ssl_enable;
+        ImGui::Checkbox("SSL enable", &b_value);
+        params_.ssl_enable = b_value;
         if (ImGui::Button("Connect")) {
             params_.button_result = ModalServerButton::Connect;
             end_ = true;

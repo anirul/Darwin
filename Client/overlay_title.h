@@ -23,6 +23,7 @@ namespace darwin::overlay {
         std::string name_;
         proto::PageDescription page_description_;
         OverlayDraw overlay_draw_;
+        std::chrono::time_point<std::chrono::system_clock> start_time_;
     };
 
 } // namespace darwin::overlay.

@@ -15,6 +15,7 @@ namespace darwin::modal {
 
     struct ModalServerParams {
         std::string server_name;
+        bool ssl_enable = true;
         ModalServerButton button_result = ModalServerButton::None;
     };
 

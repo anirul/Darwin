@@ -467,14 +467,15 @@ class ClientParameter final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kFontSizesFieldNumber = 3,
+    kFontSizesFieldNumber = 4,
     kServerNameFieldNumber = 1,
-    kFontFileFieldNumber = 2,
-    kOverlayTitleFieldNumber = 4,
-    kOverlayStateFieldNumber = 5,
-    kOverlayPlayFieldNumber = 6,
+    kFontFileFieldNumber = 3,
+    kOverlayTitleFieldNumber = 5,
+    kOverlayStateFieldNumber = 6,
+    kOverlayPlayFieldNumber = 7,
+    kIsSslEnableFieldNumber = 2,
   };
-  // repeated .proto.FontSize font_sizes = 3;
+  // repeated .proto.FontSize font_sizes = 4;
   int font_sizes_size() const;
   private:
   int _internal_font_sizes_size() const;
@@ -506,7 +507,7 @@ class ClientParameter final :
   std::string* _internal_mutable_server_name();
   public:
 
-  // string font_file = 2;
+  // string font_file = 3;
   void clear_font_file();
   const std::string& font_file() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -520,7 +521,7 @@ class ClientParameter final :
   std::string* _internal_mutable_font_file();
   public:
 
-  // .proto.PageDescription overlay_title = 4;
+  // .proto.PageDescription overlay_title = 5;
   bool has_overlay_title() const;
   private:
   bool _internal_has_overlay_title() const;
@@ -538,7 +539,7 @@ class ClientParameter final :
       ::proto::PageDescription* overlay_title);
   ::proto::PageDescription* unsafe_arena_release_overlay_title();
 
-  // .proto.PageDescription overlay_state = 5;
+  // .proto.PageDescription overlay_state = 6;
   bool has_overlay_state() const;
   private:
   bool _internal_has_overlay_state() const;
@@ -556,7 +557,7 @@ class ClientParameter final :
       ::proto::PageDescription* overlay_state);
   ::proto::PageDescription* unsafe_arena_release_overlay_state();
 
-  // .proto.PageDescription overlay_play = 6;
+  // .proto.PageDescription overlay_play = 7;
   bool has_overlay_play() const;
   private:
   bool _internal_has_overlay_play() const;
@@ -574,6 +575,15 @@ class ClientParameter final :
       ::proto::PageDescription* overlay_play);
   ::proto::PageDescription* unsafe_arena_release_overlay_play();
 
+  // bool is_ssl_enable = 2;
+  void clear_is_ssl_enable();
+  bool is_ssl_enable() const;
+  void set_is_ssl_enable(bool value);
+  private:
+  bool _internal_is_ssl_enable() const;
+  void _internal_set_is_ssl_enable(bool value);
+  public:
+
   // @@protoc_insertion_point(class_scope:proto.ClientParameter)
  private:
   class _Internal;
@@ -588,6 +598,7 @@ class ClientParameter final :
     ::proto::PageDescription* overlay_title_;
     ::proto::PageDescription* overlay_state_;
     ::proto::PageDescription* overlay_play_;
+    bool is_ssl_enable_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -3347,7 +3358,27 @@ inline void ClientParameter::set_allocated_server_name(std::string* server_name)
   // @@protoc_insertion_point(field_set_allocated:proto.ClientParameter.server_name)
 }
 
-// string font_file = 2;
+// bool is_ssl_enable = 2;
+inline void ClientParameter::clear_is_ssl_enable() {
+  _impl_.is_ssl_enable_ = false;
+}
+inline bool ClientParameter::_internal_is_ssl_enable() const {
+  return _impl_.is_ssl_enable_;
+}
+inline bool ClientParameter::is_ssl_enable() const {
+  // @@protoc_insertion_point(field_get:proto.ClientParameter.is_ssl_enable)
+  return _internal_is_ssl_enable();
+}
+inline void ClientParameter::_internal_set_is_ssl_enable(bool value) {
+  
+  _impl_.is_ssl_enable_ = value;
+}
+inline void ClientParameter::set_is_ssl_enable(bool value) {
+  _internal_set_is_ssl_enable(value);
+  // @@protoc_insertion_point(field_set:proto.ClientParameter.is_ssl_enable)
+}
+
+// string font_file = 3;
 inline void ClientParameter::clear_font_file() {
   _impl_.font_file_.ClearToEmpty();
 }
@@ -3397,7 +3428,7 @@ inline void ClientParameter::set_allocated_font_file(std::string* font_file) {
   // @@protoc_insertion_point(field_set_allocated:proto.ClientParameter.font_file)
 }
 
-// repeated .proto.FontSize font_sizes = 3;
+// repeated .proto.FontSize font_sizes = 4;
 inline int ClientParameter::_internal_font_sizes_size() const {
   return _impl_.font_sizes_.size();
 }
@@ -3437,7 +3468,7 @@ ClientParameter::font_sizes() const {
   return _impl_.font_sizes_;
 }
 
-// .proto.PageDescription overlay_title = 4;
+// .proto.PageDescription overlay_title = 5;
 inline bool ClientParameter::_internal_has_overlay_title() const {
   return this != internal_default_instance() && _impl_.overlay_title_ != nullptr;
 }
@@ -3527,7 +3558,7 @@ inline void ClientParameter::set_allocated_overlay_title(::proto::PageDescriptio
   // @@protoc_insertion_point(field_set_allocated:proto.ClientParameter.overlay_title)
 }
 
-// .proto.PageDescription overlay_state = 5;
+// .proto.PageDescription overlay_state = 6;
 inline bool ClientParameter::_internal_has_overlay_state() const {
   return this != internal_default_instance() && _impl_.overlay_state_ != nullptr;
 }
@@ -3617,7 +3648,7 @@ inline void ClientParameter::set_allocated_overlay_state(::proto::PageDescriptio
   // @@protoc_insertion_point(field_set_allocated:proto.ClientParameter.overlay_state)
 }
 
-// .proto.PageDescription overlay_play = 6;
+// .proto.PageDescription overlay_play = 7;
 inline bool ClientParameter::_internal_has_overlay_play() const {
   return this != internal_default_instance() && _impl_.overlay_play_ != nullptr;
 }
