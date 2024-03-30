@@ -6,33 +6,33 @@
   "fade_music": 0.1,
   "music_queues": [
     {
-      "audio_file": "asset/audio/nothing.ogg",
-      "title": "Absolutely Nothing",
-      "author": "Jeremy Blake",
+      "audio_file": "asset/audio/menu.ogg",
+      "title": "Menu",
+      "author": "",
       "audio_music_enum": "AUDIO_MUSIC_TITLE"
     },
     {
-      "audio_file": "asset/audio/ignis.ogg",
-      "title": "Ignis",
-      "author": "Scott Buckley",
+      "audio_file": "asset/audio/menu.ogg",
+      "title": "Menu",
+      "author": "",
       "audio_music_enum": "AUDIO_MUSIC_MENU"
     },
     {
-      "audio_file": "asset/audio/decimate.ogg",
-      "title": "Decimate",
-      "author": "Jeremy Blake",
+      "audio_file": "asset/audio/gameplay.ogg",
+      "title": "GamePlay",
+      "author": "",
       "audio_music_enum": "AUDIO_MUSIC_PLAY"
     },
     {
-      "audio_file": "asset/audio/bonus.ogg",
-      "title": "Bonus",
-      "author": "mixkit",
+      "audio_file": "asset/audio/winner.ogg",
+      "title": "Winner",
+      "author": "",
       "audio_music_enum": "AUDIO_MUSIC_WIN"
     },
     {
-      "audio_file": "asset/audio/gameover.ogg",
-      "title": "Game Over",
-      "author": "mixkit",
+      "audio_file": "asset/audio/loser.ogg",
+      "title": "Loser",
+      "author": "",
       "audio_music_enum": "AUDIO_MUSIC_DEATH"
     }
   ],
