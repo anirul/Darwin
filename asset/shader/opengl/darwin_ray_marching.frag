@@ -177,7 +177,7 @@ Hit GetDistance(vec3 position)
 	if (sphere_pos[smallest_id].w > 20.0) {
 		// Planet texture.
         hit.color = 
-			vec4(planetColor(position*snoise(position * 0.2)), 1.0) * vec4(0.5) + vec4(0.5);
+			vec4(planetColor(position*snoise(position * (0.2+sin(time_s/1000.)*0.1))), 1.0) * vec4(0.5) + vec4(0.5);
     } else if (sphere_col[smallest_id].w > 1.0) {
 		// Character texture.
 		hit.color = 
