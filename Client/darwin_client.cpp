@@ -24,7 +24,7 @@ namespace darwin {
         }
 
         std::shared_ptr<grpc::ChannelCredentials> creds;
-        if (client_parameter_.ssl()) {
+        if (client_parameter_.is_ssl_enable()) {
             grpc::SslCredentialsOptions credential_options;
             if (getenv("GRPC_DEFAULT_SSL_ROOTS_FILE_PATH") == nullptr) {
                 auto&& filename = frame::file::FindFile("asset/txt/cert.pem");
