@@ -37,7 +37,7 @@ namespace darwin {
         proto::Physic GetPlanet() const;
         bool HasCharacter(const std::string& name) const;
         SoundEffectEnum GetSoundEffect(
-            const std::string& player_character_name);
+            const std::string& player_character_name) const;
 
     public:
         double GetLastServerUpdateTime() const {
