@@ -17,6 +17,8 @@ add_executable(DarwinClient
         modal_disconnected.h
         modal_ping.cpp
         modal_ping.h
+        modal_resolution.cpp
+        modal_resolution.h
         modal_server.cpp
         modal_server.h
         modal_stats.cpp
@@ -46,6 +48,8 @@ add_executable(DarwinClient
         state_ping.h
         state_play.cpp
         state_play.h
+        state_resolution.cpp
+        state_resolution.h
         state_server.cpp
         state_server.h
         state_title.cpp

@@ -49,7 +49,8 @@ namespace darwin::state {
 
     void StateServer::Update(StateContext& state_context) {
         if (modal_server_params_.button_result != 
-            modal::ModalServerButton::None) {
+            modal::ModalServerButton::None) 
+        {
             switch (modal_server_params_.button_result) {
             case modal::ModalServerButton::Connect:
                 darwin_client_ = 
