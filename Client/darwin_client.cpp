@@ -24,7 +24,7 @@ namespace darwin {
         auto channel = 
             grpc::CreateChannel(
                 name_, 
-                grpc::InsecureChannelCredentials());
+                grpc::SslCredentials(grpc::SslCredentialsOptions()));
         stub_ = proto::DarwinService::NewStub(channel);
         // Create a new thread to the update.
         update_future_ = std::async(std::launch::async, [this] { Update(); });
