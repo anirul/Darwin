@@ -168,10 +168,13 @@ namespace darwin {
                 (IsClose(normal, Normalize(element.physic().position())))) {
                 auto sphere = GetSphere(element.physic());
                 if (element.physic().radius() < 50.0) {
-                  const auto id = std::hash<std::string>()(element.name());
-                  sphere.x *= 1 + std::abs(0.01*std::sin((2+id%5)*time_));
-                  sphere.y *= 1 + std::abs(0.01*std::sin((2+id%5)*time_));
-                  sphere.z *= 1 + std::abs(0.01*std::sin((2+id%5)*time_));
+                    const auto id = std::hash<std::string>()(element.name());
+                    sphere.x *= 
+                        1 + std::abs(0.01 * std::sin((2 + id % 5) * time_));
+                    sphere.y *= 
+                        1 + std::abs(0.01 * std::sin((2 + id % 5) * time_));
+                    sphere.z *= 
+                        1 + std::abs(0.01 * std::sin((2 + id % 5) * time_));
                 }
                 uniform_enum.spheres.push_back(sphere);
                 uniform_enum.colors.push_back(GetColor(element));

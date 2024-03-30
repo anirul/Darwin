@@ -32,7 +32,6 @@ namespace darwin::state {
         if (!draw_gui_) {
             throw std::runtime_error("No draw gui interface plugin found?");
         }
-#ifdef _DEBUG
         auto overlay_state = std::make_unique<overlay::OverlayState>(
             "overlay_state",
             client_parameter_,
@@ -43,7 +42,6 @@ namespace darwin::state {
             glm::vec2(0.0f, 0.0f),
             app_.GetWindow().GetDevice().GetSize(),
             std::move(overlay_state));
-#endif // _DEBUG
         draw_gui_->AddModalWindow(
             std::make_unique<modal::ModalDisconnected>(
                 "Disconnected",
@@ -74,9 +72,7 @@ namespace darwin::state {
 
     void StateDisconnected::Exit() {
         logger_->info("State disconnected exited");
-#ifdef _DEBUG
         draw_gui_->DeleteWindow("overlay_state");
-#endif // _DEBUG
     }
 
 } // namespace darwin::state.
