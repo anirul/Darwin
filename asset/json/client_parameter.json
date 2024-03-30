@@ -66,25 +66,40 @@
             "red": "1.0",
             "green": "1.0",
             "blue": "1.0",
-            "alpha": "0.9 - (timer_s * 0.5)"
+            "alpha": "-(0.5 * timer_s - 1) ^ 2 + 1"
           },
           "position": {
-            "x": 0.3,
-            "y": 0.2
+            "x": 0.5,
+            "y": 0.5
           },
-          "text_size_enum": "TEXT_SIZE_LARGE",
+          "text_size_enum": "TEXT_SIZE_TITLE",
           "alignment_enum": "ALIGNMENT_CENTER",
-          "decorations": []
+          "decorations":
+          [
+            {
+              "offset": {
+                "x": 0.01,
+                "y": 0.02
+              },
+              "color_string": {
+                "red": "0.0",
+                "green": "0.0",
+                "blue": "0.0",
+                "alpha": "-(0.5 * timer_s - 1) ^ 2 + 1"
+              },
+              "decoration_enum": "DECORATION_SHADOW"
+            }
+          ]
         }
       },
       {
         "text": {
           "text": "Globe Globers",
-          "color": {
-            "x": 1.0,
-            "y": 1.0,
-            "z": 1.0,
-            "w": 0.9
+          "color_string": {
+            "red": "1.0",
+            "green": "1.0",
+            "blue": "1.0",
+            "alpha": "-(0.3 * timer_s - 3.3) ^ 2 + 4"
           },
           "position": {
             "x": 0.5,
@@ -98,11 +113,11 @@
                 "x": 0.01,
                 "y": 0.02
               },
-              "color": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 0.8
+              "color_string": {
+                "red": "0.0",
+                "green": "0.0",
+                "blue": "0.0",
+                "alpha": "-(0.3 * timer_s - 3.3) ^ 2 + 4"
               },
               "decoration_enum": "DECORATION_SHADOW"
             }
