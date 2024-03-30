@@ -74,11 +74,8 @@ namespace darwin {
     }
 
     bool InputAcquisition::IsMoving() const {
-        return 
-            keys_.contains('w') || 
-            keys_.contains('a') || 
-            keys_.contains('s') || 
-            keys_.contains('d');
+        return (keys_.contains('w') ^ keys_.contains('s')) ||
+               (keys_.contains('a') ^ keys_.contains('d'));
     }
 
     bool InputAcquisition::IsMouseLeft() const {
