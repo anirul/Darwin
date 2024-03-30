@@ -14,7 +14,7 @@ namespace darwin {
             const std::string& name, 
             const proto::Vector3& color);
         // This is there for testing purposes don't use in production.
-        void AddCharacter(double time, const proto::Character& character);
+        void AddCharacter(const proto::Character& character);
         void SetUpgradeElement(std::uint32_t upgrade_count);
         void RemoveCharacter(const std::string& name);
         std::string RemovePeer(const std::string& peer);
@@ -26,11 +26,10 @@ namespace darwin {
             const std::string& character_name) const;
         bool HasCharacter(const std::string& name) const;
         void UpdateCharacter(
-            double time, 
             const std::string& name,
             proto::StatusEnum status,
             const proto::Physic& physic);
-        void AddElement(double time, const proto::Element& element);
+        void AddElement(const proto::Element& element);
         void SetPlayerParameter(const proto::PlayerParameter& parameter);
         void Update(double time);
         double GetLastUpdated() const;
@@ -76,9 +75,9 @@ namespace darwin {
 
     private:
         mutable std::mutex mutex_;
-        std::map<std::string, CharacterInfo> character_infos_;
+        std::map<std::string, proto::Character> character_infos_;
         std::map<std::string, double> last_seen_;
-        std::map<std::string, ElementInfo> element_infos_;
+        std::map<std::string, proto::Element> element_infos_;
         std::map<std::string, std::string> peer_characters_;
         double last_updated_ = 0.0;
         std::vector<proto::Character> characters_;

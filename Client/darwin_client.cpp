@@ -145,7 +145,6 @@ namespace darwin {
 
             std::vector<proto::Character> characters;
             for (const auto& character : response.characters()) {
-                auto status = character.status_enum();
                 characters.push_back(MergeCharacter(character));
                 previous_characters_.insert({ character.name(), character });
             }
