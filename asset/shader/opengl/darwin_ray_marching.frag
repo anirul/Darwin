@@ -120,6 +120,30 @@ float snoise(vec3 v) {
                                 dot(p2,x2), dot(p3,x3) ) );
 }
 
+uniform float atmosphere_scale = 20.0; // Scale of the atmosphere
+
+// Simplified Rayleigh and Mie coefficients
+const vec3 rayleigh_coefficient = vec3(0.005, 0.013, 0.033);
+const float mie_coefficient = 0.0035;
+const float rayleigh_scale_height = 8.4;
+const float mie_scale_height = 1.25;
+
+vec3 calculateAtmosphereEffect(vec3 direction, vec3 light_direction) {
+    float cos_angle = dot(direction, light_direction);
+    // Rayleigh phase function
+    float rayleigh_phase = 0.75 * (1.0 + cos_angle * cos_angle);
+    // Approximate Mie phase function (Henyey-Greenstein)
+    float g = 0.26; // Asymmetry parameter for the Mie scattering
+    float mie_phase = 
+		1.5 * ((1.0 - g * g) / (2.0 + g * g)) * (1.0 + cos_angle * cos_angle) / 
+		pow(1.0 + g * g - 2.0 * g * cos_angle, 1.5);
+    
+    // Combine effects with atmospheric scale
+    vec3 rayleigh_scattering = rayleigh_coefficient * rayleigh_phase;
+    float mie_scattering = mie_coefficient * mie_phase;
+    return rayleigh_scattering + vec3(mie_scattering);
+}
+
 // Get a Hit from a surface.
 Hit GetDistance(vec3 position)
 {
@@ -150,7 +174,7 @@ Hit GetDistance(vec3 position)
     } else if (sphere_col[smallest_id].w > 1.0) {
 		// Character texture.
 		hit.color = 
-			vec4(vec3(snoise(hit.normal + position)), 1.0) * 
+			vec4(vec3(snoise(hit.normal + position * 0.2)), 1.0) * 
 			vec4(vec3(sphere_col[smallest_id]), 1.0);
 	} else {
 		hit.color = sphere_col[smallest_id];
@@ -260,16 +284,22 @@ void main()
 			result.normal, 
 			material_shininess);
 
-	// Light and shadow computation.
-	float light_shadow = LightAndShadow(position, result.normal);
-	vec3 diffuse_col = vec3(light_shadow * result.color);
-	vec3 specular_col = vec3(0.0);
-	if ((light_shadow > ambiant_treshold) && 
-		(diffuse_col != vec3(0, 0, 0))) 
-	{
-		specular_col = vec3(spec * spec_col);
+    if (result.dist >= max_dist) {
+		// Assuming fragPos is available
+		vec3 atmosphere_color = 
+			calculateAtmosphereEffect(ray_direction, light_dir);
+        frag_color = vec4(atmosphere_color * 32.0 , 1.0);
+    } else {
+		// Light and shadow computation.
+		float light_shadow = LightAndShadow(position, result.normal);
+		vec3 diffuse_col = vec3(light_shadow * result.color);
+		vec3 specular_col = vec3(0.0);
+		if ((light_shadow > ambiant_treshold) && 
+			(diffuse_col != vec3(0, 0, 0))) 
+		{
+			specular_col = vec3(spec * spec_col);
+		}
+		// Final color.
+		frag_color = vec4(diffuse_col + specular_col, 1.0);
     }
-
-	// Final color.
-	frag_color = vec4(diffuse_col + specular_col, 1.0);
 }
