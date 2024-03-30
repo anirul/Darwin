@@ -105,12 +105,13 @@ enum TextSizeEnum : int {
   TEXT_SIZE_MEDIUM = 1,
   TEXT_SIZE_LARGE = 2,
   TEXT_SIZE_TITLE = 3,
+  TEXT_SIZE_LARGER = 4,
   TextSizeEnum_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   TextSizeEnum_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool TextSizeEnum_IsValid(int value);
 constexpr TextSizeEnum TextSizeEnum_MIN = TEXT_SIZE_SMALL;
-constexpr TextSizeEnum TextSizeEnum_MAX = TEXT_SIZE_TITLE;
+constexpr TextSizeEnum TextSizeEnum_MAX = TEXT_SIZE_LARGER;
 constexpr int TextSizeEnum_ARRAYSIZE = TextSizeEnum_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* TextSizeEnum_descriptor();
@@ -1373,16 +1374,17 @@ class PageElementText final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDecorationsFieldNumber = 8,
+    kDecorationsFieldNumber = 9,
     kTextFieldNumber = 1,
     kTextSizeEnumFieldNumber = 6,
     kAlignmentEnumFieldNumber = 7,
+    kNoReplaceFieldNumber = 8,
     kColorFieldNumber = 2,
     kColorStringFieldNumber = 3,
     kPositionFieldNumber = 4,
     kPositionStringFieldNumber = 5,
   };
-  // repeated .proto.PageElementDecoration decorations = 8;
+  // repeated .proto.PageElementDecoration decorations = 9;
   int decorations_size() const;
   private:
   int _internal_decorations_size() const;
@@ -1430,6 +1432,15 @@ class PageElementText final :
   private:
   ::proto::AlignmentEnum _internal_alignment_enum() const;
   void _internal_set_alignment_enum(::proto::AlignmentEnum value);
+  public:
+
+  // bool no_replace = 8;
+  void clear_no_replace();
+  bool no_replace() const;
+  void set_no_replace(bool value);
+  private:
+  bool _internal_no_replace() const;
+  void _internal_set_no_replace(bool value);
   public:
 
   // .proto.Vector4 color = 2;
@@ -1530,6 +1541,7 @@ class PageElementText final :
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr text_;
     int text_size_enum_;
     int alignment_enum_;
+    bool no_replace_;
     union ColorOneofUnion {
       constexpr ColorOneofUnion() : _constinit_{} {}
         ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
@@ -4742,7 +4754,27 @@ inline void PageElementText::set_alignment_enum(::proto::AlignmentEnum value) {
   // @@protoc_insertion_point(field_set:proto.PageElementText.alignment_enum)
 }
 
-// repeated .proto.PageElementDecoration decorations = 8;
+// bool no_replace = 8;
+inline void PageElementText::clear_no_replace() {
+  _impl_.no_replace_ = false;
+}
+inline bool PageElementText::_internal_no_replace() const {
+  return _impl_.no_replace_;
+}
+inline bool PageElementText::no_replace() const {
+  // @@protoc_insertion_point(field_get:proto.PageElementText.no_replace)
+  return _internal_no_replace();
+}
+inline void PageElementText::_internal_set_no_replace(bool value) {
+  
+  _impl_.no_replace_ = value;
+}
+inline void PageElementText::set_no_replace(bool value) {
+  _internal_set_no_replace(value);
+  // @@protoc_insertion_point(field_set:proto.PageElementText.no_replace)
+}
+
+// repeated .proto.PageElementDecoration decorations = 9;
 inline int PageElementText::_internal_decorations_size() const {
   return _impl_.decorations_.size();
 }
