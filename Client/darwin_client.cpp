@@ -22,20 +22,25 @@ namespace darwin {
         if (name_.empty()) {
             name_ = client_parameter_.server_name();
         }
-        grpc::SslCredentialsOptions credential_options;
-        if (getenv("GRPC_DEFAULT_SSL_ROOTS_FILE_PATH") == nullptr) {
-            auto&& filename = frame::file::FindFile("asset/txt/cert.pem");
-            std::ifstream ifs(filename.string(), std::ios::in);
-            if (!ifs.is_open()) {
-                throw std::runtime_error("Couldn't open file: " + filename.string());
+
+        std::shared_ptr<grpc::ChannelCredentials> creds;
+        if (client_parameter_.ssl()) {
+            grpc::SslCredentialsOptions credential_options;
+            if (getenv("GRPC_DEFAULT_SSL_ROOTS_FILE_PATH") == nullptr) {
+                auto&& filename = frame::file::FindFile("asset/txt/cert.pem");
+                std::ifstream ifs(filename.string(), std::ios::in);
+                if (!ifs.is_open()) {
+                    throw std::runtime_error("Couldn't open file: " + filename.string());
+                }
+                std::string contents(std::istreambuf_iterator<char>(ifs), {});
+                credential_options.pem_root_certs = std::move(contents);
             }
-            std::string contents(std::istreambuf_iterator<char>(ifs), {});
-            credential_options.pem_root_certs = std::move(contents);
+            creds = grpc::SslCredentials(credential_options);
+        } else {
+            creds = grpc::InsecureChannelCredentials();
         }
-        auto channel = 
-            grpc::CreateChannel(
-                name_, 
-                grpc::SslCredentials(credential_options));
+
+        auto channel = grpc::CreateChannel(name_, creds);
         stub_ = proto::DarwinService::NewStub(channel);
         // Create a new thread to the update.
         update_future_ = std::async(std::launch::async, [this] { Update(); });
