@@ -10,8 +10,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     curl zip unzip tar cmake  pkg-config  python3-jinja2  gcc g++ git  autoconf libtool meson
 RUN git clone --depth=1 --branch=2024.02.14 --config=advice.detachedHead=false https://github.com/microsoft/vcpkg.git /var/tmp/vcpkg
 RUN /var/tmp/vcpkg/bootstrap-vcpkg.sh -disableMetrics
-RUN --mount=type=bind,target=/var/tmp/src \
+RUN --mount=type=bind,source=vcpkg.json,target=/var/tmp/build/vcpkg.json \
     --mount=type=cache,target=/root/.cache/vcpkg \
+    cd /var/tmp/build && /var/tmp/vcpkg/vcpkg install
+RUN --mount=type=bind,target=/var/tmp/src \
     cmake -S /var/tmp/src -B /var/tmp/build -D CMAKE_TOOLCHAIN_FILE=/var/tmp/vcpkg/scripts/buildsystems/vcpkg.cmake
 RUN --mount=type=bind,target=/var/tmp/src \
     cmake --build /var/tmp/build --config Release --parallel 10 --target DarwinServer
