@@ -135,6 +135,12 @@ namespace darwin::state {
         camera_distance_ = std::clamp(camera_distance_, 5.0f, 20.0f);
         camera_pitch_ = std::clamp(camera_pitch_, -80.0f, -5.0f);
 
+        if (character_initial_forward_ == glm::vec3(0.0f)) {
+            // initial value for camera
+            // not a better place?
+            camera_distance_ = 20.0f; // max zoom
+            camera_pitch_ = -20.0f;   // a bit higher
+        }
         // Create a forward vector for the character (from random).
         if (character_initial_forward_ == glm::vec3(0.0f) || 
             glm::any(glm::isnan(character_initial_forward_))) 
