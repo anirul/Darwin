@@ -114,7 +114,10 @@ namespace darwin {
         auto character = world_simulator_.GetCharacterByName(character_name_);
         report_request_.set_name(character_name_);
         report_request_.mutable_physic()->CopyFrom(character.physic());
-        report_request_.set_status_enum(character.status_enum());
+        report_request_.set_status_enum(
+            character.status_enum() == proto::STATUS_LOADING ?
+                proto::STATUS_JUMPING :
+                character.status_enum());
         report_request_.mutable_special_effect_boost()->CopyFrom(
             character.special_effect_boost());
         proto::ReportInGameResponse response;
