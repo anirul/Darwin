@@ -151,86 +151,59 @@ vec3 calculateAtmosphereEffect(vec3 direction, vec3 light_direction) {
     return rayleigh_scattering + vec3(mie_scattering);
 }
 
-// Get a Hit from a surface.
-Hit GetDistance(vec3 position)
+// Get the new distance and the normal to the surface.
+// (if the distance is < min_dist in w).
+Hit RayTracing(vec3 ray_origin, vec3 u)
 {
-	int smallest_id = -1;
-	float smallest_dist = max_dist;
-    for (int i = 0; i < sphere_size; ++i) {
-		float dist_sphere = 
-			length(position - sphere_pos[i].xyz) - sphere_pos[i].w;
-		if (dist_sphere < smallest_dist) {
-			smallest_id = i;
-			smallest_dist = dist_sphere;
-		}
-	}
-	if (smallest_id == -1) {
-		Hit hit;
-		hit.normal = vec3(0);
-		hit.dist = max_dist;
-		hit.color = vec4(0);
-		return hit;
+  int min_i = -1;
+  float min_d = max_dist;
+  for (int i = 0; i < sphere_size; ++i) {
+    vec3 oc = ray_origin - sphere_pos[i].xyz;
+    float uoc = dot(u, oc);
+    float delta = uoc * uoc - (length(oc) * length(oc) - sphere_pos[i].w * sphere_pos[i].w);
+    if (delta >= 0) {
+      float d1 = -uoc - sqrt(delta);
+      if (d1 > 0 && d1 < min_d) {
+        min_d = d1;
+        min_i = i;
+      }
+      float d2 = -uoc + sqrt(delta);
+      if (d2 > 0 && d2 < min_d) {
+        min_d = d2;
+        min_i = i;
+      }
     }
-	Hit hit;
-	hit.normal = normalize(position - sphere_pos[smallest_id].xyz);
-	hit.dist = smallest_dist;
-	if (sphere_pos[smallest_id].w > 20.0) {
+  }
+  if (min_i == -1) {
+    Hit result;
+    result.normal = vec3(0, 1, 0);
+    result.dist = max_dist+1;
+    result.color = vec4(0);
+    return result;
+  }
+  vec3 position = ray_origin + min_d * u;
+  Hit hit;
+  hit.dist = min_d;
+	hit.normal = normalize(position - sphere_pos[min_i].xyz);
+	if (sphere_pos[min_i].w > 20.0) {
 		// Planet texture.
         hit.color = 
 			vec4(planetColor(position*snoise(position * (0.2+sin(time_s/1000.)*0.1))), 1.0) * vec4(0.5) + vec4(0.5);
-    } else if (sphere_col[smallest_id].w > 1.0) {
+    } else if (sphere_col[min_i].w > 1.0) {
 		// Character texture.
 		hit.color = 
 			vec4(vec3(snoise(hit.normal + position * 0.2)), 1.0) * 
-			vec4(vec3(sphere_col[smallest_id]), 1.0);
+			vec4(vec3(sphere_col[min_i]), 1.0);
 	} else {
-		hit.color = sphere_col[smallest_id];
+		hit.color = sphere_col[min_i];
 	}
-	return hit;
-}
-
-// Get the new distance and the normal to the surface.
-// (if the distance is < min_dist in w).
-Hit RayMarching(vec3 ray_origin, vec3 ray_direction)
-{
-	Hit result;
-	float dist0 = 0;
-	for (int i = 0; i < max_steps; ++i)
-	{
-		vec3 p = ray_origin + ray_direction * dist0;
-		Hit hit = GetDistance(p);
-		vec3 normal = hit.normal;
-		dist0 += hit.dist;
-		if (hit.dist < min_dist) {
-			result.normal = normal;
-			result.dist = dist0;
-			result.color = hit.color;
-			return result;
-		}
-		if (dist0 > max_dist) {
-			break;
-		}
-	}
-	result.normal = vec3(0, 1, 0);
-	result.dist = dist0;
-	result.color = vec4(0);
-	return result;
-}
-
-vec3 DirectionalLightDirection() {
-	float time_slow = time_s * 0.1;
-	vec3 normal_light_dir = normalize(light_dir);
-	return normal_light_dir;
-    return normalize(vec3(
-		0.0, 
-		cos(time_slow), 
-		sin(time_slow)));
+  return hit;
 }
 
 // Get the light normal and the light value for a directional light.
 vec4 LightNormalValue(vec3 position, vec3 normal)
 {
-    vec3 light_direction = DirectionalLightDirection();
+    vec3 light_direction = normalize(light_dir);
     float light_value = dot(normal, light_direction);
     return vec4(light_direction, light_value);
 }
@@ -247,17 +220,16 @@ float SpecularLight(vec3 light_dir, vec3 view_dir, vec3 normal, float shininess)
 // Calculate the Shadow and light for a directional light.
 float LightAndShadow(vec3 position, vec3 normal)
 {
-    vec3 light_direction = DirectionalLightDirection();
-    vec4 light_normal_value = LightNormalValue(position, normal);
+    vec3 to_light = normalize(light_dir);
     // Based on the constant light direction.
     float dist_light = 
-        RayMarching(
-			position + normal * min_dist * 2, light_normal_value.xyz).dist;
+        RayTracing(
+			position + normal * min_dist * 2, to_light).dist;
     // Shadow attenuation can be adjusted as needed.
 	if (dist_light < max_dist) {
         return ambiant_treshold; // Dimming factor for shadowed areas.
 	}
-	return clamp(light_normal_value.w, ambiant_treshold, 1.0);
+	return clamp(dot(normal, to_light), ambiant_treshold, 1.0);
 }
 
 RayCamera GetRayCamera()
@@ -282,11 +254,11 @@ void main()
 		normalize(uv.x * camera.right + uv.y * camera.up + camera.forward);
 
 	// Ray marching algorithm.
-	Hit result = RayMarching(camera.position, ray_direction);
+	Hit result = RayTracing(camera.position, ray_direction);
 	vec3 position = camera.position + ray_direction * result.dist;
 	float spec = 
 		SpecularLight(
-			DirectionalLightDirection(), 
+			normalize(light_dir), 
 			-ray_direction, 
 			result.normal, 
 			material_shininess);
