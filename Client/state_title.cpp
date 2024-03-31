@@ -69,7 +69,7 @@ namespace darwin::state {
 
     void StateTitle::Update(StateContext& state_context) {
         auto duration = std::chrono::system_clock::now() - start_time_;
-        if (duration > std::chrono::seconds(10) && 
+        if (duration > std::chrono::seconds(12) &&
             !draw_gui_interface_->IsVisible()) 
         {
             logger_->info("10 seconds passed");

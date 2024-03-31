@@ -17,6 +17,8 @@ RUN --mount=type=bind,target=/var/tmp/src \
     cmake -S /var/tmp/src -B /var/tmp/build -D CMAKE_TOOLCHAIN_FILE=/var/tmp/vcpkg/scripts/buildsystems/vcpkg.cmake
 RUN --mount=type=bind,target=/var/tmp/src \
     cmake --build /var/tmp/build --config Release --parallel 10 --target DarwinServer
+RUN strip /var/tmp/build/Server/DarwinServer
+RUN md5sum /var/tmp/build/Server/DarwinServer
 
 FROM BASE
 LABEL maintainer="max.laager@gmail.com"
