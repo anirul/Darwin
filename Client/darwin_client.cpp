@@ -30,7 +30,10 @@ namespace darwin {
                 auto&& filename = frame::file::FindFile("asset/txt/cert.pem");
                 std::ifstream ifs(filename.string(), std::ios::in);
                 if (!ifs.is_open()) {
-                    throw std::runtime_error("Couldn't open file: " + filename.string());
+                    throw std::runtime_error(
+                        std::format(
+                            "Couldn't open file: {}", 
+                            filename.string()));
                 }
                 std::string contents(std::istreambuf_iterator<char>(ifs), {});
                 credential_options.pem_root_certs = std::move(contents);
@@ -142,7 +145,6 @@ namespace darwin {
 
             std::vector<proto::Character> characters;
             for (const auto& character : response.characters()) {
-                auto status = character.status_enum();
                 characters.push_back(MergeCharacter(character));
                 previous_characters_.insert({ character.name(), character });
             }

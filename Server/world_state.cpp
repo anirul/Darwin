@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <format>
 #include <cmath>
+#include <assert.h>
 
 #include "Common/darwin_constant.h"
 #include "Common/stl_proto_wrapper.h"
@@ -25,7 +26,7 @@ namespace darwin {
         std::scoped_lock l(mutex_);
         auto it = character_infos_.find(name);
         if (it != character_infos_.end()) {
-            const auto& character = it->second.character;
+            const auto& character = it->second;
             if (character.status_enum() == proto::STATUS_DEAD) {
                 character_infos_.erase(name);
                 it = character_infos_.end();
@@ -58,8 +59,7 @@ namespace darwin {
             character.mutable_g_force()->CopyFrom(
                 CreateVector3(0.0, 0.0, 0.0));
             character.set_status_enum(proto::STATUS_LOADING);
-            CharacterInfo character_info{ GetLastUpdated(), character};
-            character_infos_.insert({ character.name(), character_info });
+            character_infos_.insert({ character.name(), character });
             peer_characters_.insert({ peer, name });
             return true;
         }
@@ -75,7 +75,6 @@ namespace darwin {
     }
 
     void WorldState::AddCharacter(
-        double time, 
         const proto::Character& character) 
     {
         std::scoped_lock l(mutex_);
@@ -88,14 +87,12 @@ namespace darwin {
         }
         auto it = character_infos_.find(character.name());
         if (it == character_infos_.end()) {
-            CharacterInfo character_info{ time, character };
-            character_infos_.emplace(character.name(), character_info);
+            character_infos_.insert({ character.name(), character });
             // Enter a fake peer to avoid inconsistencies.
-            peer_characters_.emplace(character.name(), character.name());
+            peer_characters_.insert({ character.name(), character.name() });
         }
         else {
-            it->second.time = time;
-            it->second.character = character;
+            it->second = character;
         }
     }
 
@@ -106,8 +103,9 @@ namespace darwin {
 
     proto::Element WorldState::GetPlanetLocked() const {
         for (const auto& [name, element_info] : element_infos_) {
-            if (element_info.element.type_enum() == proto::TYPE_GROUND) {
-                return element_info.element;
+            assert(name == element_info.name());
+            if (element_info.type_enum() == proto::TYPE_GROUND) {
+                return element_info;
             }
         }
         throw std::runtime_error("No planet found.");
@@ -136,13 +134,11 @@ namespace darwin {
             physic.set_radius(radius);
             physic.set_mass(1.0);
             element.mutable_physic()->CopyFrom(physic);
-            ElementInfo element_info{ GetLastUpdated(), element };
-            element_infos_.emplace(element.name(), element_info);
+            element_infos_.insert({ element.name(), element });
         }
     }
 
     void WorldState::UpdateCharacter(
-        double time,
         const std::string& name,
         proto::StatusEnum status,
         const proto::Physic& physic)
@@ -150,9 +146,8 @@ namespace darwin {
         std::scoped_lock l(mutex_);
         auto it = character_infos_.find(name);
         if (character_infos_.contains(name)) {
-            it->second.time = time;
-            it->second.character.mutable_physic()->CopyFrom(physic);
-            it->second.character.set_status_enum(status);
+            it->second.mutable_physic()->CopyFrom(physic);
+            it->second.set_status_enum(status);
         }
         else {
             std::cerr << "Error updating character: " << name << "\n";
@@ -191,8 +186,7 @@ namespace darwin {
         std::scoped_lock l(mutex_);
         if (peer_characters_.contains(peer)) {
             if (character_infos_.contains(peer_characters_.at(peer))) {
-                return character_infos_.at(
-                    peer_characters_.at(peer)).character;
+                return character_infos_.at(peer_characters_.at(peer));
             }
         }
         return std::nullopt;
@@ -209,16 +203,14 @@ namespace darwin {
         return false;
     }
 
-    void WorldState::AddElement(double time, const proto::Element& element) {
+    void WorldState::AddElement(const proto::Element& element) {
         std::scoped_lock l(mutex_);
         auto it = element_infos_.find(element.name());
         if (it == element_infos_.end()) {
-            ElementInfo element_info{ time, element };
-            element_infos_.emplace(element.name(), element_info);
+            element_infos_.insert({ element.name(), element });
         }
         else {
-            it->second.time = time;
-            it->second.element = element;
+            it->second = element;
         }
     }
 
@@ -244,20 +236,19 @@ namespace darwin {
                     // You can't eat any more elements!
                     continue;
                 }
-                if (element_infos_.at(target_name).element.type_enum() !=
+                if (element_infos_.at(target_name).type_enum() !=
                     proto::TYPE_UPGRADE)
                 {
                     // You can't eat this type of element.
                     continue;
                 }
-                physic_to = element_infos_.at(target_name).element.physic();
-                color_to = element_infos_.at(target_name).element.color();
+                physic_to = element_infos_.at(target_name).physic();
+                color_to = element_infos_.at(target_name).color();
                 type_enum = proto::TYPE_UPGRADE;
             }
             if (character_infos_.contains(target_name)) {
-                physic_to = character_infos_.at(
-                    target_name).character.physic();
-                color_to = character_infos_.at(target_name).character.color();
+                physic_to = character_infos_.at(target_name).physic();
+                color_to = character_infos_.at(target_name).color();
                 type_enum = proto::TYPE_CHARACTER;
             }
             // Check if you can eat the target.
@@ -329,7 +320,7 @@ namespace darwin {
             from_to.physic_from.mass() + from_to.physic_to.mass());
         physic_from.set_radius(GetRadiusFromVolume(physic_from.mass()));
         character_infos_.at(
-            from_to.name_from).character.mutable_physic()->CopyFrom(
+            from_to.name_from).mutable_physic()->CopyFrom(
                 physic_from);
     }
 
@@ -341,12 +332,12 @@ namespace darwin {
         physic_from.set_mass(from_to.physic_from.mass() + move_mass);
         physic_from.set_radius(GetRadiusFromVolume(physic_from.mass()));
         character_infos_.at(
-            from_to.name_from).character.mutable_physic()->CopyFrom(
+            from_to.name_from).mutable_physic()->CopyFrom(
                 physic_from);
         physic_to.set_mass(from_to.physic_to.mass() - move_mass);
         physic_to.set_radius(GetRadiusFromVolume(physic_to.mass()));
         character_infos_.at(
-            from_to.name_to).character.mutable_physic()->CopyFrom(
+            from_to.name_to).mutable_physic()->CopyFrom(
                 physic_to);
     }
 
@@ -356,7 +347,7 @@ namespace darwin {
             from_to.physic_from.mass() + GetPlayerParameter().penalty());
         physic.set_radius(GetRadiusFromVolume(physic.mass()));
         character_infos_.at(
-            from_to.name_from).character.mutable_physic()->CopyFrom(physic);
+            from_to.name_from).mutable_physic()->CopyFrom(physic);
     }
 
     void WorldState::LostSourceCharacterLocked(const FromTo& from_to) {
@@ -367,7 +358,7 @@ namespace darwin {
             physic.set_mass(new_mass);
             physic.set_radius(GetRadiusFromVolume(physic.mass()));
             character_infos_.at(
-                from_to.name_from).character.mutable_physic()->CopyFrom(
+                from_to.name_from).mutable_physic()->CopyFrom(
                     physic);
         }
         {
@@ -375,7 +366,7 @@ namespace darwin {
             physic.set_mass(new_mass);
             physic.set_radius(GetRadiusFromVolume(physic.mass()));
             character_infos_.at(
-                from_to.name_to).character.mutable_physic()->CopyFrom(physic);
+                from_to.name_to).mutable_physic()->CopyFrom(physic);
         }
     }
 
@@ -414,31 +405,33 @@ namespace darwin {
 
     void WorldState::CheckGroundCharactersLocked() {
         auto ground = GetPlanetLocked();
-        for (auto& [_, character_info] : character_infos_) {
-            if (character_info.character.status_enum() == 
+        for (auto& [name, character_info] : character_infos_) {
+            if (character_info.status_enum() == 
                 proto::STATUS_ON_GROUND) 
             {
+                assert(name == character_info.name());
                 auto position_normal = Normalize(
-                    character_info.character.physic().position());
-                character_info.character.mutable_physic()->
+                    character_info.physic().position());
+                character_info.mutable_physic()->
                     mutable_position()->
                     CopyFrom(
                         position_normal *
                         (ground.physic().radius() + 
-                         character_info.character.physic().radius()));
-                character_info.character.mutable_normal()->CopyFrom(
+                         character_info.physic().radius()));
+                character_info.mutable_normal()->CopyFrom(
                     position_normal);
             }
         }
     }
 
     void WorldState::CheckDeathCharactersLocked() {
-        for (auto& [_, character_info] : character_infos_) {
-            if (character_info.character.physic().mass() < 1.0) {
-                character_info.character.set_status_enum(
+        for (auto& [name, character_info] : character_infos_) {
+            assert(name == character_info.name());
+            if (character_info.physic().mass() < 1.0) {
+                character_info.set_status_enum(
                     proto::STATUS_DEAD);
                 for (const auto& [peer, character] : peer_characters_) {
-                    if (character == character_info.character.name()) {
+                    if (character == character_info.name()) {
                         peer_characters_.erase(peer);
                         break;
                     }
@@ -448,14 +441,15 @@ namespace darwin {
     }
 
     void WorldState::CheckVictoryCharactersLocked() {
-        for (auto& [_, character_info] : character_infos_) {
-            if (character_info.character.physic().mass() >=
+        for (auto& [name, character_info] : character_infos_) {
+            assert(name == character_info.name());
+            if (character_info.physic().mass() >=
                 player_parameter_.victory_size()) 
             {
-                character_info.character.set_status_enum(
+                character_info.set_status_enum(
                     proto::STATUS_DEAD);
                 for (const auto& [peer, character] : peer_characters_) {
-                    if (character == character_info.character.name()) {
+                    if (character == character_info.name()) {
                         peer_characters_.erase(peer);
                         break;
                     }
@@ -472,11 +466,11 @@ namespace darwin {
         characters_.clear();
         elements_.clear();
         for (const auto& [_, character_info] : character_infos_) {
-            characters_.push_back(character_info.character);
+            characters_.push_back(character_info);
         }
         bool first_loop = true;
         for (const auto& [_, element_info] : element_infos_) {
-            elements_.push_back(element_info.element);
+            elements_.push_back(element_info);
         }
     }
 

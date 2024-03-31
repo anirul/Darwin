@@ -9,6 +9,7 @@ enum TextSizeEnum {
     TEXT_SIZE_MEDIUM = 1;       // 24 pixels
     TEXT_SIZE_LARGE = 2;        // 36 pixels
     TEXT_SIZE_TITLE = 3;        // 160 pixels
+    TEXT_SIZE_LARGER = 4;        // 80 pixels
 }
 
 enum AlignmentEnum {
@@ -99,7 +100,8 @@ message PageElementText {
     }
     TextSizeEnum text_size_enum = 6;
     AlignmentEnum alignment_enum = 7;
-    repeated PageElementDecoration decorations = 8;
+    bool no_replace = 8;
+    repeated PageElementDecoration decorations = 9;
 }
 
 // PageElementImage

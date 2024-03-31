@@ -35,7 +35,6 @@ namespace darwin::state {
         if (!draw_gui_interface_) {
             throw std::runtime_error("No draw gui interface plugin found?");
         }
-#ifdef _DEBUG
         auto overlay_state = std::make_unique<overlay::OverlayState>(
             "overlay_state",
             client_parameter_,
@@ -46,7 +45,6 @@ namespace darwin::state {
             glm::vec2(0.0f, 0.0f),
             app_.GetWindow().GetDevice().GetSize(),
             std::move(overlay_state));
-#endif // _DEBUG
         draw_gui_interface_->AddOverlayWindow(
             glm::vec2(0.0f, 0.0f),
             app_.GetWindow().GetDevice().GetSize(),
@@ -66,14 +64,12 @@ namespace darwin::state {
         logger_->info("Exiting title state");
         app_.GetWindow().RemoveKeyCallback(' ');
         draw_gui_interface_->DeleteWindow("overlay_title");
-#ifdef _DEBUG
         draw_gui_interface_->DeleteWindow("overlay_state");
-#endif // _DEBUG
     }
 
     void StateTitle::Update(StateContext& state_context) {
         auto duration = std::chrono::system_clock::now() - start_time_;
-        if (duration > std::chrono::seconds(10) && 
+        if (duration > std::chrono::seconds(12) &&
             !draw_gui_interface_->IsVisible()) 
         {
             logger_->info("10 seconds passed");

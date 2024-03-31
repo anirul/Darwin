@@ -46,7 +46,6 @@ namespace darwin::state {
         if (!draw_gui_) {
             throw std::runtime_error("No draw gui interface plugin found?");
         }
-#ifdef _DEBUG
         auto overlay_state = std::make_unique<overlay::OverlayState>(
             "overlay_state",
             client_parameter_,
@@ -57,7 +56,6 @@ namespace darwin::state {
             glm::vec2(0.0f, 0.0f),
             app_.GetWindow().GetDevice().GetSize(),
             std::move(overlay_state));
-#endif // _DEBUG
         auto overlay_play = std::make_unique<overlay::OverlayPlay>(
             "overlay_play",
             client_parameter_,
@@ -90,9 +88,7 @@ namespace darwin::state {
         app_.GetWindow().SetInputInterface(nullptr);
         input_acquisition_ptr_ = nullptr;
         draw_gui_->DeleteWindow("overlay_play");
-#ifdef _DEBUG
         draw_gui_->DeleteWindow("overlay_state");
-#endif // _DEBUG
         SDL_SetRelativeMouseMode(SDL_FALSE);
     }
 
@@ -394,6 +390,7 @@ namespace darwin::state {
             if (character.physic().mass() <= 1.0) {
                 world_simulator_.RemoveCharacter(character_name);
                 darwin_client_->RemovePreviousCharacter(character_name);
+                darwin_client_->SendReportInGame();
                 state_context.ChangeState(
                     std::make_unique<StateDeath>(
                         app_,

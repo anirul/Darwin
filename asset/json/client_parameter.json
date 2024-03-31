@@ -18,6 +18,10 @@
     {
       "text_size_enum": "TEXT_SIZE_TITLE",
       "size": 160.0
+    },
+    {
+      "text_size_enum": "TEXT_SIZE_LARGER",
+      "size": 120.0
     }
   ],
   "overlay_title": {
@@ -94,12 +98,46 @@
       },
       {
         "text": {
+          "text": "By:\n  Anirul\n  Berdes\n  Flowey0101\n  Marv\n  Maturain\n  Rembir\n  Sard le Rouge",
+          "color_string": {
+            "red": "1.0",
+            "green": "1.0",
+            "blue": "1.0",
+            "alpha": "-((0.69 * timer_s - 3.9) ^ 2) + 1"
+          },
+          "position": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "text_size_enum": "TEXT_SIZE_LARGER",
+          "alignment_enum": "ALIGNMENT_CENTER",
+          "no_replace": true,
+          "decorations":
+          [
+            {
+              "offset": {
+                "x": 0.01,
+                "y": 0.02
+              },
+              "color_string": {
+                "red": "0.0",
+                "green": "0.0",
+                "blue": "0.0",
+                "alpha": "-((0.69 * timer_s - 3.9) ^ 2) + 1"
+              },
+              "decoration_enum": "DECORATION_SHADOW"
+            }
+          ]
+        }
+      },
+      {
+        "text": {
           "text": "Globe Globers",
           "color_string": {
             "red": "1.0",
             "green": "1.0",
             "blue": "1.0",
-            "alpha": "-(0.3 * timer_s - 3.3) ^ 2 + 4"
+            "alpha": "-(0.2 * timer_s - 3.2) ^ 2 + 3"
           },
           "position": {
             "x": 0.5,
@@ -117,7 +155,7 @@
                 "red": "0.0",
                 "green": "0.0",
                 "blue": "0.0",
-                "alpha": "-(0.3 * timer_s - 3.3) ^ 2 + 4"
+                "alpha": "-(0.2 * timer_s - 3.2) ^ 2 + 3"
               },
               "decoration_enum": "DECORATION_SHADOW"
             }

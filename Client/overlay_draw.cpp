@@ -188,7 +188,9 @@ namespace darwin::overlay {
             client_parameter_).PushFont(text.text_size_enum());
         // Replace the text.
         auto text_str = ReplaceIndex(text.text());
-        text_str = ReplaceText(text_str);
+        if (!text.no_replace()) {
+            text_str = ReplaceText(text_str);
+        }
         // Compute alignment.
         auto text_size = ImGui::CalcTextSize(text_str.c_str());
         auto alignment =

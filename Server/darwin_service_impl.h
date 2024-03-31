@@ -32,12 +32,12 @@ namespace darwin {
             proto::PingResponse* response) override;
 
     public:
-        void BroadcastUpdate(const proto::UpdateResponse& response);
-        std::map<double, proto::Character>& GetTimeCharacters();
-        void ClearTimeCharacters();
+        std::vector<proto::Character>& GetCharacters();
+        void ClearCharacters();
         void ComputeWorld(double loop_timer);
 
     protected:
+        void BroadcastUpdateLocked(const proto::UpdateResponse& response);
         proto::SpecialEffectParameter UpdateSpecialEffectBoost(
             const proto::SpecialEffectParameter& special_effect,
             double delta_time) const;
@@ -49,7 +49,7 @@ namespace darwin {
             const proto::SpecialEffectParameter& new_special_effect);
         
     protected:
-        std::map<double, proto::Character> time_characters_;
+        std::vector<proto::Character> characters_;
         // Name of the character against name of potential hits.
         std::map<proto::Character, std::string> character_hits_;
         WorldState& world_state_;

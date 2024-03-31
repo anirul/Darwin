@@ -39,7 +39,7 @@ namespace darwin {
         }
         for (const auto& element : world.elements())
         {
-            world_state.AddElement(time, element);
+            world_state.AddElement(element);
         }
         world_state.SetPlayerParameter(world.player_parameter());
         world_state.Update(time);
@@ -55,11 +55,11 @@ namespace darwin {
         {
             // This should not happen as there is no character that is not 
             // control by a human.
-            // world_state.AddCharacter(time, character);
+            // world_state.AddCharacter(character);
         }
         for (const auto& element : world.elements())
         {
-            world_state.AddElement(time, element);
+            world_state.AddElement(element);
         }
         world_state.SetPlayerParameter(world.player_parameter());
         world_state.Update(time);
