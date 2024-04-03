@@ -1,3 +1,5 @@
+![Globe Globers](Pictures/2024-04-03-ScreenShot-Darwin.png)
+
 # Darwin
 
 A very simple [gRPC](https://grpc.io) based client server application.
