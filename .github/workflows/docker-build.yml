@@ -35,7 +35,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: DarwinClient 
-          path: DarwinClient
+          path: |
+            DarwinClient
+            asset/
       #      - name: Azure Login
       #  uses: azure/login@v1
       #  with:
