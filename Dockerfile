@@ -5,7 +5,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt update && apt install --yes libstdc++6-amd64-cross libc6-amd64-cross  \
     libxmu-dev libxi-dev libgl-dev libglx-dev libgles-dev  build-essential libx11-xcb-dev libegl1-mesa-dev libopengl-dev \
      libxkbcommon-dev libwayland-dev libxrandr-dev mesa-vulkan-drivers libglu1-mesa-dev libdrm-dev libegl-dev libglm-dev  \
-    curl zip unzip tar cmake  pkg-config  python3-jinja2  gcc g++ git  autoconf libtool meson wget
+    curl zip unzip tar cmake  pkg-config  python3-jinja2  gcc g++ git autoconf libtool meson wget libpulse-dev 
 WORKDIR /src/
 RUN git clone  --depth=1 --branch=master  https://github.com/microsoft/vcpkg.git
 COPY vcpkg.json .
