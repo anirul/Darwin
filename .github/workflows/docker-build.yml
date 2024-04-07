@@ -7,15 +7,21 @@ jobs:
   build-with-docker:
     name: Build with Docker
     runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: 'true'
           lfs: 'true'
       - uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: network=host
       #      - name: Login to Docker Hub
-      #  uses: docker/login-action@v3
-      #  with:
+      #  uses: docker/login-action@v3         
       #    username: ${{ secrets.DARWIN_REGISTRY_USERNAME }}
       #    password: ${{ secrets.DARWIN_REGISTRY_PASSWORD }}
       - uses: docker/build-push-action@v5
@@ -23,8 +29,13 @@ jobs:
          context: .
          cache-from: type=gha
          cache-to: type=gha,mode=max
-         push: false
-         tags: mlaager/darwin:latest
+         push: true
+         tags: localhost:5000/mlaager/darwin:latest
+      - run: docker cp $(docker create --name tc localhost:5000/mlaager/darwin:latest):/usr/local/bin/DarwinClient ./DarwinClient && docker rm tc
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DarwinClient 
+          path: DarwinClient
       #      - name: Azure Login
       #  uses: azure/login@v1
       #  with:

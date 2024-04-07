@@ -21,13 +21,11 @@ RUN ./bootstrap-vcpkg.sh -disableMetrics && ./vcpkg integrate install && ./vcpkg
 WORKDIR /src
 COPY . .
 WORKDIR /src/build
-RUN cmake -DCMAKE_TOOLCHAIN_FILE=/src/vcpkg/scripts/buildsystems/vcpkg.cmake ..
-RUN cmake --build . --config Release -j 10 --target DarwinServer --target DarwinClient
-RUN strip ./Server/DarwinServer 
-RUN strip ./Client/DarwinClient
-VOLUME [ "/output" ]
-RUN cp ./Server/DarwinServer /output
-RUN cp ./Client/DarwinClient /output
+RUN cmake -DCMAKE_TOOLCHAIN_FILE=/src/vcpkg/scripts/buildsystems/vcpkg.cmake ..  && \
+    cmake --build . --config Release -j 10 --target DarwinServer --target DarwinClient  && \
+    strip ./Server/DarwinServer && \
+    strip ./Client/DarwinClient
+RUN mkdir /output && cp ./Server/DarwinServer /output && cp ./Client/DarwinClient /output
 
 FROM ubuntu:23.10
 RUN rm /etc/apt/apt.conf.d/docker-clean; echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' >/etc/apt/apt.conf.d/keep-cache
@@ -38,6 +36,7 @@ RUN groupadd --gid 1001 Darwin
 RUN useradd --uid 1001 --gid 1001 --create-home Darwin
 USER Darwin
 EXPOSE 45323
-COPY --from=BUILD /src/build/Server/DarwinServer /usr/local/bin/DarwinServer
+COPY --from=BUILD /output/DarwinServer /usr/local/bin/DarwinServer
+COPY --from=BUILD /output/DarwinClient /usr/local/bin/DarwinClient
 COPY Server/world_db.json /etc/world_db.json
 CMD /usr/local/bin/DarwinServer --world_db=/etc/world_db.json
