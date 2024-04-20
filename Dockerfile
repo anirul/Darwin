@@ -12,10 +12,6 @@ COPY vcpkg.json .
 WORKDIR /src/vcpkg
 RUN mkdir /src/vcpkg/downloads
 WORKDIR /src/vcpkg/downloads
-# de la merde pour le souci avec liblzma
-RUN wget "https://github.com/bminor/xz/archive/refs/tags/v5.4.4.tar.gz"
-RUN cp v5.4.4.tar.gz  /src/vcpkg/downloads/tukaani-project-xz-v5.4.4.tar.gz
-RUN cp v5.4.4.tar.gz  /src/vcpkg/downloads/tukaani-project-xz-v5-c2846112.4.4.tar.gz
 WORKDIR /src/vcpkg
 RUN ./bootstrap-vcpkg.sh -disableMetrics && ./vcpkg integrate install && ./vcpkg install
 WORKDIR /src
@@ -25,7 +21,7 @@ RUN cmake -DCMAKE_TOOLCHAIN_FILE=/src/vcpkg/scripts/buildsystems/vcpkg.cmake .. 
     cmake --build . --config Release -j 10 --target DarwinServer --target DarwinClient  && \
     strip ./Server/DarwinServer && \
     strip ./Client/DarwinClient
-RUN mkdir /output && cp ./Server/DarwinServer /output && cp ./Client/DarwinClient /output
+RUN test -d /output || mkdir /output && cp ./Server/DarwinServer /output && cp ./Client/DarwinClient /output
 
 FROM ubuntu:23.10
 RUN rm /etc/apt/apt.conf.d/docker-clean; echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' >/etc/apt/apt.conf.d/keep-cache
