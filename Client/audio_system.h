@@ -13,6 +13,9 @@ namespace darwin::audio {
         ~AudioSystem();
         void PlayMusic(proto::AudioMusicEnum audio_music_enum);
         void PlaySound(proto::AudioSoundEnum audio_sound_enum);
+        void MuteMusic();
+        float GetMusicVolume() const;
+        void SetMusicVolume(float volume);
 
     public:
         std::string GetMusicName() const {

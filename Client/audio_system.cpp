@@ -153,6 +153,23 @@ namespace darwin::audio {
         }
     }
 
+    void AudioSystem::MuteMusic() {
+        Mix_VolumeMusic(0);
+    }
+
+    float AudioSystem::GetMusicVolume() const {
+        constexpr float max_volume = static_cast<float>(MIX_MAX_VOLUME);
+        return static_cast<float>(Mix_VolumeMusic(-1)) / max_volume;
+    }
+
+    void AudioSystem::SetMusicVolume(float volume) {
+        if (volume < 0.0f || volume > 1.0f) {
+            throw std::runtime_error("Invalid volume value.");
+        }
+        constexpr float max_volume = static_cast<float>(MIX_MAX_VOLUME);
+        Mix_VolumeMusic(static_cast<int>(volume * max_volume));
+    }
+
     AudioSystem::~AudioSystem()
     {
         Mix_HaltMusic();

@@ -133,6 +133,7 @@ int main(int ac, char** av) try
     frame::Logger& logger = frame::Logger::GetInstance();
     int i = 0;
     darwin::audio::AudioSystem audio_system(client_audio);
+    audio_system.MuteMusic();
     darwin::state::StateContext state_context(
         std::make_unique<darwin::state::StateTitle>(app, audio_system),
         client_parameter);
